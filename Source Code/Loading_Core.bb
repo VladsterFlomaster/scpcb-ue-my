@@ -1166,6 +1166,7 @@ Function LoadItems%()
 	;[Block]
 	CreateItemTemplate(GetLocalString("items", "doc005"), "Document SCP-005", it_paper, "paper.b3d", "INV_paper.png", "doc_005.png", 0.003, 0, "doc_005.png")
 	CreateItemTemplate(GetLocalString("items", "doc008"), "Document SCP-008", it_paper, "paper.b3d", "INV_paper.png", "doc_008.png", 0.003, 0, "doc_008.png")
+	CreateItemTemplate(GetLocalString("items", "doc009"), "Document SCP-009", it_paper, "paper.b3d", "INV_paper.png", "doc_009.png", 0.003, 0, "doc_009.png")
 	CreateItemTemplate(GetLocalString("items", "doc012"), "Document SCP-012", it_paper, "paper.b3d", "INV_paper.png", "doc_012.png", 0.003, 0, "doc_012.png")
 	CreateItemTemplate(GetLocalString("items", "doc035"), "Document SCP-035", it_paper, "paper.b3d", "INV_paper.png", "doc_035_smile.png", 0.003, 0, "doc_035_smile.png")
 	CreateItemTemplate(GetLocalString("items", "doc049"), "Document SCP-049", it_paper, "paper.b3d", "INV_paper.png", "doc_049.png", 0.003, 0, "doc_049.png")
@@ -2097,6 +2098,8 @@ Function LoadEvents%()
 	
 	CreateEvent(e_cont2_860_1, r_cont2_860_1, 0)
 	
+	CreateEvent(e_cont3_009, r_cont3_009, 0)
+	
 	CreateEvent(e_cont3_513, r_cont3_513, 0)
 	
 	CreateEvent(e_cont3_966, r_cont3_966, 0)
@@ -2411,6 +2414,7 @@ Function LoadData%()
 	wi.WearableItems = New WearableItems
 	fog.FogAmbient = New FogAmbient
 	
+	I_009.SCP009 = New SCP009
 	I_005.SCP005 = New SCP005
 	I_008.SCP008 = New SCP008
 	I_035.SCP035 = New SCP035
@@ -3384,6 +3388,7 @@ Function NullGame%(PlayButtonSFX% = True)
 	Delete(wi) : wi = Null
 	Delete(fog) : fog = Null
 	
+	Delete(I_009) : I_009 = Null
 	Delete(I_005) : I_005 = Null
 	Delete(I_008) : I_008 = Null
 	Delete(I_035) : I_035 = Null

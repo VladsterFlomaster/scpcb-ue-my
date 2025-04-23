@@ -2805,6 +2805,59 @@ Function FillRoom%(r.Rooms)
 			
 			CreateCustomCenter(r, r\x, r\z - 425.0 * RoomScale)
 			;[End Block]
+		Case r_cont3_009
+			;[Block]
+			; ~ Doors leading to containment chamber
+			CreateDoor(r, r\x + 640.0 * RoomScale, r\y, r\z, 270.0, True, HEAVY_DOOR, KEY_CARD_3)
+			CreateDoor(r, r\x - 640.0 * RoomScale, r\y, r\z, 270.0, True, HEAVY_DOOR, KEY_CARD_3)
+			CreateDoor(r, r\x, r\y, r\z - 640.0 * RoomScale, 0.0, True, HEAVY_DOOR, KEY_CARD_3)
+			
+			; ~ DNA door
+			CreateDoor(r, r\x + 658.0 * RoomScale, r\y, r\z - 658.0 * RoomScale, 135.0, False, HEAVY_DOOR, KEY_HAND_YELLOW)
+			
+			; ~ Doors leading to hazmat suits
+			d.Doors = CreateDoor(r, r\x - 320.0 * RoomScale, r\y, r\z - 832.0 * RoomScale, 270.0, False, HEAVY_DOOR, KEY_CARD_3)
+			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True), EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True) + 0.08, True)
+			PositionEntity(d\Buttons[1], EntityX(d\Buttons[1], True), EntityY(d\Buttons[1], True), EntityZ(d\Buttons[1], True) - 0.08, True)
+			
+			d.Doors = CreateDoor(r, r\x - 832.0 * RoomScale, r\y, r\z - 320.0 * RoomScale, 0.0, False, HEAVY_DOOR, KEY_CARD_3)
+			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 0.08, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
+			PositionEntity(d\Buttons[1], EntityX(d\Buttons[1], True) + 0.08, EntityY(d\Buttons[1], True), EntityZ(d\Buttons[1], True), True)
+			
+			; ~ Observation room doors
+			d.Doors = CreateDoor(r, r\x - 832.0 * RoomScale, r\y, r\z + 352.0 * RoomScale, 0.0, False, DEFAULT_DOOR, KEY_CARD_3)
+			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 0.08, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
+			PositionEntity(d\Buttons[1], EntityX(d\Buttons[1], True) + 0.08, EntityY(d\Buttons[1], True), EntityZ(d\Buttons[1], True), True)
+			
+			d.Doors = CreateDoor(r, r\x + 832.0 * RoomScale, r\y, r\z + 352.0 * RoomScale, 0.0, False, DEFAULT_DOOR, KEY_CARD_3)
+			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 0.08, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
+			PositionEntity(d\Buttons[1], EntityX(d\Buttons[1], True) + 0.08, EntityY(d\Buttons[1], True), EntityZ(d\Buttons[1], True), True)
+			
+			r\Objects[0] = LoadMesh_Strict("GFX\Map\cont3_009_hb.b3d", r\OBJ)
+			r\ScriptedObject[0] = True
+			EntityPickMode(r\Objects[0], 2)
+			EntityAlpha(r\Objects[0], 0.0)
+			
+			For i = 1 To 2
+				r\Objects[i] = CreateRedLight(r\x + (462.0 + (-924.0 * (i = 1))) * RoomScale, r\y + 418.0 * RoomScale, r\z - 463.0 * RoomScale)
+				r\ScriptedObject[i] = True
+				EntityParent(r\Objects[i], r\OBJ)
+				HideEntity(r\Objects[i])
+			Next
+			
+			it.Items = CreateItem("Document SCP-009", it_paper, r\x - 324.0 * RoomScale, r\y + 125.0 * RoomScale, r\z + 442.0 * RoomScale)
+			EntityParent(it\Collider, r\OBJ)
+			
+			it.Items = CreateItem("Hazmat Suit", it_hazmatsuit, r\x - 631.0 * RoomScale, r\y + 100.0 * RoomScale, r\z - 873.0 * RoomScale)
+			RotateEntity(it\Collider, 0.0, 135.0, 0.0)
+			EntityParent(it\Collider, r\OBJ)
+			
+			it.Items = CreateItem("Hazmat Suit", it_hazmatsuit, r\x - 631.0 * RoomScale, r\y + 100.0 * RoomScale, r\z - 451.0 * RoomScale)
+			RotateEntity(it\Collider, 0.0, -45.0, 0.0)
+			EntityParent(it\Collider, r\OBJ)
+			
+			CreateCustomCenter(r, r\x, r\z - 832.0 * RoomScale)
+			;[End Block]
 		Case r_cont3_513
 			;[Block]
 			d.Doors = CreateDoor(r, r\x - 704.0 * RoomScale, r\y + 64.0 * RoomScale, r\z + 304.0 * RoomScale, 0.0, False, DEFAULT_DOOR, KEY_CARD_3)

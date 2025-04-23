@@ -5,6 +5,11 @@
 {
 	"achievements": [
 		{
+			"id": "009",
+			"image": "Achv009.png",
+			"scp": true
+		},
+		{
 			"id": "005",
 			"image": "Achv005.png",
 			"scp": true
@@ -231,6 +236,10 @@
 		}
 	],
 	"translations": {
+		"009": {
+			"name": "Ice-olated Incident",
+			"description": "Found a room contaminated with red ice."
+		},
 		"106": {
 			"name": "A Decayed March",
 			"description": "Encountered the Old Man."

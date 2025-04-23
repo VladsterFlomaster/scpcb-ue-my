@@ -224,12 +224,14 @@ Function SaveGame%(File$)
 		WriteByte(f, n\Idle)
 		WriteFloat(f, n\LastDist)
 		WriteInt(f, n\LastSeen)
-		
 		WriteFloat(f, n\CurrSpeed)
-		
 		WriteFloat(f, n\Angle)
-		
 		WriteFloat(f, n\Reload)
+		
+		WriteByte(f, n\Iced)
+		WriteFloat(f, n\IceR)
+		WriteFloat(f, n\IceG)
+		WriteFloat(f, n\IceB)
 		
 		WriteInt(f, n\ID)
 		If n\Target <> Null
@@ -819,6 +821,11 @@ Function LoadGame%(File$)
 		n\CurrSpeed = ReadFloat(f)
 		n\Angle = ReadFloat(f)
 		n\Reload = ReadFloat(f)
+		
+		n\Iced = ReadByte(f)
+		n\IceR = ReadFloat(f)
+		n\IceG = ReadFloat(f)
+		n\IceB = ReadFloat(f)
 		
 		ForceSetNPCID(n, ReadInt(f))
 		n\TargetID = ReadInt(f)
@@ -1810,6 +1817,11 @@ Function LoadGameQuick%(File$)
 		n\CurrSpeed = ReadFloat(f)
 		n\Angle = ReadFloat(f)
 		n\Reload = ReadFloat(f)
+		
+		n\Iced = ReadByte(f)
+		n\IceR = ReadFloat(f)
+		n\IceG = ReadFloat(f)
+		n\IceB = ReadFloat(f)
 		
 		ForceSetNPCID(n, ReadInt(f))
 		n\TargetID = ReadInt(f)

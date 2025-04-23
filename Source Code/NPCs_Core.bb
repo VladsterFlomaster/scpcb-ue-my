@@ -52,6 +52,7 @@ Type NPCs
 	Field CurrentRoom.Rooms
 	Field TargetUpdateTimer#
 	Field Shadow.Shadows
+	Field Iced%, IceR#, IceG#, IceB#
 End Type
 
 Const NPCsFile$ = "Data\NPCs.ini"
@@ -559,6 +560,8 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 	n\ID = 0
 	n\ID = FindFreeNPCID()
 	
+	n\IceR = 255.0 : n\IceG = 255.0 : n\IceB = 255.0
+	
 	NPCSpeedChange(n)
 	
 	CatchErrors("Uncaught: CreateNPC(" + NPCType + ", " + x + ", " + y + ", " + z)
@@ -919,6 +922,7 @@ Function UpdateNPCs%()
 			Else
 				n\DropSpeed = 0.0
 			EndIf
+			UpdateNPCIce(n)
 		EndIf
 		CatchErrors("Uncaught: UpdateNPCs(NPC Name: " + Chr(34) + n\NVGName + Chr(34) + ", ID: " + n\NPCType + ")")
 	Next
@@ -1776,6 +1780,26 @@ Function ChangePlayerBodyTexture%(ID%)
 	
 	EntityTexture(pm\OBJ, Tex)
 	DeleteSingleTextureEntryFromCache(Tex)
+End Function
+
+Function UpdateNPCIce%(n.NPCs)
+	If n\Iced
+		Local PrevIce# = n\IceG
+		
+		n\IceR = 255.0
+		n\IceG = Max(40.0, n\IceG - fps\Factor[0])
+		n\IceB = Max(40.0, n\IceB - fps\Factor[0])
+		EntityColor(n\OBJ, n\IceR, n\IceG, n\IceB)
+		If n\OBJ2 <> 0 Then EntityColor(n\OBJ2, n\IceR, n\IceG, n\IceB)
+		
+		If PrevIce >= 41.0 And n\IceG < 41.0
+			PlaySoundEx(LoadTempSound("SFX\SCP\009\IceCracking.ogg"), Camera, n\Collider, 5.0, 0.4)
+			SetNPCFrame(n, n\Frame)
+			StopChannel(n\SoundCHN) : n\SoundCHN = 0
+			StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
+			n\State = 66.0
+		EndIf
+	EndIf
 End Function
 
 ;~IDEal Editor Parameters:

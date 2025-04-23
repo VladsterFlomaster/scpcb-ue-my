@@ -2,6 +2,7 @@
 
 [Global]
 - Added SCP-079 door opening/closing sound for some doors.
+- Added SCP-009.
 
 [Rooms]
 - Made HCZ and EZ slightly darker.

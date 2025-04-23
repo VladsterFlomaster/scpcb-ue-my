@@ -6441,6 +6441,27 @@ Function UpdateEvent_Room3_2_HCZ_Guard%(e.Events)
 	EndIf
 End Function
 
+Function UpdateEvent_Cont3_009%(e.Events)
+	If PlayerRoom = e\room
+		Local n.NPCs
+		Local i%
+		
+		GiveAchievement("009")
+		For i = 1 To 2
+			UpdateRedLight(e\room\Objects[i], 1500, 800)
+		Next
+		
+		Local IceTriggerY# = e\room\y - 1.5
+		
+		For n.NPCs = Each NPCs
+			If EntityY(n\Collider, True) < IceTriggerY
+				n\Iced = True
+			EndIf
+		Next
+		;If EntityY(me\Collider) < IceTriggerY Then me\Iced = True
+	EndIf
+End Function
+
 Function UpdateEvent_Cont3_513%(e.Events)
 	If e\room\Dist < 8.0
 		Local it.Items, de.Decals

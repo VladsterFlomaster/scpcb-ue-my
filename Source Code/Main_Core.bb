@@ -3120,6 +3120,7 @@ Function UpdateMoving%()
 	EndIf
 	
 	Update008()
+	Update009()
 	Update409()
 	Update1048AEars()
 	
@@ -9479,6 +9480,17 @@ Function UpdateEscapeTimer%()
 		EscapeTimer = EscapeTimer + 1
 		EscapeSecondsTimer = 70.0
 	EndIf
+End Function
+
+Type SCP009
+	Field Iced%
+	Field Timer#
+End Type
+
+Global I_009.SCP009
+
+Function Update009%()
+	
 End Function
 
 Type SCP005

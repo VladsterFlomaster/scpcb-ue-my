@@ -57,38 +57,39 @@ Const e_cont2_049% = 36
 Const e_cont2_409% = 37
 Const e_room3_hcz_1048% = 38, e_room3_hcz_duck% = 39
 Const e_room3_2_hcz_guard% = 40
-Const e_cont3_513% = 41
-Const e_cont3_966% = 42
-Const e_room4_2_hcz_d% = 43
+Const e_cont3_009% = 41
+Const e_cont3_513% = 42
+Const e_cont3_966% = 43
+Const e_room4_2_hcz_d% = 44
 ; ~ EZ
-Const e_gate_a_entrance% = 44, e_gate_a% = 45
-Const e_gate_b_entrance% = 46, e_gate_b% = 47
-Const e_room1_dead_end_ez_guard% = 48
-Const e_room2_ez_035% = 49
-Const e_room2_2_ez_duck% = 50
-Const e_room2_6_ez_789_j% = 51, e_room2_6_ez_guard% = 52
-;Const e_room2_office% = 53
-Const e_room2_cafeteria% = 53
-Const e_room2_ic% = 54
-Const e_room2_medibay% = 55
-Const e_room2_scientists_2% = 56
-Const e_cont2_860_1% = 57
-Const e_room2c_ec% = 58
-Const e_room3_2_ez_duck% = 59
+Const e_gate_a_entrance% = 45, e_gate_a% = 46
+Const e_gate_b_entrance% = 47, e_gate_b% = 48
+Const e_room1_dead_end_ez_guard% = 49
+Const e_room2_ez_035% = 50
+Const e_room2_2_ez_duck% = 51
+Const e_room2_6_ez_789_j% = 52, e_room2_6_ez_guard% = 53
+;Const e_room2_office% = 54
+Const e_room2_cafeteria% = 54
+Const e_room2_ic% = 55
+Const e_room2_medibay% = 56
+Const e_room2_scientists_2% = 57
+Const e_cont2_860_1% = 58
+Const e_room2c_ec% = 59
+Const e_room3_2_ez_duck% = 60
 ; ~ OTHERS
-Const e_096_spawn% = 60
-Const e_106_sinkhole% = 61
-Const e_106_victim% = 62, e_106_victim_wall% = 63
-Const e_173_spawn% = 64
-Const e_682_roar% = 65
-Const e_1048_a% = 66
-Const e_brownout% = 67
-Const e_checkpoint% = 68
-Const e_door_closing% = 69
-Const e_gateway% = 70
-Const e_tesla% = 71
-Const e_trick% = 72, e_trick_item% = 73
-Const e_dimension_106% = 74, e_dimension_1499% = 75
+Const e_096_spawn% = 61
+Const e_106_sinkhole% = 62
+Const e_106_victim% = 63, e_106_victim_wall% = 64
+Const e_173_spawn% = 65
+Const e_682_roar% = 66
+Const e_1048_a% = 67
+Const e_brownout% = 68
+Const e_checkpoint% = 69
+Const e_door_closing% = 70
+Const e_gateway% = 71
+Const e_tesla% = 72
+Const e_trick% = 73, e_trick_item% = 74
+Const e_dimension_106% = 75, e_dimension_1499% = 76
 ;[End Block]
 
 ; ~ For Map Creator
@@ -257,6 +258,10 @@ Function FindEventID%(EventName$)
 		Case "room3_2_hcz_guard"
 			;[Block]
 			Return(e_room3_2_hcz_guard)
+			;[End Block]
+		Case "cont3_009"
+			;[Block]
+			Return(e_cont3_009)
 			;[End Block]
 		Case "cont3_513"
 			;[Block]
@@ -814,6 +819,10 @@ Function UpdateEvents%()
 			Case e_room3_2_hcz_guard
 				;[Block]
 				UpdateEvent_Room3_2_HCZ_Guard(e)
+				;[End Block]
+			Case e_cont3_009
+				;[Block]
+				UpdateEvent_Cont3_009(e)
 				;[End Block]
 			Case e_cont3_513
 				;[Block]
