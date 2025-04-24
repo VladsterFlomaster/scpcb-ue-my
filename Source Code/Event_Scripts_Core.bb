@@ -7105,13 +7105,13 @@ Function UpdateEvent_Gate_A%(e.Events)
 									
 									Local Tex% = LoadTexture_Strict("GFX\Overlays\blood_overlay.png", 1, DeleteMapTextures, False)
 									
-									t\OverlayID[10] = CreateSprite(ArkBlurCam)
-									ScaleSprite(t\OverlayID[10], 1.001, GraphicHeightFloat / GraphicWidthFloat)
-									EntityTexture(t\OverlayID[10], Tex)
-									EntityBlend(t\OverlayID[10], 2)
-									EntityFX(t\OverlayID[10], 1)
-									EntityOrder(t\OverlayID[10], -1003)
-									MoveEntity(t\OverlayID[10], 0.0, 0.0, 1.0)
+									t\OverlayID[MaxOverlayIDAmount - 1] = CreateSprite(ArkBlurCam)
+									ScaleSprite(t\OverlayID[MaxOverlayIDAmount - 1], 1.001, GraphicHeightFloat / GraphicWidthFloat)
+									EntityTexture(t\OverlayID[MaxOverlayIDAmount - 1], Tex)
+									EntityBlend(t\OverlayID[MaxOverlayIDAmount - 1], 2)
+									EntityFX(t\OverlayID[MaxOverlayIDAmount - 1], 1)
+									EntityOrder(t\OverlayID[MaxOverlayIDAmount - 1], -1003)
+									MoveEntity(t\OverlayID[MaxOverlayIDAmount - 1], 0.0, 0.0, 1.0)
 									DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
 									
 									msg\DeathMsg = Format(GetLocalString("death", "ntf.gatea"), SubjectName)

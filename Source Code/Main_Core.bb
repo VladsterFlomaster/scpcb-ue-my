@@ -1868,7 +1868,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 		Case "revive", "undead", "resurrect"
 			;[Block]
 			ResetNegativeStats(True)
-			If t\OverlayID[10] <> 0 Then FreeEntity(t\OverlayID[10]) : t\OverlayID[10] = 0
+			If t\OverlayID[MaxOverlayIDAmount - 1] <> 0 Then FreeEntity(t\OverlayID[MaxOverlayIDAmount - 1]) : t\OverlayID[MaxOverlayIDAmount - 1] = 0
 			me\Playable = True
 			;[End Block]
 		Case "noclip", "fly"
@@ -2655,13 +2655,13 @@ Function Kill%(IsBloody% = False, Animated% = True)
 		If IsBloody
 			Local Tex% = LoadTexture_Strict("GFX\Overlays\blood_overlay.png", 1, DeleteMapTextures, False)
 			
-			t\OverlayID[10] = CreateSprite(ArkBlurCam)
-			ScaleSprite(t\OverlayID[10], 1.001, GraphicHeightFloat / GraphicWidthFloat)
-			EntityTexture(t\OverlayID[10], Tex)
-			EntityBlend(t\OverlayID[10], 2)
-			EntityFX(t\OverlayID[10], 1)
-			EntityOrder(t\OverlayID[10], -1003)
-			MoveEntity(t\OverlayID[10], 0.0, 0.0, 1.0)
+			t\OverlayID[MaxOverlayIDAmount - 1] = CreateSprite(ArkBlurCam)
+			ScaleSprite(t\OverlayID[MaxOverlayIDAmount - 1], 1.001, GraphicHeightFloat / GraphicWidthFloat)
+			EntityTexture(t\OverlayID[MaxOverlayIDAmount - 1], Tex)
+			EntityBlend(t\OverlayID[MaxOverlayIDAmount - 1], 2)
+			EntityFX(t\OverlayID[MaxOverlayIDAmount - 1], 1)
+			EntityOrder(t\OverlayID[MaxOverlayIDAmount - 1], -1003)
+			MoveEntity(t\OverlayID[MaxOverlayIDAmount - 1], 0.0, 0.0, 1.0)
 			DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
 			
 			Local Pvt% = CreatePivot()
@@ -8302,7 +8302,7 @@ Function UpdateMenu%()
 						If UpdateMenuButton(x, y, 430 * MenuScale, 60 * MenuScale, GetLocalString("menu", "load"), Font_Default_Big)
 							RenderLoading(0, GetLocalString("loading", "files"))
 							
-							If t\OverlayID[10] <> 0 Then FreeEntity(t\OverlayID[10]) : t\OverlayID[10] = 0
+							If t\OverlayID[MaxOverlayIDAmount - 1] <> 0 Then FreeEntity(t\OverlayID[MaxOverlayIDAmount - 1]) : t\OverlayID[MaxOverlayIDAmount - 1] = 0
 							KillSounds()
 							LoadGameQuick(CurrSave\Name)
 							
@@ -8374,7 +8374,7 @@ Function UpdateMenu%()
 						If UpdateMenuButton(x, y, 430 * MenuScale, 60 * MenuScale, GetLocalString("menu", "load"), Font_Default_Big)
 							RenderLoading(0, GetLocalString("loading", "files"))
 							
-							If t\OverlayID[10] <> 0 Then FreeEntity(t\OverlayID[10]) : t\OverlayID[10] = 0
+							If t\OverlayID[MaxOverlayIDAmount - 1] <> 0 Then FreeEntity(t\OverlayID[MaxOverlayIDAmount - 1]) : t\OverlayID[MaxOverlayIDAmount - 1] = 0
 							KillSounds()
 							LoadGameQuick(CurrSave\Name)
 							
