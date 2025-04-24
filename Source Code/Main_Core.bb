@@ -9510,7 +9510,7 @@ End Type
 
 Global I_009.SCP009
 
-; ~ TODO: Make it better
+; ~ TODO: Make it better?
 Function Update009%()
 	If I_009\Timer > 0.0
 		Local PrevI009Timer# = I_009\Timer
@@ -9540,9 +9540,11 @@ Function Update009%()
 					
 					For r.Rooms = Each Rooms
 						If PlayerRoom = r
-							msg\DeathMsg = Format(GetLocalString("death", "009_1"), SubjectName)
+							msg\DeathMsg = GetLocalString("death", "009_1")
+							Exit
 						ElseIf IsRoomAdjacent(PlayerRoom, r)
-							msg\DeathMsg = Format(GetLocalString("death", "009_2"), SubjectName)
+							msg\DeathMsg = GetLocalString("death", "009_2")
+							Exit
 						Else
 							msg\DeathMsg = Format(GetLocalString("death", "009_3"), SubjectName)
 						EndIf
