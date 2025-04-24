@@ -6442,7 +6442,13 @@ Function UpdateEvent_Room3_2_HCZ_Guard%(e.Events)
 End Function
 
 Function UpdateEvent_Cont3_009%(e.Events)
-	If e\room\Dist < 5.0 And e\EventState = 0.0 Then e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
+	If e\room\Dist < 5.0
+		If e\EventState = 0.0
+			e\SoundCHN2 = LoopSoundEx(RoomAmbience[5], e\SoundCHN2, Camera, e\room\OBJ)
+		Else
+			e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
+		EndIf
+	EndIf
 	If PlayerRoom = e\room
 		Local n.NPCs
 		Local i%
@@ -6450,6 +6456,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		GiveAchievement("009")
 		
 		If e\EventState = 0.0
+			UpdateRedLight(e\room\Objects[1], 1500, 800)
 			If (Not UpdateLever(e\room\RoomLevers[0]\OBJ))
 				For i = 0 To 2
 					If e\room\RoomDoors[i]\Open Then OpenCloseDoor(e\room\RoomDoors[i])
@@ -6461,9 +6468,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				e\EventState = 1.0
 			EndIf
 		Else
-			For i = 1 To 2
-				UpdateRedLight(e\room\Objects[i], 1500, 800)
-			Next
+			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 			
 			Local IceTriggerY# = e\room\y - 1.45
 			
@@ -6484,7 +6489,9 @@ Function UpdateEvent_Cont3_009%(e.Events)
 					End Select
 				EndIf
 			Next
-			If EntityY(me\Collider) < IceTriggerY Then I_009\Timer = 0.001
+			If I_009\Timer = 0.0 And wi\HazmatSuit = 0
+				If EntityY(me\Collider, True) < e\room\y - 1.45 Then I_009\Timer = 0.001
+			EndIf
 			
 			If e\EventState > 0.2
 				e\EventState = e\EventState - (fps\Factor[0] * 0.0001)
@@ -6496,8 +6503,9 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				e\EventState = 0.19
 			ElseIf e\EventState = 0.19
 				If EntityY(me\Collider) < IceTriggerY Then DecalStep = 2
+				UpdateBreathSteam()
 			EndIf
-			EntityAlpha(e\room\Objects[3], e\EventState)
+			EntityAlpha(e\room\Objects[2], e\EventState)
 		EndIf
 	EndIf
 End Function
@@ -6782,6 +6790,7 @@ Function UpdateEvent_Gate_A%(e.Events)
 			Local Dist#, Pvt%, SqrValue#, SinValue#
 			
 			UpdateSky(Sky)
+			UpdateBreathSteam()
 			
 			CanSave = 1
 			
@@ -7244,6 +7253,7 @@ Function UpdateEvent_Gate_B%(e.Events)
 			RenderLoading(100)
 		Else
 			UpdateSky(Sky)
+			UpdateBreathSteam()
 			
 			CanSave = 1
 			

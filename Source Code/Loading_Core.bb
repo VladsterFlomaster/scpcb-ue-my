@@ -128,7 +128,7 @@ Const PARTICLE_LEAF% = 10
 Const PARTICLE_CONCRETE% = 11
 ;[End Block]
 
-Global ParticleEffect%[28]
+Global ParticleEffect%[29]
 
 Function LoadParticles%()
 	p_I.ParticleInstance = New ParticleInstance
@@ -495,6 +495,17 @@ Function LoadParticles%()
 	SetTemplateAlphaVel(ParticleEffect[27], True)
 	SetTemplateFloor(ParticleEffect[27], 0.0, 0.0, 0)
 	SetTemplateColors(ParticleEffect[27], $800000, $800000)
+	
+	; ~ Breath steam
+	ParticleEffect[28] = CreateTemplate()
+	SetTemplateEmitterBlend(ParticleEffect[28], 1)
+	SetTemplateEmitterLifeTime(ParticleEffect[28], 1)
+	SetTemplateParticleLifeTime(ParticleEffect[28], 20, 30)
+	SetTemplateTexture(ParticleEffect[28], PARTICLE_WHITE_SMOKE)
+	SetTemplateVelocity(ParticleEffect[28], 0.0, 0.0, 0.0015, 0.002, 0.0, 0.0)
+	SetTemplateAlphaVel(ParticleEffect[28], True)
+	SetTemplateSize(ParticleEffect[28], 0.14, 0.14, 1.0, 1.0)
+	SetTemplateSizeVel(ParticleEffect[28], 0.011, 1.01)
 End Function
 
 Function RemoveParticleInstances%()
@@ -2287,7 +2298,7 @@ End Function
 ; ~ Textures Constants
 ;[Block]
 Const MaxOverlayTextureIDAmount% = 4
-Const MaxOverlayIDAmount% = 11
+Const MaxOverlayIDAmount% = 12
 Const MaxIconIDAmount% = 13
 Const MaxImageIDAmount% = 8
 ;[End Block]
@@ -2768,7 +2779,18 @@ Function LoadEntities%()
 	MoveEntity(t\OverlayID[9], 0.0, 0.0, 1.0)
 	DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
 	
-	For i = 1 To 9
+	Tex = LoadTexture_Strict("GFX\Map\Textures\scp_009.png", 1, DeleteMapTextures, False) ; ~ SCP-009
+	t\OverlayID[10] = CreateSprite(ArkBlurCam)
+	ScaleSprite(t\OverlayID[10], 1.001, OverlayScale)
+	EntityTexture(t\OverlayID[10], Tex)
+	EntityBlend(t\OverlayID[10], 3)
+	EntityOrder(t\OverlayID[10], -1001)
+	EntityFX(t\OverlayID[10], 1)
+	EntityAlpha(t\OverlayID[10], 0.0)
+	MoveEntity(t\OverlayID[10], 0.0, 0.0, 1.0)
+	DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+	
+	For i = 1 To MaxOverlayIDAmount - 2
 		HideEntity(t\OverlayID[i])
 	Next
 	t\OverlayTextureID[3] = LoadTexture_Strict("GFX\Overlays\tesla_overlay.png", 1 + 2, DeleteAllTextures, False)

@@ -846,6 +846,7 @@ Function ResetNegativeStats%(Revive% = False)
 	
 	If I_427\Timer >= 70.0 * 360.0 Then I_427\Timer = 0.0
 	I_008\Timer = 0.0
+	I_009\Timer = 0.0
 	I_409\Timer = 0.0
 	I_1048A\EarGrowTimer = 0.0
 	I_966\HasInsomnia = 0.0
@@ -1138,6 +1139,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					CreateConsoleMsg("- injure [value]")
 					CreateConsoleMsg("- infect [value]")
 					CreateConsoleMsg("- crystal [value]")
+					CreateConsoleMsg("- ice [value]")
 					CreateConsoleMsg("- giveachievement [ID / All]")
 					CreateConsoleMsg("- wireframe")
 					CreateConsoleMsg("- halloween")
@@ -1400,6 +1402,13 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					CreateConsoleMultiMsg(GetLocalString("console", "help.crystal"))
 					CreateConsoleMsg("******************************")
 					;[End Block]
+				Case "ice" 
+					;[Block]
+					CreateConsoleMsg(Format(GetLocalString("console", "help.title"), "ice"))
+					CreateConsoleMsg("******************************")
+					CreateConsoleMultiMsg(GetLocalString("console", "help.ice"))
+					CreateConsoleMsg("******************************")
+					;[End Block]
 				Case "resetfunds"
 					;[Block]
 					CreateConsoleMsg(Format(GetLocalString("console", "help.title"), "resetfunds"))
@@ -1483,6 +1492,14 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			I_409\Timer = Float(StrTemp)
 			
 			CreateConsoleMsg(Format(GetLocalString("console", "409"), StrTemp))
+			;[End Block]
+		Case "ice"
+			;[Block]
+			StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+			
+			I_009\Timer = Float(StrTemp)
+			
+			CreateConsoleMsg(Format(GetLocalString("console", "009"), StrTemp))
 			;[End Block]
 		Case "heal"
 			;[Block]
@@ -2714,6 +2731,7 @@ End Function
 Function MakeMeUnplayable%()
 	If me\Playable
 		ResetSelectedStuff()
+		ResetInput()
 		me\Playable = False
 	EndIf
 End Function
@@ -5261,19 +5279,21 @@ Function UpdateGUI%()
 					If CanUseItem(True)
 						GiveAchievement("500")
 						
+						CreateMsg(GetLocalString("msg", "pill"))
 						If I_008\Timer > 0.0
 							CreateMsg(GetLocalString("msg", "pill.nausea"))
 							I_008\Revert = True
-						ElseIf I_409\Timer > 0.0
+						EndIf
+						If I_409\Timer > 0.0
 							CreateMsg(GetLocalString("msg", "pill.crystals"))
 							I_409\Revert = True
-						ElseIf I_1048A\EarGrowTimer > 0.0
+						EndIf
+						If I_1048A\EarGrowTimer > 0.0
 							I_1048A\Revert = True
 							StopChannel(I_1048A\SoundCHN) : I_1048A\SoundCHN = 0
 							CreateMsg(GetLocalString("msg", "pill.ears"))
-						Else
-							CreateMsg(GetLocalString("msg", "pill"))
 						EndIf
+						I_009\Revert = True
 						
 						I_966\HasInsomnia = 0.0
 						I_966\InsomniaEffectTimer = 0.0
@@ -6849,15 +6869,16 @@ Function RenderDebugHUD%()
 			TextEx(x, y + (260 * MenuScale), Format(GetLocalString("console", "debug_3.173state"), n_I\Curr173\State))
 			
 			TextEx(x, y + (320 * MenuScale), Format(GetLocalString("console", "debug_3.008"), I_008\Timer))
-			TextEx(x, y + (340 * MenuScale), Format(GetLocalString("console", "debug_3.409"), I_409\Timer))
-			TextEx(x, y + (360 * MenuScale), Format(GetLocalString("console", "debug_3.427"), I_427\Timer / 70.0))
-			TextEx(x, y + (380 * MenuScale), Format(GetLocalString("console", "debug_3.966"), I_966\InsomniaEffectTimer / 70.0))
-			TextEx(x, y + (400 * MenuScale), Format(GetLocalString("console", "debug_3.1048a"), I_1048A\EarGrowTimer))
+			TextEx(x, y + (340 * MenuScale), Format(GetLocalString("console", "debug_3.009"), I_009\Timer))
+			TextEx(x, y + (360 * MenuScale), Format(GetLocalString("console", "debug_3.409"), I_409\Timer))
+			TextEx(x, y + (380 * MenuScale), Format(GetLocalString("console", "debug_3.427"), I_427\Timer / 70.0))
+			TextEx(x, y + (400 * MenuScale), Format(GetLocalString("console", "debug_3.966"), I_966\InsomniaEffectTimer / 70.0))
+			TextEx(x, y + (420 * MenuScale), Format(GetLocalString("console", "debug_3.1048a"), I_1048A\EarGrowTimer))
 			For i = 0 To 6
-				TextEx(x, y + ((420 + (20 * i)) * MenuScale), Format(Format(GetLocalString("console", "debug_3.1025"), i, "{0}"), I_1025\State[i], "{1}"))
+				TextEx(x, y + ((440 + (20 * i)) * MenuScale), Format(Format(GetLocalString("console", "debug_3.1025"), i, "{0}"), I_1025\State[i], "{1}"))
 			Next
 			For i = 0 To 4
-				TextEx(x, y + ((560 + (20 * i)) * MenuScale), Format(Format(GetLocalString("console", "debug_3.f.1025"), i, "{0}"), I_1025\FineState[i], "{1}"))
+				TextEx(x, y + ((580 + (20 * i)) * MenuScale), Format(Format(GetLocalString("console", "debug_3.f.1025"), i, "{0}"), I_1025\FineState[i], "{1}"))
 			Next
 			
 			x = x + (700 * MenuScale)
@@ -9484,12 +9505,57 @@ End Function
 
 Type SCP009
 	Field Timer#
+	Field Revert%
 End Type
 
 Global I_009.SCP009
 
+; ~ TODO: Make it better
 Function Update009%()
-	
+	If I_009\Timer > 0.0
+		Local PrevI009Timer# = I_009\Timer
+		
+		If I_427\Timer < 70.0 * 360.0
+			If I_009\Revert
+				I_009\Timer = Max(I_009\Timer - (fps\Factor[0] * 0.02), 0.0)
+			ElseIf (Not I_427\Using)
+				I_009\Timer = Min(I_009\Timer + (fps\Factor[0] * 0.01), 100.0)
+			EndIf
+		EndIf
+		
+		If EntityHidden(t\OverlayID[10]) Then ShowEntity(t\OverlayID[10])
+		EntityAlpha(t\OverlayID[10], Min(0.1, (I_009\Timer - 91.0) / 10.0))
+		If (Not I_009\Revert)
+			me\Injuries = me\Injuries + (fps\Factor[0] * 0.0005)
+			If I_009\Timer > 91.0
+				If PrevI009Timer <= 91.0
+					MakeMeUnplayable()
+					SetAnimTime(pm\OBJ, AnimTime(pm\OBJ))
+					me\CameraShake = 3.0
+					PlaySound_Strict(LoadTempSound("SFX\SCP\009\IceCracking.ogg"))
+				EndIf
+				me\BlinkTimer = Max(-10.0, (91.0 - I_009\Timer) * 2.0)
+				If I_009\Timer > 97.0 And PrevI009Timer <= 97.0
+					Local r.Rooms
+					
+					For r.Rooms = Each Rooms
+						If PlayerRoom = r
+							msg\DeathMsg = Format(GetLocalString("death", "009_1"), SubjectName)
+						ElseIf IsRoomAdjacent(PlayerRoom, r)
+							msg\DeathMsg = Format(GetLocalString("death", "009_2"), SubjectName)
+						Else
+							msg\DeathMsg = Format(GetLocalString("death", "009_3"), SubjectName)
+						EndIf
+					Next
+					me\Playable = True
+					Kill(False, False)
+				EndIf
+			EndIf
+		EndIf
+	Else
+		I_009\Revert = False
+		If (Not EntityHidden(t\OverlayID[10])) Then HideEntity(t\OverlayID[10])
+	EndIf
 End Function
 
 Type SCP005
@@ -9911,6 +9977,7 @@ Function Update427%()
 			If me\Injuries > 0.0 Then me\Injuries = Max(me\Injuries - (fps\Factor[0] * 0.0006), 0.0)
 			If me\Bloodloss > 0.0 And me\Injuries <= 1.0 Then me\Bloodloss = Max(me\Bloodloss - (fps\Factor[0] * 0.001), 0.0)
 			If I_008\Timer > 0.0 Then I_008\Timer = Max(I_008\Timer - (fps\Factor[0] * 0.001), 0.0)
+			If I_009\Timer > 0.0 Then I_009\Timer = Max(I_009\Timer - (fps\Factor[0] * 0.002), 0.0)
 			If I_409\Timer > 0.0 Then I_409\Timer = Max(I_409\Timer - (fps\Factor[0] * 0.003), 0.0)
 			If I_1048A\EarGrowTimer > 0.0 Then I_1048A\EarGrowTimer = Max(I_1048A\EarGrowTimer - (fps\Factor[0] / 2.0), 0.0)
 			For i = 0 To 6

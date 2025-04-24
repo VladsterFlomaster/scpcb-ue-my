@@ -105,6 +105,8 @@ Function SaveGame%(File$)
 	
 	WriteFloat(f, I_008\Timer)
 	WriteByte(f, I_008\Revert)
+	WriteFloat(f, I_009\Timer)
+	WriteByte(f, I_009\Revert)
 	WriteFloat(f, I_409\Timer)
 	WriteByte(f, I_409\Revert)
 	
@@ -668,6 +670,8 @@ Function LoadGame%(File$)
 	
 	I_008\Timer = ReadFloat(f)
 	I_008\Revert = ReadByte(f)
+	I_009\Timer = ReadFloat(f)
+	I_009\Revert = ReadByte(f)
 	I_409\Timer = ReadFloat(f)
 	I_409\Revert = ReadByte(f)
 	
@@ -1659,6 +1663,8 @@ Function LoadGameQuick%(File$)
 	
 	I_008\Timer = ReadFloat(f)
 	I_008\Revert = ReadByte(f)
+	I_009\Timer = ReadFloat(f)
+	I_009\Revert = ReadByte(f)
 	I_409\Timer = ReadFloat(f)
 	I_409\Revert = ReadByte(f)
 	

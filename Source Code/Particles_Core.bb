@@ -103,5 +103,15 @@ Function UpdateDust%()
 	If Rand(DustParticleChance) = 1 Then SetEmitter(Null, EntityX(Camera, True), EntityY(Camera, True), EntityZ(Camera, True), 12)
 End Function
 
+Global BreathSteamTimer#
+
+Function UpdateBreathSteam%()
+	BreathSteamTimer = BreathSteamTimer + fps\Factor[0]
+	If BreathSteamTimer > 70.0 * Rnd(2.5, 3.3)
+		SetEmitter(Null, EntityX(Camera, True), EntityY(Camera, True) - 0.05, EntityZ(Camera, True), 28)
+		BreathSteamTimer = 0.0
+	EndIf
+End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D TSS

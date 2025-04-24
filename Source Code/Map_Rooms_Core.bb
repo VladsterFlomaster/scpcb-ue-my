@@ -2841,22 +2841,23 @@ Function FillRoom%(r.Rooms)
 			EntityPickMode(r\Objects[0], 2)
 			EntityAlpha(r\Objects[0], 0.0)
 			
-			For i = 1 To 2
-				r\Objects[i] = CreateRedLight(r\x + (462.0 + (-924.0 * (i = 1))) * RoomScale, r\y + 418.0 * RoomScale, r\z - 463.0 * RoomScale)
-				r\ScriptedObject[i] = True
-				EntityParent(r\Objects[i], r\OBJ)
-				HideEntity(r\Objects[i])
-			Next
+			r\Objects[1] = CreateRedLight(r\x + 358.5 * RoomScale, r\y + 184.7 * RoomScale, r\z + 758.0 * RoomScale)
+			r\ScriptedObject[1] = True
+			EntityParent(r\Objects[1], r\OBJ)
+			HideEntity(r\Objects[1])
 			
-			r\Objects[3] = LoadMesh_Strict("GFX\Map\Props\scp_009.b3d")
-			ScaleEntity(r\Objects[3], RoomScale, RoomScale, RoomScale)
-			PositionEntity(r\Objects[3], r\x, r\y, r\z)
-			EntityType(r\Objects[3], HIT_MAP)
-			EntityParent(r\Objects[3], r\OBJ)
+			r\Objects[2] = LoadMesh_Strict("GFX\Map\Props\scp_009.b3d")
+			ScaleEntity(r\Objects[2], RoomScale, RoomScale, RoomScale)
+			PositionEntity(r\Objects[2], r\x, r\y, r\z)
+			EntityType(r\Objects[2], HIT_MAP)
+			EntityParent(r\Objects[2], r\OBJ)
 			
 			r\RoomLevers[0] = CreateLever(r, r\x + 236.0 * RoomScale, r\y + 200.0 * RoomScale, r\z + 753.0 * RoomScale, 0.0, True)
 			
-			it.Items = CreateItem("Document SCP-009", it_paper, r\x - 324.0 * RoomScale, r\y + 125.0 * RoomScale, r\z + 442.0 * RoomScale)
+			de.Decals = CreateDecal(DECAL_CRACKED_GLASS, r\x - 152.0 * RoomScale, r\y - 465.0 * RoomScale + 0.005, r\z - 88.0 * RoomScale, 90.0, Rnd(360.0), 0.0, Rnd(0.1, 0.12), 0.8, 1)
+			EntityParent(de\OBJ, r\OBJ)
+			
+			it.Items = CreateItem("Document SCP-009", it_paper, r\x - 587.0 * RoomScale, r\y + 173.0 * RoomScale, r\z + 730.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
 			it.Items = CreateItem("Hazmat Suit", it_hazmatsuit, r\x - 631.0 * RoomScale, r\y + 100.0 * RoomScale, r\z - 873.0 * RoomScale)
