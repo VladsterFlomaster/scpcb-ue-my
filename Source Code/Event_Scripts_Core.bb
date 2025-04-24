@@ -6490,7 +6490,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				EndIf
 			Next
 			If I_009\Timer = 0.0 And wi\HazmatSuit = 0
-				If EntityY(me\Collider, True) < e\room\y - 1.45 Then I_009\Timer = 0.001
+				If EntityY(me\Collider, True) < IceTriggerY Then I_009\Timer = 0.001
 			EndIf
 			
 			If e\EventState > 0.2
