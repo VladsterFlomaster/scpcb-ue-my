@@ -2808,9 +2808,12 @@ Function FillRoom%(r.Rooms)
 		Case r_cont3_009
 			;[Block]
 			; ~ Doors leading to containment chamber
-			CreateDoor(r, r\x + 640.0 * RoomScale, r\y, r\z, 270.0, True, HEAVY_DOOR, KEY_CARD_3)
-			CreateDoor(r, r\x - 640.0 * RoomScale, r\y, r\z, 270.0, True, HEAVY_DOOR, KEY_CARD_3)
-			CreateDoor(r, r\x, r\y, r\z - 640.0 * RoomScale, 0.0, True, HEAVY_DOOR, KEY_CARD_3)
+			d.Doors = CreateDoor(r, r\x + 640.0 * RoomScale, r\y, r\z, 270.0, True, HEAVY_DOOR, KEY_CARD_3)
+			r\RoomDoors[0] = d
+			d.Doors = CreateDoor(r, r\x - 640.0 * RoomScale, r\y, r\z, 270.0, True, HEAVY_DOOR, KEY_CARD_3)
+			r\RoomDoors[1] = d
+			d.Doors = CreateDoor(r, r\x, r\y, r\z - 640.0 * RoomScale, 0.0, True, HEAVY_DOOR, KEY_CARD_3)
+			r\RoomDoors[2] = d
 			
 			; ~ DNA door
 			CreateDoor(r, r\x + 658.0 * RoomScale, r\y, r\z - 658.0 * RoomScale, 135.0, False, HEAVY_DOOR, KEY_HAND_YELLOW)
@@ -2844,6 +2847,14 @@ Function FillRoom%(r.Rooms)
 				EntityParent(r\Objects[i], r\OBJ)
 				HideEntity(r\Objects[i])
 			Next
+			
+			r\Objects[3] = LoadMesh_Strict("GFX\Map\Props\scp_009.b3d")
+			ScaleEntity(r\Objects[3], RoomScale, RoomScale, RoomScale)
+			PositionEntity(r\Objects[3], r\x, r\y, r\z)
+			EntityType(r\Objects[3], HIT_MAP)
+			EntityParent(r\Objects[3], r\OBJ)
+			
+			r\RoomLevers[0] = CreateLever(r, r\x + 236.0 * RoomScale, r\y + 200.0 * RoomScale, r\z + 753.0 * RoomScale, 0.0, True)
 			
 			it.Items = CreateItem("Document SCP-009", it_paper, r\x - 324.0 * RoomScale, r\y + 125.0 * RoomScale, r\z + 442.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)

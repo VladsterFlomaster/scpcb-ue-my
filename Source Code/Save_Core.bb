@@ -853,7 +853,7 @@ Function LoadGame%(File$)
 		n\HideFromNVG = ReadByte(f)
 		
 		If n\IceTimer > 0.0
-			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - n\IceTimer), Max(100.0, 255.0 - n\IceTimer))
+			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - (n\IceTimer * 0.1)), Max(100.0, 255.0 - (n\IceTimer * 0.1)))
 			If n\IceTimer > 70.0 * 29.9 Then EntityShininess(n\OBJ, 1.0)
 		EndIf
 		Select n\NPCType
@@ -1851,7 +1851,7 @@ Function LoadGameQuick%(File$)
 		n\HideFromNVG = ReadByte(f)
 		
 		If n\IceTimer > 0.0
-			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - n\IceTimer), Max(100.0, 255.0 - n\IceTimer))
+			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - (n\IceTimer * 0.1)), Max(100.0, 255.0 - (n\IceTimer * 0.1)))
 			If n\IceTimer > 70.0 * 29.9 Then EntityShininess(n\OBJ, 1.0)
 		EndIf
 		Select n\NPCType

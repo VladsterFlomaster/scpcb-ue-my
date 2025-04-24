@@ -6442,35 +6442,63 @@ Function UpdateEvent_Room3_2_HCZ_Guard%(e.Events)
 End Function
 
 Function UpdateEvent_Cont3_009%(e.Events)
+	If e\room\Dist < 5.0 And e\EventState = 0.0 Then e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
 	If PlayerRoom = e\room
 		Local n.NPCs
 		Local i%
 		
 		GiveAchievement("009")
-		For i = 1 To 2
-			UpdateRedLight(e\room\Objects[i], 1500, 800)
-		Next
 		
-		Local IceTriggerY# = e\room\y - 1.5
-		
-		For n.NPCs = Each NPCs
-			If n\IceTimer = 0.0
-				Select n\NPCType
-					Case NPCType513_1, NPCType372, NPCType106, NPCType173
-						;[Block]
-						; ~ Skip
-						;[End Block]
-					Default
-						;[Block]
-						If EntityY(n\Collider, True) < IceTriggerY
-							n\IceTimer = 0.001
-							Exit
-						EndIf
-						;[End Block]
-				End Select
+		If e\EventState = 0.0
+			If (Not UpdateLever(e\room\RoomLevers[0]\OBJ))
+				For i = 0 To 2
+					If e\room\RoomDoors[i]\Open Then OpenCloseDoor(e\room\RoomDoors[i])
+					e\room\RoomDoors[i]\Locked = 1
+				Next
+				SetTemplateVelocity(ParticleEffect[19], -0.007, -0.008, -0.001, 0.0012, -0.007, 0.008)
+				SetEmitter(e\room, EntityX(e\room\RoomLevers[0]\OBJ, True), EntityY(e\room\RoomLevers[0]\OBJ, True), EntityZ(e\room\RoomLevers[0]\OBJ, True), 19)
+				PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\RoomLevers[0]\OBJ, 3.0, 0.4)
+				e\EventState = 1.0
 			EndIf
-		Next
-		;If EntityY(me\Collider) < IceTriggerY Then I_009\Timer = 0.001
+		Else
+			For i = 1 To 2
+				UpdateRedLight(e\room\Objects[i], 1500, 800)
+			Next
+			
+			Local IceTriggerY# = e\room\y - 1.45
+			
+			For n.NPCs = Each NPCs
+				If n\IceTimer = 0.0
+					Select n\NPCType
+						Case NPCType513_1, NPCType372, NPCType106, NPCType173
+							;[Block]
+							; ~ Skip
+							;[End Block]
+						Default
+							;[Block]
+							If EntityY(n\Collider, True) < IceTriggerY
+								n\IceTimer = 0.001
+								Exit
+							EndIf
+							;[End Block]
+					End Select
+				EndIf
+			Next
+			If EntityY(me\Collider) < IceTriggerY Then I_009\Timer = 0.001
+			
+			If e\EventState > 0.2
+				e\EventState = e\EventState - (fps\Factor[0] * 0.0001)
+			ElseIf e\EventState <> 0.19
+				For i = 0 To 2
+					If (Not e\room\RoomDoors[i]\Open) Then OpenCloseDoor(e\room\RoomDoors[i])
+					e\room\RoomDoors[i]\Locked = 0
+				Next
+				e\EventState = 0.19
+			ElseIf e\EventState = 0.19
+				If EntityY(me\Collider) < IceTriggerY Then DecalStep = 2
+			EndIf
+			EntityAlpha(e\room\Objects[3], e\EventState)
+		EndIf
 	EndIf
 End Function
 
