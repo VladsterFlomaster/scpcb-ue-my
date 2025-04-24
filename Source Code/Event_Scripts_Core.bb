@@ -6454,11 +6454,23 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		Local IceTriggerY# = e\room\y - 1.5
 		
 		For n.NPCs = Each NPCs
-			If EntityY(n\Collider, True) < IceTriggerY
-				n\Iced = True
+			If n\IceTimer = 0.0
+				Select n\NPCType
+					Case NPCType513_1, NPCType372, NPCType106, NPCType173
+						;[Block]
+						; ~ Skip
+						;[End Block]
+					Default
+						;[Block]
+						If EntityY(n\Collider, True) < IceTriggerY
+							n\IceTimer = 0.001
+							Exit
+						EndIf
+						;[End Block]
+				End Select
 			EndIf
 		Next
-		;If EntityY(me\Collider) < IceTriggerY Then me\Iced = True
+		;If EntityY(me\Collider) < IceTriggerY Then I_009\Timer = 0.001
 	EndIf
 End Function
 

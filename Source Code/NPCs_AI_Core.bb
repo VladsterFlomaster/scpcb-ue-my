@@ -5,6 +5,12 @@ Function UpdateNPCType008_1_Surgeon%(n.NPCs)
 	
 	; ~ n\State3: A timer for making the NPC idle (if the player escapes during that time)
 	
+	If n\State = 66
+		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
+		RotateEntity(n\OBJ, 0.0, n\Angle - 180.0, 0.0, True)
+		Return
+	EndIf
+	
 	If (Not n\IsDead)
 		Local PrevFrame# = n\Frame
 		Local Dist#
@@ -257,6 +263,12 @@ Function UpdateNPCType008_1%(n.NPCs)
 	; ~ n\State2: A timer used for the player detection
 	
 	; ~ n\State3: A timer for making the NPC idle (if the player escapes during that time)
+	
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
+		RotateEntity(n\OBJ, 0.0, n\Angle - 180.0, 0.0, True)
+		Return
+	EndIf
 	
 	If (Not n\IsDead)
 		Local PrevFrame# = n\Frame
@@ -524,6 +536,12 @@ Function UpdateNPCType008_1%(n.NPCs)
 End Function
 
 Function UpdateNPCType035_Tentacle%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider), EntityZ(n\Collider))
+		RotateEntity(n\OBJ, EntityPitch(n\Collider) - 90.0, EntityYaw(n\Collider) - 180.0, EntityRoll(n\Collider), True)
+		Return
+	EndIf
+	
 	If (Not n\IsDead)
 		Local Dist# = EntityDistanceSquared(n\Collider, me\Collider)
 		
@@ -630,6 +648,12 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 End Function
 
 Function UpdateNPCType049%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
+		RotateEntity(n\OBJ, 0.0, EntityYaw(n\Collider), 0.0, True)
+		Return
+	EndIf
+	
 	If n\Idle > 0.1
 		If PlayerRoom\RoomTemplate\RoomID <> r_cont2_049
 			n\Idle = Max(n\Idle - (1 + SelectedDifficulty\AggressiveNPCs) * fps\Factor[0], 0.1)
@@ -1070,6 +1094,12 @@ Function UpdateNPCType049_2%(n.NPCs)
 	
 	; ~ n\State2: A timer used for the player detection
 	
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
+		RotateEntity(n\OBJ, -90.0, EntityYaw(n\Collider), 0.0, True)
+		Return
+	EndIf
+	
 	If (Not n\IsDead)
 		Local PrevFrame# = n\Frame
 		Local Dist#
@@ -1324,6 +1354,12 @@ Function UpdateNPCType049_2%(n.NPCs)
 End Function
 
 Function UpdateNPCType066%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+		RotateEntity(n\OBJ, EntityPitch(n\Collider) - 90.0, EntityYaw(n\Collider), 0.0)
+		Return
+	EndIf
+	
 	If n\Idle = 1.0
 		If ChannelPlaying(n\SoundCHN) Then StopChannel(n\SoundCHN) : n\SoundCHN = 0
 		If ChannelPlaying(n\SoundCHN2) Then StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
@@ -3252,6 +3288,12 @@ Function UpdateNPCType939%(n.NPCs)
 End Function
 
 Function UpdateNPCType966%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
+		RotateEntity(n\OBJ, -90.0, n\Angle, 0.0, True)
+		Return
+	EndIf
+	
 	If n\State = -1.0 Lor PD_event\room = PlayerRoom
 		n\DropSpeed = 0.0
 		Return
@@ -3937,6 +3979,12 @@ Function UpdateNPCType1048%(n.NPCs)
 End Function
 
 Function UpdateNPCType1048_A%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - (n\CollRadius + 0.13), EntityZ(n\Collider))
+		RotateEntity(n\OBJ, -90.0, n\Angle, 0.0)
+		Return
+	EndIf
+	
 	If n\IsDead Then Return
 	
 	Local Dist# = EntityDistanceSquared(n\Collider, me\Collider)
@@ -4058,6 +4106,12 @@ Function UpdateNPCType1499_1%(n.NPCs)
 	; ~ 1: Stair guard / Guard next to king
 	; ~ 2: King
 	; ~ 3: Front guard
+	
+	If n\State = 66.0
+		RotateEntity(n\OBJ, 0.0, EntityYaw(n\Collider) - 180.0, 0.0)
+		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+		Return
+	EndIf
 	
 	Local n2.NPCs
 	Local PrevFrame# = n\Frame
@@ -4536,6 +4590,12 @@ Function UpdateNPCTypeApache%(n.NPCs)
 End Function
 
 Function UpdateNPCTypeD_Clerk%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+		RotateEntity(n\OBJ, EntityPitch(n\Collider), EntityYaw(n\Collider) - 180.0, 0.0)
+		Return
+	EndIf
+	
 	If (Not n\IsDead)
 		Local PrevFrame# = n\Frame
 		
@@ -5084,6 +5144,12 @@ Const MTF_DISABLING_TESLA% = 11
 ;[End Block]
 
 Function UpdateNPCTypeMTF%(n.NPCs)
+	If n\State = 66.0
+		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
+		RotateEntity(n\OBJ, -90.0, n\Angle, 0.0, True)
+		Return
+	EndIf
+	
 	If n\IsDead
 		AnimateNPC(n, 1050.0, 1174.0, 0.8, False)
 	Else
@@ -5364,7 +5430,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 						EndIf
 					EndIf
 					
-					If n_I\Curr049 <> Null
+					If n_I\Curr049 <> Null And n_I\Curr049\State <> 66.0
 						If NPCSeesNPC(n_I\Curr049, n) = 1
 							If MyBoss = Null
 								LoadNPCSound(n, "SFX\Character\MTF\049\Spotted" + Rand(0, 4) + ".ogg")
@@ -5384,7 +5450,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 						EndIf
 					EndIf
 					
-					If n_I\Curr066 <> Null
+					If n_I\Curr066 <> Null And n_I\Curr066\State <> 66.0
 						If NPCSeesNPC(n_I\Curr066, n) = 1
 							n\EnemyX = EntityX(n_I\Curr066\Collider, True)
 							n\EnemyY = EntityY(n_I\Curr066\Collider, True)
@@ -5400,7 +5466,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 					EndIf
 					
 					For n2.NPCs = Each NPCs
-						If (Not n2\IsDead)
+						If (Not n2\IsDead) And n\State <> 66.0
 							Select n2\NPCType
 								Case NPCType049_2
 									;[Block]
@@ -5741,7 +5807,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 						EndIf
 					EndIf
 					
-					If n_I\Curr049 <> Null
+					If n_I\Curr049 <> Null And n_I\Curr049\State <> 66.0
 						If NPCSeesNPC(n_I\Curr049, n) = 1
 							If MyBoss = Null
 								LoadNPCSound(n, "SFX\Character\MTF\049\Spotted" + Rand(0, 4) + ".ogg")
@@ -5761,7 +5827,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 						EndIf
 					EndIf
 					
-					If n_I\Curr066 <> Null
+					If n_I\Curr066 <> Null And n_I\Curr066\State <> 66.0
 						If NPCSeesNPC(n_I\Curr066, n) = 1
 							n\EnemyX = EntityX(n_I\Curr066\Collider, True)
 							n\EnemyY = EntityY(n_I\Curr066\Collider, True)
@@ -5777,7 +5843,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 					EndIf
 					
 					For n2.NPCs = Each NPCs
-						If (Not n2\IsDead)
+						If (Not n2\IsDead) And n\State <> 66.0
 							Select n2\NPCType
 								Case NPCType049_2
 									;[Block]

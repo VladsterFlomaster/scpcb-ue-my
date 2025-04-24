@@ -52,7 +52,7 @@ Type NPCs
 	Field CurrentRoom.Rooms
 	Field TargetUpdateTimer#
 	Field Shadow.Shadows
-	Field Iced%, IceR#, IceG#, IceB#
+	Field IceTimer#
 End Type
 
 Const NPCsFile$ = "Data\NPCs.ini"
@@ -559,8 +559,6 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 	
 	n\ID = 0
 	n\ID = FindFreeNPCID()
-	
-	n\IceR = 255.0 : n\IceG = 255.0 : n\IceB = 255.0
 	
 	NPCSpeedChange(n)
 	
@@ -1783,21 +1781,23 @@ Function ChangePlayerBodyTexture%(ID%)
 End Function
 
 Function UpdateNPCIce%(n.NPCs)
-	If n\Iced
-		Local PrevIce# = n\IceG
+	If n\IceTimer > 0.0 And n\IceTimer < 70.0 * 30.0
+		n\IceTimer = n\IceTimer + fps\Factor[0]
 		
-		n\IceR = 255.0
-		n\IceG = Max(40.0, n\IceG - fps\Factor[0])
-		n\IceB = Max(40.0, n\IceB - fps\Factor[0])
-		EntityColor(n\OBJ, n\IceR, n\IceG, n\IceB)
-		If n\OBJ2 <> 0 Then EntityColor(n\OBJ2, n\IceR, n\IceG, n\IceB)
-		
-		If PrevIce >= 41.0 And n\IceG < 41.0
-			PlaySoundEx(LoadTempSound("SFX\SCP\009\IceCracking.ogg"), Camera, n\Collider, 5.0, 0.4)
-			SetNPCFrame(n, n\Frame)
-			StopChannel(n\SoundCHN) : n\SoundCHN = 0
-			StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
-			n\State = 66.0
+		EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - (n\IceTimer * 0.01)), Max(100.0, 255.0 - (n\IceTimer * 0.01)))
+		If n\NPCType <> NPCType096
+			If n\IceTimer > 70.0 * 29.9
+				EntityShininess(n\OBJ, 1.0)
+				PlaySoundEx(LoadTempSound("SFX\SCP\009\IceCracking.ogg"), Camera, n\Collider, 5.0, 0.4)
+				SetNPCFrame(n, n\Frame)
+				If ChannelPlaying(n\SoundCHN) Then StopChannel(n\SoundCHN) : n\SoundCHN = 0
+				If n\Sound <> 0 Then FreeSound_Strict(n\Sound) : n\Sound = 0
+				If ChannelPlaying(n\SoundCHN2) Then StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
+				If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2) : n\Sound2 = 0
+				n\State = 66.0
+				n\IsDead = True
+				n\IceTimer = 70.0 * 30.0
+			EndIf
 		EndIf
 	EndIf
 End Function

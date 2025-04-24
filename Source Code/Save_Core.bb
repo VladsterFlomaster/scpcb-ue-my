@@ -228,10 +228,7 @@ Function SaveGame%(File$)
 		WriteFloat(f, n\Angle)
 		WriteFloat(f, n\Reload)
 		
-		WriteByte(f, n\Iced)
-		WriteFloat(f, n\IceR)
-		WriteFloat(f, n\IceG)
-		WriteFloat(f, n\IceB)
+		WriteFloat(f, n\IceTimer)
 		
 		WriteInt(f, n\ID)
 		If n\Target <> Null
@@ -822,10 +819,7 @@ Function LoadGame%(File$)
 		n\Angle = ReadFloat(f)
 		n\Reload = ReadFloat(f)
 		
-		n\Iced = ReadByte(f)
-		n\IceR = ReadFloat(f)
-		n\IceG = ReadFloat(f)
-		n\IceB = ReadFloat(f)
+		n\IceTimer = ReadFloat(f)
 		
 		ForceSetNPCID(n, ReadInt(f))
 		n\TargetID = ReadInt(f)
@@ -857,6 +851,11 @@ Function LoadGame%(File$)
 		n\TextureID = ReadByte(f)
 		If n\TextureID > 0 Then ChangeNPCTextureID(n, n\TextureID - 1)
 		n\HideFromNVG = ReadByte(f)
+		
+		If n\IceTimer > 0.0
+			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - n\IceTimer), Max(100.0, 255.0 - n\IceTimer))
+			If n\IceTimer > 70.0 * 29.9 Then EntityShininess(n\OBJ, 1.0)
+		EndIf
 		Select n\NPCType
 			Case NPCTypeMTF
 				;[Block]
@@ -1818,10 +1817,7 @@ Function LoadGameQuick%(File$)
 		n\Angle = ReadFloat(f)
 		n\Reload = ReadFloat(f)
 		
-		n\Iced = ReadByte(f)
-		n\IceR = ReadFloat(f)
-		n\IceG = ReadFloat(f)
-		n\IceB = ReadFloat(f)
+		n\IceTimer = ReadFloat(f)
 		
 		ForceSetNPCID(n, ReadInt(f))
 		n\TargetID = ReadInt(f)
@@ -1853,6 +1849,11 @@ Function LoadGameQuick%(File$)
 		n\TextureID = ReadByte(f)
 		If n\TextureID > 0 Then ChangeNPCTextureID(n, n\TextureID - 1)
 		n\HideFromNVG = ReadByte(f)
+		
+		If n\IceTimer > 0.0
+			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - n\IceTimer), Max(100.0, 255.0 - n\IceTimer))
+			If n\IceTimer > 70.0 * 29.9 Then EntityShininess(n\OBJ, 1.0)
+		EndIf
 		Select n\NPCType
 			Case NPCTypeMTF
 				;[Block]

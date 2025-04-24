@@ -9483,7 +9483,6 @@ Function UpdateEscapeTimer%()
 End Function
 
 Type SCP009
-	Field Iced%
 	Field Timer#
 End Type
 
