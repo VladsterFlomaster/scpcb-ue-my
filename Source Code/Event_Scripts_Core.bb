@@ -9384,8 +9384,10 @@ Function UpdateEvent_106_Victim_Wall%(e.Events)
 		EndIf
 	EndIf
 	If e\room\NPC[0] <> Null
-		LightVolume = CurveValue(0.4, LightVolume, 10.0)
-		me\CurrSpeed = Min(me\CurrSpeed - (me\CurrSpeed * (0.15 / EntityDistance(e\room\NPC[0]\Collider, me\Collider)) * fps\Factor[0]), me\CurrSpeed)
+		If PlayerRoom = e\room
+			LightVolume = CurveValue(0.4, LightVolume, 10.0)
+			me\CurrSpeed = Min(me\CurrSpeed - (me\CurrSpeed * (0.15 / EntityDistance(e\room\NPC[0]\Collider, me\Collider)) * fps\Factor[0]), me\CurrSpeed)
+		EndIf
 		
 		Local PrevFrame# = e\room\NPC[0]\Frame
 		
