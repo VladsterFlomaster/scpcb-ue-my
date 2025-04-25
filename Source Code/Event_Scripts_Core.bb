@@ -187,7 +187,7 @@ Function UpdateEvent_Cont1_005%(e.Events)
 						
 						If e\EventState2 = 2.0 Then MoveToPocketDimension()
 					Else
-						If chs\NoClip Then me\Playable = True
+						If chs\NoClip Then me\Playable = 2
 					EndIf
 				EndIf
 			Else
@@ -301,7 +301,7 @@ Function UpdateEvent_Cont1_173%(e.Events)
 				
 				PlaySound_Strict(snd_I\LightSFX[Rand(0, 2)])
 			EndIf
-			me\CurrSpeed = 0.0 : me\Playable = True
+			me\CurrSpeed = 0.0 : me\Playable = 2
 			e\EventState = 1.0
 		EndIf
 	Else
@@ -657,7 +657,7 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 			PlaySound_Strict(snd_I\LightSFX[Rand(0, 2)])
 			me\BlurTimer = 1600.0
 			me\LightFlash = 1.0
-			MakeMeUnplayable()
+			MakeMeUnplayable(False)
 			
 			CreateConsoleMsg("")
 			CreateConsoleMsg(GetLocalString("misc", "warning2"), 255, 0, 0)
@@ -739,7 +739,7 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 							ResetEntity(me\Collider)
 							ShowEntity(me\Collider)
 							me\DropSpeed = 0.0
-							me\Playable = True
+							me\Playable = 2
 							
 							For i = 0 To 1
 								FreeSound_Strict(snd_I\IntroSFX[i]) : snd_I\IntroSFX[i] = 0
@@ -1380,7 +1380,7 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 									me\LightBlink = 1.0
 									me\BigCameraShake = 3.0
 									me\CurrSpeed = 0.0
-									me\Playable = False
+									me\Playable = 0
 									
 									PlaySound_Strict(snd_I\LightSFX[Rand(0, 2)])
 									
@@ -2000,7 +2000,7 @@ Function UpdateEvent_Cont1_914%(e.Events)
 				e\room\RoomDoors[0]\SoundCHN = PlaySoundEx(OpenSFX914, Camera, e\room\RoomDoors[0]\OBJ)
 				e\room\RoomDoors[1]\SoundCHN = PlaySoundEx(OpenSFX914, Camera, e\room\RoomDoors[1]\OBJ)
 				
-				me\Playable = True
+				me\Playable = 2
 				
 				e\EventState = 0.0
 			EndIf
@@ -2993,7 +2993,7 @@ Function UpdateEvent_Cont2_012%(e.Events)
 							If Dist < 0.36
 								Local Tex%
 								
-								If me\Sanity < -800.0 Then MakeMeUnplayable()
+								If me\Sanity < -800.0 Then MakeMeUnplayable(False)
 								me\Sanity = Max(me\Sanity - (fps\Factor[0] * (1.0 + (0.2 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
 								If e\EventState3 = 1.0 Then e\EventState2 = Min(e\EventState2 + fps\Factor[0], 70.0 * 86.0)
 								If e\EventState2 > 70.0 And e\EventState2 - fps\Factor[0] <= 70.0
@@ -8361,7 +8361,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 								
 								me\BlinkTimer = -10.0 : me\BlurTimer = 1500.0
 								
-								If me\Playable
+								If me\Playable = 2
 									e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
 									MakeMeUnplayable()
 								EndIf
@@ -8394,7 +8394,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 										fog\FarDist = 6.0
 									EndIf
 									
-									me\Playable = True
+									me\Playable = 2
 									
 									If e\Sound <> 0 Then FreeSound_Strict(e\Sound) : e\Sound = 0
 									If e\Sound2 <> 0 Then FreeSound_Strict(e\Sound2) : e\Sound2 = 0
@@ -8739,7 +8739,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 							
 							me\BlinkTimer = -10.0 : me\BlurTimer = 1500.0
 							
-							If me\Playable
+							If me\Playable = 2
 								e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Room\PocketDimension\Exit.ogg"))
 								MakeMeUnplayable()
 							EndIf
@@ -8775,7 +8775,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 									fog\FarDist = 6.0
 								EndIf
 								
-								me\Playable = True
+								me\Playable = 2
 								
 								If e\Sound <> 0 Then FreeSound_Strict(e\Sound) : e\Sound = 0
 								If e\Sound2 <> 0 Then FreeSound_Strict(e\Sound2) : e\Sound2 = 0
@@ -9267,7 +9267,7 @@ Function UpdateEvent_106_Sinkhole%(e.Events)
 			
 			If e\EventState2 = 2.0 Then MoveToPocketDimension()
 		Else
-			If chs\NoClip Then me\Playable = True
+			If chs\NoClip Then me\Playable = 2
 		EndIf
 	Else
 		e\EventState2 = 0.0

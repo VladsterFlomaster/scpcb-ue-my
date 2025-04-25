@@ -1309,7 +1309,7 @@ Function MoveToPocketDimension%()
 	n_I\Curr106\Idle = 1 ; ~ Make SCP-106 idle for a while
 	For r.Rooms = Each Rooms
 		If r\RoomTemplate\RoomID = r_dimension_106
-			me\BlinkTimer = -10.0 : me\FallTimer = 0.0 : me\DropSpeed = 0.0 : me\Playable = True
+			me\BlinkTimer = -10.0 : me\FallTimer = 0.0 : me\DropSpeed = 0.0 : me\Playable = 2
 			me\Injuries = me\Injuries + 0.5
 			me\BlurTimer = 1750.0
 			HideEntity(me\Head)

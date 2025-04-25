@@ -513,7 +513,7 @@ Function UpdateGame%()
 				EndIf
 				DarkAlpha = Max(DarkAlpha, Min(Abs(me\Terminated / 400.0), 1.0))
 			Else
-				If me\Playable
+				If me\Playable = 2
 					If KeyHit(key\BLINK) Then me\BlinkTimer = 0.0
 					If KeyDown(key\BLINK) And me\BlinkTimer < -10.0 Then me\BlinkTimer = -10.0
 				EndIf
@@ -591,7 +591,7 @@ Function UpdateGame%()
 		
 		If (Not MenuOpen)
 			If KeyHit(key\INVENTORY)
-				If d_I\SelectedDoor = Null And SelectedScreen = Null And (Not I_294\Using) And me\Playable And (Not me\Zombie) And me\VomitTimer >= 0.0 And me\FallTimer >= 0.0 And (Not me\Terminated) And me\SelectedEnding = -1
+				If d_I\SelectedDoor = Null And SelectedScreen = Null And (Not I_294\Using) And me\Playable = 2 And (Not me\Zombie) And me\VomitTimer >= 0.0 And me\FallTimer >= 0.0 And (Not me\Terminated) And me\SelectedEnding = -1
 					If InvOpen
 						StopMouseMovement()
 					Else
@@ -1886,7 +1886,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			;[Block]
 			ResetNegativeStats(True)
 			If t\OverlayID[MaxOverlayIDAmount - 1] <> 0 Then FreeEntity(t\OverlayID[MaxOverlayIDAmount - 1]) : t\OverlayID[MaxOverlayIDAmount - 1] = 0
-			me\Playable = True
+			me\Playable = 2
 			;[End Block]
 		Case "noclip", "fly"
 			;[Block]
@@ -1896,7 +1896,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 				Case "on", "1", "true"
 					;[Block]
 					chs\NoClip = True
-					me\Playable = True
+					me\Playable = 2
 					;[End Block]
 				Case "off", "0", "false"
 					;[Block]
@@ -1909,7 +1909,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					If (Not chs\NoClip)
 						RotateEntity(me\Collider, 0.0, EntityYaw(me\Collider), 0.0)
 					Else
-						me\Playable = True
+						me\Playable = 2
 					EndIf
 					;[End Block]
 			End Select
@@ -2728,11 +2728,11 @@ Function UpdateCough%(Chance_%)
 	If ChannelPlaying(CoughCHN) Then StopBreathSound()
 End Function
 
-Function MakeMeUnplayable%()
-	If me\Playable
+Function MakeMeUnplayable%(CanRotate% = True)
+	If me\Playable = 2
 		ResetSelectedStuff()
 		ResetInput()
-		me\Playable = False
+		me\Playable = 2 - (Not CanRotate)
 	EndIf
 End Function
 
@@ -2834,7 +2834,7 @@ Function UpdatePlayerModel%()
 		PositionEntity(pm\Pivot, EntityX(Camera), EntityY(Camera) - 0.87, EntityZ(Camera))
 		RotateEntity(pm\Pivot, 0.0, EntityYaw(Camera), 0.0, True)
 		
-		If AnimSeq(pm\OBJ) <> pm\AnimID Then Animate(pm\OBJ, 1, pm\AnimationSpeed[pm\AnimID], pm\AnimID, 15.0)
+		If AnimSeq(pm\OBJ) <> pm\AnimID And me\Playable <> 1 Then Animate(pm\OBJ, 1, pm\AnimationSpeed[pm\AnimID], pm\AnimID, 15.0)
 	ElseIf (Not EntityHidden(pm\OBJ))
 		HideEntity(pm\OBJ)
 	EndIf
@@ -2940,7 +2940,7 @@ Function UpdateMoving%()
 	
 	If (Not (d_I\SelectedDoor <> Null Lor SelectedScreen <> Null Lor I_294\Using))
 		If (Not chs\NoClip)
-			If me\Playable And me\FallTimer >= 0.0 And (Not me\Terminated)
+			If me\Playable = 2 And me\FallTimer >= 0.0 And (Not me\Terminated)
 				If (KeyDown(key\MOVEMENT_DOWN) Xor KeyDown(key\MOVEMENT_UP)) Lor (KeyDown(key\MOVEMENT_RIGHT) Xor KeyDown(key\MOVEMENT_LEFT)) Lor me\ForceMove > 0.0 
 					If (Not me\Crouch) And (Not me\Zombie) And (KeyDown(key\SPRINT) And (Not InvOpen) And OtherOpen = Null) And me\Stamina > 0.0
 						me\Stamina = me\Stamina - (fps\Factor[0] * (0.28  + (0.4 * I_966\HasInsomnia)) * me\StaminaEffect)
@@ -3002,7 +3002,7 @@ Function UpdateMoving%()
 			Temp2 = Temp2 / Max((me\Injuries + 3.0 - (2.25 * (I_1025\FineState[3] > 0.0))) / 3.0, 1.0)
 			If me\Injuries > 0.5 Then Temp2 = Temp2 * Min((Sin(me\Shake / 2.0) + 1.2), 1.0) ; ~ Find way to cap minimum speed or something later
 			Temp = False
-			If me\Playable And me\FallTimer >= 0.0 And (Not me\Terminated)
+			If me\Playable = 2 And me\FallTimer >= 0.0 And (Not me\Terminated)
 				If (Not me\Zombie)
 					pm\AnimID = PLAYER_ANIM_IDLE + me\Crouch
 					If Sprint > 0.0
@@ -3110,7 +3110,7 @@ Function UpdateMoving%()
 			me\PickTimer = me\PickTimer - fps\Factor[0]
 			
 			PlayerFallingPickDistance = 10.0
-			If me\Playable And ShouldEntitiesFall Then TranslateEntity(me\Collider, 0.0, me\DropSpeed * fps\Factor[0], 0.0)
+			If me\Playable = 2 And ShouldEntitiesFall Then TranslateEntity(me\Collider, 0.0, me\DropSpeed * fps\Factor[0], 0.0)
 		EndIf
 		me\ForceMove = 0.0
 	EndIf
@@ -3260,28 +3260,30 @@ Function UpdateMouseLook%()
 		Local Up# = (Sin(me\Shake) / (20.0 + me\CrouchState * 20.0)) * 0.6
 		Local Roll# = Clamp(Sin(me\Shake / 2.0) * 2.5 * Min((me\Injuries * (1.0 - (0.75 * (I_1025\FineState[3] > 0.0)))) + 0.25, 3.0), -8.0, 8.0)
 		
-		RotateEntity(Camera, EntityPitch(me\Collider), EntityYaw(me\Collider), Roll / 2.0)
-		PositionEntity(Camera, EntityX(me\Collider), EntityY(me\Collider) + Up + 0.6 + me\CrouchState * (-0.3), EntityZ(me\Collider))
-		
-		; ~ Update the smoothing que to smooth the movement of the mouse
-		Local Temp# = (opt\MouseSensitivity + 0.5)
-		Local Temp2# = (5.0 / (opt\MouseSensitivity + 1.0)) * opt\MouseSmoothing
-		
-		mo\Mouse_X_Speed_1 = CurveValue((1 - 2 * opt\InvertMouseX) * MouseXSpeed() * Temp, mo\Mouse_X_Speed_1, Temp2)
-		If IsNaN(mo\Mouse_X_Speed_1) Then mo\Mouse_X_Speed_1 = 0.0
-		mo\Mouse_Y_Speed_1 = CurveValue((1 - 2 * opt\InvertMouseY) * MouseYSpeed() * Temp, mo\Mouse_Y_Speed_1, Temp2)
-		If IsNaN(mo\Mouse_Y_Speed_1) Then mo\Mouse_Y_Speed_1 = 0.0
-		
-		If InvOpen Lor I_294\Using Lor OtherOpen <> Null Lor d_I\SelectedDoor <> Null Lor SelectedScreen <> Null Then StopMouseMovement()
-		
-		Local MouselookInc# = Mouselook_Inc / (1.0 + wi\BallisticVest)
-		Local The_Yaw# = mo\Mouse_X_Speed_1 * MouselookInc
-		Local The_Pitch# = mo\Mouse_Y_Speed_1 * MouselookInc
-		
-		TurnEntity(me\Collider, 0.0, -The_Yaw, 0.0) ; ~ Turn the user on the Y (Yaw) axis
-		CameraPitch = CameraPitch + The_Pitch
-		; ~ Limit the user's camera to within 180.0 degrees of pitch rotation. Returns useless values so we need to use a variable to keep track of the camera pitch
-		CameraPitch = Clamp(CameraPitch, -70.0, 70.0)
+		If me\Playable <> 1
+			RotateEntity(Camera, EntityPitch(me\Collider), EntityYaw(me\Collider), Roll / 2.0)
+			PositionEntity(Camera, EntityX(me\Collider), EntityY(me\Collider) + Up + 0.6 + me\CrouchState * (-0.3), EntityZ(me\Collider))
+			
+			; ~ Update the smoothing que to smooth the movement of the mouse
+			Local Temp# = (opt\MouseSensitivity + 0.5)
+			Local Temp2# = (5.0 / (opt\MouseSensitivity + 1.0)) * opt\MouseSmoothing
+			
+			mo\Mouse_X_Speed_1 = CurveValue((1 - 2 * opt\InvertMouseX) * MouseXSpeed() * Temp, mo\Mouse_X_Speed_1, Temp2)
+			If IsNaN(mo\Mouse_X_Speed_1) Then mo\Mouse_X_Speed_1 = 0.0
+			mo\Mouse_Y_Speed_1 = CurveValue((1 - 2 * opt\InvertMouseY) * MouseYSpeed() * Temp, mo\Mouse_Y_Speed_1, Temp2)
+			If IsNaN(mo\Mouse_Y_Speed_1) Then mo\Mouse_Y_Speed_1 = 0.0
+			
+			If InvOpen Lor I_294\Using Lor OtherOpen <> Null Lor d_I\SelectedDoor <> Null Lor SelectedScreen <> Null Then StopMouseMovement()
+			
+			Local MouselookInc# = Mouselook_Inc / (1.0 + wi\BallisticVest)
+			Local The_Yaw# = mo\Mouse_X_Speed_1 * MouselookInc
+			Local The_Pitch# = mo\Mouse_Y_Speed_1 * MouselookInc
+			
+			TurnEntity(me\Collider, 0.0, -The_Yaw, 0.0) ; ~ Turn the user on the Y (Yaw) axis
+			CameraPitch = CameraPitch + The_Pitch
+			; ~ Limit the user's camera to within 180.0 degrees of pitch rotation. Returns useless values so we need to use a variable to keep track of the camera pitch
+			CameraPitch = Clamp(CameraPitch, -70.0, 70.0)
+		EndIf
 		
 		Local ShakeTimer# = me\CameraShake + me\BigCameraShake
 		
@@ -3897,7 +3899,7 @@ Function UpdateGUI%()
 					If d_I\ClosestDoor <> Null
 						If d_I\ClosestDoor\Code <> 0
 							d_I\SelectedDoor = d_I\ClosestDoor
-						ElseIf me\Playable
+						ElseIf me\Playable = 2
 							UseDoor()
 						EndIf
 					EndIf
@@ -6557,7 +6559,7 @@ Function UpdateGUI%()
 					;[End Block]
 			End Select
 			
-			If (Not (MenuOpen Lor ConsoleOpen)) And (mo\MouseHit2 Lor KeyHit(key\INVENTORY)) Lor me\Terminated Lor me\FallTimer < 0.0 Lor (Not me\Playable) Lor me\Zombie
+			If (Not (MenuOpen Lor ConsoleOpen)) And (mo\MouseHit2 Lor KeyHit(key\INVENTORY)) Lor me\Terminated Lor me\FallTimer < 0.0 Lor me\Playable < 2 Lor me\Zombie
 				Select SelectedItem\ItemTemplate\ID
 					Case it_firstaid, it_finefirstaid, it_firstaid2, it_cap, it_scp268, it_fine268, it_scp1499, it_fine1499, it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148, it_helmet
 						;[Block]
@@ -6618,7 +6620,7 @@ Function UpdateGUI%()
 End Function
 
 Function RenderHUD%()
-	If me\Terminated Lor me\FallTimer < 0.0 Lor (Not me\Playable) Then Return
+	If me\Terminated Lor me\FallTimer < 0.0 Lor me\Playable < 2 Then Return
 	
 	Local x% = 80 * MenuScale, y% = opt\GraphicHeight - (15 * MenuScale)
 	Local Width% = 200 * MenuScale, Height% = 20 * MenuScale
@@ -9435,7 +9437,7 @@ Function UpdateVomit%()
 			mo\Mouse_X_Speed_1 = 0.0
 			MakeMeUnplayable()
 		Else
-			me\Playable = True
+			me\Playable = 2
 		EndIf
 		
 		If (Not me\Vomit)
@@ -9525,12 +9527,13 @@ Function Update009%()
 		
 		If EntityHidden(t\OverlayID[10]) Then ShowEntity(t\OverlayID[10])
 		EntityAlpha(t\OverlayID[10], Min(0.1, (I_009\Timer - 91.0) / 10.0))
+		EntityColor(pm\OBJ, 255.0, Max(100.0, 255.0 - I_009\Timer * 2.0), Max(100.0, 255.0 - I_009\Timer * 2.0))
 		If (Not I_009\Revert)
 			me\Injuries = me\Injuries + (fps\Factor[0] * 0.00001)
 			If I_009\Timer > 91.0
 				If PrevI009Timer <= 91.0
-					MakeMeUnplayable()
-					SetAnimTime(pm\OBJ, AnimTime(pm\OBJ))
+					MakeMeUnplayable(False)
+					SetAnimTime(pm\OBJ, AnimTime(pm\OBJ), AnimSeq(pm\OBJ))
 					me\CameraShake = 3.0
 					PlaySound_Strict(LoadTempSound("SFX\SCP\009\IceCracking.ogg"))
 				EndIf
@@ -9549,7 +9552,7 @@ Function Update009%()
 							msg\DeathMsg = Format(GetLocalString("death", "009_3"), SubjectName)
 						EndIf
 					Next
-					me\Playable = True
+					me\Playable = 2
 					Kill(False, False)
 				EndIf
 			EndIf
@@ -9699,7 +9702,7 @@ Function Update008%()
 					me\ForceMove = 0.75
 					me\Injuries = 2.5
 					me\Bloodloss = 0.0
-					me\Playable = True
+					me\Playable = 2
 					
 					AnimateNPC(PlayerRoom\NPC[0], 357.0, 381.0, 0.3)
 				ElseIf I_008\Timer < 98.5
@@ -9809,7 +9812,7 @@ Function Update409%()
 			EndIf
 		EndIf
 		EntityAlpha(t\OverlayID[7], Min((PowTwo(I_409\Timer * 0.2)) / 1000.0, 0.5))
-		
+		EntityColor(pm\OBJ, Max(100.0, 255.0 - (I_409\Timer * 1.56)), Max(230.0, 255.0 - I_409\Timer), Max(240.0, 255.0 - I_409\Timer))
 		If I_409\Revert
 			If I_409\Timer <= 40.0 And PrevI409Timer > 40.0
 				CreateMsg(GetLocalString("msg", "409legs_1"))
@@ -9840,7 +9843,8 @@ Function Update409%()
 				EndIf
 			ElseIf I_409\Timer > 94.0
 				I_409\Timer = Min(I_409\Timer + (fps\Factor[0] * 0.004), 100.0)
-				MakeMeUnplayable()
+				MakeMeUnplayable(False)
+				SetAnimTime(pm\OBJ, AnimTime(pm\OBJ), AnimSeq(pm\OBJ))
 				me\BlurTimer = 4.0
 				me\CameraShake = 3.0
 			EndIf

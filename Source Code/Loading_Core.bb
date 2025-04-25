@@ -3283,7 +3283,7 @@ End Function
 Function InitOtherStuff%()
 	Local sv.Save, cm.CustomMaps
 	
-	me\Playable = True : me\SelectedEnding = -1
+	me\Playable = 2 : me\SelectedEnding = -1
 	
 	opt\MasterVolume = opt\PrevMasterVolume
 	
