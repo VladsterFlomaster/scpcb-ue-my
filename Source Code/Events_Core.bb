@@ -1083,7 +1083,6 @@ Function Update035Label%(OBJ%)
 					Exit
 				EndIf
 			Next
-			Exit
 		EndIf
 	Next
 	
