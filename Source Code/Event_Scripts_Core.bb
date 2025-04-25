@@ -6459,7 +6459,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				Select n\NPCType
 					Case NPCType513_1, NPCType372, NPCType106, NPCType173
 						;[Block]
-							; ~ Skip
+						; ~ Skip
 						;[End Block]
 					Default
 						;[Block]
