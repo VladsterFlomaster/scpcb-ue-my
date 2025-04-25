@@ -6452,6 +6452,28 @@ Function UpdateEvent_Cont3_009%(e.Events)
 	If PlayerRoom = e\room
 		Local n.NPCs
 		Local i%
+		Local IceTriggerY# = e\room\y - 1.45
+		
+		For n.NPCs = Each NPCs
+			If n\IceTimer = 0.0
+				Select n\NPCType
+					Case NPCType513_1, NPCType372, NPCType106, NPCType173
+						;[Block]
+							; ~ Skip
+						;[End Block]
+					Default
+						;[Block]
+						If EntityY(n\Collider, True) < IceTriggerY
+							n\IceTimer = 0.001
+							Exit
+						EndIf
+						;[End Block]
+				End Select
+			EndIf
+		Next
+		If I_009\Timer = 0.0 And wi\HazmatSuit = 0
+			If EntityY(me\Collider, True) < IceTriggerY Then I_009\Timer = 0.001
+		EndIf
 		
 		GiveAchievement("009")
 		
@@ -6469,29 +6491,6 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			EndIf
 		Else
 			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
-			
-			Local IceTriggerY# = e\room\y - 1.45
-			
-			For n.NPCs = Each NPCs
-				If n\IceTimer = 0.0
-					Select n\NPCType
-						Case NPCType513_1, NPCType372, NPCType106, NPCType173
-							;[Block]
-							; ~ Skip
-							;[End Block]
-						Default
-							;[Block]
-							If EntityY(n\Collider, True) < IceTriggerY
-								n\IceTimer = 0.001
-								Exit
-							EndIf
-							;[End Block]
-					End Select
-				EndIf
-			Next
-			If I_009\Timer = 0.0 And wi\HazmatSuit = 0
-				If EntityY(me\Collider, True) < IceTriggerY Then I_009\Timer = 0.001
-			EndIf
 			
 			If e\EventState > 0.2
 				e\EventState = e\EventState - (fps\Factor[0] * 0.0001)
