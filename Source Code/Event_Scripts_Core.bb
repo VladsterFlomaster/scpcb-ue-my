@@ -6479,7 +6479,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		
 		If e\EventState = 0.0
 			UpdateRedLight(e\room\Objects[1], 1500, 800)
-			If (Not UpdateLever(e\room\RoomLevers[0]\OBJ))
+			If UpdateLever(e\room\RoomLevers[0]\OBJ)
 				For i = 0 To 2
 					If e\room\RoomDoors[i]\Open Then OpenCloseDoor(e\room\RoomDoors[i])
 					e\room\RoomDoors[i]\Locked = 1

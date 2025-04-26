@@ -2852,7 +2852,7 @@ Function FillRoom%(r.Rooms)
 			EntityType(r\Objects[2], HIT_MAP)
 			EntityParent(r\Objects[2], r\OBJ)
 			
-			r\RoomLevers[0] = CreateLever(r, r\x + 236.0 * RoomScale, r\y + 200.0 * RoomScale, r\z + 753.0 * RoomScale, 0.0, True)
+			r\RoomLevers[0] = CreateLever(r, r\x + 236.0 * RoomScale, r\y + 200.0 * RoomScale, r\z + 753.0 * RoomScale, 0.0, False)
 			
 			de.Decals = CreateDecal(DECAL_CRACKED_GLASS, r\x - 152.0 * RoomScale, r\y - 465.0 * RoomScale + 0.005, r\z - 88.0 * RoomScale, 90.0, Rnd(360.0), 0.0, Rnd(0.1, 0.12), 0.8, 1)
 			EntityParent(de\OBJ, r\OBJ)
