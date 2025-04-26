@@ -7109,6 +7109,8 @@ Function UpdateEvent_Gate_A%(e.Events)
 									PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Bang2.ogg"))
 									msg\DeathMsg = ""
 								Else
+									me\SelectedEnding = Ending_A3
+									
 									PlaySound_Strict(LoadTempSound("SFX\Ending\GateB\Gunshot.ogg"))
 									
 									Local Tex% = LoadTexture_Strict("GFX\Overlays\blood_overlay.png", 1, DeleteMapTextures, False)
