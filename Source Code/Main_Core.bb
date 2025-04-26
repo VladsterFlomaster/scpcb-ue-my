@@ -2732,7 +2732,7 @@ Function MakeMeUnplayable%(CanRotate% = True)
 	If me\Playable = 2
 		ResetSelectedStuff()
 		ResetInput()
-		me\Playable = 2 - (Not CanRotate)
+		me\Playable = 0 + (Not CanRotate)
 	EndIf
 End Function
 
