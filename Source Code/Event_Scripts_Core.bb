@@ -6496,7 +6496,6 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				e\EventState = e\EventState - (fps\Factor[0] * 0.0001)
 			ElseIf e\EventState <> 0.19
 				For i = 0 To 2
-					If (Not e\room\RoomDoors[i]\Open) Then OpenCloseDoor(e\room\RoomDoors[i])
 					e\room\RoomDoors[i]\Locked = 0
 				Next
 				e\EventState = 0.19
