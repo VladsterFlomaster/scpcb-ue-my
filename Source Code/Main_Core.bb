@@ -1443,7 +1443,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			Select StrTemp
 				Case "A"
 					;[Block]
-					me\SelectedEnding = Rand(Ending_A1, Ending_A3)
+					me\SelectedEnding = Rand(Ending_A1, Ending_A2)
 					;[End Block]
 				Case "B"
 					;[Block]
@@ -8917,9 +8917,8 @@ End Function
 ;[Block]
 Const Ending_A1% = 0
 Const Ending_A2% = 1
-Const Ending_A3% = 2
-Const Ending_B1% = 3
-Const Ending_B2% = 4
+Const Ending_B1% = 2
+Const Ending_B2% = 3
 ;[End Block]
 
 Function UpdateEnding%()
@@ -8966,7 +8965,7 @@ Function UpdateEnding%()
 			PlaySound_Strict(snd_I\LightOffSFX)
 		EndIf
 		
-		If me\EndingTimer > -700.0 And me\SelectedEnding <> Ending_A3
+		If me\EndingTimer > -700.0
 			If me\EndingTimer + fps\Factor[1] > -450.0 And me\EndingTimer <= -450.0 Then PlaySound_Strict(LoadTempSound("SFX\Ending\Ending" + me\SelectedEnding + ".ogg"), True)
 		Else
 			If me\EndingTimer < -1000.0 And me\EndingTimer > -2000.0
