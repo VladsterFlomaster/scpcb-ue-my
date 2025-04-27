@@ -338,6 +338,43 @@ Function RemoveSoundEmitter%(se.SoundEmitters)
 	Delete(se)
 End Function
 
+Type ActionTriggers
+	Field OBJ%
+	Field Name$
+	Field Range#
+	Field room.Rooms
+End Type
+
+Type TempActionTriggers
+	Field x#, y#, z#
+	Field Name$
+	Field Range#
+	Field RoomTemplate.RoomTemplates
+End Type
+
+Function CreateActionTrigger.ActionTriggers(room.Rooms, x#, y#, z#, Name$, Range#)
+	Local at.ActionTriggers
+	
+	at.ActionTriggers = New ActionTriggers
+	at\room = room
+	
+	at\OBJ = CreatePivot()
+	PositionEntity(at\OBJ, x, y, z)
+	EntityRadius(at\OBJ, Range)
+	EntityPickMode(at\OBJ, 1)
+	If room <> Null Then EntityParent(at\OBJ, room\OBJ)
+	
+	at\Name = Name
+	at\Range = Range
+	
+	Return(at)
+End Function
+
+Function RemoveActionTrigger%(at.ActionTriggers)
+	FreeEntity(at\OBJ) : at\OBJ = 0
+	Delete(at)
+End Function
+
 ; ~ TODO: REWRITE THIS. MESH (PROPS, LIGHTS AND ETC) SHOULDN'T BE ATTACHED TO ROOMS ONLY
 Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	CatchErrors("LoadRMesh(" + File + ")")
@@ -597,7 +634,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	
 	Count = ReadInt(f) ; ~ Point entities
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tse.TempSoundEmitters, tp.TempProps
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tse.TempSoundEmitters, tp.TempProps, tat.TempActionTriggers
 	Local Range#, lColor$, Intensity#
 	Local R%, G%, B%
 	Local Angles$
@@ -752,6 +789,18 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tp\HasCollision = ReadByte(f)
 					tp\FX = ReadInt(f)
 					tp\Texture = ReadString(f)
+					;[End Block]
+				Case "action_trigger"
+					;[Block]
+					tat.TempActionTriggers = New TempActionTriggers
+					tat\RoomTemplate = rt
+					
+					tat\x = ReadFloat(f) * RoomScale
+					tat\y = ReadFloat(f) * RoomScale
+					tat\z = ReadFloat(f) * RoomScale
+					
+					tat\Name = ReadString(f)
+					tat\Range = ReadFloat(f)
 					;[End Block]
 			End Select
 		Next

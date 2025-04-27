@@ -6477,6 +6477,14 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		
 		GiveAchievement("009")
 		
+		Local at.ActionTriggers
+		
+		For at.ActionTriggers = Each ActionTriggers
+			If at\room = PlayerRoom
+				If InteractObject(at\OBJ, at\Range) Then e\EventState4 = 1.0
+			EndIf
+		Next
+	
 		If e\EventState = 0.0
 			UpdateRedLight(e\room\Objects[1], 1500, 800)
 			If UpdateLever(e\room\RoomLevers[0]\OBJ)

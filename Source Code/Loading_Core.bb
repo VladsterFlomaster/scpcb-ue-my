@@ -3084,7 +3084,7 @@ Function InitNewGame%()
 		FreeEntity(rt\OBJ) : rt\OBJ = 0
 	Next
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters, tat.TempActionTriggers
 	
 	For ts.TempScreens = Each TempScreens
 		Delete(ts)
@@ -3104,6 +3104,10 @@ Function InitNewGame%()
 	
 	For tse.TempSoundEmitters = Each TempSoundEmitters
 		Delete(tse)
+	Next
+	
+	For tat.TempActionTriggers = Each TempActionTriggers
+		Delete(tat)
 	Next
 	
 	RenderLoading(85, GetLocalString("loading", "events"))
@@ -3195,7 +3199,7 @@ Function InitLoadGame%()
 		FreeEntity(rt\OBJ) : rt\OBJ = 0
 	Next
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters, tat.TempActionTriggers
 	
 	For ts.TempScreens = Each TempScreens
 		Delete(ts)
@@ -3215,6 +3219,10 @@ Function InitLoadGame%()
 	
 	For tse.TempSoundEmitters = Each TempSoundEmitters
 		Delete(tse)
+	Next
+	
+	For tat.TempActionTriggers = Each TempActionTriggers
+		Delete(tat)
 	Next
 	
 	RenderLoading(85, GetLocalString("loading", "events"))

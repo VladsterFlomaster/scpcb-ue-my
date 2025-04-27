@@ -4354,7 +4354,7 @@ Function FillRoom%(r.Rooms)
 			;[End Block]
 	End Select
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters, tat.TempActionTriggers
 	
 	For ts.TempScreens = Each TempScreens
 		If ts\RoomTemplate = r\RoomTemplate Then CreateScreen(r, r\x + ts\x, r\y + ts\y, r\z + ts\z, ts\Pitch, ts\Yaw, ts\Roll, ts\ScaleX, ts\ScaleY, ts\ScaleZ, ts\ImgPath)
@@ -4389,6 +4389,10 @@ Function FillRoom%(r.Rooms)
 	
 	For tse.TempSoundEmitters = Each TempSoundEmitters
 		If tse\RoomTemplate = r\RoomTemplate Then CreateSoundEmitter(r, tse\ID, r\x + tse\x, r\y + tse\y, r\z + tse\z, tse\Range)
+	Next
+	
+	For tat.TempActionTriggers = Each TempActionTriggers
+		If tat\RoomTemplate = r\RoomTemplate Then CreateActionTrigger(r, r\x + tat\x, r\y + tat\y, r\z + tat\z, tat\Name, tat\Range)
 	Next
 	
 	CatchErrors("Uncaught: FillRoom(Room ID: " + r\RoomTemplate\RoomID + ")")
