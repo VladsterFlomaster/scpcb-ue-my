@@ -6444,6 +6444,8 @@ Function UpdateEvent_Room3_2_HCZ_Guard%(e.Events)
 End Function
 
 Function UpdateEvent_Cont3_009%(e.Events)
+	Local it.Items
+	
 	If e\room\Dist < 5.0
 		If e\EventState = 0.0
 			e\SoundCHN2 = LoopSoundEx(RoomAmbience[5], e\SoundCHN2, Camera, e\room\OBJ)
@@ -6452,6 +6454,21 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		EndIf
 	EndIf
 	If PlayerRoom = e\room
+		If e\room\NPC[0] = Null
+			TFormPoint(382.0, -463.0, -263.0, e\room\OBJ, 0)
+			e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
+			e\room\NPC[0]\IsDead = True : e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\State = 66.0 : e\room\NPC[0]\IceTimer = 70.0 * 30.0
+			SetNPCFrame(e\room\NPC[0], 510.0)
+			ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_VICTIM_009_TEXTURE)
+			RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 40.0, 0.0)
+			EntityColor(e\room\NPC[0]\OBJ, 255.0, 100.0, 100.0)
+			EntityShininess(e\room\NPC[0]\OBJ, 1.0)
+			
+			TFormPoint(405.0, -495.0, -391.0, e\room\OBJ, 0)
+			it.Items = CreateItem("Level 4 Key Card", it_key4, TFormedX(), TFormedY(), TFormedZ())
+			EntityType(it\Collider, HIT_ITEM)
+		EndIf
+		
 		Local n.NPCs
 		Local i%
 		Local IceTriggerY# = e\room\y - 1.6
