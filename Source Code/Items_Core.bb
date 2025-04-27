@@ -1531,24 +1531,10 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[End Block]
 				Case ONETOONE
 					;[Block]
-					If item\ItemTemplate\ID = it_hand
-						If Rand(2) = 1
-							it2.Items = CreateItem("Black Severed Hand", it_hand2, x, y, z)
-						Else
-							it2.Items = CreateItem("Yellow Severed Hand", it_hand3, x, y, z)
-						EndIf
-					ElseIf item\ItemTemplate\ID = it_hand2
-						If Rand(2) = 1
-							it2.Items = CreateItem("White Severed Hand", it_hand, x, y, z)
-						Else
-							it2.Items = CreateItem("Yellow Severed Hand", it_hand3, x, y, z)
-						EndIf
+					If item\ItemTemplate\ID = it_hand2
+						it2.Items = CreateItem("White Severed Hand", it_hand, x, y, z)
 					Else
-						If Rand(2) = 1
-							it2.Items = CreateItem("White Severed Hand", it_hand, x, y, z)
-						Else
-							it2.Items = CreateItem("Black Severed Hand", it_hand2, x, y, z)
-						EndIf
+						it2.Items = CreateItem("Black Severed Hand", it_hand2, x, y, z)
 					EndIf
 					;[End Block]
 				Case FINE, VERYFINE
@@ -2790,15 +2776,7 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[End Block]
 				Case FINE, VERYFINE
 					;[Block]
-					If Rand(2) = 1
-						it2.Items = CreateItem("Yellow Severed Hand", it_hand3, x, y, z)
-					Else
-						If Rand(2) = 1
-							it2.Items = CreateItem("Black Severed Hand", it_hand2, x, y, z)
-						Else
-							it2.Items = CreateItem("White Severed Hand", it_hand, x, y, z)
-						EndIf
-					EndIf
+					it2.Items = CreateItem("Yellow Severed Hand", it_hand3, x, y, z)
 					;[End Block]
 			End Select
 			;[End Block]

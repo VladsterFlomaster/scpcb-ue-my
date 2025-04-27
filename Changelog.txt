@@ -23,6 +23,9 @@
 - Changed Apache helicopter's texture.
 - Changed SCP-173's texture.
 
+[Items]
+- Yellow Severed Hand can only be obtained after processing SCP-1123 in SCP-914.
+
 [Bug Fixes]
 - Fixed SCP-173's spawning events.
 - Fixed Map Creator issues.
