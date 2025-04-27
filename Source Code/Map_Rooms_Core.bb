@@ -3165,11 +3165,11 @@ Function FillRoom%(r.Rooms)
 			Next
 			
 			; ~ Doors inside a tiny tunnel
-			d.Doors = CreateDoor(r, r\x - 1400.0 * RoomScale, r\y - 480.0 * RoomScale, r\z + 2320.0 * RoomScale, 0.0, me\SelectedEnding <> Ending_A1, DEFAULT_DOOR, KEY_CARD_2)
+			d.Doors = CreateDoor(r, r\x - 1400.0 * RoomScale, r\y - 480.0 * RoomScale, r\z + 2320.0 * RoomScale, 0.0, me\SelectedEnding = Ending_A2, DEFAULT_DOOR, KEY_CARD_2)
 			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 0.12, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
 			PositionEntity(d\Buttons[1], EntityX(d\Buttons[1], True) + 0.12, EntityY(d\Buttons[1], True), EntityZ(d\Buttons[1], True), True)
 			
-			d.Doors = CreateDoor(r, r\x - 1400.0 * RoomScale, r\y - 480.0 * RoomScale, r\z + 4352.0 * RoomScale, 0.0, me\SelectedEnding <> Ending_A1, DEFAULT_DOOR, KEY_CARD_2)
+			d.Doors = CreateDoor(r, r\x - 1400.0 * RoomScale, r\y - 480.0 * RoomScale, r\z + 4352.0 * RoomScale, 0.0, me\SelectedEnding = Ending_A2, DEFAULT_DOOR, KEY_CARD_2)
 			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 0.12, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
 			PositionEntity(d\Buttons[1], EntityX(d\Buttons[1], True) + 0.12, EntityY(d\Buttons[1], True), EntityZ(d\Buttons[1], True), True)
 			
