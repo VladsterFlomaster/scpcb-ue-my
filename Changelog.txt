@@ -11,6 +11,8 @@
 - Decrease clearance level of HCZ to EZ checkpoint to level 4.
 - The lid of SCP-008 is now moving slightly due to the SCP-008 flow.
 
+- Renamed «room1_o5» to «room1_cmr».
+
 - Design improvements for some rooms...
 
 [NPCs]
