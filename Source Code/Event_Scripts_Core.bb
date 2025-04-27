@@ -9777,7 +9777,7 @@ Function UpdateEvent_Tesla%(e.Events)
 					EndIf
 				EndIf
 				For n.NPCs = Each NPCs
-					If n\NPCType <> NPCType966 And n\NPCType <> NPCType513_1 And (Not n\IsDead)
+					If n\NPCType <> NPCType513_1 And (Not n\IsDead)
 						x1 = EntityX(n\Collider, True) : z1 = EntityZ(n\Collider, True) : y1 = EntityY(n\Collider, True)
 						If n\NPCType = NPCTypeMTF And e\room\NPC[1] = Null
 							If IsEqual(x1, x2, 2.0) And IsEqual(z1, z2, 2.0) And IsEqual(y1, y2, 1.3)
