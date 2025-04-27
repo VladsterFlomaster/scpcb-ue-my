@@ -2850,6 +2850,7 @@ Function FillRoom%(r.Rooms)
 			r\Objects[2] = LoadMesh_Strict("GFX\Map\Props\scp_009.b3d")
 			ScaleEntity(r\Objects[2], RoomScale, RoomScale, RoomScale)
 			PositionEntity(r\Objects[2], r\x, r\y, r\z)
+			EntityPickMode(r\Objects[2], 2)
 			EntityType(r\Objects[2], HIT_MAP)
 			EntityParent(r\Objects[2], r\OBJ)
 			

@@ -6500,11 +6500,13 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 			
 			If e\EventState > 0.2
-				e\EventState = e\EventState - (fps\Factor[0] * 0.0001)
-			ElseIf e\EventState <> 0.19
+				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.0001), 0.2)
+			ElseIf e\EventState = 0.2
 				For i = 0 To 2
 					e\room\RoomDoors[i]\Locked = 0
 				Next
+				EntityPickMode(e\room\Objects[2], 0)
+				EntityType(e\room\Objects[2], 0)
 				e\EventState = 0.19
 			ElseIf e\EventState = 0.19
 				If EntityY(me\Collider) < IceTriggerY Then DecalStep = 2

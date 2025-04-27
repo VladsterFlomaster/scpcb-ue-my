@@ -2267,6 +2267,16 @@ Function LoadGameQuick%(File$)
 				If e\room\Objects[0] <> 0 Then FreeEntity(e\room\Objects[0]) : e\room\Objects[0] = 0
 				If e\room\Objects[6] <> 0 Then FreeEntity(e\room\Objects[6]) : e\room\Objects[6] = 0
 				;[End Block]
+			Case e_cont3_009
+				;[Block]
+				If e\EventState <> 0.19
+					EntityPickMode(e\room\Objects[2], 2)
+					EntityType(e\room\Objects[2], HIT_MAP)
+				Else
+					EntityPickMode(e\room\Objects[2], 0)
+					EntityType(e\room\Objects[2], 0)
+				EndIf
+				;[End Block]
 		End Select
 	Next
 	
