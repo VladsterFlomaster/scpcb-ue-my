@@ -6445,7 +6445,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 	If e\room\Dist < 5.0
 		If e\EventState = 0.0
 			e\SoundCHN2 = LoopSoundEx(RoomAmbience[5], e\SoundCHN2, Camera, e\room\OBJ)
-		Else
+		ElseIf e\EventState > 0.19
 			e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
 		EndIf
 	EndIf
