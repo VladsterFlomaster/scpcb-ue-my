@@ -866,7 +866,7 @@ Function ResetNegativeStats%(Revive% = False)
 			chs\GodMode = True
 		EndIf
 		If n_I\Curr049 <> Null
-			n_I\Curr049\State = 1.0 ; ~ Reset SCP-049
+			If n_I\Curr049\State <> 66.0 Then n_I\Curr049\State = 1.0 ; ~ Reset SCP-049
 			If EntityDistanceSquared(me\Collider, n_I\Curr049\Collider) < 4.0
 				CreateConsoleMsg(Format(GetLocalString("console", "revive.by"), "SCP-049"))
 				chs\GodMode = True
@@ -1757,7 +1757,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			;[Block]
 			For n.NPCs = Each NPCs
 				If n\NPCType = NPCType966
-					n\State = -1.0
+					If n\State <> 66.0 Then n\State = -1.0
 					PositionEntity(n\Collider, 0.0, -500.0, 0.0)
 					ResetEntity(n\Collider)
 					HideEntity(n\Collider)
@@ -1770,7 +1770,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			;[Block]
 			For n.NPCs = Each NPCs
 				If n\NPCType = NPCType966
-					n\State = 0.0
+					If n\State <> 66.0 Then n\State = 0.0
 					ShowEntity(n\Collider)
 					If wi\NightVision > 0 Then ShowEntity(n\OBJ)
 				EndIf

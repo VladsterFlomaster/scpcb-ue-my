@@ -3389,8 +3389,10 @@ Function UpdateEvent_Cont2C_066_1162_ARC%(e.Events)
 			If n_I\Curr066 = Null
 				n_I\Curr066 = CreateNPC(NPCType066, EntityX(e\room\OBJ), 0.4, EntityZ(e\room\OBJ))
 			Else
-				PositionEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), 0.4, EntityZ(e\room\OBJ))
-				ResetEntity(n_I\Curr066\Collider)
+				If n_I\Curr066\State <> 66.0
+					PositionEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), 0.4, EntityZ(e\room\OBJ))
+					ResetEntity(n_I\Curr066\Collider)
+				EndIf
 			EndIf
 			e\EventState4 = 1.0
 		EndIf
@@ -6066,7 +6068,7 @@ Function UpdateEvent_Cont2_049%(e.Events)
 				TurnEntity(n\Collider, 0.0, e\room\Angle + 60.0, 0.0)
 				
 				TFormPoint(528.0, -2672.0, 96.0, e\room\OBJ, 0)
-				If n_I\Curr049 <> Null
+				If n_I\Curr049 <> Null And n_I\Curr049\State <> 66.0
 					e\room\NPC[0] = n_I\Curr049
 					e\room\NPC[0]\State = 2.0 : e\room\NPC[0]\Idle = 1 : e\room\NPC[0]\HideFromNVG = True
 					PositionEntity(e\room\NPC[0]\Collider, TFormedX(), TFormedY(), TFormedZ())
@@ -6452,7 +6454,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 	If PlayerRoom = e\room
 		Local n.NPCs
 		Local i%
-		Local IceTriggerY# = e\room\y - 1.45
+		Local IceTriggerY# = e\room\y - 1.6
 		
 		For n.NPCs = Each NPCs
 			If n\IceTimer = 0.0
@@ -6463,10 +6465,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 						;[End Block]
 					Default
 						;[Block]
-						If EntityY(n\Collider, True) < IceTriggerY
-							n\IceTimer = 0.001
-							Exit
-						EndIf
+						If EntityY(n\Collider, True) < IceTriggerY Then n\IceTimer = 0.001
 						;[End Block]
 				End Select
 			EndIf
@@ -7762,8 +7761,10 @@ Function UpdateEvent_Room2_Cafeteria%(e.Events)
 			If n_I\Curr066 = Null
 				n_I\Curr066 = CreateNPC(NPCType066, EntityX(e\room\OBJ), -0.1, EntityZ(e\room\OBJ))
 			Else
-				PositionEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), -0.1, EntityZ(e\room\OBJ))
-				ResetEntity(n_I\Curr066\Collider)
+				If n_I\Curr066\State <> 66.0
+					PositionEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), -0.1, EntityZ(e\room\OBJ))
+					ResetEntity(n_I\Curr066\Collider)
+				EndIf
 			EndIf
 			e\EventState = 1.0
 		EndIf
