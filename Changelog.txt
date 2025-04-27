@@ -22,6 +22,7 @@
 - NPCs less likely to spawn when Remote Door Controls are off.
 - Changed Apache helicopter's texture.
 - Changed SCP-173's texture.
+- Improved MTF model.
 
 [Items]
 - Yellow Severed Hand can only be obtained after processing SCP-1123 in SCP-914.
