@@ -7117,8 +7117,6 @@ Function UpdateEvent_Gate_A%(e.Events)
 								PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Bang2.ogg"))
 								msg\DeathMsg = ""
 								
-								msg\DeathMsg = Format(GetLocalString("death", "ntf.gatea"), SubjectName)
-								
 								For n.NPCs = Each NPCs
 									RemoveNPC(n)
 								Next
