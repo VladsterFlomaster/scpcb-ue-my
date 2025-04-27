@@ -3291,6 +3291,11 @@ Function UpdateNPCType966%(n.NPCs)
 	If n\State = 66.0
 		PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
 		RotateEntity(n\OBJ, -90.0, n\Angle, 0.0, True)
+		If wi\NightVision = 0
+			If (Not EntityHidden(n\OBJ)) Then HideEntity(n\OBJ)
+		Else
+			If EntityHidden(n\OBJ) Then ShowEntity(n\OBJ)
+		EndIf
 		Return
 	EndIf
 	
