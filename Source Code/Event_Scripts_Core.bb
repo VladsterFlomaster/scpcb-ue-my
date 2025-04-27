@@ -6725,6 +6725,9 @@ Function UpdateEvent_Gate_A%(e.Events)
 				
 				PositionEntity(e\room\NPC[5]\Collider, EntityX(e\room\Objects[6], True), EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True), True)
 				ResetEntity(e\room\NPC[5]\Collider)
+				TFormPoint(-1473.0, 200.0, 4251.0, e\room\OBJ, 0)
+				PositionEntity(e\room\NPC[7]\Collider, TFormedX(), TFormedY(), TFormedZ(), True)
+				ResetEntity(e\room\NPC[7]\Collider)
 			EndIf
 			
 			RenderLoading(30, GetLocalString("loading", "ending"))
@@ -7083,7 +7086,7 @@ Function UpdateEvent_Gate_A%(e.Events)
 							Local Temp% = False
 							
 							For i = 5 To 8
-								If NPCSeesPlayer(e\room\NPC[i], 4.0 - me\CrouchState + me\SndVolume) = 1
+								If NPCSeesPlayer(e\room\NPC[i], 6.0 - me\CrouchState + me\SndVolume) = 1
 									Temp = True
 									Exit
 								EndIf
@@ -7095,35 +7098,26 @@ Function UpdateEvent_Gate_A%(e.Events)
 								e\EventState2 = 2.0
 							EndIf
 						ElseIf e\EventState2 = 2.0
-							MakeMeUnplayable()
-							e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"), True)
-							e\EventState2 = 3.0
+							If (S2IMapSize(UnlockedAchievements) - S2IMapContains(UnlockedAchievements, "apollyon") - S2IMapContains(UnlockedAchievements, "keter")) => (S2IMapSize(AchievementsIndex) - 4)
+								MakeMeUnplayable()
+								e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\STOPRIGHTTHERE.ogg"), True)
+								e\EventState2 = 3.0
+							Else
+								For i = 5 To 8
+									e\room\NPC[i]\State = MTF_SHOOTING_AT_PLAYER
+								Next
+							EndIf
 						ElseIf e\EventState2 = 3.0
 							ShouldPlay = 0
 							me\CurrSpeed = 0.0
 							If (Not ChannelPlaying(e\SoundCHN))
 								ClearCheats()
+							
+								me\SelectedEnding = Ending_A2
+								PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Bang2.ogg"))
+								msg\DeathMsg = ""
 								
-								If (S2IMapSize(UnlockedAchievements) - S2IMapContains(UnlockedAchievements, "apollyon") - S2IMapContains(UnlockedAchievements, "keter")) => (S2IMapSize(AchievementsIndex) - 4)
-									me\SelectedEnding = Ending_A2
-									PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Bang2.ogg"))
-									msg\DeathMsg = ""
-								Else
-									PlaySound_Strict(LoadTempSound("SFX\Ending\GateB\Gunshot.ogg"))
-									
-									Local Tex% = LoadTexture_Strict("GFX\Overlays\blood_overlay.png", 1, DeleteMapTextures, False)
-									
-									t\OverlayID[MaxOverlayIDAmount - 1] = CreateSprite(ArkBlurCam)
-									ScaleSprite(t\OverlayID[MaxOverlayIDAmount - 1], 1.001, GraphicHeightFloat / GraphicWidthFloat)
-									EntityTexture(t\OverlayID[MaxOverlayIDAmount - 1], Tex)
-									EntityBlend(t\OverlayID[MaxOverlayIDAmount - 1], 2)
-									EntityFX(t\OverlayID[MaxOverlayIDAmount - 1], 1)
-									EntityOrder(t\OverlayID[MaxOverlayIDAmount - 1], -1003)
-									MoveEntity(t\OverlayID[MaxOverlayIDAmount - 1], 0.0, 0.0, 1.0)
-									DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
-									
-									msg\DeathMsg = Format(GetLocalString("death", "ntf.gatea"), SubjectName)
-								EndIf
+								msg\DeathMsg = Format(GetLocalString("death", "ntf.gatea"), SubjectName)
 								
 								For n.NPCs = Each NPCs
 									RemoveNPC(n)
