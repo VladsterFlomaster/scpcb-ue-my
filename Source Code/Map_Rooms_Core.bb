@@ -3291,23 +3291,7 @@ Function FillRoom%(r.Rooms)
 			
 			CreateCustomCenter(r, r\x - 5424.0 * RoomScale, r\z - 1700.0 * RoomScale)
 			;[End Block]
-		Case r_room1_lifts
-			;[Block]
-			d.Doors = CreateDoor(r, r\x - 239.0 * RoomScale, r\y, r\z + 96.0 * RoomScale, 0.0, False, ELEVATOR_DOOR)
-			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
-			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
-			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
-			
-			d.Doors = CreateDoor(r, r\x + 239.0 * RoomScale, r\y, r\z + 96.0 * RoomScale, 0.0, False, ELEVATOR_DOOR)
-			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
-			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 1.2, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
-			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
-			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
-			
-			sc.SecurityCams = CreateSecurityCam(r, r\x + 384.0 * RoomScale, r\y + 384.0 * RoomScale, r\z - 960.0 * RoomScale, 20.0)
-			sc\Angle = 45.0 : sc\Turn = 45.0
-			;[End Block]
-		Case r_room1_o5
+		Case r_room1_cmr
 			;[Block]
 			CreateDoor(r, r\x, r\y, r\z - 240.0 * RoomScale, 0.0, False, DEFAULT_DOOR, KEY_MISC, CODE_O5_COUNCIL)
 			
@@ -3330,10 +3314,26 @@ Function FillRoom%(r.Rooms)
 			it.Items = CreateItem("Ballistic Helmet", it_helmet, r\x + 344.0 * RoomScale, r\y + 210.0 * RoomScale, r\z - 900.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("SCP-268", it_scp268, r\x + 290.0 * RoomScale, r\y + 200.0 * RoomScale, r\z + 170.0 * RoomScale)
+			it.Items = CreateItem("SCP-268", it_scp268, r\x + 424.0 * RoomScale, r\y + 60.0 * RoomScale, r\z + 282.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
 			CreateCustomCenter(r, r\x, r\z - 639.0 * RoomScale)
+			;[End Block]
+		Case r_room1_lifts
+			;[Block]
+			d.Doors = CreateDoor(r, r\x - 239.0 * RoomScale, r\y, r\z + 96.0 * RoomScale, 0.0, False, ELEVATOR_DOOR)
+			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
+			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
+			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
+			
+			d.Doors = CreateDoor(r, r\x + 239.0 * RoomScale, r\y, r\z + 96.0 * RoomScale, 0.0, False, ELEVATOR_DOOR)
+			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
+			PositionEntity(d\Buttons[0], EntityX(d\Buttons[0], True) - 1.2, EntityY(d\Buttons[0], True), EntityZ(d\Buttons[0], True), True)
+			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
+			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
+			
+			sc.SecurityCams = CreateSecurityCam(r, r\x + 384.0 * RoomScale, r\y + 384.0 * RoomScale, r\z - 960.0 * RoomScale, 20.0)
+			sc\Angle = 45.0 : sc\Turn = 45.0
 			;[End Block]
 		Case r_room2_ez
 			;[Block]

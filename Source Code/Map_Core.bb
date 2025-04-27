@@ -1529,9 +1529,9 @@ Const r_room4_hcz% = 72, r_room4_2_hcz% = 73, r_room4_3_hcz% = 74
 Const r_room2_checkpoint_hcz_ez% = 75
 ; ~ EZ
 Const r_gate_a_entrance% = 76, r_gate_a% = 77, r_gate_b_entrance% = 78, r_gate_b% = 79
-Const r_room1_dead_end_ez% = 80
-Const r_room1_lifts% = 81
-Const r_room1_o5% = 82
+Const r_room1_cmr% = 80
+Const r_room1_dead_end_ez% = 81
+Const r_room1_lifts% = 82
 Const r_room2_ez% = 83, r_room2_2_ez% = 84, r_room2_3_ez% = 85, r_room2_4_ez% = 86, r_room2_5_ez% = 87, r_room2_6_ez% = 88, r_room2_7_ez% = 89
 Const r_room2_cafeteria% = 90
 Const r_room2_ic% = 91
@@ -1878,6 +1878,10 @@ Function FindRoomID%(RoomName$)
 			;[Block]
 			Return(r_gate_b)
 			;[End Block]
+		Case "room1_cmr"
+			;[Block]
+			Return(r_room1_cmr)
+			;[End Block]
 		Case "room1_dead_end_ez"
 			;[Block]
 			Return(r_room1_dead_end_ez)
@@ -1885,10 +1889,6 @@ Function FindRoomID%(RoomName$)
 		Case "room1_lifts"
 			;[Block]
 			Return(r_room1_lifts)
-			;[End Block]
-		Case "room1_o5"
-			;[Block]
-			Return(r_room1_o5)
 			;[End Block]
 		Case "room2_ez"
 			;[Block]
@@ -5842,7 +5842,7 @@ Function CreateMap%()
 	;[Block]
 	SetRoom(2, ROOM1, "gate_b_entrance", 1.0)
 	SetRoom(2, ROOM1, "gate_a_entrance", 1.0)
-	SetRoom(2, ROOM1, "room1_o5", 1.0)
+	SetRoom(2, ROOM1, "room1_cmr", 1.0)
 	SetRoom(2, ROOM1, "room1_lifts", 0.0)
 	
 	SetRoom(2, ROOM2, "room2_scientists", 0.1)
