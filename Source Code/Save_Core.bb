@@ -2252,7 +2252,7 @@ Function LoadGameQuick%(File$)
 				;[Block]
 				SetAnimTime(e\room\Objects[0], 1.0 + 239.0 * (e\EventState = 2.0))
 				;[End Block]
-			Case r_gate_a ; ~ Erase endings stuff
+			Case e_gate_a ; ~ Erase endings stuff
 				;[Block]
 				If e\room\Objects[0] <> 0 Then FreeEntity(e\room\Objects[0]) : e\room\Objects[0] = 0
 				
@@ -2262,7 +2262,7 @@ Function LoadGameQuick%(File$)
 					EndIf
 				Next
 				;[End Block]
-			Case r_gate_b
+			Case e_gate_b
 				;[Block]
 				If e\room\Objects[0] <> 0 Then FreeEntity(e\room\Objects[0]) : e\room\Objects[0] = 0
 				If e\room\Objects[6] <> 0 Then FreeEntity(e\room\Objects[6]) : e\room\Objects[6] = 0
