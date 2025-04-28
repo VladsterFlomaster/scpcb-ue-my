@@ -485,18 +485,17 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 				Else
 					BumpTex = 0
 				EndIf
+				BrushTexture(Brush, AmbientLightRoomTex, 0, 0)
 				If BumpTex = 0
 					For j = 0 To 1
 						BrushTexture(Brush, Tex[j], 0, j + 1)
 					Next
 				Else
-					TextureCoords(BumpTex, 0)
+					BrushTexture(Brush, BumpTex, 0, 1)
 					For j = 0 To 1
 						BrushTexture(Brush, Tex[j], 0, j + 2)
 					Next
-					BrushTexture(Brush, BumpTex, 0, 1)
 				EndIf
-				BrushTexture(Brush, AmbientLightRoomTex, 0)
 			Else
 				If opt\BumpEnabled
 					If Tex[1] <> 0
@@ -511,16 +510,8 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 				Else
 					BumpTex = 0
 				EndIf
+				BrushTexture(Brush, AmbientLightRoomTex, 0, 0)
 				If BumpTex = 0
-					For j = 0 To 1
-						If Tex[j] <> 0
-							BrushTexture(Brush, Tex[j], 0, j)
-						Else
-							BrushTexture(Brush, MissingTexture, 0, j)
-						EndIf
-					Next
-				Else
-					TextureCoords(BumpTex, 0)
 					For j = 0 To 1
 						If Tex[j] <> 0
 							BrushTexture(Brush, Tex[j], 0, j + 1)
@@ -528,12 +519,18 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 							BrushTexture(Brush, MissingTexture, 0, j + 1)
 						EndIf
 					Next
-					BrushTexture(Brush, BumpTex, 0, 0)
+				Else
+					BrushTexture(Brush, BumpTex, 0, 1)
+					For j = 0 To 1
+						If Tex[j] <> 0
+							BrushTexture(Brush, Tex[j], 0, j + 2)
+						Else
+							BrushTexture(Brush, MissingTexture, 0, j + 2)
+						EndIf
+					Next
 				EndIf
 			EndIf
 		EndIf
-		
-		Surf = CreateSurface(ChildMesh) ; ~ Check if this don't needed anymore
 		
 		If IsAlpha > 0 Then PaintSurface(Surf, Brush)
 		
