@@ -5333,7 +5333,7 @@ Function UpdateGUI%()
 				Case it_veryfinefirstaid
 					;[Block]
 					If CanUseItem(True)
-						Select Rand(6)
+						Select Rand(7)
 							Case 1
 								;[Block]
 								me\Injuries = 3.5
@@ -5372,6 +5372,11 @@ Function UpdateGUI%()
 								;[Block]
 								chs\SuperMan = True
 								CreateMsg(GetLocalString("msg", "aid.super"))
+								;[End Block]
+							Case 7
+								;[Block]
+								Kill()
+								msg\DeathMsg = GetLocalString("death", "kill_1")
 								;[End Block]
 						End Select
 						RemoveItem(SelectedItem)
