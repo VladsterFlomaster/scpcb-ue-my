@@ -5341,22 +5341,15 @@ Function UpdateGUI%()
 								;[End Block]
 							Case 2
 								;[Block]
-								me\Injuries = 0.0
-								me\Bloodloss = 0.0
+								ResetNegativeStats()
 								CreateMsg(GetLocalString("msg", "rapidly"))
 								;[End Block]
 							Case 3
 								;[Block]
-								me\Injuries = Max(0.0, me\Injuries - Rnd(0.5, 3.5))
-								me\Bloodloss = Max(0.0, me\Bloodloss - Rnd(10.0, 100.0))
-								CreateMsg(GetLocalString("msg", "better_1"))
-								;[End Block]
-							Case 4
-								;[Block]
 								me\BlurTimer = 10000.0
 								CreateMsg(GetLocalString("msg", "nausea"))
 								;[End Block]
-							Case 5
+							Case 4
 								;[Block]
 								me\BlinkTimer = -10.0
 								
@@ -5368,15 +5361,24 @@ Function UpdateGUI%()
 									CreateMsg(GetLocalString("msg", "aid.106"))
 								EndIf
 								;[End Block]
-							Case 6
+							Case 5
 								;[Block]
 								chs\SuperMan = True
 								CreateMsg(GetLocalString("msg", "aid.super"))
 								;[End Block]
-							Case 7
+							Case 6
 								;[Block]
 								Kill()
 								msg\DeathMsg = GetLocalString("death", "kill_1")
+								;[End Block]
+							Case 7
+								;[Block]
+								me\BlurTimer = 1000.0
+								If Rand(2) = 1
+									If I_008\Timer = 0.0 Then I_008\Timer = 15.0
+								Else
+									If I_409\Timer = 0.0 Then I_409\Timer = 25.0
+								EndIf
 								;[End Block]
 						End Select
 						RemoveItem(SelectedItem)
@@ -5429,7 +5431,7 @@ Function UpdateGUI%()
 									EndIf
 									
 									If SelectedItem\ItemTemplate\ID = it_firstaid2
-										Select Rand(7)
+										Select Rand(8)
 											Case 1
 												;[Block]
 												chs\SuperMan = True
@@ -5463,6 +5465,12 @@ Function UpdateGUI%()
 												CreateMsg(GetLocalString("msg", "aid.stopall"))
 												;[End Block]
 											Case 7
+												;[Block]
+												me\Injuries = Max(0.0, me\Injuries - Rnd(0.5, 3.5))
+												me\Bloodloss = Max(0.0, me\Bloodloss - Rnd(10.0, 100.0))
+												CreateMsg(GetLocalString("msg", "better_1"))
+												;[End Block]
+											Case 8
 												;[Block]
 												CreateMsg(GetLocalString("msg", "aid.through"))
 												me\Injuries = 3.5
