@@ -5,12 +5,14 @@
 - Added SCP-009.
 - Added breath steam at the ending areas and SCP-009's containment chamber.
 - Update bump textures.
+- Added new images for SCP-895.
 
 [Rooms]
 - Made HCZ and EZ slightly darker.
 - Added blackout event to «room2c_2_lcz».
 - Decrease clearance level of HCZ to EZ checkpoint to level 4.
 - The lid of SCP-008 is now moving slightly due to the SCP-008 flow.
+- Added new signs for SCPs.
 
 - Renamed «room1_o5» to «room1_cmr».
 
@@ -20,6 +22,7 @@
 - Buffed SCP-966 insomnia to reduce stamina regeneration from 66.6% -> 50%
 - NPCs can hear you further away.
 - SCP-966's spawnrate increased.
+- SCP-966 can activate the tesla gates themselves.
 - NPCs less likely to spawn when Remote Door Controls are off.
 - Changed Apache helicopter's texture.
 - Changed SCP-173's texture.
@@ -27,6 +30,7 @@
 
 [Items]
 - Yellow Severed Hand can only be obtained after processing SCP-1123 in SCP-914.
+- Strange Bottle and Blue First Aid Kit have new outcomes.
 
 [Bug Fixes]
 - Fixed SCP-173's spawning events.
