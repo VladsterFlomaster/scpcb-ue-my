@@ -6535,6 +6535,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				SetTemplateVelocity(ParticleEffect[19], -0.007, -0.008, -0.001, 0.0012, -0.007, 0.008)
 				SetEmitter(e\room, EntityX(e\room\RoomLevers[0]\OBJ, True), EntityY(e\room\RoomLevers[0]\OBJ, True), EntityZ(e\room\RoomLevers[0]\OBJ, True), 19)
 				PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\RoomLevers[0]\OBJ, 3.0, 0.4)
+				PlaySound_Strict(snd_I\AlarmSFX[2])
 				e\EventState = 1.0
 			EndIf
 		Else
