@@ -1548,7 +1548,7 @@ Function UpdateNPCType096%(n.NPCs)
 	
 	Local Dist# = EntityDistanceSquared(me\Collider, n\Collider)
 	Local Angle# = WrapAngle(DeltaYaw(n\Collider, me\Collider))
-	Local IsLooking% = Dist < PowTwo(fog\FarDist * LightVolume) And (Angle < 135.0 Lor Angle > 225.0) And EntityVisible(Camera, n\OBJ2) And EntityInView(n\OBJ2, Camera)
+	Local IsLooking% = Dist < PowTwo(Min(HideDistance, fog\FarDist * LightVolume)) And (Angle < 135.0 Lor Angle > 225.0) And EntityVisible(Camera, n\OBJ2) And EntityInView(n\OBJ2, Camera)
 	Local i%
 	
 	If wi\SCRAMBLE > 0 And IsLooking
@@ -2247,7 +2247,7 @@ Function UpdateNPCType106%(n.NPCs)
 				
 				UpdateSoundOrigin(n\SoundCHN2, Camera, n\Collider)
 				
-				If Dist < PowTwo(fog\FarDist * LightVolume * 0.5)
+				If Dist < PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 0.5))
 					If (Not EntityHidden(n\OBJ2)) Then HideEntity(n\OBJ2)
 				Else
 					If EntityHidden(n\OBJ2) Then ShowEntity(n\OBJ2)
@@ -6489,7 +6489,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 							PositionEntity(Pvt, EntityX(n\OBJ), EntityY(n\OBJ), EntityZ(n\OBJ))
 							MoveEntity(Pvt, 0.0622, 0.83925, 0.5351)
 							
-							If EntityDistanceSquared(me\Collider, n\Collider) < PowTwo(fog\FarDist) Then LightVolume = TempLightVolume * 1.2
+							If EntityDistanceSquared(me\Collider, n\Collider) < PowTwo(Min(HideDistance, fog\FarDist)) Then LightVolume = TempLightVolume * 1.2
 							
 							emit.Emitter = SetEmitter(Null, EntityX(Pvt), EntityY(Pvt), EntityZ(Pvt), 13)
 							EntityParent(emit\Owner, n\Collider)

@@ -612,7 +612,7 @@ Function UpdateItems%()
 	Local i.Items, i2.Items, np.NPCs
 	Local xTemp#, yTemp#, zTemp#
 	Local Pick%, ed#
-	Local HideDist# = PowTwo(fog\FarDist * LightVolume * 1.3)
+	Local HideDist# = PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 1.2))
 	Local PushDist# = HideDist * 0.04
 	Local DeletedItem% = False
 	Local RandomVal# = Rnd(-0.002, 0.002)

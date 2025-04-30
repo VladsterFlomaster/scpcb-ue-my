@@ -2200,7 +2200,7 @@ Function UpdateMT%(mt.MTGrid)
 	CatchErrors("UpdateMT()")
 	
 	Local tX%, tY%
-	Local HideDist# = PowTwo(fog\FarDist * LightVolume * 1.3)
+	Local HideDist# = PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 1.2))
 	
 	For tX = 0 To MTGridSize - 1
 		For tY = 0 To MTGridSize - 1
@@ -3966,7 +3966,7 @@ Function UpdateShadows%()
 	If (Not opt\BlobShadows) Then Return
 	
 	Local shdw.Shadows
-	Local Dist#, UpdateDist# = PowTwo(fog\FarDist)
+	Local Dist#, UpdateDist# = PowTwo(Min(HideDistance, fog\FarDist))
 	
 	For shdw.Shadows = Each Shadows
 		Dist = EntityDistanceSquared(me\Collider, shdw\ParentOBJ)
@@ -4317,7 +4317,7 @@ Function UpdateSecurityCams%()
 				EndIf
 				
 				sc\InSight = False
-				If EntityDistanceSquared(me\Collider, sc\ScrOBJ) < PowTwo(fog\FarDist * LightVolume * 1.2) And SecondaryLightOn > 0.3
+				If EntityDistanceSquared(me\Collider, sc\ScrOBJ) < PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 1.2)) And SecondaryLightOn > 0.3
 					sc\InSight = (EntityInView(sc\MonitorOBJ, Camera) And EntityVisible(Camera, sc\ScrOBJ))
 					
 					If (me\BlinkTimer > -6.0 Lor me\BlinkTimer < -11.0) And sc\InSight
@@ -4422,7 +4422,7 @@ Function RenderSecurityCams%()
 		
 		If Close
 			If sc\Screen
-				If (me\BlinkTimer > -6.0 Lor me\BlinkTimer < -11.0) And EntityDistanceSquared(me\Collider, sc\ScrOBJ) < PowTwo(fog\FarDist * LightVolume * 1.2) And sc\InSight And SecondaryLightOn > 0.3
+				If (me\BlinkTimer > -6.0 Lor me\BlinkTimer < -11.0) And EntityDistanceSquared(me\Collider, sc\ScrOBJ) < PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 1.2)) And sc\InSight And SecondaryLightOn > 0.3
 					If sc\room\RoomTemplate\RoomID <> r_cont1_205
 						If EntityHidden(sc\ScrOBJ) Then ShowEntity(sc\ScrOBJ)
 						If EntityHidden(sc\ScrOverlay) Then ShowEntity(sc\ScrOverlay)

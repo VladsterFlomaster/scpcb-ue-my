@@ -521,7 +521,7 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 				snd_I\IntroSFX[i + 4] = LoadSound_Strict("SFX\Room\Intro\Bang" + i + ".ogg")
 			Next
 			
-			HideDistance = 68.0
+			HideDistance = 60.0
 			
 			n_I\Curr173\Angle = 90.0 : n_I\Curr173\Idle = 1
 			PositionEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True))
@@ -2262,7 +2262,7 @@ Function UpdateEvent_Room2_SL%(e.Events)
 	If e\EventState = 1.0
 		If e\EventState2 < 0.0
 			If e\EventState2 = (-70.0) * 5.0
-				Dist = PowTwo(fog\FarDist * LightVolume * 1.2)
+				Dist = PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 1.2))
 				For sc.SecurityCams = Each SecurityCams
 					If sc\room = e\room
 						If sc\InSight And EntityDistanceSquared(me\Collider, sc\ScrOBJ) < Dist Then e\EventState2 = Min(e\EventState2 + fps\Factor[0], 0.0)
@@ -6795,7 +6795,7 @@ Function UpdateEvent_Gate_A%(e.Events)
 			
 			IsBlackOut = False
 			
-			HideDistance = 68.0
+			HideDistance = 60.0
 			
 			CreateConsoleMsg("")
 			CreateConsoleMsg(GetLocalString("misc", "warning2"), 255, 0, 0)
@@ -7250,7 +7250,7 @@ Function UpdateEvent_Gate_B%(e.Events)
 			
 			IsBlackOut = False
 			
-			HideDistance = 68.0
+			HideDistance = 60.0
 			
 			CreateConsoleMsg("")
 			CreateConsoleMsg(GetLocalString("misc", "warning2"), 255, 0, 0)

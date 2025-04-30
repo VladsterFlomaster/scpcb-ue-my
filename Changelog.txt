@@ -4,6 +4,7 @@
 - Added SCP-079 door opening/closing sound for some doors.
 - Added SCP-009.
 - Added breath steam at the ending areas and SCP-009's containment chamber.
+- Update bump textures.
 
 [Rooms]
 - Made HCZ and EZ slightly darker.
