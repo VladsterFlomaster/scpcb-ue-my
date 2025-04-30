@@ -5271,6 +5271,22 @@ Function UpdateEvent_Room2_MT%(e.Events)
 			
 			PositionEntity(e\room\Objects[0], e\room\x + (FirstX * 2.0), EntityY(e\room\Objects[0], True), e\room\z + (FirstY * 2.0), True)
 			PositionEntity(e\room\Objects[1], e\room\x + (LastX * 2.0), EntityY(e\room\Objects[1], True), e\room\z + (LastY * 2.0), True)
+			
+			For wayp.WayPoints = Each WayPoints
+				If wayp\room = e\room
+					If opt\DebugMode
+						For i = 0 To 3
+							If wayp\connected[i] <> Null
+								Local tLine% = CreateLine(EntityX(wayp\OBJ, True), EntityY(wayp\OBJ, True), EntityZ(wayp\OBJ, True), EntityX(wayp\connected[i]\OBJ, True), EntityY(wayp\connected[i]\OBJ, True), EntityZ(wayp\connected[i]\OBJ, True))
+								
+								EntityFX(tLine, 1)
+								EntityColor(tLine, 0.0, 200.0, 0.0)
+								EntityParent(tLine, wayp\OBJ)
+							EndIf
+						Next
+					EndIf
+				EndIf
+			Next
 		ElseIf e\room\mt\Meshes[0] = 0
 			; ~ Place the tunnels
 			For i = 0 To MaxMTModelIDAmount - 1
@@ -5478,6 +5494,22 @@ Function UpdateEvent_Room2_MT%(e.Events)
 			
 			For i = 0 To MaxMTModelIDAmount - 1
 				e\room\mt\Meshes[i] = Meshes[i]
+			Next
+			
+			For wayp.WayPoints = Each WayPoints
+				If wayp\room = e\room
+					If opt\DebugMode
+						For i = 0 To 3
+							If wayp\connected[i] <> Null
+								tLine = CreateLine(EntityX(wayp\OBJ, True), EntityY(wayp\OBJ, True), EntityZ(wayp\OBJ, True), EntityX(wayp\connected[i]\OBJ, True), EntityY(wayp\connected[i]\OBJ, True), EntityZ(wayp\connected[i]\OBJ, True))
+								
+								EntityFX(tLine, 1)
+								EntityColor(tLine, 0.0, 200.0, 0.0)
+								EntityParent(tLine, wayp\OBJ)
+							EndIf
+						Next
+					EndIf
+				EndIf
 			Next
 			
 			SeedRnd(OldSeed)
