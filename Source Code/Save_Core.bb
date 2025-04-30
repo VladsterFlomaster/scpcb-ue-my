@@ -1000,6 +1000,15 @@ Function LoadGame%(File$)
 		EndIf
 	Next
 	
+	For n.NPCs = Each NPCs
+		For r.Rooms = Each Rooms
+			If IsInsideBox(n\Collider, r\BoundingBox)
+				n\CurrentRoom = r
+				Exit
+			EndIf
+		Next
+	Next
+	
 	If ReadInt(f) <> 954 Then RuntimeErrorEx(GetLocalString("save", "corrupted_3"))
 	
 	For emit.Emitter = Each Emitter
@@ -1975,6 +1984,16 @@ Function LoadGameQuick%(File$)
 			I_1499\PrevRoom = r
 			Exit
 		EndIf
+	Next
+	
+	For n.NPCs = Each NPCs
+		For r.Rooms = Each Rooms
+			If IsInsideBox(n\Collider, r\BoundingBox)
+				n\CurrentRoom = r
+				DebugLog(n\NVGName + ": " + n\CurrentRoom\RoomTemplate\Name)
+				Exit
+			EndIf
+		Next
 	Next
 	
 	If ReadInt(f) <> 954 Then RuntimeErrorEx(GetLocalString("save", "corrupted_3"))
