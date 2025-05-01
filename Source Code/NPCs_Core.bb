@@ -1599,11 +1599,11 @@ Function NPCSpeedChange%(n.NPCs)
 					;[End Block]
 				Case HARD
 					;[Block]
-					n\Speed = n\Speed * 1.2
+					n\Speed = n\Speed * 1.15
 					;[End Block]
 				Case EXTREME
 					;[Block]
-					n\Speed = n\Speed * 1.3
+					n\Speed = n\Speed * 1.2
 					;[End Block]
 			End Select
 	End Select
