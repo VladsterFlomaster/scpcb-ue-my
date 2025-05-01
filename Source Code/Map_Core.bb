@@ -177,7 +177,7 @@ End Function
 
 Function UpdateLights%(Cam%)
 	Local l.Lights, i%, Random#, Alpha#
-	Local TotalAmbientColor# = ((fog\AmbientR + fog\AmbientG + fog\AmbientB) / 255.0)
+	Local TotalAmbientColor# = (fog\AmbientR + fog\AmbientG + fog\AmbientB) / (255.0 * 3.0)
 	
 	For l.Lights = Each Lights
 		If SecondaryLightOn > 0.3
@@ -224,11 +224,11 @@ Function UpdateLights%(Cam%)
 											
 											Random = Rnd(0.36, 0.4)
 											ScaleSprite(l\AdvancedSprite, Random, Random)
-										ElseIf (Not LightAdvancedSpriteHidden) Then 
+										ElseIf (Not LightAdvancedSpriteHidden)
 											; ~ Instead of rendering the sprite invisible, just hiding it if the player is far away from it
 											HideEntity(l\AdvancedSprite)
 										EndIf
-									ElseIf (Not LightAdvancedSpriteHidden) 
+									ElseIf (Not LightAdvancedSpriteHidden)
 										; ~ The additional sprites option is disabled, hide the sprites
 										HideEntity(l\AdvancedSprite)
 									EndIf
