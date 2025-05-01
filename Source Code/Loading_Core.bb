@@ -2253,7 +2253,7 @@ Function LoadWayPoints%(LoadingStart% = 55)
 				If Dist < 7.0
 					If CanCreateWayPoint
 						If EntityVisible(w\OBJ, w2\OBJ)
-							For i = 0 To 4
+							For i = 0 To 3
 								If w\connected[i] = Null
 									w\connected[i] = w2.WayPoints
 									w\Dist[i] = Dist
@@ -2261,7 +2261,7 @@ Function LoadWayPoints%(LoadingStart% = 55)
 								EndIf
 							Next
 							
-							For n = 0 To 4
+							For n = 0 To 3
 								If w2\connected[n] = Null
 									w2\connected[n] = w.WayPoints
 									w2\Dist[n] = Dist
@@ -2291,7 +2291,7 @@ Function LoadWayPoints%(LoadingStart% = 55)
 		EntityPickMode(w\OBJ, 0, False)
 		
 		If opt\DebugMode
-			For i = 0 To 4
+			For i = 0 To 3
 				If w\connected[i] <> Null
 					Local tLine% = CreateLine(EntityX(w\OBJ, True), EntityY(w\OBJ, True), EntityZ(w\OBJ, True), EntityX(w\connected[i]\OBJ, True), EntityY(w\connected[i]\OBJ, True), EntityZ(w\connected[i]\OBJ, True))
 					

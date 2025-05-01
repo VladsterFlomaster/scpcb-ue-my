@@ -2729,7 +2729,7 @@ Function UpdateNPCType513_1%(n.NPCs)
 				Else
 					Local i%
 					
-					For i = 0 To 4
+					For i = 0 To 3
 						If n\Path[0]\connected[i] <> Null
 							If EntityDistanceSquared(me\Collider, n\Path[0]\connected[i]\OBJ) > Dist
 								If n\LastSeen = 0

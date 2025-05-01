@@ -1066,28 +1066,23 @@ Function FindPath%(n.NPCs, x#, y#, z#)
 			w = Smallest
 			w\State = WAYPOINT_VISITED
 			
-			For i = 0 To 4
-				If w\connected[i] <> Null
-					If w\connected[i]\State < WAYPOINT_VISITED
-						Local GcostEx# = w\Gcost + w\Dist[i]
-						
-						If n\NPCType = NPCTypeMTF
-							If w\connected[i]\door = Null Then GcostEx = GcostEx + 0.5
-						EndIf
-						
-						If w\connected[i]\State = WAYPOINT_IN_LIST
-							If GcostEx < w\connected[i]\Gcost
-								w\connected[i]\Gcost = GcostEx
-								w\connected[i]\Fcost = w\connected[i]\Gcost + w\connected[i]\Hcost
-								w\connected[i]\parent = w
-							EndIf
-						Else
+			For i = 0 To 3
+				If w\connected[i] <> Null And w\connected[i]\State < WAYPOINT_VISITED
+					Local GcostEx# = w\Gcost + w\Dist[i]
+					
+					If n\NPCType = NPCTypeMTF And w\connected[i]\door = Null Then GcostEx = GcostEx + 0.5
+					If w\connected[i]\State = WAYPOINT_IN_LIST
+						If GcostEx < w\connected[i]\Gcost
 							w\connected[i]\Gcost = GcostEx
-							w\connected[i]\Hcost = Abs(EntityX(w\connected[i]\OBJ, True) - EntityX(EndPoint\OBJ, True)) + Abs(EntityZ(w\connected[i]\OBJ, True) - EntityZ(EndPoint\OBJ, True))
 							w\connected[i]\Fcost = w\connected[i]\Gcost + w\connected[i]\Hcost
 							w\connected[i]\parent = w
-							w\connected[i]\State = WAYPOINT_IN_LIST
 						EndIf
+					Else
+						w\connected[i]\Gcost = GcostEx
+						w\connected[i]\Hcost = Abs(EntityX(w\connected[i]\OBJ, True) - EntityX(EndPoint\OBJ, True)) + Abs(EntityZ(w\connected[i]\OBJ, True) - EntityZ(EndPoint\OBJ, True))
+						w\connected[i]\Fcost = w\connected[i]\Gcost + w\connected[i]\Hcost
+						w\connected[i]\parent = w
+						w\connected[i]\State = WAYPOINT_IN_LIST
 					EndIf
 				EndIf
 			Next
