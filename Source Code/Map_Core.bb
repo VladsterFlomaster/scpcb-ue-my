@@ -2428,7 +2428,7 @@ Function CreateRoom.Rooms(Zone%, RoomShape%, x#, y#, z#, RoomID% = -1, Angle# = 
 	CatchErrors("CreateRoom.Rooms(" + RoomShape + ", " + x + ", " + y + ", " + z + ", " + RoomID + ")")
 	
 	Local r.Rooms, rt.RoomTemplates
-	Local i%
+	Local i%, DebugBox% = 0
 	
 	r.Rooms = New Rooms
 	r\Zone = Zone
@@ -2446,6 +2446,14 @@ Function CreateRoom.Rooms(Zone%, RoomShape%, x#, y#, z#, RoomID% = -1, Angle# = 
 				r\BoundingBox = CreatePivot(r\OBJ)
 				PositionEntity(r\BoundingBox, r\RoomTemplate\BoundsMidX, r\RoomTemplate\BoundsMidY, r\RoomTemplate\BoundsMidZ)
 				ScaleEntity(r\BoundingBox, (r\RoomTemplate\BoundsMaxX - r\RoomTemplate\BoundsMinX), (r\RoomTemplate\BoundsMaxY - r\RoomTemplate\BoundsMinY), (r\RoomTemplate\BoundsMaxZ - r\RoomTemplate\BoundsMinZ))
+				
+				If opt\DebugMode
+					DebugBox = CreateCube(r\BoundingBox)
+					ScaleEntity(DebugBox, 0.5, 0.5, 0.5)
+					EntityFX(DebugBox, 1)
+					EntityAlpha(DebugBox, 0.5)
+					EntityColor(DebugBox, Rnd(255.0), Rnd(255.0), Rnd(255.0))
+				EndIf
 				
 				ScaleEntity(r\OBJ, RoomScale, RoomScale, RoomScale)
 				EntityType(r\OBJ, HIT_MAP)
@@ -2495,6 +2503,14 @@ Function CreateRoom.Rooms(Zone%, RoomShape%, x#, y#, z#, RoomID% = -1, Angle# = 
 					r\BoundingBox = CreatePivot(r\OBJ)
 					PositionEntity(r\BoundingBox, r\RoomTemplate\BoundsMidX, r\RoomTemplate\BoundsMidY, r\RoomTemplate\BoundsMidZ)
 					ScaleEntity(r\BoundingBox, (r\RoomTemplate\BoundsMaxX - r\RoomTemplate\BoundsMinX), (r\RoomTemplate\BoundsMaxY - r\RoomTemplate\BoundsMinY), (r\RoomTemplate\BoundsMaxZ - r\RoomTemplate\BoundsMinZ))
+					
+					If opt\DebugMode
+						DebugBox = CreateCube(r\BoundingBox)
+						ScaleEntity(DebugBox, 0.5, 0.5, 0.5)
+						EntityFX(DebugBox, 1)
+						EntityAlpha(DebugBox, 0.5)
+						EntityColor(DebugBox, Rnd(255.0), Rnd(255.0), Rnd(255.0))
+					EndIf
 					
 					ScaleEntity(r\OBJ, RoomScale, RoomScale, RoomScale)
 					EntityType(r\OBJ, HIT_MAP)
@@ -5295,8 +5311,8 @@ Function PreventRoomOverlap%(r.Rooms)
 	; ~ Room is interseting: First, check if the given room is a ROOM2, so we could potentially just turn it by 180.0 degrees
 	IsIntersecting = False
 	
-	Local x% = r\x / RoomSpacing
-	Local z% = r\z / RoomSpacing
+	Local x# = r\x / RoomSpacing
+	Local z# = r\z / RoomSpacing
 	
 	If r\RoomTemplate\Shape = ROOM2
 		; ~ Room is a ROOM2, let's check if turning it 180.0 degrees fixes the overlapping issue
@@ -5326,7 +5342,7 @@ Function PreventRoomOverlap%(r.Rooms)
 	; ~ Room is either not a ROOM2 or the ROOM2 is still intersecting, now trying to swap the room with another of the same type
 	IsIntersecting = True
 	
-	Local x2%, y2%, Rot%, Rot2%
+	Local x2#, z2#, Rot#, Rot2#
 	
 	For r2.Rooms = Each Rooms
 		If r2 <> r And (Not r2\RoomTemplate\DisableOverlapCheck)
@@ -5338,13 +5354,13 @@ Function PreventRoomOverlap%(r.Rooms)
 				Rot = r\Angle
 				
 				x2 = r2\x / RoomSpacing
-				y2 = r2\z / RoomSpacing
+				z2 = r2\z / RoomSpacing
 				Rot2 = r2\Angle
 				
 				IsIntersecting = False
 				
 				r\x = x2 * RoomSpacing
-				r\z = y2 * RoomSpacing
+				r\z = z2 * RoomSpacing
 				r\Angle = Rot2
 				PositionEntity(r\OBJ, r\x, r\y, r\z)
 				RotateEntity(r\OBJ, 0.0, r\Angle, 0.0)
@@ -5385,7 +5401,7 @@ Function PreventRoomOverlap%(r.Rooms)
 					CalculateRoomExtents(r)
 					
 					r2\x = x2 * RoomSpacing
-					r2\z = y2 * RoomSpacing
+					r2\z = z2 * RoomSpacing
 					r2\Angle = Rot2
 					PositionEntity(r2\OBJ, r2\x, r2\y, r2\z)
 					RotateEntity(r2\OBJ, 0.0, r2\Angle, 0.0)
