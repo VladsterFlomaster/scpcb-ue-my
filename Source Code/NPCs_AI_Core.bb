@@ -2064,8 +2064,8 @@ Function UpdateNPCType106%(n.NPCs)
 				;[Block]
 				Local Visible% = False
 				
-				If Dist < 100.0
-					If (Not (chs\NoTarget Lor I_268\InvisibilityOn)) Then Visible = EntityVisible(n\Collider, me\Collider)
+				If Dist < 10.0
+					If (Not (chs\NoTarget Lor I_268\InvisibilityOn)) Then Visible = True
 				EndIf
 				If Visible
 					If PlayerRoom\RoomTemplate\RoomID <> r_gate_a Then n\PathTimer = 0.0
@@ -2087,25 +2087,11 @@ Function UpdateNPCType106%(n.NPCs)
 				
 				If PlayerRoom\RoomTemplate\RoomID <> r_gate_a And PlayerRoom\RoomTemplate\RoomID <> r_dimension_106 Then ShouldPlay = 10
 				
-				If Dist < 144.0
-					Local d.Doors
-					
-					For d.Doors = Each Doors
-						If (Not d\IsAffected) And d\DoorType <> SCP_914_DOOR And (Not d\HasOneSide) And (Not d\Open)
-							If EntityDistanceSquared(n\Collider, d\FrameOBJ) < 0.25 And (d\room <> Null And d\room\RoomTemplate\RoomID <> r_dimension_106)
-								n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
-								AffectDecayDoor(d)
-								Exit
-							EndIf
-						EndIf
-					Next
-				EndIf
-				
 				If Dist > 0.64
 					Local PrevFrame# = n\Frame
 					
 					If (Dist > 625.0 Lor PlayerRoom\RoomTemplate\RoomID = r_dimension_106 Lor Visible Lor n\PathStatus <> PATH_STATUS_FOUND) And PlayerRoom\RoomTemplate\RoomID <> r_gate_a And (Not (chs\NoTarget Lor I_268\InvisibilityOn))
-						If (Dist > 9.0 Lor PlayerRoom\RoomTemplate\RoomID = r_dimension_106) Then TranslateEntity(n\Collider, 0.0, ((EntityY(me\Collider) - 0.295) - EntityY(n\Collider)) / 50.0, 0.0)
+						If (Dist > 4.0 Lor PlayerRoom\RoomTemplate\RoomID = r_dimension_106) Then TranslateEntity(n\Collider, 0.0, ((EntityY(me\Collider) - 0.3) - EntityY(n\Collider)) / 50.0, 0.0)
 						
 						n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 10.0)
 						
@@ -2138,7 +2124,7 @@ Function UpdateNPCType106%(n.NPCs)
 								Wend
 								
 								If n\Path[n\PathLocation] <> Null
-									TranslateEntity(n\Collider, 0.0, ((EntityY(n\Path[n\PathLocation]\OBJ, True) - 0.165) - EntityY(n\Collider)) / 50.0, 0.0)
+									TranslateEntity(n\Collider, 0.0, ((EntityY(n\Path[n\PathLocation]\OBJ, True) - 0.17) - EntityY(n\Collider)) / 50.0, 0.0)
 									
 									PointEntity(n\OBJ, n\Path[n\PathLocation]\OBJ)
 									
@@ -2163,6 +2149,18 @@ Function UpdateNPCType106%(n.NPCs)
 						EndIf
 					EndIf
 					If Dist < 100.0 Lor PlayerRoom\RoomTemplate\RoomID = r_gate_a
+						Local d.Doors
+						
+						For d.Doors = Each Doors
+							If (Not d\IsAffected) And d\DoorType <> SCP_914_DOOR And (Not d\HasOneSide) And (Not d\Open)
+								If EntityDistanceSquared(n\Collider, d\FrameOBJ) < 0.25 And (d\room <> Null And d\room\RoomTemplate\RoomID <> r_dimension_106)
+									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
+									AffectDecayDoor(d)
+									Exit
+								EndIf
+							EndIf
+						Next
+						
 						If (PrevFrame <= 286.0 And n\Frame > 286.0)
 							PlaySoundEx(StepSFX(2, 0, Rand(0, 2)), Camera, n\Collider, 6.0, Rnd(0.8, 1.0))
 							
@@ -2299,8 +2297,8 @@ Function UpdateNPCType106%(n.NPCs)
 		
 		ResetEntity(n\Collider)
 		n\DropSpeed = 0.0
-		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider), EntityZ(n\Collider))
 		
+		PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider), EntityZ(n\Collider))
 		RotateEntity(n\OBJ, 0.0, EntityYaw(n\Collider), 0.0)
 	ElseIf (Not EntityHidden(n\OBJ2))
 		HideEntity(n\OBJ2)
