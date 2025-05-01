@@ -10498,7 +10498,7 @@ End Type
 Global I_1499.SCP1499
 
 Function UpdateLeave1499%()
-	Local r.Rooms, it.Items, r2.Rooms, r1499.Rooms
+	Local r.Rooms, it.Items, r2.Rooms, r1499.Rooms, n.NPCs
 	Local i%
 	
 	If I_1499\Using = 0 And PlayerRoom\RoomTemplate\RoomID = r_dimension_1499
@@ -10514,7 +10514,7 @@ Function UpdateLeave1499%()
 				If I_1499\PrevRoom\RoomTemplate\RoomID = r_room3_storage And InFacility = LowerFloor
 					For i = 0 To 3
 						PlayerRoom\NPC[i]\State = 2.0
-						PositionEntity(PlayerRoom\NPC[i]\Collider, EntityX(PlayerRoom\Objects[PlayerRoom\NPC[i]\State2], True), EntityY(PlayerRoom\Objects[PlayerRoom\NPC[i]\State2], True) + 0.2, EntityZ(PlayerRoom\Objects[PlayerRoom\NPC[i]\State2], True))
+						PositionEntity(PlayerRoom\NPC[i]\Collider, EntityX(PlayerRoom\Objects[PlayerRoom\NPC[i]\State2], True), EntityY(PlayerRoom\Objects[PlayerRoom\NPC[i]\State2], True) + 0.1, EntityZ(PlayerRoom\Objects[PlayerRoom\NPC[i]\State2], True))
 						ResetEntity(PlayerRoom\NPC[i]\Collider)
 						PlayerRoom\NPC[i]\State2 = PlayerRoom\NPC[i]\State2 + 1.0
 						If PlayerRoom\NPC[i]\State2 > PlayerRoom\NPC[i]\PrevState Then PlayerRoom\NPC[i]\State2 = (PlayerRoom\NPC[i]\PrevState - 3)
@@ -10536,6 +10536,12 @@ Function UpdateLeave1499%()
 							ResetEntity(it\Collider)
 							Exit
 						EndIf
+					EndIf
+				Next
+				For n.NPCs = Each NPCs
+					If (Not n\IsDead)
+						PositionEntity(n\Collider, EntityX(n\Collider, True), EntityY(n\Collider, True) + 0.1, EntityZ(n\Collider, True), True)
+						ResetEntity(n\Collider)
 					EndIf
 				Next
 				r1499 = Null
