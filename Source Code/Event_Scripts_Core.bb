@@ -5825,6 +5825,8 @@ Function UpdateEvent_Room2_Servers_HCZ%(e.Events)
 				If e\Sound <> 0 Then FreeSound_Strict(e\Sound) : e\Sound = 0
 			EndIf
 			
+			Local s.Screens
+			
 			For s.Screens = Each Screens
 				If s\room\RoomTemplate\RoomID <> r_gate_b Then s\Display096 = True
 			Next

@@ -2746,7 +2746,10 @@ Function InteractObject%(OBJ%, Dist#, MouseType% = 0)
 			Select MouseType
 				Case 0
 					;[Block]
-					If mo\MouseHit1 Then Return(True)
+					If mo\MouseHit1
+						pm\AnimID = PLAYER_ANIM_INTERACT + me\Crouch
+						Return(True)
+					EndIf
 					;[End Block]
 				Case 1
 					;[Block]
@@ -2807,34 +2810,13 @@ Function RefillCup%()
 	EndIf
 End Function
 
-; ~ Player body animation constants
-;[Block]
-Const PLAYER_ANIM_IDLE% = 1
-Const PLAYER_ANIM_CROUCH_IDLE% = 2
-
-Const PLAYER_ANIM_WALK% = 3
-Const PLAYER_ANIM_RUN% = 4
-Const PLAYER_ANIM_CROUCH_WALK% = 5
-
-Const PLAYER_ANIM_WALK_STRAFE_RIGHT% = 6
-Const PLAYER_ANIM_WALK_STRAFE_LEFT% = 7
-
-Const PLAYER_ANIM_RUN_STRAFE_RIGHT% = 8
-Const PLAYER_ANIM_RUN_STRAFE_LEFT% = 9
-
-Const PLAYER_ANIM_CROUCH_WALK_STRAFE_RIGHT% = 10
-Const PLAYER_ANIM_CROUCH_WALK_STRAFE_LEFT% = 11
-
-Const PLAYER_ANIM_NOCLIP% = 12
-;[End Block]
-
 Function UpdatePlayerModel%()
 	If (Not me\Terminated) And me\FallTimer >= 0.0
 		If EntityHidden(pm\OBJ) Then ShowEntity(pm\OBJ)
 		PositionEntity(pm\Pivot, EntityX(Camera), EntityY(Camera) - 0.87, EntityZ(Camera))
 		RotateEntity(pm\Pivot, 0.0, EntityYaw(Camera), 0.0, True)
 		
-		If AnimSeq(pm\OBJ) <> pm\AnimID And me\Playable <> 1 Then Animate(pm\OBJ, 1, pm\AnimationSpeed[pm\AnimID], pm\AnimID, 15.0)
+		If AnimSeq(pm\OBJ) <> pm\AnimID And me\Playable <> 1 Then Animate(pm\OBJ, pm\AnimationMode[pm\AnimID], pm\AnimationSpeed[pm\AnimID], pm\AnimID, pm\AnimationTransition[pm\AnimID])
 	ElseIf (Not EntityHidden(pm\OBJ))
 		HideEntity(pm\OBJ)
 	EndIf
@@ -3004,7 +2986,11 @@ Function UpdateMoving%()
 			Temp = False
 			If me\Playable = 2 And me\FallTimer >= 0.0 And (Not me\Terminated)
 				If (Not me\Zombie)
-					pm\AnimID = PLAYER_ANIM_IDLE + me\Crouch
+					If pm\AnimID > PLAYER_ANIM_NOCLIP
+						If AnimTime(pm\OBJ) >= AnimLength(pm\OBJ) - 0.1 Then pm\AnimID = PLAYER_ANIM_IDLE + me\Crouch
+					Else
+						pm\AnimID = PLAYER_ANIM_IDLE + me\Crouch
+					EndIf
 					If Sprint > 0.0
 						If KeyDown(key\MOVEMENT_DOWN)
 							If (Not KeyDown(key\MOVEMENT_UP))
