@@ -368,6 +368,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 					If n\NPCType = n2\NPCType Then i = i + 1
 				EndIf
 			Next
+			n\CollRadius = 0.17
 			n\NVGName = "SCP-966-" + i
 			n\Speed = IniGetFloat(NPCsFile, "SCP-966", "Speed") / 100.0
 			
