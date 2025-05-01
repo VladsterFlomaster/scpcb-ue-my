@@ -895,9 +895,16 @@ Function UpdateNPCs%()
 									EndIf
 								Next
 								
-								If (forest_event <> Null And forest_event\room = PlayerRoom And forest_event\EventState = 1.0) Lor (n\CurrentRoom <> Null And (n\CurrentRoom = PlayerRoom Lor IsRoomAdjacent(n\CurrentRoom, PlayerRoom)))
-									UpdateGravity = True
+								If n\CurrentRoom <> Null
+									If n\CurrentRoom = PlayerRoom Lor IsRoomAdjacent(n\CurrentRoom, PlayerRoom) Then UpdateGravity = True
+									For i = 0 To MaxRoomAdjacents - 1
+										If IsRoomAdjacent(n\CurrentRoom, PlayerRoom\Adjacent[i])
+											UpdateGravity = True
+											Exit
+										EndIf
+									Next
 								EndIf
+								If (forest_event <> Null And forest_event\room = PlayerRoom And forest_event\EventState = 1.0) Then UpdateGravity = True
 							Else
 								UpdateGravity = True
 							EndIf
