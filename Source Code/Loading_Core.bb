@@ -2179,6 +2179,10 @@ Function LoadWayPoints%(LoadingStart% = 55)
 	Local Dist#, Dist2#
 	
 	For d.Doors = Each Doors
+		Local DoorX# = EntityX(d\FrameOBJ, True)
+		Local DoorY# = EntityY(d\FrameOBJ, True)
+		Local DoorZ# = EntityZ(d\FrameOBJ, True)
+		
 		If (Not d\DisableWaypoint)
 			If d\DoorType = BIG_DOOR
 				d\DoorColl = CopyEntity(d_I\BigDoorColl)
@@ -2186,7 +2190,7 @@ Function LoadWayPoints%(LoadingStart% = 55)
 				d\DoorColl = CopyEntity(d_I\DoorColl)
 			EndIf
 			ScaleEntity(d\DoorColl, RoomScale, RoomScale, RoomScale)
-			PositionEntity(d\DoorColl, EntityX(d\FrameOBJ, True), EntityY(d\FrameOBJ, True), EntityZ(d\FrameOBJ, True), True)
+			PositionEntity(d\DoorColl, DoorX, DoorY, DoorZ, True)
 			RotateEntity(d\DoorColl, 0.0, EntityYaw(d\FrameOBJ, True), 0.0)
 			EntityPickMode(d\DoorColl, 2)
 		EndIf
@@ -2199,9 +2203,9 @@ Function LoadWayPoints%(LoadingStart% = 55)
 			ClosestRoom.Rooms = Null
 			Dist = 30.0
 			For r.Rooms = Each Rooms
-				x = Abs(EntityX(r\OBJ, True) - EntityX(d\FrameOBJ, True))
+				x = Abs(EntityX(r\OBJ, True) - DoorX)
 				If x < 20.0
-					z = Abs(EntityZ(r\OBJ, True) - EntityZ(d\FrameOBJ, True))
+					z = Abs(EntityZ(r\OBJ, True) - DoorZ)
 					If z < 20.0
 						Dist2 = PowTwo(x) + PowTwo(z)
 						If Dist2 < Dist
@@ -2214,7 +2218,7 @@ Function LoadWayPoints%(LoadingStart% = 55)
 		Else
 			ClosestRoom = d\room
 		EndIf
-		If (Not d\DisableWaypoint) And d\DoorType <> WOODEN_DOOR Then CreateWaypoint(d, ClosestRoom, EntityX(d\FrameOBJ, True), EntityY(d\FrameOBJ, True) + 0.18, EntityZ(d\FrameOBJ, True))
+		If (Not d\DisableWaypoint) And d\DoorType <> WOODEN_DOOR Then CreateWaypoint(d, ClosestRoom, DoorX, DoorY + 0.18, DoorZ)
 	Next
 	
 	Local Amount% = 0
