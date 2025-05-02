@@ -9,9 +9,9 @@ Global SMALLEST_POWER_TWO_HALF#
 Function CreateQuad%()
 	Local Quad% = CreateMesh()
 	Local SF% = CreateSurface(Quad)
-	Local v0% = AddVertex(SF, -1.0,  1.0, 0.0, 0.0, 0.0)
-	Local v1% = AddVertex(SF,  1.0,  1.0, 0.0, 1.0, 0.0)
-	Local v2% = AddVertex(SF,  1.0, -1.0, 0.0, 1.0, 1.0)
+	Local v0% = AddVertex(SF, -1.0, 1.0, 0.0, 0.0, 0.0)
+	Local v1% = AddVertex(SF, 1.0, 1.0, 0.0, 1.0, 0.0)
+	Local v2% = AddVertex(SF, 1.0, -1.0, 0.0, 1.0, 1.0)
 	Local v3% = AddVertex(SF, -1.0, -1.0, 0.0, 0.0, 1.0)
 	
 	AddTriangle(SF, v0, v1, v2)
