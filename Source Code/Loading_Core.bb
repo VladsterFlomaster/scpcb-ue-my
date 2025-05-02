@@ -128,7 +128,7 @@ Const PARTICLE_LEAF% = 10
 Const PARTICLE_CONCRETE% = 11
 ;[End Block]
 
-Global ParticleEffect%[29]
+Global ParticleEffect%[30]
 
 Function LoadParticles%()
 	p_I.ParticleInstance = New ParticleInstance
@@ -506,6 +506,18 @@ Function LoadParticles%()
 	SetTemplateAlphaVel(ParticleEffect[28], True)
 	SetTemplateSize(ParticleEffect[28], 0.14, 0.14, 1.0, 1.0)
 	SetTemplateSizeVel(ParticleEffect[28], 0.011, 1.01)
+	
+	; ~ Water rings in "room2_js"
+	ParticleEffect[29] = CreateTemplate()
+	SetTemplateEmitterBlend(ParticleEffect[29], 1)
+	SetTemplateEmitterLifeTime(ParticleEffect[29], 1)
+	SetTemplateParticleLifeTime(ParticleEffect[29], 60, 70)
+	SetTemplateTexture(ParticleEffect[29], PARTICLE_WATER_RING)
+	SetTemplateOffset(ParticleEffect[29], 0.0, 0.0, 0.3, 0.3, 0.0, 0.0)
+	SetTemplateSize(ParticleEffect[29], 0.05, 0.05, 1.0, 1.0)
+	SetTemplateSizeVel(ParticleEffect[29], 0.001, 1.7)
+	SetTemplateFixAngles(ParticleEffect[29], 90, 0)
+	SetTemplateAlphaVel(ParticleEffect[29], True)
 End Function
 
 Function RemoveParticleInstances%()
