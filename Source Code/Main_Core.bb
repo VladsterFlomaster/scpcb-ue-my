@@ -5267,6 +5267,7 @@ Function UpdateGUI%()
 						If me\Deaf Then Kill(True)
 						me\DeafTimer = 70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors))
 						me\Deaf = True
+						me\CameraShake = 4.0
 						If n_I\Curr049 <> Null
 							If EntityDistanceSquared(n_I\Curr049\Collider, me\Collider) < 64.0 Then n_I\Curr049\State = 6.0
 						EndIf
