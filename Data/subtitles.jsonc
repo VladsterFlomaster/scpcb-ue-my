@@ -2154,6 +2154,13 @@
 			"color": "mtf"
 		}
 	],
+		"SFX\\Character\\MTF\\OMFG.ogg": [
+		{
+			"text": "OH MY FUCKING GOD!",
+			"delay": 0.09,
+			"color": "mtf"
+		}
+	],
 	"SFX\\Character\\MTF\\049_2\\Spotted.ogg": [
 		{
 			"text": "Nine-Tailed Fox to control, an active SCP-049-2 instance detected.",

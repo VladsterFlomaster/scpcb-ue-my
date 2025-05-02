@@ -245,10 +245,24 @@ Function UpdateNPCType008_1_Surgeon%(n.NPCs)
 					EndIf
 				EndIf
 				;[End Block]
+			Case 5.0 ; ~ Stunned
+				;[Block]
+				If n\LastSeen = 0.0
+					AnimateNPC(n, 59.0, 44.0, -0.2, False)
+					If n\Frame < 44.1 Then n\LastSeen = 1.0
+				Else
+					AnimateNPC(n, 44.0, 59.0, 0.1, False)
+					If n\Frame > 58.9
+						n\State = 3.0
+						n\LastSeen = 0.0
+						Return
+					EndIf
+				EndIf
+				;[End Block]
 		End Select
 		
 		; ~ Loop the breath sound
-		If n\State > 1.0 And n\State < 5.0 Then n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_008_1_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True)
+		If n\State > 1.0 And n\State < 6.0 Then n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_008_1_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True)
 		If n\HP =< 0 Then n\IsDead = True
 	Else
 		AnimateNPC(n, 344.0, 363.0, 0.5, False)
@@ -523,10 +537,24 @@ Function UpdateNPCType008_1%(n.NPCs)
 					EndIf
 				EndIf
 				;[End Block]
+			Case 5.0 ; ~ Stunned
+				;[Block]
+				If n\LastSeen = 0.0
+					AnimateNPC(n, 62.0, 44.0, -0.2, False)
+					If n\Frame < 44.1 Then n\LastSeen = 1.0
+				Else
+					AnimateNPC(n, 44.0, 62.0, 0.1, False)
+					If n\Frame > 61.9
+						n\State = 3.0
+						n\LastSeen = 0.0
+						Return
+					EndIf
+				EndIf
+				;[End Block]
 		End Select
 		
 		; ~ Loop the breath sound
-		If n\State > 1.0 And n\State < 5.0 Then n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_008_1_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True)
+		If n\State > 1.0 And n\State < 6.0 Then n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_008_1_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True)
 		If n\HP =< 0 Then n\IsDead = True
 	Else
 		AnimateNPC(n, 201.0, 347.0, 0.5, False)
@@ -1348,6 +1376,20 @@ Function UpdateNPCType049_2%(n.NPCs)
 					If n\Target\IsDead
 						n\State = 3.0
 						n\Target = Null
+					EndIf
+				EndIf
+				;[End Block]
+			Case 5.0 ; ~ Stunned
+				;[Block]
+				If n\LastSeen = 0.0
+					AnimateNPC(n, 944.0, 960.0, 0.13, False)
+					If n\Frame > 959.9 Then n\LastSeen = 1.0
+				Else
+					AnimateNPC(n, 960.0, 944.0, -0.13, False)
+					If n\Frame < 944.1
+						n\LastSeen = 0.0
+						n\State = 3.0
+						Return
 					EndIf
 				EndIf
 				;[End Block]
@@ -3060,8 +3102,8 @@ Function UpdateNPCType860_2%(n.NPCs)
 				ShowEntity(n\Collider)
 			EndIf
 			
-			Angle = CurveAngle(Find860Angle(n, fr), EntityYaw(n\Collider) + 90.0, 40.0)
-			
+			n\LastSeen = Max(0.0, n\LastSeen - fps\Factor[0])
+			Angle = CurveAngle(Find860Angle(n, fr) + (180.0 * (n\LastSeen > 0.0)), EntityYaw(n\Collider) + 90.0, 40.0)
 			RotateEntity(n\Collider, 0.0, Angle - 90.0, 0.0, True)
 			
 			; ~ If close enough to attack or already attacking, play the attack anim
@@ -3258,6 +3300,11 @@ Function UpdateNPCType939%(n.NPCs)
 			Else
 				AnimateNPC(n, 464.0, 473.0, 0.5, False)
 			EndIf
+			;[End Block]
+		Case 6.0 ; ~ Stun
+			;[Block]
+			AnimateNPC(n, 474.0, 643.0, 0.5, False)
+			If n\Frame > 642.9 Then n\State = 2.0
 			;[End Block]
 	End Select
 	
@@ -5151,9 +5198,10 @@ Const MTF_FOLLOW_PATH% = 3
 Const MTF_049_066_106_SPOTTED% = 4
 Const MTF_LOOKING_AT_SOME_TARGET% = 5
 Const MTF_SHOOTING_AT_PLAYER% = 6
-Const MTF_096_SPOTTED% = 8
-Const MTF_ZOMBIES_SPOTTED% = 9
-Const MTF_DISABLING_TESLA% = 11
+Const MTF_096_SPOTTED% = 7
+Const MTF_ZOMBIES_SPOTTED% = 8
+Const MTF_DISABLING_TESLA% = 9
+Const MTF_STATE_STUNNED% = 10
 ;[End Block]
 
 Function UpdateNPCTypeMTF%(n.NPCs)
@@ -6602,6 +6650,21 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 					n\State3 = 0.0
 					n\State = MTF_WANDERING_AROUND
 					Return
+				EndIf
+				;[End Block]
+			Case MTF_STATE_STUNNED
+				;[Block]
+				If n\LastSeen = 0.0
+					AnimateNPC(n, 1050.0, 1060.0, 0.13, False)
+					If n\Frame > 1059.9 Then n\LastSeen = 1.0
+				Else
+					AnimateNPC(n, 1060.0, 1050.0, -0.13, False)
+					If n\Frame < 1050.1
+						n\State = n\PrevState
+						n\LastSeen = 0.0
+						n\PrevState = 0
+						Return
+					EndIf
 				EndIf
 				;[End Block]
 		End Select
