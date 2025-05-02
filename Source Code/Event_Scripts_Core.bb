@@ -9557,12 +9557,15 @@ Function UpdateEvent_Brownout%(e.Events)
 				PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\Objects[0], 8.0, 0.6)
 			EndIf
 			
+			Local x% = UpdateLever(e\room\RoomLevers[1]\OBJ) ; ~ Fuel pump
+			Local y% = UpdateLever(e\room\RoomLevers[0]\OBJ) ; ~ Generator
+			
 			; ~ Fuel pump on
-			If UpdateLever(e\room\RoomLevers[1]\OBJ) ; ~ Fuel pump
+			If x
 				e\EventState2 = Min(1.0, e\EventState2 + fps\Factor[0] / 350.0)
 				
 				; ~ Generator on
-				If UpdateLever(e\room\RoomLevers[0]\OBJ) ; ~ Generator
+				If y
 					If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Room\GeneratorOn.ogg")
 					e\EventState = Min(1.0, e\EventState + fps\Factor[0] / 450.0)
 				Else
