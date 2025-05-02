@@ -3421,6 +3421,7 @@ Function NullGame%(PlayButtonSFX% = True)
 	
 	StopMouseMovement()
 	KillSounds(False)
+	opt\MasterVolume = opt\PrevMasterVolume
 	If PlayButtonSFX Then PlaySound_Strict(ButtonSFX[0])
 	
 	RandomSeed = ""

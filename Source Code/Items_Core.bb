@@ -58,126 +58,125 @@ Const it_scp500pilldeath% = 21
 Const it_pill = 22
 
 Const it_scp513% = 23
+Const it_fine513% = 24
 
-Const it_scp714% = 24
-Const it_coarse714% = 25
-Const it_fine714% = 26
-Const it_ring% = 27
+Const it_scp714% = 25
+Const it_coarse714% = 26
+Const it_fine714% = 27
+Const it_ring% = 28
 
-Const it_scp860% = 28
-Const it_fine860% = 29
+Const it_scp860% = 29
+Const it_fine860% = 30
 
-Const it_scp1025% = 30
-Const it_fine1025% = 31
-Const it_book% = 32
+Const it_scp1025% = 31
+Const it_fine1025% = 32
+Const it_book% = 33
 
-Const it_scp1123% = 33
+Const it_scp1123% = 34
 
-Const it_scp1499% = 34
-Const it_fine1499% = 35
+Const it_scp1499% = 35
+Const it_fine1499% = 36
 
-Const it_scp2022% = 36
-Const it_scp2022pill% = 37
+Const it_scp2022% = 37
+Const it_scp2022pill% = 38
 ;[End Block]
 
 ; ~ [MISC ITEMS]
 ;[Block]
-Const it_helmet% = 38
+Const it_helmet% = 39
 
-Const it_vest% = 39
-Const it_corrvest% = 40
-Const it_finevest% = 41
-Const it_veryfinevest% = 42
+Const it_vest% = 40
+Const it_corrvest% = 41
+Const it_finevest% = 42
+Const it_veryfinevest% = 43
 
-Const it_cup% = 43
-Const it_emptycup% = 44
+Const it_cup% = 44
+Const it_emptycup% = 45
 
-Const it_clipboard% = 45
-Const it_wallet% = 46
+Const it_clipboard% = 46
+Const it_wallet% = 47
 
-Const it_electronics% = 47
+Const it_electronics% = 48
 
-Const it_eyedrops% = 48
-Const it_eyedrops2% = 49
-Const it_fineeyedrops% = 50
-Const it_veryfineeyedrops% = 51
+Const it_eyedrops% = 49
+Const it_eyedrops2% = 50
+Const it_fineeyedrops% = 51
+Const it_veryfineeyedrops% = 52
 
-Const it_firstaid% = 52
-Const it_firstaid2% = 53
-Const it_finefirstaid% = 54
-Const it_veryfinefirstaid% = 55
+Const it_firstaid% = 53
+Const it_firstaid2% = 54
+Const it_finefirstaid% = 55
+Const it_veryfinefirstaid% = 56
 
-Const it_gasmask% = 56
-Const it_finegasmask% = 57
-Const it_veryfinegasmask% = 58
-Const it_gasmask148% = 59
+Const it_gasmask% = 57
+Const it_finegasmask% = 58
+Const it_veryfinegasmask% = 59
+Const it_gasmask148% = 60
 
-Const it_hazmatsuit% = 60
-Const it_finehazmatsuit% = 61
-Const it_veryfinehazmatsuit% = 62
-Const it_hazmatsuit148% = 63
+Const it_hazmatsuit% = 61
+Const it_finehazmatsuit% = 62
+Const it_veryfinehazmatsuit% = 63
+Const it_hazmatsuit148% = 64
 
-Const it_nvg% = 64
-Const it_finenvg% = 65
-Const it_veryfinenvg% = 66
-Const it_scramble% = 67
-Const it_finescramble% = 68
+Const it_nvg% = 65
+Const it_finenvg% = 66
+Const it_veryfinenvg% = 67
+Const it_scramble% = 68
+Const it_finescramble% = 69
 
-Const it_radio% = 69
-Const it_18vradio% = 70
-Const it_fineradio% = 71
-Const it_veryfineradio% = 72
+Const it_radio% = 70
+Const it_18vradio% = 71
+Const it_fineradio% = 72
+Const it_veryfineradio% = 73
 
-Const it_nav% = 73
-Const it_nav300% = 74
-Const it_nav310% = 75
-Const it_navulti% = 76
+Const it_nav% = 74
+Const it_nav300% = 75
+Const it_nav310% = 76
+Const it_navulti% = 77
 
-Const it_e_reader% = 77
-Const it_e_reader20% = 78
-Const it_e_readerulti% = 79
+Const it_e_reader% = 78
+Const it_e_reader20% = 79
+Const it_e_readerulti% = 80
 
-Const it_bat% = 80
-Const it_coarsebat% = 81
-Const it_finebat% = 82
-Const it_veryfinebat% = 83
-Const it_killbat% = 84
+Const it_bat% = 81
+Const it_coarsebat% = 82
+Const it_finebat% = 83
+Const it_veryfinebat% = 84
+Const it_killbat% = 85
 
-Const it_syringe% = 85
-Const it_finesyringe% = 86
-Const it_veryfinesyringe% = 87
-Const it_syringeinf% = 88
+Const it_syringe% = 86
+Const it_finesyringe% = 87
+Const it_veryfinesyringe% = 88
+Const it_syringeinf% = 89
 ;[End Block]
 
 ; ~ [KEYCARDS, HANDS, KEYS, CARDS, COINS]
 ;[Block]
-Const it_key0% = 89
-Const it_key1% = 90
-Const it_key2% = 91
-Const it_key3% = 92
-Const it_key4% = 93
-Const it_key5% = 94
-Const it_key6% = 95
-Const it_keyomni% = 96
+Const it_key0% = 90
+Const it_key1% = 91
+Const it_key2% = 92
+Const it_key3% = 93
+Const it_key4% = 94
+Const it_key5% = 95
+Const it_key6% = 96
+Const it_keyomni% = 97
 
-Const it_mastercard% = 97
-Const it_mastercard_golden% = 98
-Const it_playcard% = 99
+Const it_mastercard% = 98
+Const it_mastercard_golden% = 99
+Const it_playcard% = 100
 
-Const it_hand% = 100
-Const it_hand2% = 101
-Const it_hand3% = 102
+Const it_hand% = 101
+Const it_hand2% = 102
+Const it_hand3% = 103
 
-Const it_key_yellow% = 103
-Const it_key_white% = 104
-Const it_lostkey% = 105
+Const it_key_yellow% = 104
+Const it_key_white% = 105
+Const it_lostkey% = 106
 
-Const it_25ct% = 106
-Const it_coin% = 107
+Const it_25ct% = 107
+Const it_coin% = 108
 
-Const it_pizza% = 108
-Const it_fine513% = 109
-
+Const it_pizza% = 109
 ;[End Block]
 ;[End Block]
 
