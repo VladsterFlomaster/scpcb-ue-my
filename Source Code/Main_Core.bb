@@ -5276,6 +5276,7 @@ Function UpdateGUI%()
 									Case NPCType008_1, NPCType008_1_Surgeon
 										;[Block]
 										SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
+										np\LastSeen = 0.0
 										np\State = 5.0
 										;[End Block]
 									Case NPCType049
@@ -5286,6 +5287,7 @@ Function UpdateGUI%()
 									Case NPCType049_2
 										;[Block]
 										SetNPCFrame(np, 944.0)
+										np\LastSeen = 0.0
 										np\State = 5.0
 										;[End Block]
 									Case NPCType860_2

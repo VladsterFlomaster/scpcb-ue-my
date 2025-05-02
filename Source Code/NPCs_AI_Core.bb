@@ -245,13 +245,13 @@ Function UpdateNPCType008_1_Surgeon%(n.NPCs)
 					EndIf
 				EndIf
 				;[End Block]
-			Case 5.0 ; ~ Stunned
+			Case 5.0 ; ~ Stunned by Fine SCP-513
 				;[Block]
 				If n\LastSeen = 0.0
-					AnimateNPC(n, 59.0, 44.0, -0.2, False)
+					AnimateNPC(n, 59.0, 44.0, -0.3, False)
 					If n\Frame < 44.1 Then n\LastSeen = 1.0
 				Else
-					AnimateNPC(n, 44.0, 59.0, 0.1, False)
+					AnimateNPC(n, 44.0, 59.0, 0.04, False)
 					If n\Frame > 58.9
 						n\State = 3.0
 						n\LastSeen = 0.0
@@ -537,13 +537,13 @@ Function UpdateNPCType008_1%(n.NPCs)
 					EndIf
 				EndIf
 				;[End Block]
-			Case 5.0 ; ~ Stunned
+			Case 5.0 ; ~ Stunned by Fine SCP-513
 				;[Block]
 				If n\LastSeen = 0.0
-					AnimateNPC(n, 62.0, 44.0, -0.2, False)
+					AnimateNPC(n, 62.0, 44.0, -0.3, False)
 					If n\Frame < 44.1 Then n\LastSeen = 1.0
 				Else
-					AnimateNPC(n, 44.0, 62.0, 0.1, False)
+					AnimateNPC(n, 44.0, 62.0, 0.04, False)
 					If n\Frame > 61.9
 						n\State = 3.0
 						n\LastSeen = 0.0
@@ -1379,13 +1379,13 @@ Function UpdateNPCType049_2%(n.NPCs)
 					EndIf
 				EndIf
 				;[End Block]
-			Case 5.0 ; ~ Stunned
+			Case 5.0 ; ~ Stunned by Fine SCP-513
 				;[Block]
 				If n\LastSeen = 0.0
-					AnimateNPC(n, 944.0, 960.0, 0.13, False)
+					AnimateNPC(n, 944.0, 960.0, 0.3, False)
 					If n\Frame > 959.9 Then n\LastSeen = 1.0
 				Else
-					AnimateNPC(n, 960.0, 944.0, -0.13, False)
+					AnimateNPC(n, 960.0, 944.0, -0.04, False)
 					If n\Frame < 944.1
 						n\LastSeen = 0.0
 						n\State = 3.0
