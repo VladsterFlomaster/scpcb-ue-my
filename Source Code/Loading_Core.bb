@@ -1311,6 +1311,7 @@ Function LoadItems%()
 	EntityColor(it\OBJ, 255.0, 255.0, 255.0)
 	
 	CreateItemTemplate("SCP-513", "SCP-513", it_scp513, "scp_513.b3d", "INV_scp_513.png", "", 0.1, 2)
+	CreateItemTemplate("SCP-513", "Fine SCP-513", it_fine513, "scp_513.b3d", "INV_scp_513.png", "", 0.1, 2)
 	
 	it.ItemTemplates = CreateItemTemplate("SCP-714", "SCP-714", it_scp714, "scp_714.b3d", "INV_scp_714.png", "", 0.2, 3)
 	EntityColor(it\OBJ, 125.0, 200.0, 125.0)

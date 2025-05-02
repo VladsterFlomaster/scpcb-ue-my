@@ -1081,6 +1081,16 @@ Function UpdateNPCType049%(n.NPCs)
 					If n\Frame > 1223.9 Then n\State = 2.0
 				EndIf
 				;[End Block]
+			Case 6.0 ; ~ Stunned by Fine SCP-513
+				;[Block]
+				If n\Frame < 1120.0
+					SetNPCFrame(n, 1121.0)
+				Else
+					AnimateNPC(n, 1121.0, 1224.0, 0.4, False)
+					
+					If n\Frame > 1223.9 Then n\State = 2.0
+				EndIf
+				;[End Block]
 		End Select
 		n\LastSeen = Max(n\LastSeen - fps\Factor[0], 0.0)
 	EndIf

@@ -5253,13 +5253,22 @@ Function UpdateGUI%()
 						SelectedItem = Null
 					EndIf
 					;[End Block]
-				Case it_scp513
+				Case it_scp513, it_fine513
 					;[Block]
 					PlaySound_Strict(LoadTempSound("SFX\SCP\513\Bell.ogg"))
 					
 					GiveAchievement("513")
 					
 					If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
+					
+					If SelectedItem\ItemTemplate\ID = it_fine513
+						If me\Deaf Then Kill(True)
+						me\DeafTimer = 70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors))
+						me\Deaf = True
+						If n_I\Curr049 <> Null
+							If EntityDistanceSquared(n_I\Curr049\Collider, me\Collider) < 64.0 Then n_I\Curr049\State = 6.0
+						EndIf
+					EndIf
 					SelectedItem = Null
 					;[End Block]
 				Case it_scp500pill

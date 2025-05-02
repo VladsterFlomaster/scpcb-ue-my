@@ -176,6 +176,8 @@ Const it_25ct% = 106
 Const it_coin% = 107
 
 Const it_pizza% = 108
+Const it_fine513% = 109
+
 ;[End Block]
 ;[End Block]
 
@@ -2136,7 +2138,7 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[End Block]
 			End Select
 			;[End Block]
-		Case it_scp513
+		Case it_scp513, it_fine513
 			;[Block]
 			Select Setting
 				Case ROUGH, COARSE
@@ -2147,9 +2149,13 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					Next
 					MakeDecal = True
 					;[End Block]
-				Case ONETOONE, FINE, VERYFINE
+				Case ONETOONE
 					;[Block]
-					it2.Items = CreateItem("SCP-513", it_scp513, x, y, z)
+					Remove = False
+					;[End Block]
+				Case FINE, VERYFINE
+					;[Block]
+					it2.Items = CreateItem("Fine SCP-513", it_fine513, x, y, z)
 					;[End Block]
 			End Select
 			;[End Block]
