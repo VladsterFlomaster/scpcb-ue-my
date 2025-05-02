@@ -9813,7 +9813,7 @@ Function Update409%()
 		EntityAlpha(t\OverlayID[7], Min((PowTwo(I_409\Timer * 0.2)) / 1000.0, 0.5))
 		EntityColor(pm\OBJ, Max(100.0, 255.0 - (I_409\Timer * 1.56)), Max(230.0, 255.0 - I_409\Timer), Max(240.0, 255.0 - I_409\Timer))
 		If I_409\Revert
-			If I_409\Timer <= 40.0 And PrevI409Timer > 40.0
+			If I_409\Timer <= 35.0 And PrevI409Timer > 35.0
 				CreateMsg(GetLocalString("msg", "409legs_1"))
 			ElseIf I_409\Timer <= 55.0 And PrevI409Timer > 55.0
 				CreateMsg(GetLocalString("msg", "409abdomen_1"))
@@ -9823,7 +9823,7 @@ Function Update409%()
 				CreateMsg(GetLocalString("msg", "409head_1"))
 			EndIf
 		Else
-			If I_409\Timer > 40.0 And PrevI409Timer <= 40.0
+			If I_409\Timer > 35.0 And PrevI409Timer <= 35.0
 				CreateMsg(GetLocalString("msg", "409legs_2"))
 				PlaySound_Strict(LoadTempSound("SFX\SCP\409\Crackling0.ogg"))
 			ElseIf I_409\Timer > 55.0 And PrevI409Timer <= 55.0
@@ -9848,7 +9848,7 @@ Function Update409%()
 				me\CameraShake = 3.0
 			EndIf
 		EndIf
-		If I_409\Timer >= 40.0
+		If I_409\Timer >= 35.0
 			me\StaminaEffect = 1.2
 			me\StaminaEffectTimer = 1.0
 			me\StaminaMax = 60.0
