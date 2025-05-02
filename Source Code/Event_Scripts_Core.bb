@@ -5172,7 +5172,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iY < MTGridSize - 1
 							If e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5181,7 +5181,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]\connected[i] = Null
@@ -5195,7 +5195,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iY > 0
 							If e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5204,7 +5204,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5218,7 +5218,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iX > 0
 							If e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY*MTGridSize)]\connected[i] = Null
@@ -5227,7 +5227,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5241,7 +5241,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iX < MTGridSize - 1
 							If e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5250,7 +5250,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5275,7 +5275,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 			For wayp.WayPoints = Each WayPoints
 				If wayp\room = e\room
 					If opt\DebugMode
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If wayp\connected[i] <> Null
 								Local tLine% = CreateLine(EntityX(wayp\OBJ, True), EntityY(wayp\OBJ, True), EntityZ(wayp\OBJ, True), EntityX(wayp\connected[i]\OBJ, True), EntityY(wayp\connected[i]\OBJ, True), EntityZ(wayp\connected[i]\OBJ, True))
 								
@@ -5399,7 +5399,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iY < MTGridSize - 1
 							If e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5408,7 +5408,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + ((iY + 1) * MTGridSize)]\connected[i] = Null
@@ -5422,7 +5422,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iY > 0
 							If e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5431,7 +5431,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + ((iY - 1) * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5445,7 +5445,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iX > 0
 							If e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5454,7 +5454,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX - 1 + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5468,7 +5468,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						If iX < MTGridSize - 1
 							If e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)] <> Null
 								Dist = EntityDistance(e\room\mt\waypoints[iX + (iY * MTGridSize)]\OBJ, e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)]\OBJ)
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5477,7 +5477,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 										Exit
 									EndIf
 								Next
-								For i = 0 To 3
+								For i = 0 To MaxConnectedWaypoints - 1
 									If e\room\mt\waypoints[iX + 1 + (iY * MTGridSize)]\connected[i] = e\room\mt\waypoints[iX + (iY * MTGridSize)]
 										Exit
 									ElseIf e\room\mt\waypoints[iX + (iY * MTGridSize)]\connected[i] = Null
@@ -5499,7 +5499,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 			For wayp.WayPoints = Each WayPoints
 				If wayp\room = e\room
 					If opt\DebugMode
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If wayp\connected[i] <> Null
 								tLine = CreateLine(EntityX(wayp\OBJ, True), EntityY(wayp\OBJ, True), EntityZ(wayp\OBJ, True), EntityX(wayp\connected[i]\OBJ, True), EntityY(wayp\connected[i]\OBJ, True), EntityZ(wayp\connected[i]\OBJ, True))
 								

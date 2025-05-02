@@ -2727,7 +2727,7 @@ Function UpdateNPCType513_1%(n.NPCs)
 				Else
 					Local i%
 					
-					For i = 0 To 3
+					For i = 0 To MaxConnectedWaypoints - 1
 						If n\Path[0]\connected[i] <> Null
 							If EntityDistanceSquared(me\Collider, n\Path[0]\connected[i]\OBJ) > Dist
 								If n\LastSeen = 0

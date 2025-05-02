@@ -2324,7 +2324,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 				If y < MTGridSize - 1
 					If r\mt\waypoints[x + ((y + 1) * MTGridSize)] <> Null
 						Dist = EntityDistance(r\mt\waypoints[x + (y * MTGridSize)]\OBJ, r\mt\waypoints[x + ((y + 1) * MTGridSize)]\OBJ)
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = r\mt\waypoints[x + ((y + 1) * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2333,7 +2333,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 								Exit
 							EndIf
 						Next
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + ((y + 1) * MTGridSize)]\connected[i] = r\mt\waypoints[x + (y * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + ((y + 1) * MTGridSize)]\connected[i] = Null
@@ -2347,7 +2347,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 				If y > 0
 					If r\mt\waypoints[x + ((y - 1) * MTGridSize)] <> Null
 						Dist = EntityDistance(r\mt\waypoints[x + (y * MTGridSize)]\OBJ, r\mt\waypoints[x + ((y - 1) * MTGridSize)]\OBJ)
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = r\mt\waypoints[x + ((y - 1) * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2356,7 +2356,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 								Exit
 							EndIf
 						Next
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + ((y - 1) * MTGridSize)]\connected[i] = r\mt\waypoints[x + (y * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2370,7 +2370,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 				If x > 0
 					If r\mt\waypoints[x - 1 + (y * MTGridSize)] <> Null
 						Dist = EntityDistance(r\mt\waypoints[x + (y * MTGridSize)]\OBJ, r\mt\waypoints[x - 1 + (y * MTGridSize)]\OBJ)
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = r\mt\waypoints[x - 1 + (y * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2379,7 +2379,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 								Exit
 							EndIf
 						Next
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x - 1 + (y * MTGridSize)]\connected[i] = r\mt\waypoints[x + (y * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2393,7 +2393,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 				If x < MTGridSize - 1
 					If r\mt\waypoints[x + 1 + (y * MTGridSize)] <> Null
 						Dist = EntityDistance(r\mt\waypoints[x + (y * MTGridSize)]\OBJ, r\mt\waypoints[x + 1 + (y * MTGridSize)]\OBJ)
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = r\mt\waypoints[x + 1 + (y * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2402,7 +2402,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 								Exit
 							EndIf
 						Next
-						For i = 0 To 3
+						For i = 0 To MaxConnectedWaypoints - 1
 							If r\mt\waypoints[x + 1 + (y * MTGridSize)]\connected[i] = r\mt\waypoints[x + (y * MTGridSize)]
 								Exit
 							ElseIf r\mt\waypoints[x + (y * MTGridSize)]\connected[i] = Null
@@ -2557,12 +2557,14 @@ Type TempWayPoints
 	Field RoomTemplate.RoomTemplates
 End Type
 
+Const MaxConnectedWaypoints% = 4
+
 Type WayPoints
 	Field OBJ%
 	Field door.Doors
 	Field room.Rooms
 	Field State%
-	Field connected.WayPoints[5]
+	Field connected.WayPoints[MaxConnectedWaypoints]
 	Field Dist#[5]
 	Field Fcost#, Gcost#, Hcost#
 	Field parent.WayPoints

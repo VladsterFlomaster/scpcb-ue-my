@@ -1074,7 +1074,7 @@ Function FindPath%(n.NPCs, x#, y#, z#)
 			w = Smallest
 			w\State = WAYPOINT_VISITED
 			
-			For i = 0 To 3
+			For i = 0 To MaxConnectedWaypoints - 1
 				If w\connected[i] <> Null And w\connected[i]\State < WAYPOINT_VISITED
 					Local GcostEx# = w\Gcost + w\Dist[i]
 					
