@@ -2534,7 +2534,7 @@ Function LoadEntities%()
 	CatchErrors("LoadEntities()")
 	
 	Local i%, j%, k%, Tex%
-	Local Name$, Test%, File$
+	Local Name$, Test%, File$, Scale#
 	
 	DeInitMainMenuAssets()
 	
@@ -2568,8 +2568,9 @@ Function LoadEntities%()
 	
 	pm\Pivot = CreatePivot()
 	pm\OBJ = LoadAnimMesh_Strict("GFX\NPCs\player_body.b3d", pm\Pivot)
+	Scale = IniGetFloat(NPCsFile, "Class D", "Scale")
 	i = MeshWidth(pm\OBJ) : j = MeshHeight(pm\OBJ) : k = MeshDepth(pm\OBJ)
-	ScaleEntity(pm\OBJ, 0.51 / i, 0.51 / i, 0.51 / i)
+	ScaleEntity(pm\OBJ, Scale / i, Scale / i, Scale / i)
 	MeshCullBox(pm\OBJ, -i, -j, -k, i * 2.0, j * 2.0, k * 2.0)
 	EntityType(pm\OBJ, 0)
 	HideEntity(pm\OBJ)
