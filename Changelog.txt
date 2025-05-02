@@ -29,6 +29,9 @@
 - Improved MTF model.
 
 [Items]
+- Added new SCP-513 variation.
+- Added headphones.
+
 - Yellow Severed Hand can only be obtained after processing SCP-1123 in SCP-914.
 - Strange Bottle and Blue First Aid Kit have new outcomes.
 

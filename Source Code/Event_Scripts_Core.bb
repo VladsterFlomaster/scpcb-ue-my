@@ -4285,8 +4285,8 @@ Function UpdateEvent_Cont1_106%(e.Events)
 							e\SoundCHN2 = 0
 						EndIf
 					Else
-						ChannelVolume(e\SoundCHN, opt\VoiceVolume * opt\MasterVolume)
-						ChannelVolume(e\SoundCHN2, opt\VoiceVolume * opt\MasterVolume)
+						ChannelVolumeEx(e\SoundCHN, opt\VoiceVolume * opt\MasterVolume)
+						ChannelVolumeEx(e\SoundCHN2, opt\VoiceVolume * opt\MasterVolume)
 					EndIf
 					SoundTransmission = Temp
 				EndIf

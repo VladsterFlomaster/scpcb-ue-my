@@ -11,7 +11,7 @@ Function PlaySoundEx%(SoundHandle%, Cam%, Entity%, Range# = 10.0, Volume# = 1.0,
 			
 			SoundCHN = PlaySound_Strict(SoundHandle, IsVoice)
 			
-			ChannelVolume(SoundCHN, Volume * (1.0 - Dist) * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
+			ChannelVolumeEx(SoundCHN, Volume * (1.0 - Dist) * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
 			ChannelPan(SoundCHN, PanValue)
 		EndIf
 	EndIf
@@ -27,7 +27,7 @@ Function LoopSoundEx%(SoundHandle%, SoundCHN%, Cam%, Entity%, Range# = 10.0, Vol
 		
 		If (Not ChannelPlaying(SoundCHN)) Then SoundCHN = PlaySound_Strict(SoundHandle, IsVoice)
 		
-		ChannelVolume(SoundCHN, Volume * (1.0 - Dist) * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
+		ChannelVolumeEx(SoundCHN, Volume * (1.0 - Dist) * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
 		ChannelPan(SoundCHN, PanValue)
 	Else
 		ChannelVolume(SoundCHN, 0.0)
@@ -38,7 +38,7 @@ End Function
 Function LoopSoundLocal%(SoundHandle%, SoundCHN%, Volume# = 1.0, IsVoice% = False)
 	If Volume > 0.0
 		If (Not ChannelPlaying(SoundCHN)) Then SoundCHN = PlaySound_Strict(SoundHandle, IsVoice)
-		ChannelVolume(SoundCHN, Volume * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
+		ChannelVolumeEx(SoundCHN, Volume * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
 	Else
 		ChannelVolume(SoundCHN, 0.0)
 	EndIf
@@ -56,7 +56,7 @@ Function UpdateSoundOrigin%(SoundCHN%, Cam%, Entity%, Range# = 10.0, Volume# = 1
 		If (1.0 - Dist > 0.0) And (1.0 - Dist < 1.0)
 			Local PanValue# = Sin(-DeltaYaw(Cam, Entity))
 			
-			ChannelVolume(SoundCHN, Volume * (1.0 - Dist) * ((Not SFXVolume) + (SFXVolume * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)))
+			ChannelVolumeEx(SoundCHN, Volume * (1.0 - Dist) * ((Not SFXVolume) + (SFXVolume * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)))
 			ChannelPan(SoundCHN, PanValue)
 		Else
 			ChannelVolume(SoundCHN, 0.0)
@@ -469,10 +469,10 @@ Function PlayStepSound%(IncludeSprint% = True)
 	
 	Local SoundVol# = (1.0 - (me\Crouch * 0.7)) * opt\SFXVolume * opt\MasterVolume
 	
-	ChannelVolume(TempCHN, SoundVol)
+	ChannelVolumeEx(TempCHN, SoundVol)
 	If DecalStep = 2 And Temp <> 5
 		TempCHN2 = PlaySound_Strict(StepSFX(5, 0, Rand(0, 1)))
-		ChannelVolume(TempCHN2, SoundVol)
+		ChannelVolumeEx(TempCHN2, SoundVol)
 	EndIf
 	me\SndVolume = Max(5.0 * IncludeSprint + (1 - IncludeSprint) * (3.0 - me\Crouch), me\SndVolume)
 End Function
@@ -520,7 +520,7 @@ Function ControlSoundVolume%()
 	
 	For snd.Sound = Each Sound
 		For i = 0 To MaxChannelsAmount - 1
-			ChannelVolume(snd\Channels[i], opt\SFXVolume * opt\MasterVolume)
+			ChannelVolumeEx(snd\Channels[i], opt\SFXVolume * opt\MasterVolume)
 		Next
 	Next
 End Function
@@ -535,6 +535,17 @@ Function UpdateDeaf%()
 		If me\Deaf Then ControlSoundVolume()
 		me\Deaf = False
 	EndIf
+End Function
+
+Function SetDeafState%(DeafTime#)
+	If (Not wi\Headphones) And (Not me\Deaf)
+		me\Deaf = DeafTime
+		me\Deaf = True
+	EndIf
+End Function
+
+Function ChannelVolumeEx%(CHN%, Volume#)
+	ChannelVolume(CHN, Volume / (1.0 + (4.0 * (wi <> Null And wi\Headphones = 1))))
 End Function
 
 ;~IDEal Editor Parameters:

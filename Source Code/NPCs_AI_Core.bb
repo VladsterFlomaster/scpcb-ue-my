@@ -1495,8 +1495,8 @@ Function UpdateNPCType066%(n.NPCs)
 								Case 1
 									;[Block]
 									PlaySound_Strict(LoadTempSound("SFX\SCP\066\Beethoven.ogg"))
-									me\DeafTimer = 70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors))
-									me\Deaf = True
+									
+									SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
 									me\BigCameraShake = 10.0
 									;[End Block]
 								Case 2

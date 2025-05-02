@@ -78,7 +78,7 @@ Function PlaySound_Strict%(SoundHandle%, IsVoice% = False)
 						If snd\InternalHandle = 0 Then OpenConsoleOnError(Format(GetLocalString("runerr", "sound.failed.load"), snd\Name))
 					EndIf
 					snd\Channels[i] = PlaySound(snd\InternalHandle)
-					ChannelVolume(snd\Channels[i], ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
+					ChannelVolumeEx(snd\Channels[i], ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
 					snd\ReleaseTime = CurrTime + 5000 ; ~ Release after 5 seconds
 					Return(snd\Channels[i])
 				EndIf
@@ -93,7 +93,7 @@ Function PlaySound_Strict%(SoundHandle%, IsVoice% = False)
 					If snd\InternalHandle = 0 Then OpenConsoleOnError(Format(GetLocalString("runerr", "sound.failed.load"), snd\Name))
 				EndIf
 				snd\Channels[i] = PlaySound(snd\InternalHandle)
-				ChannelVolume(snd\Channels[i], ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
+				ChannelVolumeEx(snd\Channels[i], ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
 				snd\ReleaseTime = CurrTime + 5000 ; ~ Release after 5 seconds
 				Return(snd\Channels[i])
 			EndIf
@@ -154,7 +154,7 @@ Function StreamSound_Strict%(File$, Volume# = 1.0, Mode% = ModeStandart)
 		OpenConsoleOnError(Format(Format(GetLocalString("runerr", "sound.stream.failed.n1"), File, "{0}"), st\CHN, "{1}"))
 		Return(-1)
 	EndIf
-	ChannelVolume(st\CHN, Volume)
+	ChannelVolumeEx(st\CHN, Volume)
 	
 	CreateSubtitlesToken(File, Null)
 	
@@ -188,7 +188,7 @@ Function SetStreamVolume_Strict%(StreamHandle%, Volume#)
 		OpenConsoleOnError(Format(GetLocalString("runerr", "sound.stream.failed.set.v"), st\CHN))
 		Return
 	EndIf
-	ChannelVolume(st\CHN, Volume)
+	ChannelVolumeEx(st\CHN, Volume)
 End Function
 
 Function SetStreamPaused_Strict%(StreamHandle%, Paused%)

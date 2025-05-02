@@ -2905,7 +2905,7 @@ Function UpdateMoving%()
 				Temp3 = 0
 				If wi\GasMask > 0 Lor I_1499\Using > 0 Lor wi\HazmatSuit > 0 Then Temp3 = 1
 				BreathCHN = PlaySound_Strict(BreathSFX((Temp3), Rand(3)), True)
-				ChannelVolume(BreathCHN, Min((70.0 - me\Stamina) / 70.0, 1.0) * opt\VoiceVolume * opt\MasterVolume)
+				ChannelVolumeEx(BreathCHN, Min((70.0 - me\Stamina) / 70.0, 1.0) * opt\VoiceVolume * opt\MasterVolume)
 			EndIf
 		EndIf
 	EndIf
@@ -3146,7 +3146,7 @@ Function UpdateMoving%()
 				de\SizeChange = Rnd(0.001, 0.0015) : de\MaxSize = de\Size + Rnd(0.008, 0.009)
 				EntityParent(de\OBJ, PlayerRoom\OBJ)
 				TempCHN = PlaySound_Strict(snd_I\DripSFX[Rand(0, 3)])
-				ChannelVolume(TempCHN, Rnd(0.3, 0.6) * opt\SFXVolume * opt\MasterVolume)
+				ChannelVolumeEx(TempCHN, Rnd(0.3, 0.6) * opt\SFXVolume * opt\MasterVolume)
 				ChannelPitch(TempCHN, Rand(20000, 30000))
 				
 				FreeEntity(Pvt) : Pvt = 0
@@ -3207,6 +3207,7 @@ End Function
 
 Type WearableItems
 	Field GasMask%, GasMaskFogTimer#
+	Field Headphones%
 	Field HazmatSuit%
 	Field BallisticVest%
 	Field BallisticHelmet%
@@ -4238,6 +4239,10 @@ Function UpdateGUI%()
 							;[Block]
 							ShouldPreventDropping = (wi\GasMask = 4)
 							;[End Block]
+						Case it_headphones
+							;[Block]
+							ShouldPreventDropping = (wi\Headphones = 1)
+							;[End Block]
 						Case it_scp1499
 							;[Block]
 							ShouldPreventDropping = (I_1499\Using = 1)
@@ -4924,6 +4929,33 @@ Function UpdateGUI%()
 						EndIf
 					EndIf
 					;[End Block]
+				Case it_headphones
+					;[Block]
+					Select SelectedItem\ItemTemplate\ID
+						Case it_headphones
+							;[Block]
+							If IsDoubleItem(wi\Headphones, 1) Then Return
+							;[End Block]
+					End Select
+					
+					me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
+					
+					SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / 0.7), 100.0)
+					
+					If SelectedItem\State = 100.0
+						If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
+						
+						If wi\Headphones > 0
+							CreateMsg(GetLocalString("msg", "headphones.off"))
+							wi\Headphones = 0
+						Else
+							CreateMsg(GetLocalString("msg", "headphones.on"))
+							wi\Headphones = 1
+						EndIf
+						SelectedItem\State = 0.0
+						SelectedItem = Null
+					EndIf
+					;[End Block]
 				Case it_scp1499, it_fine1499
 					;[Block]
 					If (Not PreventItemOverlapping(False, False, True, True, False, False, True))
@@ -5222,7 +5254,7 @@ Function UpdateGUI%()
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							If wi\NightVision > 0 Then fog\FarDist = 6.0 : wi\NightVision = 0
 							If wi\SCRAMBLE > 0 Then fog\FarDist = 6.0 : wi\SCRAMBLE = 0
-							wi\GasMask = 0 : wi\BallisticHelmet = False
+							wi\GasMask = 0 : wi\BallisticHelmet = False : wi\Headphones = 0
 							I_427\Using = False : I_1499\Using = 0
 							I_268\Using = 0
 							Select SelectedItem\ItemTemplate\ID
@@ -5264,8 +5296,7 @@ Function UpdateGUI%()
 					If SelectedItem\ItemTemplate\ID = it_fine513
 						PlaySound_Strict(LoadTempSound("SFX\SCP\513\BellLoud.ogg"))
 						If me\Deaf Then Kill(True)
-						me\DeafTimer = 70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors))
-						me\Deaf = True
+						SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
 						me\BigCameraShake = 8.0
 						me\BlurTimer = Max(200.0, me\BlurTimer)
 						SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 29)
@@ -5659,7 +5690,7 @@ Function UpdateGUI%()
 									Temp = JsonGetValue(Drink, "camera_shake")
 									If (Not JsonIsNull(Temp)) Then me\CameraShakeTimer = Max(me\CameraShakeTimer + JsonGetFloat(Temp), 0.0)
 									Temp = JsonGetValue(Drink, "deaf_timer")
-									If (Not JsonIsNull(Temp)) Then me\DeafTimer = Max(me\DeafTimer + JsonGetFloat(Temp), 0.0)
+									If (Not JsonIsNull(Temp)) Then SetDeafState(Max(me\DeafTimer + JsonGetFloat(Temp), 0.0))
 									Temp = JsonGetValue(Drink, "damage")
 									If (Not JsonIsNull(Temp)) Then me\Injuries = Max(me\Injuries + JsonGetFloat(Temp), 0.0)
 									Temp = JsonGetValue(Drink, "bloodloss")
@@ -6623,7 +6654,7 @@ Function UpdateGUI%()
 			
 			If (Not (MenuOpen Lor ConsoleOpen)) And (mo\MouseHit2 Lor KeyHit(key\INVENTORY)) Lor me\Terminated Lor me\FallTimer < 0.0 Lor me\Playable < 2 Lor me\Zombie
 				Select SelectedItem\ItemTemplate\ID
-					Case it_firstaid, it_finefirstaid, it_firstaid2, it_cap, it_scp268, it_fine268, it_scp1499, it_fine1499, it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148, it_helmet
+					Case it_firstaid, it_finefirstaid, it_firstaid2, it_cap, it_scp268, it_fine268, it_scp1499, it_fine1499, it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148, it_headphones, it_helmet
 						;[Block]
 						SelectedItem\State = 0.0
 						;[End Block]
@@ -7231,6 +7262,10 @@ Function RenderGUI%()
 						;[Block]
 						ShouldDrawRect = (wi\GasMask = 4)
 						;[End Block]
+					Case it_headphones
+						;[Block]
+						ShouldDrawRect = (wi\Headphones = 1)
+						;[End Block]
 					Case it_scp1499
 						;[Block]
 						ShouldDrawRect = (I_1499\Using = 1)
@@ -7397,6 +7432,22 @@ Function RenderGUI%()
 						
 						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
 					EndIf
+					;[End Block]
+				Case it_headphones
+					;[Block]
+					Select SelectedItem\ItemTemplate\ID
+						Case it_headphones
+							;[Block]
+							If IsDoubleItem(wi\Headphones, 1) Then Return
+							;[End Block]
+					End Select
+					
+					DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
+					
+					x = mo\Viewport_Center_X - (Width / 2)
+					y = mo\Viewport_Center_Y + (80 * MenuScale)
+					
+					RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
 					;[End Block]
 				Case it_scp1499, it_fine1499
 					;[Block]
@@ -10105,7 +10156,7 @@ Function Update427%()
 			de\SizeChange = Rnd(0.001, 0.0015) : de\MaxSize = de\Size + 0.009
 			EntityParent(de\OBJ, PlayerRoom\OBJ)
 			TempCHN = PlaySound_Strict(snd_I\DripSFX[Rand(0, 3)])
-			ChannelVolume(TempCHN, Rnd(0.3, 0.6) * opt\SFXVolume * opt\MasterVolume)
+			ChannelVolumeEx(TempCHN, Rnd(0.3, 0.6) * opt\SFXVolume * opt\MasterVolume)
 			ChannelPitch(TempCHN, Rand(20000, 30000))
 			FreeEntity(Pvt) : Pvt = 0
 			me\BlurTimer = 800.0
