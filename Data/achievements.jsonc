@@ -5,11 +5,6 @@
 {
 	"achievements": [
 		{
-			"id": "009",
-			"image": "Achv009.png",
-			"scp": true
-		},
-		{
 			"id": "005",
 			"image": "Achv005.png",
 			"scp": true
@@ -17,6 +12,11 @@
 		{
 			"id": "008",
 			"image": "Achv008.png",
+			"scp": true
+		},
+		{
+			"id": "009",
+			"image": "Achv009.png",
 			"scp": true
 		},
 		{
