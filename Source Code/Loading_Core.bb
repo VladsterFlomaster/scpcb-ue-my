@@ -875,7 +875,7 @@ Function RemoveMonitorInstances%()
 End Function
 
 Const MaxNPCModelIDAmount% = 32 ;33
-Const MaxNPCTextureID% = 29 ;30
+Const MaxNPCTextureID% = 27
 
 Type NPCInstance
 	Field NPCModelID%[MaxNPCModelIDAmount]
@@ -962,11 +962,6 @@ Const NPC_CLASS_D_VICTIM_939_2_TEXTURE% = 24
 Const NPC_CLASS_D_VICTIM_FEMUR_BREAKER_TEXTURE% = 25
 
 Const NPC_CLERK_VICTIM_205_TEXTURE% = 26
-Const NPC_CLERK_TESLA_TEXTURE% = 27
-
-Const NPC_173_TESLA_TEXTURE% = 28
-
-;Const NPC_999_TESLA_TEXTURE% = 29
 ;[End Block]
 
 Function LoadNPCs%()
@@ -1004,10 +999,6 @@ Function LoadNPCs%()
 	n_I\NPCTextureName[NPC_CLASS_D_VICTIM_939_2_TEXTURE] ="scp_939_victim(2)"
 	n_I\NPCTextureName[NPC_CLASS_D_VICTIM_FEMUR_BREAKER_TEXTURE] = "femur_breaker_victim"
 	n_I\NPCTextureName[NPC_CLERK_VICTIM_205_TEXTURE] = "clerk(2)"
-	n_I\NPCTextureName[NPC_CLERK_TESLA_TEXTURE] = "clerk_tesla"
-	
-	n_I\NPCTextureName[NPC_173_TESLA_TEXTURE] = "scp_173_tesla"
-	;n_I\NPCTextureName[NPC_999_TESLA_TEXTURE] = "scp_999_tesla"
 	
 	n_I\NPCModelID[NPC_008_1_MODEL] = LoadAnimMesh_Strict("GFX\NPCs\scp_008_1.b3d")
 	

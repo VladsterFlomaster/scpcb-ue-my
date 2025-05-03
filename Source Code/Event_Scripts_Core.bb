@@ -9888,6 +9888,11 @@ Function UpdateEvent_Tesla%(e.Events)
 						If IsEqual(EntityX(n\Collider, True), x2, 0.6) And IsEqual(EntityZ(n\Collider, True), z2, 0.6) And IsEqual(EntityY(n\Collider, True), y2, 1.3)
 							n\CurrSpeed = 0.0
 							n\HP = 0
+							If n\NPCType <> NPCType106
+								n\TeslaHit = True
+								EntityColor(n\OBJ, 40.0, 40.0, 40.0)
+								If n\NPCType = NPCType173 Then EntityColor(n\OBJ2, 40.0, 40.0, 40.0)
+							EndIf
 							If opt\ParticleAmount > 0
 								emit.Emitter = SetEmitter(Null, EntityX(n\OBJ, True), EntityY(n\OBJ, True), EntityZ(n\OBJ, True), 14)
 								EntityParent(emit\Owner, n\OBJ)
@@ -9902,26 +9907,17 @@ Function UpdateEvent_Tesla%(e.Events)
 									;[Block]
 									If n\State <> 3.0 Then n\State = 5.0
 									;[End Block]
-								Case NPCType173
-									;[Block]
-									If (Not (n_I\IsAprilFools Lor n_I\IsHalloween Lor n_I\IsNewYear)) Then ChangeNPCTextureID(n, NPC_173_TESLA_TEXTURE)
-									;[End Block]
 								Case NPCType966
 									;[Block]
 									ShowEntity(n\OBJ)
 									;[End Block]
-;											Case NPCType999
-;												;[Block]
-;												ChangeNPCTextureID(n, NPC_999_TESLA_TEXTURE)
-;												n\EnemyX = 0.0
-;												n\EnemyY = 0.0
-;												n\EnemyZ = 0.0
-;												n\State = 4.0
-;												;[End Block]
-								Case NPCTypeClerk
-									;[Block]
-									ChangeNPCTextureID(n, NPC_CLERK_TESLA_TEXTURE)
-									;[End Block]
+;								Case NPCType999
+;									;[Block]
+;									n\EnemyX = 0.0
+;									n\EnemyY = 0.0
+;									n\EnemyZ = 0.0
+;									n\State = 4.0
+;									;[End Block]
 							End Select
 							If e\room\Dist < 6.0 And (EntityInView(n\Collider, Camera) And EntityVisible(me\Collider, n\Collider)) Then me\LightFlash = 0.3
 						EndIf

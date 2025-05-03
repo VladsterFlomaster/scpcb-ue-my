@@ -53,6 +53,7 @@ Type NPCs
 	Field TargetUpdateTimer#
 	Field Shadow.Shadows
 	Field IceTimer#
+	Field TeslaHit% = False
 End Type
 
 Const NPCsFile$ = "Data\NPCs.ini"
