@@ -2083,7 +2083,7 @@ Function UpdateNPCType106%(n.NPCs)
 					Pvt = CreatePivot()
 					PositionEntity(Pvt, n\EnemyX, n\EnemyY, n\EnemyZ)
 					TurnEntity(Pvt, 90.0, 0.0, 0.0)
-					If EntityPick(Pvt, 0.5) Then n\EnemyY = PickedY()
+					If EntityPick(Pvt, 10.0) Then n\EnemyY = PickedY()
 					FreeEntity(Pvt) : Pvt = 0
 					
 					PositionEntity(n\Collider, n\EnemyX, n\EnemyY, n\EnemyZ)

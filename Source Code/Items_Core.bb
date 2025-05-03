@@ -1159,8 +1159,7 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[Block]
 					n.NPCs = CreateNPC(NPCType1499_1, x, y, z)
 					n\State = 1.0 : n\State3 = 1.0
-					n\Sound = LoadSound_Strict("SFX\SCP\1499\Triggered.ogg")
-					n\SoundCHN = PlaySoundEx(n\Sound, Camera, n\Collider, 20.0)
+					n\SoundCHN = PlaySoundEx(LoadTempSound("SFX\SCP\1499\Triggered.ogg"), Camera, n\Collider, 20.0)
 					;[End Block]
 			End Select
 			;[End Block]

@@ -63,7 +63,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 	CatchErrors("CreateNPC(" + NPCType + ", " + x + ", " + y + ", " + z)
 	
 	Local n.NPCs, n2.NPCs
-	Local Temp#, i%, Tex%
+	Local Temp#, i%, j%, Tex%
 	Local MeshW#, MeshH#, MeshD#
 	
 	n.NPCs = New NPCs
@@ -190,8 +190,8 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_096_MODEL])
 			Temp = IniGetFloat(NPCsFile, "SCP-096", "Scale") / 3.0
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
-			MeshW = MeshWidth(n\OBJ) : MeshH = MeshHeight(n\OBJ) : MeshD = MeshDepth(n\OBJ)
-			MeshCullBox(n\OBJ, -MeshW * 2.0, -MeshH * 2.0, -MeshD * 2.0, MeshW * 2.0, MeshH * 4.0, MeshD * 4.0)
+			MeshW = MeshWidth(n\OBJ) * 2.0 : MeshH = MeshHeight(n\OBJ) * 2.0 : MeshD = MeshDepth(n\OBJ) * 2.0
+			MeshCullBox(n\OBJ, -MeshW, -MeshH, -MeshD, MeshW, MeshH * 2.0, MeshD * 2.0)
 			
 			n\OBJ2 = CreateSprite(FindChild(n\OBJ, "Reyelid"))
 			ScaleSprite(n\OBJ2, 0.07, 0.08)
@@ -313,8 +313,8 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_860_2_MODEL])
 			Temp = IniGetFloat(NPCsFile, "SCP-860-2", "Scale") / 20.0
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
-			MeshW = MeshWidth(n\OBJ) : MeshH = MeshHeight(n\OBJ) : MeshD = MeshDepth(n\OBJ)
-			MeshCullBox(n\OBJ, -MeshW * 2.0, -MeshH * 2.0, -MeshD * 2.0, MeshW * 2.0, MeshH * 4.0, MeshD * 4.0)
+			MeshW = MeshWidth(n\OBJ) * 2.0 : MeshH = MeshHeight(n\OBJ) * 2.0 : MeshD = MeshDepth(n\OBJ) * 2.0
+			MeshCullBox(n\OBJ, -MeshW, -MeshH, -MeshD, MeshW, MeshH * 2.0, MeshD * 2.0)
 			EntityFX(n\OBJ, 1)
 			
 			n\OBJ2 = CreateSprite()
@@ -475,13 +475,14 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			For i = -1 To 1 Step 2
 				Local Light1% = CreateLight(2, n\OBJ)
 				
+				j = 1.65 * i
 				LightRange(Light1, 2.0)
 				LightColor(Light1, 255.0, 255.0, 255.0)
-				PositionEntity(Light1, 1.65 * i, 1.17, -0.25)
+				PositionEntity(Light1, j, 1.17, -0.25)
 				
 				Local LightSprite% = CreateSprite(n\OBJ)
 				
-				PositionEntity(LightSprite, 1.65 * i, 1.17, 0.0, -0.25)
+				PositionEntity(LightSprite, j, 1.17, 0.0, -0.25)
 				ScaleSprite(LightSprite, 0.13, 0.13)
 				EntityTexture(LightSprite, misc_I\LightSpriteID[LIGHT_SPRITE_DEFAULT])
 				EntityBlend(LightSprite, 3)
@@ -964,14 +965,15 @@ Function TeleportCloser%(n.NPCs)
 	
 	If ClosestWaypoint <> Null
 		Local ShouldTeleport% = False
+		Local PosY# = EntityY(ClosestWaypoint\OBJ, True)
 		
 		If n\InFacility <> NullFloor Lor SelectedDifficulty\AggressiveNPCs
 			ShouldTeleport = True
-		ElseIf EntityY(ClosestWaypoint\OBJ, True) <= 6.5 And EntityY(ClosestWaypoint\OBJ, True) >= -6.5
+		ElseIf PosY <= 6.5 And PosY >= -6.5
 			ShouldTeleport = True
 		EndIf
 		If ShouldTeleport
-			TeleportEntity(n\Collider, EntityX(ClosestWaypoint\OBJ, True), EntityY(ClosestWaypoint\OBJ, True) + 0.22, EntityZ(ClosestWaypoint\OBJ, True), n\CollRadius + 0.12 * (n\NPCType = NPCType173), True, 4.0)
+			TeleportEntity(n\Collider, EntityX(ClosestWaypoint\OBJ, True), PosY + 0.22, EntityZ(ClosestWaypoint\OBJ, True), n\CollRadius + 0.12 * (n\NPCType = NPCType173), True, 4.0)
 			n\CurrentRoom = ClosestWaypoint\room
 			n\CurrSpeed = 0.0
 			n\PathStatus = PATH_STATUS_NO_SEARCH
@@ -1076,9 +1078,8 @@ Function FindPath%(n.NPCs, x#, y#, z#)
 			
 			For i = 0 To MaxConnectedWaypoints - 1
 				If w\connected[i] <> Null And w\connected[i]\State < WAYPOINT_VISITED
-					Local GcostEx# = w\Gcost + w\Dist[i]
+					Local GcostEx# = w\Gcost + w\Dist[i] + (0.5 * (n\NPCType = NPCTypeMTF And w\connected[i]\door = Null))
 					
-					If n\NPCType = NPCTypeMTF And w\connected[i]\door = Null Then GcostEx = GcostEx + 0.5
 					If w\connected[i]\State = WAYPOINT_IN_LIST
 						If GcostEx < w\connected[i]\Gcost
 							w\connected[i]\Gcost = GcostEx
@@ -1170,7 +1171,7 @@ Function NPCSeesPlayer%(n.NPCs, Dist#, Angle# = 80.0)
 			EndIf
 		EndIf
 	Else
-		Local ReturnState% = 0 + (3 * me\Detected)
+		Local ReturnState% = (3 * me\Detected)
 		
 		If Dist2 < PowTwo(Dist + ((PlayerRoom\RoomTemplate\RoomID = r_gate_a) * 4.0))
 			If PowTwo(me\SndVolume) > Dist2 Then ReturnState = 2

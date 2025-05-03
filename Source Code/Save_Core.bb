@@ -699,7 +699,7 @@ Function LoadGame%(File$)
 	wi\HazmatSuit = ReadByte(f)
 	wi\NightVision = ReadByte(f)
 	wi\SCRAMBLE = ReadByte(f)
-	wi\Headphones = Readbyte(f)
+	wi\Headphones = ReadByte(f)
 	
 	I_1499\Using = ReadByte(f)
 	I_1499\PrevX = ReadFloat(f)
@@ -2483,6 +2483,7 @@ Function LoadGameQuick%(File$)
 	; ~ Resetting some stuff (those get changed when going to some areas)
 	HideDistance = 17.0
 	
+	; ~ Reset player body texture
 	If wi\HazmatSuit > 0 And wi\HazmatSuit < 4
 		ChangePlayerBodyTexture(PLAYER_BODY_HAZMAT_TEX)
 	ElseIf wi\HazmatSuit = 4

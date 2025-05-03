@@ -57,7 +57,7 @@ End Function
 
 Function UpdateLampShaking%()
 	Local p.Props
-	Local ShakeValue# = Sin(MilliSecs()) * Min(5.0 * me\BigCameraShake, 15.0)
+	Local ShakeValue# = Sin(MilliSec) * Min(5.0 * me\BigCameraShake, 15.0)
 	
 	For p.Props = Each Props
 		If p\IsLamp
@@ -121,7 +121,7 @@ Function AddLight.Lights(room.Rooms, x#, y#, z#, Type_%, Range#, R%, G%, B%, Has
 		
 		l\AdvancedSprite = CreateSprite()
 		PositionEntity(l\AdvancedSprite, x, y, z)
-		ScaleSprite(l\AdvancedSprite, Rnd(0.36, 0.4), Rnd(0.36, 0.4))
+		ScaleSprite(l\AdvancedSprite, 0.38, 0.38)
 		EntityTexture(l\AdvancedSprite, misc_I\AdvancedLightSprite)
 		EntityFX(l\AdvancedSprite, 1 + 8)
 		EntityBlend(l\AdvancedSprite, 3)
@@ -177,7 +177,7 @@ End Function
 
 Function UpdateLights%(Cam%)
 	Local l.Lights, i%, Random#, Alpha#
-	Local TotalAmbientColor# = (fog\AmbientR + fog\AmbientG + fog\AmbientB) / (255.0 * 3.0)
+	Local TotalAmbientColor# = (fog\AmbientR + fog\AmbientG + fog\AmbientB) / 255.0 / 3.0
 	
 	For l.Lights = Each Lights
 		If SecondaryLightOn > 0.3
@@ -3150,7 +3150,9 @@ Function UpdateDoors%()
 		EndIf
 	EndIf
 	If d_I\AnimDoor <> Null
-		If AnimTime(d_I\AnimDoor\OBJ) > 0.99 Then AnimateEx(d_I\AnimDoor\OBJ, AnimTime(d_I\AnimDoor\OBJ), 1.0 + 22.0 * (d_I\AnimDoor\Locked > 0), 22.0 + 22.0 * (d_I\AnimDoor\Locked > 0), 0.6, False)
+		Local AnimShift# = 22.0 * (d_I\AnimDoor\Locked > 0)
+		
+		If AnimTime(d_I\AnimDoor\OBJ) > 0.99 Then AnimateEx(d_I\AnimDoor\OBJ, AnimTime(d_I\AnimDoor\OBJ), 1.0 + AnimShift, 22.0 + AnimShift, 0.6, False)
 	EndIf
 	If d_I\AnimButton <> 0
 		If ButtonDirection
@@ -3174,13 +3176,8 @@ Const Floor1499% = 3
 ;[End Block]
 
 Function UpdateElevatorPanel%(d.Doors)
-	Local TextureID%, i%
-	
-	If ButtonDirection
-		TextureID = ELEVATOR_PANEL_UP
-	Else
-		TextureID = ELEVATOR_PANEL_DOWN
-	EndIf
+	Local TextureID% = 1 - ButtonDirection ; ~ NOTICE: Const ELEVATOR_PANEL_UP% = 0 And Const ELEVATOR_PANEL_DOWN% = 1
+	Local i%
 	
 	For i = 0 To 1
 		If d\ElevatorPanel[i] <> 0 Then EntityTexture(d\ElevatorPanel[i], d_I\ElevatorPanelTextureID[TextureID])
@@ -4371,61 +4368,66 @@ Function UpdateSecurityCams%()
 							sc\State = 0.0
 						EndIf
 						
-						If sc\CoffinEffect = 1 Lor sc\CoffinEffect = 3
-							If I_714\Using <> 2 And wi\HazmatSuit <> 4 And wi\GasMask <> 4 And (Not chs\NoTarget)
-								me\Sanity = me\Sanity - (fps\Factor[0] * (1.0 + (0.2 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using))
-								me\RestoreSanity = False
-								If SelectedDifficulty\SaveType = SAVE_ON_SCREENS Then CanSave = 0
-								
-								Local Pvt% = CreatePivot()
-								Local Value# = Clamp(15000.0 / (-me\Sanity), 20.0, 200.0)
-								
-								PositionEntity(Pvt, EntityX(Camera), EntityY(Camera), EntityZ(Camera))
-								PointEntity(Pvt, sc\ScrOBJ)
-								
-								RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), Value), 0.0)
-								
-								TurnEntity(Pvt, 90.0, 0.0, 0.0)
-								CameraPitch = CurveAngle(EntityPitch(Pvt), CameraPitch + 90.0, Value)
-								CameraPitch = CameraPitch - 90.0
-								
-								FreeEntity(Pvt) : Pvt = 0
-								If me\Sanity < -800.0
-									If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
-									If Rand(6) < 5
-										EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[Rand(MONITOR_895_OVERLAY_1, MONITOR_895_OVERLAY_11)])
-										If sc\PlayerState = 1 Then PlaySound_Strict(snd_I\HorrorSFX[1])
-										sc\PlayerState = 2
-										sc\SoundCHN = LoopSoundLocal(snd_I\HorrorSFX[4], sc\SoundCHN)
-									EndIf
-									me\BlurTimer = 1000.0
-									If me\VomitTimer = 0.0 Then me\VomitTimer = 1.0
-								ElseIf me\Sanity < -500.0
-									If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
-									If Rand(50) = 1
-										EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[Rand(MONITOR_895_OVERLAY_1, MONITOR_895_OVERLAY_11)])
-										If sc\PlayerState = 0 Then PlaySound_Strict(snd_I\HorrorSFX[0])
-										sc\PlayerState = Max(sc\PlayerState, 1)
+						Select sc\CoffinEffect
+							Case 1, 3
+								;[Block]
+								If I_714\Using <> 2 And wi\HazmatSuit <> 4 And wi\GasMask <> 4 And (Not chs\NoTarget)
+									me\Sanity = me\Sanity - (fps\Factor[0] * (1.0 + (0.2 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using))
+									me\RestoreSanity = False
+									If SelectedDifficulty\SaveType = SAVE_ON_SCREENS Then CanSave = 0
+									
+									Local Pvt% = CreatePivot()
+									Local Value# = Clamp(15000.0 / (-me\Sanity), 20.0, 200.0)
+									
+									PositionEntity(Pvt, EntityX(Camera), EntityY(Camera), EntityZ(Camera))
+									PointEntity(Pvt, sc\ScrOBJ)
+									
+									RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), Value), 0.0)
+									
+									TurnEntity(Pvt, 90.0, 0.0, 0.0)
+									CameraPitch = CurveAngle(EntityPitch(Pvt), CameraPitch + 90.0, Value)
+									CameraPitch = CameraPitch - 90.0
+									
+									FreeEntity(Pvt) : Pvt = 0
+									If me\Sanity < -800.0
+										If Rand(3) = 1 Then EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
+										If Rand(6) < 5
+											EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[Rand(MONITOR_895_OVERLAY_1, MONITOR_895_OVERLAY_11)])
+											If sc\PlayerState = 1 Then PlaySound_Strict(snd_I\HorrorSFX[1])
+											sc\PlayerState = 2
+											sc\SoundCHN = LoopSoundLocal(snd_I\HorrorSFX[4], sc\SoundCHN)
+										EndIf
+										me\BlurTimer = 1000.0
+										If me\VomitTimer = 0.0 Then me\VomitTimer = 1.0
+									ElseIf me\Sanity < -500.0
+										If Rand(7) = 1 Then EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
+										If Rand(50) = 1
+											EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[Rand(MONITOR_895_OVERLAY_1, MONITOR_895_OVERLAY_11)])
+											If sc\PlayerState = 0 Then PlaySound_Strict(snd_I\HorrorSFX[0])
+											sc\PlayerState = Max(sc\PlayerState, 1)
+										EndIf
+									Else
+										EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
 									EndIf
 								Else
 									EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
 								EndIf
-							Else
-								EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
-							EndIf
-						ElseIf sc\CoffinEffect = 2
-							If sc\PlayerState = 0 Then sc\PlayerState = Rand(50000, 55000) - (20000 * SelectedDifficulty\AggressiveNPCs)
-							
-							Local Temp% = (MilliSec Mod sc\PlayerState)
-							
-							If Rand(500 - (480 * (Temp < 700))) = 1 Then EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[Rand(MONITOR_079_OVERLAY_2, MONITOR_079_OVERLAY_7)])
-							If Temp >= Rand(700)
-								EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
-							ElseIf (Not ChannelPlaying(sc\SoundCHN))
-								sc\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\SCP\079\Broadcast" + Rand(0, 2) + ".ogg"))
-								sc\CoffinEffect = 3 : sc\PlayerState = 0
-							EndIf
-						EndIf
+								;[End Block]
+							Case 2
+								;[Block]
+								If sc\PlayerState = 0 Then sc\PlayerState = Rand(50000, 55000) - (20000 * SelectedDifficulty\AggressiveNPCs)
+								
+								Local Temp% = (MilliSec Mod sc\PlayerState)
+								
+								If Rand(500 - (480 * (Temp < 700))) = 1 Then EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[Rand(MONITOR_079_OVERLAY_2, MONITOR_079_OVERLAY_7)])
+								If Temp >= Rand(700)
+									EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
+								ElseIf (Not ChannelPlaying(sc\SoundCHN))
+									sc\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\SCP\079\Broadcast" + Rand(0, 2) + ".ogg"))
+									sc\CoffinEffect = 3 : sc\PlayerState = 0
+								EndIf
+								;[End Block]
+						End Select
 					EndIf
 				EndIf
 			EndIf
@@ -4561,7 +4563,6 @@ End Function
 
 Function UpdateCheckpointMonitors%(LCZ% = True)
 	Local i%, SF%, b%, t1%
-	Local Name$
 	Local Entity% = mon_I\MonitorModelID[MONITOR_CHECKPOINT_MODEL]
 	Local SurfCount% = CountSurfaces(Entity)
 	
@@ -4571,8 +4572,7 @@ Function UpdateCheckpointMonitors%(LCZ% = True)
 		If b <> 0
 			t1 = GetBrushTexture(b, 0)
 			If t1 <> 0
-				Name = StripPath(TextureName(t1))
-				If Lower(Name) <> "monitortexture.jpg"
+				If Lower(StripPath(TextureName(t1))) <> "monitortexture.jpg"
 					If LCZ
 						If mon_I\MonitorTimer[0] < 50.0
 							BrushTexture(b, mon_I\MonitorOverlayID[MONITOR_LOCKDOWN_2_OVERLAY], 0, 0)
@@ -4600,7 +4600,6 @@ End Function
 
 Function TurnCheckpointMonitorsOff%(LCZ% = True)
 	Local i%, SF%, b%, t1%
-	Local Name$
 	
 	If mon_I\UpdateCheckpoint[(1 - LCZ)]
 		Local Entity% = mon_I\MonitorModelID[MONITOR_CHECKPOINT_MODEL]
@@ -4612,8 +4611,7 @@ Function TurnCheckpointMonitorsOff%(LCZ% = True)
 			If b <> 0
 				t1 = GetBrushTexture(b, 0)
 				If t1 <> 0
-					Name = StripPath(TextureName(t1))
-					If Lower(Name) <> "monitortexture.jpg"
+					If Lower(StripPath(TextureName(t1))) <> "monitortexture.jpg"
 						BrushTexture(b, mon_I\MonitorOverlayID[MONITOR_LOCKDOWN_4_OVERLAY], 0, 0)
 						PaintSurface(SF, b)
 					EndIf
@@ -4630,20 +4628,17 @@ Function TurnCheckpointMonitorsOff%(LCZ% = True)
 End Function
 
 Function TimeCheckpointMonitors%()
-	If mon_I\UpdateCheckpoint[0]
-		If mon_I\MonitorTimer[0] < 100.0
-			mon_I\MonitorTimer[0] = mon_I\MonitorTimer[0] + fps\Factor[0]
-		Else
-			mon_I\MonitorTimer[0] = 0.0
+	Local i%
+	
+	For i = 0 To 1
+		If mon_I\UpdateCheckpoint[i]
+			If mon_I\MonitorTimer[i] < 100.0
+				mon_I\MonitorTimer[i] = mon_I\MonitorTimer[i] + fps\Factor[0]
+			Else
+				mon_I\MonitorTimer[i] = 0.0
+			EndIf
 		EndIf
-	EndIf
-	If mon_I\UpdateCheckpoint[1]
-		If mon_I\MonitorTimer[1] < 100.0
-			mon_I\MonitorTimer[1] = mon_I\MonitorTimer[1] + fps\Factor[0]
-		Else
-			mon_I\MonitorTimer[1] = 0.0
-		EndIf
-	EndIf
+	Next
 End Function
 
 Global SelectedScreen.Screens
@@ -6347,10 +6342,12 @@ Function SetChunkDataValues%()
 	SeedRnd(MilliSecs())
 End Function
 
+Const MaxChunksAmount% = 128
+
 Type ChunkPart
 	Field Amount%
-	Field OBJ%[128]
-	Field RandomYaw#[128]
+	Field OBJ%[MaxChunksAmount]
+	Field RandomYaw#[MaxChunksAmount]
 	Field ID%
 End Type
 
@@ -6393,7 +6390,7 @@ Function CreateChunkParts%(r.Rooms)
 End Function
 
 Type Chunk
-	Field OBJ%[128]
+	Field OBJ%[MaxChunksAmount]
 	Field x#, z#, y#
 	Field Amount%
 	Field IsSpawnChunk%
@@ -6481,7 +6478,7 @@ Function UpdateChunks%(ChunkPartAmount%, SpawnNPCs% = True)
 		If n\NPCType = NPCType1499_1 Then CurrNPCNumber = CurrNPCNumber + 1
 	Next
 	
-	Local MaxNPCs% = 64 ; ~ The maximum amount of NPCs in dimension_1499
+	Local MaxNPCs% = 32 ; ~ The maximum amount of NPCs in dimension_1499
 	Local e.Events
 	
 	For e.Events = Each Events
@@ -6554,7 +6551,7 @@ End Function
 Function RemoveChunk%(ch.Chunk)
 	Local i%
 	
-	For i = 0 To 127
+	For i = 0 To MaxChunksAmount - 1
 		If ch\OBJ[i] <> 0 Then FreeEntity(ch\OBJ[i]) : ch\OBJ[i] = 0
 	Next
 	FreeEntity(ch\PlatForm) : ch\PlatForm = 0
@@ -6565,7 +6562,7 @@ End Function
 Function RemoveChunkPart%(chp.ChunkPart)
 	Local i%
 	
-	For i = 0 To 127
+	For i = 0 To MaxChunksAmount - 1
 		If chp\OBJ[i] <> 0 Then FreeEntity(chp\OBJ[i]) : chp\OBJ[i] = 0
 	Next
 	Delete(chp)
