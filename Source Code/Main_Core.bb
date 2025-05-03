@@ -63,7 +63,7 @@ Function UpdateMouseInput%()
 		mo\DoubleClick = False
 		mo\MouseHit1 = MouseHit(1)
 		If mo\MouseHit1
-			If MilliSecs() - mo\LastMouseHit1 < 300 Then mo\DoubleClick = True
+			If fps\CurrTime - mo\LastMouseHit1 < 300 Then mo\DoubleClick = True
 			mo\LastMouseHit1 = MilliSecs()
 		EndIf
 		
@@ -220,6 +220,7 @@ Repeat
 	fps\CurrTime = MilliSec
 	
 	Local ElapsedMilliSecs% = fps\CurrTime - fps\PrevTime
+	
 	If (ElapsedMilliSecs > 0 And ElapsedMilliSecs < 500) Then fps\Accumulator = fps\Accumulator + Max(0.0, Float(ElapsedMilliSecs) * 70.0 / 1000.0)
 	fps\PrevTime = fps\CurrTime
 	
