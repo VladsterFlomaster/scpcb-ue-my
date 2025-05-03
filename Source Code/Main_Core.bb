@@ -1990,7 +1990,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					e\room\NPC[7]\State3 = 2.0
 					e\room\NPC[7]\IsDead = True
 					If n_I\Curr173\Idle = 1 Then n_I\Curr173\Idle = 0
-					PositionEntity(n_I\Curr173\Collider, 0.0, 0.0, 0.0)
+					PositionEntity(n_I\Curr173\Collider, 0.0, -500.0, 0.0)
 					ResetEntity(n_I\Curr173\Collider)
 					
 					PositionEntity(e\room\Objects[2], EntityX(e\room\Objects[2], True), e\room\y + 384.0 * RoomScale, EntityZ(e\room\Objects[2], True), True)
@@ -2248,7 +2248,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					e\room\NPC[7]\State3 = 2.0
 					e\room\NPC[7]\IsDead = True
 					If n_I\Curr173\Idle = 1 Then n_I\Curr173\Idle = 0
-					PositionEntity(n_I\Curr173\Collider, 0.0, 0.0, 0.0)
+					PositionEntity(n_I\Curr173\Collider, 0.0, -500.0, 0.0)
 					ResetEntity(n_I\Curr173\Collider)
 					
 					PositionEntity(e\room\Objects[2], EntityX(e\room\Objects[2], True), e\room\y + 384.0 * RoomScale, EntityZ(e\room\Objects[2], True), True)

@@ -335,8 +335,8 @@ Function UpdateEvent_Cont1_173%(e.Events)
 			If e\EventState2 = 0.0
 				If e\EventState > 900.0 And e\room\RoomDoors[3]\Open
 					If e\EventState - fps\Factor[0] <= 900.0 
-						PositionEntity(n_I\Curr173\Collider, e\room\x + 32.0 * RoomScale, e\room\y + 0.32, e\room\z + 3184.0 * RoomScale, True)
-						ResetEntity(n_I\Curr173\Collider)
+						TeleportEntity(n_I\Curr173\Collider, e\room\x + 32.0 * RoomScale, e\room\y + 0.32, e\room\z + 3184.0 * RoomScale, n_I\Curr173\CollRadius + 0.12, True)
+						n_I\Curr173\CurrentRoom = e\room
 						RotateEntity(n_I\Curr173\Collider, 0.0, 190.0, 0.0)
 						e\room\NPC[7]\State3 = 2.0
 						e\room\NPC[7]\IsDead = True
@@ -523,9 +523,9 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 			HideDistance = 60.0
 			
 			n_I\Curr173\Angle = 90.0 : n_I\Curr173\Idle = 1
-			PositionEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True))
+			TeleportEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[2], True), EntityY(e\room\Objects[2], True), EntityZ(e\room\Objects[2], True), n_I\Curr173\CollRadius + 0.12, True)
+			n_I\Curr173\CurrentRoom = e\room
 			RotateEntity(n_I\Curr173\Collider, 0.0, 0.0, 0.0, True)
-			ResetEntity(n_I\Curr173\Collider)
 			HideEntity(n_I\Curr173\OBJ)
 			HideEntity(n_I\Curr173\OBJ2)
 			
@@ -2115,9 +2115,9 @@ Function UpdateEvent_Room2_Closets%(e.Events)
 				
 				PlaySoundEx(snd_I\NeckSnapSFX[0], Camera, e\room\NPC[0]\Collider, 8.0)
 				
-				PositionEntity(n_I\Curr173\Collider, EntityX(e\room\NPC[0]\Collider, True) + 0.35, EntityY(e\room\NPC[0]\Collider, True) + 0.15, EntityZ(e\room\NPC[0]\Collider, True))
+				TeleportEntity(n_I\Curr173\Collider, EntityX(e\room\NPC[0]\Collider, True) + 0.35, EntityY(e\room\NPC[0]\Collider, True) + 0.1, EntityZ(e\room\NPC[0]\Collider, True), n_I\Curr173\CollRadius + 0.12, True)
+				n_I\Curr173\CurrentRoom = e\room
 				PointEntity(n_I\Curr173\Collider, e\room\NPC[0]\Collider)
-				ResetEntity(n_I\Curr173\Collider)
 				n_I\Curr173\Idle = 1
 			ElseIf e\EventState > 70.0 * 8.0 And e\EventState - fps\Factor[0] <= 70.0 * 8.0
 				e\room\NPC[1]\IsDead = True
@@ -2872,8 +2872,8 @@ Function UpdateEvent_Room2_Test_LCZ_173%(e.Events)
 		If n_I\Curr173\Idle = 0
 			If e\EventState = 0.0
 				If e\room\RoomDoors[0]\Open
-					PositionEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[0], True), 0.5, EntityZ(e\room\Objects[0], True))
-					ResetEntity(n_I\Curr173\Collider)
+					TeleportEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[0], True), e\room\y + 0.3, EntityZ(e\room\Objects[0], True), n_I\Curr173\CollRadius + 0.12, True)
+					n_I\Curr173\CurrentRoom = e\room
 					e\EventState = 1.0
 				EndIf
 			Else
@@ -3385,11 +3385,11 @@ Function UpdateEvent_Cont2C_066_1162_ARC%(e.Events)
 	If e\EventState4 = 0.0
 		If e\room\Dist < 8.0
 			If n_I\Curr066 = Null
-				n_I\Curr066 = CreateNPC(NPCType066, EntityX(e\room\OBJ), 0.4, EntityZ(e\room\OBJ))
+				n_I\Curr066 = CreateNPC(NPCType066, EntityX(e\room\OBJ), e\room\y + 0.3, EntityZ(e\room\OBJ))
 			Else
 				If n_I\Curr066\State <> 66.0
-					PositionEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), 0.4, EntityZ(e\room\OBJ))
-					ResetEntity(n_I\Curr066\Collider)
+					TeleportEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), e\room\y + 0.3, EntityZ(e\room\OBJ), n_I\Curr066\CollRadius, True)
+					n_I\Curr066\CurrentRoom = e\room
 				EndIf
 			EndIf
 			e\EventState4 = 1.0
@@ -4794,8 +4794,8 @@ Function UpdateEvent_Room2_6_HCZ_173%(e.Events)
 		If e\EventState > 30.0 And e\EventState - fps\Factor[0] <= 30.0 Then PlaySound_Strict(LoadTempSound("SFX\Ambient\General\Ambient2.ogg"))
 		If e\EventState - fps\Factor[0] <= 100.0 And e\EventState > 100.0
 			PlaySound_Strict(LoadTempSound("SFX\Ambient\General\Ambient5.ogg"))
-			PositionEntity(n_I\Curr173\Collider, EntityX(e\room\OBJ), 0.6, EntityZ(e\room\OBJ))
-			ResetEntity(n_I\Curr173\Collider)
+			TeleportEntity(n_I\Curr173\Collider, EntityX(e\room\OBJ), e\room\y + 0.3, EntityZ(e\room\OBJ), n_I\Curr173\CollRadius + 0.12, True)
+			n_I\Curr173\CurrentRoom = e\room
 			n_I\Curr173\Idle = 1
 			If wi\NightVision > 0 Lor wi\SCRAMBLE > 0 Then me\BlinkTimer = -10.0
 		EndIf
@@ -5675,8 +5675,8 @@ Function UpdateEvent_Room2_Servers_HCZ%(e.Events)
 			
 			TFormPoint(-352.0, 150.0, 0.0, e\room\OBJ, 0)
 			If n_I\Curr096 <> Null
-				PositionEntity(n_I\Curr096\Collider, TFormedX(), TFormedY(), TFormedZ())
-				ResetEntity(n_I\Curr096\Collider)
+				TeleportEntity(n_I\Curr096\Collider, TFormedX(), TFormedY(), TFormedZ(), n_I\Curr096\CollRadius, True)
+				n_I\Curr096\CurrentRoom = e\room
 			Else
 				n_I\Curr096 = CreateNPC(NPCType096, TFormedX(), TFormedY(), TFormedZ())
 				GiveAchievement("096")
@@ -5972,8 +5972,8 @@ Function UpdateEvent_Cont2_008%(e.Events)
 			GiveAchievement("008")
 			If e\EventState = 0.0
 				If n_I\Curr173\Idle = 0 And EntityDistanceSquared(n_I\Curr173\Collider, me\Collider) > 36.0 ; ~ Just making sure that SCP-173 is far away enough to spawn him to this room
-					PositionEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[4], True), EntityY(e\room\Objects[4], True), EntityZ(e\room\Objects[4], True), True)
-					ResetEntity(n_I\Curr173\Collider)
+					TeleportEntity(n_I\Curr173\Collider, EntityX(e\room\Objects[4], True), EntityY(e\room\Objects[4], True), EntityZ(e\room\Objects[4], True), n_I\Curr173\CollRadius + 0.12, True)
+					n_I\Curr173\CurrentRoom = e\room
 				EndIf
 				e\EventState = 1.0
 			ElseIf e\EventState = 1.0
@@ -7803,11 +7803,11 @@ Function UpdateEvent_Room2_Cafeteria%(e.Events)
 	If e\room\Dist < 8.0
 		If e\EventState = 0.0
 			If n_I\Curr066 = Null
-				n_I\Curr066 = CreateNPC(NPCType066, EntityX(e\room\OBJ), -0.1, EntityZ(e\room\OBJ))
+				n_I\Curr066 = CreateNPC(NPCType066, EntityX(e\room\OBJ), e\room\y + 0.2, EntityZ(e\room\OBJ))
 			Else
 				If n_I\Curr066\State <> 66.0
-					PositionEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), -0.1, EntityZ(e\room\OBJ))
-					ResetEntity(n_I\Curr066\Collider)
+					TeleportEntity(n_I\Curr066\Collider, EntityX(e\room\OBJ), e\room\y + 0.2, EntityZ(e\room\OBJ), n_I\Curr066\CollRadius, True)
+					n_I\Curr066\CurrentRoom = e\room
 				EndIf
 			EndIf
 			e\EventState = 1.0
@@ -9208,30 +9208,30 @@ Function UpdateEvent_096_Spawn%(e.Events)
 					Select Place
 						Case 0
 							;[Block]
-							x = -608.0
+							x = -208.0
 							z = 0.0
 							;[End Block]
 						Case 1
 							;[Block]
 							x = 0.0
-							z = -608.0
+							z = -208.0
 							;[End Block]
 						Case 2
 							;[Block]
-							x = 608.0
+							x = 208.0
 							z = 0.0
 							;[End Block]
 						Case 3
 							;[Block]
 							x = 0.0
-							z = 608.0
+							z = 208.0
 							;[End Block]
 					End Select
 					;[End Block]
 				Default
 					;[Block]
-					x = Rnd(-50.0, 50.0)
-					z = Rnd(-50.0, 50.0)
+					x = Rnd(-20.0, 20.0)
+					z = Rnd(-20.0, 20.0)
 					;[End Block]
 			End Select
 			
@@ -9239,8 +9239,8 @@ Function UpdateEvent_096_Spawn%(e.Events)
 			
 			PositionEntity(Pvt, x, 0.0, z)
 			If n_I\Curr096 <> Null
-				PositionEntity(n_I\Curr096\Collider, EntityX(Pvt, True), e\room\y + 0.5, EntityZ(Pvt, True))
-				ResetEntity(n_I\Curr096\Collider)
+				TeleportEntity(n_I\Curr096\Collider, EntityX(Pvt, True), e\room\y + 0.5, EntityZ(Pvt, True), n_I\Curr096\CollRadius, True)
+				n_I\Curr096\CurrentRoom = e\room
 			Else
 				n_I\Curr096 = CreateNPC(NPCType096, EntityX(Pvt, True), e\room\y + 0.5, EntityZ(Pvt, True))
 			EndIf
@@ -9485,8 +9485,8 @@ Function UpdateEvent_173_Spawn%(e.Events)
 						End Select
 						;[End Block]
 				End Select
-				PositionEntity(n_I\Curr173\Collider, TFormedX(), TFormedY(), TFormedZ(), True)
-				ResetEntity(n_I\Curr173\Collider)
+				TeleportEntity(n_I\Curr173\Collider, TFormedX(), TFormedY(), TFormedZ(), n_I\Curr173\CollRadius + 0.12, True)
+				n_I\Curr173\CurrentRoom = e\room
 				RemoveEvent(e)
 			EndIf
 		EndIf
