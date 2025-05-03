@@ -5284,75 +5284,82 @@ Function UpdateGUI%()
 						SelectedItem = Null
 					EndIf
 					;[End Block]
-				Case it_scp513, it_fine513
+				Case it_scp513
 					;[Block]
 					GiveAchievement("513")
+					PlaySound_Strict(LoadTempSound("SFX\SCP\513\Bell.ogg"))
 					
 					me\SndVolume = Max(4.0, me\SndVolume)
 					
 					If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
 					
-					If SelectedItem\ItemTemplate\ID = it_fine513
-						PlaySound_Strict(LoadTempSound("SFX\SCP\513\BellLoud.ogg"))
-						If me\Deaf Then Kill(True)
-						SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
-						me\BigCameraShake = 8.0
-						me\BlurTimer = Max(200.0, me\BlurTimer)
-						SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 29)
-						
-						For np.NPCs = Each NPCs
-							If EntityDistanceSquared(np\Collider, me\Collider) < 64.0 And (Not np\IsDead)
-								Select np\NPCType
-									Case NPCType008_1, NPCType008_1_Surgeon
-										;[Block]
-										SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
-										np\LastSeen = 0.0
-										np\State = 5.0
-										;[End Block]
-									Case NPCType049
-										;[Block]
-										SetNPCFrame(np, 474.0)
-										np\State = 6.0
-										;[End Block]
-									Case NPCType049_2
-										;[Block]
-										SetNPCFrame(np, 944.0)
-										np\LastSeen = 0.0
-										np\State = 5.0
-										;[End Block]
-									Case NPCType860_2
-										;[Block]
-										If np\State = 3.0
-											np\SoundCHN = PlaySoundEx(LoadTempSound("SFX\SCP\860_2\Cancer" + Rand(3, 5) + ".ogg"), Camera, np\Collider, 10.0, 1.0, True)
-											np\LastSeen = 70.0 * 5.0
-										EndIf
-										;[End Block]
-									Case NPCType939
-										;[Block]
-										LoadNPCSound(np, "SFX\SCP\939\" + (np\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
-										np\SoundCHN = PlaySoundEx(np\Sound, Camera, np\Collider, 10.0, 1.0, True)
-										SetNPCFrame(np, 474.0)
-										np\State = 6.0
-										;[End Block]
-									Case NPCType1048_A
-										;[Block]
-										np\HP = 0
-										;[End Block]
-									Case NPCTypeMTF
-										;[Block]
-										If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
-										SetNPCFrame(np, 1050.0)
-										np\PrevState = np\State
-										np\State2 = 0.0
-										np\State3 = 0.0
-										np\State = MTF_STATE_STUNNED
-										;[End Block]
-								End Select
-							EndIf
-						Next
-					Else
-						PlaySound_Strict(LoadTempSound("SFX\SCP\513\Bell.ogg"))
-					EndIf
+					SelectedItem = Null
+					;[End Block]
+				Case it_fine513
+					;[Block]
+					GiveAchievement("513")
+					PlaySound_Strict(LoadTempSound("SFX\SCP\513\BellLoud.ogg"))
+					
+					me\SndVolume = Max(4.0, me\SndVolume)
+					
+					If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
+					
+					If me\Deaf Then Kill(True)
+					SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
+					me\BigCameraShake = 8.0
+					me\BlurTimer = Max(200.0, me\BlurTimer)
+					SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 29)
+					
+					For np.NPCs = Each NPCs
+						If EntityDistanceSquared(np\Collider, me\Collider) < 64.0 And (Not np\IsDead)
+							Select np\NPCType
+								Case NPCType008_1, NPCType008_1_Surgeon
+									;[Block]
+									SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
+									np\LastSeen = 0.0
+									np\State = 5.0
+									;[End Block]
+								Case NPCType049
+									;[Block]
+									SetNPCFrame(np, 474.0)
+									np\State = 6.0
+									;[End Block]
+								Case NPCType049_2
+									;[Block]
+									SetNPCFrame(np, 944.0)
+									np\LastSeen = 0.0
+									np\State = 5.0
+									;[End Block]
+								Case NPCType860_2
+									;[Block]
+									If np\State = 3.0
+										np\SoundCHN = PlaySoundEx(LoadTempSound("SFX\SCP\860_2\Cancer" + Rand(3, 5) + ".ogg"), Camera, np\Collider, 10.0, 1.0, True)
+										np\LastSeen = 70.0 * 5.0
+									EndIf
+									;[End Block]
+								Case NPCType939
+									;[Block]
+									LoadNPCSound(np, "SFX\SCP\939\" + (np\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
+									np\SoundCHN = PlaySoundEx(np\Sound, Camera, np\Collider, 10.0, 1.0, True)
+									SetNPCFrame(np, 474.0)
+									np\State = 6.0
+									;[End Block]
+								Case NPCType1048_A
+									;[Block]
+									np\HP = 0
+									;[End Block]
+								Case NPCTypeMTF
+									;[Block]
+									If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
+									SetNPCFrame(np, 1050.0)
+									np\PrevState = np\State
+									np\State2 = 0.0
+									np\State3 = 0.0
+									np\State = MTF_STATE_STUNNED
+									;[End Block]
+							End Select
+						EndIf
+					Next
 					SelectedItem = Null
 					;[End Block]
 				Case it_scp500pill
