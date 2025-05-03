@@ -335,15 +335,20 @@ Function UpdateLauncher%(lnchr.Launcher)
 			Color(255, 0, 0)
 			DrawImage(LauncherIMG[1], LauncherWidth - 185, LauncherHeight - 186, 3)
 			Rect(LauncherWidth - 185, LauncherHeight - 186, 40, 40, False)
-			Color(255, 255, 255)
-			TextEx(LauncherWidth - 185 + 45, LauncherHeight - 166, GetLocalString("launcher", "language.failed"), False, True)
+			TextEx(LauncherWidth - 140, LauncherHeight - 166, GetLocalString("launcher", "language.failed"), False, True)
 			If (MilliSecs() - SelectorDeniedTimer) > 5000 Then SelectorDeniedTimer = 0
 		Else
+			If KeyDown(29)
+				Txt = GetLocalString("launcher", "language.iter")
+			Else
+				Txt = GetLocalString("launcher", "language")
+			EndIf
+			TextEx(LauncherWidth - 140, LauncherHeight - 166, Txt, False, True)
 			If MouseOn(LauncherWidth - 185, LauncherHeight - 186, 40, 40)
 				If KeyDown(29) ; ~ LCtrl
 					DrawImage(LauncherIMG[1], LauncherWidth - 185, LauncherHeight - 186, 2)
 					Rect(LauncherWidth - 185, LauncherHeight - 186, 40, 40, False)
-					TextEx(LauncherWidth - 185 + 45, LauncherHeight - 166, GetLocalString("launcher", "language.iter"), False, True)
+					
 					If mo\MouseHit1
 						PlaySound_Strict(ButtonSFX[0])
 						If FileType("Localization") = 2
@@ -355,7 +360,6 @@ Function UpdateLauncher%(lnchr.Launcher)
 				Else
 					DrawImage(LauncherIMG[1], LauncherWidth - 185, LauncherHeight - 186, 1)
 					Rect(LauncherWidth - 185, LauncherHeight - 186, 40, 40, False)
-					TextEx(LauncherWidth - 185 + 45, LauncherHeight - 166, GetLocalString("launcher", "language"), False, True)
 					If mo\MouseHit1
 						PlaySound_Strict(ButtonSFX[0])
 						If UpdateLanguageSelector() Then SelectorDeniedTimer = MilliSecs()
