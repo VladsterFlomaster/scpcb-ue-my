@@ -4947,11 +4947,10 @@ Function UpdateGUI%()
 						
 						If wi\Headphones > 0
 							CreateMsg(GetLocalString("msg", "headphones.off"))
-							wi\Headphones = 0
 						Else
 							CreateMsg(GetLocalString("msg", "headphones.on"))
-							wi\Headphones = 1
 						EndIf
+						wi\Headphones = (Not wi\Headphones)
 						SelectedItem\State = 0.0
 						SelectedItem = Null
 					EndIf

@@ -539,7 +539,7 @@ End Function
 
 Function SetDeafState%(DeafTime#)
 	If (Not wi\Headphones) And (Not me\Deaf)
-		me\Deaf = DeafTime
+		me\DeafTimer = DeafTime
 		me\Deaf = True
 	EndIf
 End Function
