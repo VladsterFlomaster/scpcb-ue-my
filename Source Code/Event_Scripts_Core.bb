@@ -8796,15 +8796,6 @@ Function UpdateEvent_Dimension_106%(e.Events)
 								n_I\Curr106\State2 = 15000.0
 								
 								For e2.Events = Each Events
-									If e2\EventID = e_room2_sl
-										e2\EventState3 = 0.0
-										UpdateLever(e2\room\RoomLevers[0]\OBJ)
-										RotateEntity(e2\room\RoomLevers[0]\OBJ, 80.0, EntityYaw(e2\room\RoomLevers[0]\OBJ), 0.0)
-										Exit
-									EndIf
-								Next
-								
-								For e2.Events = Each Events
 									If e2\EventID = e_cont1_005
 										RemoveEvent(e2)
 										Exit
