@@ -8759,7 +8759,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 					PositionEntity(me\Collider, EntityX(e\room\Objects[Temp], True), EntityY(e\room\Objects[Temp], True), EntityZ(e\room\Objects[Temp], True))
 					ResetEntity(me\Collider)
 					
-					n_I\Curr106\Speed = n_I\Curr106\Speed / 3.0
+					n_I\Curr106\Speed = n_I\Curr106\Speed / 2.5
 					n_I\Curr106\Idle = 0
 					n_I\Curr106\State = 3.0
 					n_I\Curr106\State2 = 0.0
