@@ -27,17 +27,21 @@ Global MilliSec%
 
 Global SplitSpace$
 
-If opt\LauncherEnabled
-	Local lnchr.Launcher
-	
-	lnchr.Launcher = New Launcher
-	
-	lnchr\TotalGFXModes = CountGfxModes3D()
-	
-	UpdateLauncher(lnchr)
-	
-	Delete(lnchr)
-EndIf
+Function InitLauncher%()
+	If opt\LauncherEnabled
+		Local lnchr.Launcher
+		
+		lnchr.Launcher = New Launcher
+		
+		lnchr\TotalGFXModes = CountGfxModes3D()
+		
+		UpdateLauncher(lnchr)
+		
+		Delete(lnchr)
+	EndIf
+End Function
+
+InitLauncher()
 
 Global GraphicWidthFloat#
 Global GraphicHeightFloat#
