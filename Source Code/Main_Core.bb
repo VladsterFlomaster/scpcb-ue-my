@@ -7813,20 +7813,19 @@ Function RenderGUI%()
 										EndIf
 									EndIf
 								EndIf
-								
-								; ~ Battery
-								If SelectedItem\State > 0.0 And (SelectedItem\ItemTemplate\ID = it_nav Lor SelectedItem\ItemTemplate\ID = it_nav310)
-									xTemp = x - NAV_WIDTH_HALF + (196 * MenuScale)
-									yTemp = y - NAV_HEIGHT_HALF + (10 * MenuScale)
-									
-									n = Min(Ceil(SelectedItem\State / 10.0), 10)
-									Color(170 * (n < 3) + 30, 30 * (n < 3), 30 * (n < 3))
-									Rect(xTemp, yTemp, 80 * MenuScale, 20 * MenuScale, False)
-									For i = 1 To n
-										Rect(xTemp + ((i * 8) * MenuScale) - (6 * MenuScale), yTemp + (4 * MenuScale), 4 * MenuScale, 12 * MenuScale)
-									Next
-								EndIf
 							EndIf
+						EndIf
+						; ~ Battery
+						If SelectedItem\State > 0.0 And (SelectedItem\ItemTemplate\ID = it_nav Lor SelectedItem\ItemTemplate\ID = it_nav310)
+							xTemp = x - NAV_WIDTH_HALF + (196 * MenuScale)
+							yTemp = y - NAV_HEIGHT_HALF + (10 * MenuScale)
+							
+							n = Min(Ceil(SelectedItem\State / 10.0), 10)
+							Color(170 * (n < 3) + 30, 30 * (n < 3), 30 * (n < 3))
+							Rect(xTemp, yTemp, 80 * MenuScale, 20 * MenuScale, False)
+							For i = 1 To n
+								Rect(xTemp + ((i * 8) * MenuScale) - (6 * MenuScale), yTemp + (4 * MenuScale), 4 * MenuScale, 12 * MenuScale)
+							Next
 						EndIf
 						SetFontEx(fo\FontID[Font_Default])
 					EndIf
