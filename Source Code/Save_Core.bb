@@ -1872,6 +1872,7 @@ Function LoadGameQuick%(File$)
 		n\TextureID = ReadByte(f)
 		If n\TextureID > 0 Then ChangeNPCTextureID(n, n\TextureID - 1)
 		n\HideFromNVG = ReadByte(f)
+		n\TeslaHit = ReadByte(f)
 		
 		If n\IceTimer > 0.0
 			EntityColor(n\OBJ, 255.0, Max(100.0, 255.0 - (n\IceTimer * 0.1)), Max(100.0, 255.0 - (n\IceTimer * 0.1)))
