@@ -5357,9 +5357,8 @@ Function UpdateGUI%()
 									;[Block]
 									If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
 									SetNPCFrame(np, 1050.0)
-									np\PrevState = np\State
-									np\State2 = 0.0
-									np\State3 = 0.0
+									If np\State <> MTF_STATE_STUNNED Then np\PrevState = np\State
+									np\LastSeen = 0.0
 									np\State = MTF_STATE_STUNNED
 									;[End Block]
 							End Select
