@@ -474,6 +474,9 @@ author unknown
 		SCP-008 is based on "SCP-008 - Zombie Plague",
 by "Lee Byron" https://www.wikidot.com/user:info/lee-byron
 
+		SCP-009 is based on "SCP-009 - Red Ice",
+by "Chameleon X"
+
 		SCP-012 is based on "SCP-012 - A Bad Composition",
 by "xthevilecorruptor" https://www.wikidot.com/user:info/xthevilecorruptor
 
