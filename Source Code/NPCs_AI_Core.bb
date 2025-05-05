@@ -5215,7 +5215,7 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 		AnimateNPC(n, 1050.0, 1174.0, 0.8, False)
 	Else
 		Local r.Rooms, p.Particles, n2.NPCs, w.WayPoints, de.Decals, e.Events, emit.Emitter
-		Local i%
+		Local i%, Temp%
 		
 		; ~ n\State: Main state
 		
@@ -6695,13 +6695,17 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 		If PlayerRoom\RoomTemplate\RoomID <> r_cont2_049 And n\InFacility = LowerFloor Then TeleportCloser(n)
 		
 		If n\HP =< 0
-			; ~ TODO!
-;			If (MTFTimer > 20000.0 And MTFTimer < 31000.0)
-;				PlayAnnouncement("SFX\Character\MTF\AnnouncLost.ogg")
-;				MTFTimer = 31000.0
-;			EndIf
-;			
 			n\IsDead = True
+			Temp = True
+			For n2.NPCs = Each NPCs
+				If n2\NPCType = NPCTypeMTF
+					If (Not n2\IsDead)
+						Temp = False
+						Exit
+					EndIf
+				EndIf
+			Next
+			If Temp Then PlayAnnouncement("SFX\Character\MTF\AnnouncLost.ogg")
 		EndIf
 	EndIf
 	PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
