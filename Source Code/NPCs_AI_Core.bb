@@ -2673,7 +2673,7 @@ Function UpdateNPCType513_1%(n.NPCs)
 			HideEntity(n\OBJ)
 			HideEntity(n\OBJ2)
 		EndIf
-		If Rand(200) = 1
+		If Rand(300) = 1
 			For w.WayPoints = Each WayPoints
 				If w\room <> PlayerRoom
 					Dist = DistanceSquared(EntityX(me\Collider), EntityX(w\OBJ, True), EntityZ(me\Collider), EntityZ(w\OBJ, True))
@@ -2755,7 +2755,7 @@ Function UpdateNPCType513_1%(n.NPCs)
 				For w.WayPoints = Each WayPoints
 					Local Dist2# = DistanceSquared(EntityX(n\Collider), EntityX(w\OBJ), EntityZ(n\Collider), EntityZ(w\OBJ))
 					
-					If Dist2 < 64.0 And Dist2 > 1.0
+					If Dist2 > 1.0 And Dist2 < 64.0
 						If EntityDistanceSquared(me\Collider, w\OBJ) > Dist
 							n\Path[0] = w
 							Exit
