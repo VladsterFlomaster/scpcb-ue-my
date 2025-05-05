@@ -2740,7 +2740,10 @@ Function InteractObject%(OBJ%, Dist#, MouseType% = 0)
 			Select MouseType
 				Case 0
 					;[Block]
-					If mo\MouseHit1 Then SetPlayerAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, OBJ)
+					If mo\MouseHit1
+						SetPlayerAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, OBJ)
+						Return(True)
+					EndIf
 					;[End Block]
 				Case 1
 					;[Block]
