@@ -9656,6 +9656,7 @@ Function Update009%()
 			If I_009\Revert
 				I_009\Timer = Max(I_009\Timer - (fps\Factor[0] * 0.02), 0.0)
 			ElseIf (Not I_427\Using)
+				CanSave = 0
 				I_009\Timer = Min(I_009\Timer + (fps\Factor[0] * 0.075), 100.0)
 			EndIf
 		EndIf
