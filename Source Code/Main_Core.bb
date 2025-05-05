@@ -5307,12 +5307,14 @@ Function UpdateGUI%()
 					
 					me\SndVolume = Max(4.0, me\SndVolume)
 					
-					If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
-					
-					If me\Deaf Then Kill(True)
+					If (Not wi\Headphones)
+						If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
+						
+						If me\Deaf Then Kill(True)
+						me\BlurTimer = Max(400.0, me\BlurTimer)
+					EndIf
 					SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
 					me\BigCameraShake = 8.0
-					me\BlurTimer = Max(400.0, me\BlurTimer)
 					SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 29)
 					
 					For np.NPCs = Each NPCs
