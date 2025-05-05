@@ -2740,10 +2740,7 @@ Function InteractObject%(OBJ%, Dist#, MouseType% = 0)
 			Select MouseType
 				Case 0
 					;[Block]
-					If mo\MouseHit1
-						pm\AnimID = PLAYER_ANIM_INTERACT + me\Crouch
-						Return(True)
-					EndIf
+					If mo\MouseHit1 Then SetPlayerAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, OBJ)
 					;[End Block]
 				Case 1
 					;[Block]
@@ -2801,6 +2798,27 @@ Function RefillCup%()
 			EndIf
 			Return	
 		EndIf
+	EndIf
+End Function
+
+Function SetPlayerAnimation%(ID%, InteractionOBJ% = 0)
+	If InteractionOBJ <> 0
+		Local Pvt% = CreatePivot()
+		
+		PositionEntity(Pvt, EntityX(Camera), EntityY(Camera), EntityZ(Camera))
+		PointEntity(Pvt, InteractionOBJ)
+		
+		Local YawValue# = WrapAngle(EntityYaw(Camera) - EntityYaw(Pvt))
+		Local PitchValue# = WrapAngle(EntityPitch(Camera) - EntityPitch(Pvt))
+		
+		FreeEntity(Pvt) : Pvt = 0
+		
+		If YawValue > 90.0 And YawValue <= 180.0 Then YawValue = 90.0
+		If YawValue > 180.0 And YawValue < 270.0 Then YawValue = 270.0
+		
+		If PitchValue < 90.0 Lor PitchValue > 270.0 Then pm\AnimID = ID + (4 * (YawValue < 180.0))
+	Else
+		pm\AnimID = ID
 	EndIf
 End Function
 
@@ -2971,7 +2989,7 @@ Function UpdateMoving%()
 			If KeyDown(key\MOVEMENT_LEFT) Then MoveEntity(me\Collider, (-Temp2) * fps\Factor[0], 0.0, 0.0)
 			If KeyDown(key\MOVEMENT_RIGHT) Then MoveEntity(me\Collider, Temp2 * fps\Factor[0], 0.0, 0.0)
 			
-			pm\AnimID = PLAYER_ANIM_NOCLIP
+			SetPlayerAnimation(PLAYER_ANIM_NOCLIP)
 			
 			ResetEntity(me\Collider)
 		Else
@@ -2981,50 +2999,50 @@ Function UpdateMoving%()
 			If me\Playable = 2 And me\FallTimer >= 0.0 And (Not me\Terminated)
 				If (Not me\Zombie)
 					If pm\AnimID > PLAYER_ANIM_NOCLIP
-						If AnimTime(pm\OBJ) >= AnimLength(pm\OBJ) - 0.1 Then pm\AnimID = PLAYER_ANIM_IDLE + me\Crouch
+						If AnimTime(pm\OBJ) >= AnimLength(pm\OBJ) - 0.1 Then SetPlayerAnimation(PLAYER_ANIM_IDLE + me\Crouch)
 					Else
-						pm\AnimID = PLAYER_ANIM_IDLE + me\Crouch
+						SetPlayerAnimation(PLAYER_ANIM_IDLE + me\Crouch)
 					EndIf
 					If Sprint > 0.0
 						If KeyDown(key\MOVEMENT_DOWN)
 							If (Not KeyDown(key\MOVEMENT_UP))
 								Temp = True
 								Angle = 180.0
-								pm\AnimID = PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch)
+								SetPlayerAnimation(PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch))
 								If KeyDown(key\MOVEMENT_LEFT)
 									If (Not KeyDown(key\MOVEMENT_RIGHT))
 										Angle = 135.0
-										pm\AnimID = PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+										SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 									EndIf
 								ElseIf KeyDown(key\MOVEMENT_RIGHT)
 									Angle = -135.0
-									pm\AnimID = PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							Else
 								If KeyDown(key\MOVEMENT_LEFT)
 									If (Not KeyDown(key\MOVEMENT_RIGHT))
 										Temp = True
 										Angle = 90.0
-										pm\AnimID = PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+										SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 									EndIf
 								ElseIf KeyDown(key\MOVEMENT_RIGHT)
 									Temp = True
 									Angle = -90.0
-									pm\AnimID = PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							EndIf
 						ElseIf KeyDown(key\MOVEMENT_UP)
 							Temp = True
 							Angle = 0.0
-							pm\AnimID = PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch)
+							SetPlayerAnimation(PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch))
 							If KeyDown(key\MOVEMENT_LEFT)
 								If (Not KeyDown(key\MOVEMENT_RIGHT))
 									Angle = 45.0
-									pm\AnimID = PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							ElseIf KeyDown(key\MOVEMENT_RIGHT)
 								Angle = -45.0
-								pm\AnimID = PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+								SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 							EndIf
 						ElseIf me\ForceMove > 0.0
 							Temp = True
@@ -3034,12 +3052,12 @@ Function UpdateMoving%()
 								If (Not KeyDown(key\MOVEMENT_RIGHT))
 									Temp = True
 									Angle = 90.0
-									pm\AnimID = PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							ElseIf KeyDown(key\MOVEMENT_RIGHT)
 								Temp = True
 								Angle = -90.0
-								pm\AnimID = PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch)
+								SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 							EndIf
 						EndIf
 					EndIf

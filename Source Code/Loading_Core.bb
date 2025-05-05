@@ -2503,7 +2503,7 @@ Const PLAYER_BODY_PRISONER_TEX% = 4
 
 ; ~ Player body animation constants
 ;[Block]
-Const MaxPlayerAnimations% = 17
+Const MaxPlayerAnimations% = 21
 
 Const PLAYER_ANIM_IDLE% = 1
 Const PLAYER_ANIM_CROUCH_IDLE% = 2
@@ -2523,10 +2523,14 @@ Const PLAYER_ANIM_CROUCH_WALK_STRAFE_LEFT% = 11
 
 Const PLAYER_ANIM_NOCLIP% = 12
 
-Const PLAYER_ANIM_INTERACT% = 13
-Const PLAYER_ANIM_CROUCH_INTERACT% = 14
-Const PLAYER_ANIM_PICK_UP% = 15
-Const PLAYER_ANIM_CROUCH_PICK_UP% = 16
+Const PLAYER_ANIM_LEFT_INTERACT% = 13
+Const PLAYER_ANIM_CROUCH_LEFT_INTERACT% = 14
+Const PLAYER_ANIM_LEFT_PICK_UP% = 15
+Const PLAYER_ANIM_CROUCH_LEFT_PICK_UP% = 16
+Const PLAYER_ANIM_RIGHT_INTERACT% = 17
+Const PLAYER_ANIM_CROUCH_RIGHT_INTERACT% = 18
+Const PLAYER_ANIM_RIGHT_PICK_UP% = 19
+Const PLAYER_ANIM_CROUCH_RIGHT_PICK_UP% = 20
 ;[End Block]
 
 Type PlayerModel
@@ -2587,7 +2591,7 @@ Function LoadEntities%()
 	
 	Local StartFrame#, EndFrame#
 	
-	For i = PLAYER_ANIM_IDLE To PLAYER_ANIM_CROUCH_PICK_UP
+	For i = PLAYER_ANIM_IDLE To PLAYER_ANIM_CROUCH_RIGHT_PICK_UP
 		Select i
 			Case PLAYER_ANIM_IDLE
 				;[Block]
@@ -2685,15 +2689,15 @@ Function LoadEntities%()
 				pm\AnimationTransition[i] = 15.0
 				pm\AnimationMode[i] = 1
 				;[End Block]
-			Case PLAYER_ANIM_INTERACT
+			Case PLAYER_ANIM_LEFT_INTERACT
 				;[Block]
 				StartFrame = 285.0
-				EndFrame = 326.0
+				EndFrame = 325.0
 				pm\AnimationSpeed[i] = 1.5
 				pm\AnimationTransition[i] = 5.0
 				pm\AnimationMode[i] = 3
 				;[End Block]
-			Case PLAYER_ANIM_CROUCH_INTERACT
+			Case PLAYER_ANIM_CROUCH_LEFT_INTERACT
 				;[Block]
 				StartFrame = 367.0
 				EndFrame = 408.0
@@ -2701,26 +2705,58 @@ Function LoadEntities%()
 				pm\AnimationTransition[i] = 5.0
 				pm\AnimationMode[i] = 3
 				;[End Block]
-			Case PLAYER_ANIM_PICK_UP
+			Case PLAYER_ANIM_LEFT_PICK_UP
 				;[Block]
-				StartFrame = 327.0
+				StartFrame = 326.0
 				EndFrame = 366.0
+				pm\AnimationSpeed[i] = 1.2
+				pm\AnimationTransition[i] = 5.0
+				pm\AnimationMode[i] = 3
+				;[End Block]
+			Case PLAYER_ANIM_CROUCH_LEFT_PICK_UP
+				;[Block]
+				StartFrame = 409.0
+				EndFrame = 448.0
+				pm\AnimationSpeed[i] = 1.2
+				pm\AnimationTransition[i] = 5.0
+				pm\AnimationMode[i] = 3
+				;[End Block]
+			Case PLAYER_ANIM_RIGHT_INTERACT
+				;[Block]
+				StartFrame = 449.0
+				EndFrame = 489.0
 				pm\AnimationSpeed[i] = 1.5
 				pm\AnimationTransition[i] = 5.0
 				pm\AnimationMode[i] = 3
 				;[End Block]
-			Case PLAYER_ANIM_CROUCH_PICK_UP
+			Case PLAYER_ANIM_CROUCH_RIGHT_INTERACT
 				;[Block]
-				StartFrame = 409.0
-				EndFrame = 448.0
+				StartFrame = 531.0
+				EndFrame = 572.0
 				pm\AnimationSpeed[i] = 1.5
+				pm\AnimationTransition[i] = 5.0
+				pm\AnimationMode[i] = 3
+				;[End Block]
+			Case PLAYER_ANIM_RIGHT_PICK_UP
+				;[Block]
+				StartFrame = 490.0
+				EndFrame = 530.0
+				pm\AnimationSpeed[i] = 1.2
+				pm\AnimationTransition[i] = 5.0
+				pm\AnimationMode[i] = 3
+				;[End Block]
+			Case PLAYER_ANIM_CROUCH_RIGHT_PICK_UP
+				;[Block]
+				StartFrame = 573.0
+				EndFrame = 612.0
+				pm\AnimationSpeed[i] = 1.2
 				pm\AnimationTransition[i] = 5.0
 				pm\AnimationMode[i] = 3
 				;[End Block]
 		End Select
 		ExtractAnimSeq(pm\OBJ, StartFrame, EndFrame)
 	Next
-	pm\AnimID = PLAYER_ANIM_IDLE
+	SetPlayerAnimation(PLAYER_ANIM_IDLE)
 	pm\BodyTextureName[PLAYER_BODY_NORMAL_TEX] = ""
 	pm\BodyTextureName[PLAYER_BODY_HAZMAT_TEX] = "_hazmat"
 	pm\BodyTextureName[PLAYER_BODY_HAZMAT_HEAVY_TEX] = "_hazmat_heavy"
