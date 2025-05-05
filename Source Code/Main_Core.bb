@@ -5333,7 +5333,7 @@ Function UpdateGUI%()
 							Select np\NPCType
 								Case NPCType008_1, NPCType008_1_Surgeon
 									;[Block]
-									If np\State <> 5.0
+									If np\State > 0.0 And np\State < 5.0 
 										SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
 										np\LastSeen = 0.0
 										np\State = 5.0
@@ -5348,7 +5348,7 @@ Function UpdateGUI%()
 									;[End Block]
 								Case NPCType049_2
 									;[Block]
-									If np\State <> 5.0
+									If np\State > 0.0 And np\State < 5.0 
 										SetNPCFrame(np, 944.0)
 										np\LastSeen = 0.0
 										np\State = 5.0
