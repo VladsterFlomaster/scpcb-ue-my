@@ -5312,7 +5312,7 @@ Function UpdateGUI%()
 					If me\Deaf Then Kill(True)
 					SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
 					me\BigCameraShake = 8.0
-					me\BlurTimer = Max(200.0, me\BlurTimer)
+					me\BlurTimer = Max(400.0, me\BlurTimer)
 					SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 29)
 					
 					For np.NPCs = Each NPCs
