@@ -5310,7 +5310,10 @@ Function UpdateGUI%()
 					If (Not wi\Headphones)
 						If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
 						
-						If me\Deaf Then Kill(True)
+						If me\Deaf
+							msg\DeathMsg = GetLocalString("death", "513")
+							Kill(True)
+						EndIf
 						me\BlurTimer = Max(400.0, me\BlurTimer)
 					EndIf
 					SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
