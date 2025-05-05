@@ -9943,7 +9943,7 @@ Function Update409%()
 			If I_409\Revert
 				I_409\Timer = Max(I_409\Timer - (fps\Factor[0] * 0.02), 0.0)
 			ElseIf (Not I_427\Using)
-				I_409\Timer = Min(I_409\Timer + (fps\Factor[0] * 0.004), 100.0)
+				I_409\Timer = Min(I_409\Timer + (fps\Factor[0] * 0.005), 100.0)
 				me\BlurTimer = Max(I_409\Timer * 3.0 * (2.0 - me\CrouchState), me\BlurTimer)
 			EndIf
 		EndIf
