@@ -5409,15 +5409,24 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 								EndIf
 							EndIf
 							
-							n\EnemyX = EntityX(me\Collider, True)
-							n\EnemyY = EntityY(me\Collider, True)
-							n\EnemyZ = EntityZ(me\Collider, True)
-							n\PathTimer = 0.0
-							n\PathStatus = PATH_STATUS_NO_SEARCH
-							n\LastSeen = 70.0 * Rnd(30.0, 40.0)
-							n\Reload = 70.0 * (3.0 - SelectedDifficulty\AggressiveNPCs)
-							n\State2 = 70.0 * (15.0 * PlayerSeeAble) ; ~ Give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
-							n\State = MTF_SEARCHING_PLAYER
+							For n2.NPCs = Each NPCs
+								If n2\NPCType = NPCTypeMTF
+									If n2\State < MTF_173_SPOTTED
+										If EntityDistanceSquared(n\Collider, n2\Collider) < 36.0
+											n2\EnemyX = EntityX(me\Collider, True)
+											n2\EnemyY = EntityY(me\Collider, True)
+											n2\EnemyZ = EntityZ(me\Collider, True)
+											n2\PathTimer = 0.0
+											n2\PathStatus = PATH_STATUS_NO_SEARCH
+											n2\PrevState = 0
+											n2\LastSeen = 70.0 * Rnd(30.0, 40.0)
+											n2\Reload = 70.0 * (4.0 - SelectedDifficulty\AggressiveNPCs)
+											n2\State2 = 70.0 * (15.0 * PlayerSeeAble) ; ~ Give up after 15 seconds (30 seconds if detected by loud noise, over camera: 45)
+											n2\State = MTF_SEARCHING_PLAYER
+										EndIf
+									EndIf
+								EndIf
+							Next
 							Return
 						EndIf
 					EndIf
@@ -5613,6 +5622,16 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 			Case MTF_SEARCHING_PLAYER
 				;[Block]
 				n\Speed = 0.015
+				
+				Dist = EntityDistanceSquared(me\Collider, n\Collider)
+				If Dist < 0.64 Then n\State3 = 70.0
+				If n\State3 > 0.0
+					n\PathStatus = PATH_STATUS_NO_SEARCH
+					n\PathLocation = 0
+					n\PathTimer = 1.0
+					n\State3 = Max(n\State3 - fps\Factor[0], 0.0)
+				EndIf
+				
 				n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
 				If n\State2 > 0.0
 					PlayerSeeAble = NPCSeesPlayer(n, 4.0 - me\CrouchState + me\SndVolume)
@@ -5649,47 +5668,34 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 							n\Reload = 8.0
 						EndIf
 						
-						Dist = EntityDistanceSquared(me\Collider, n\Collider)
 						; ~ If close enough, start shooting at the player
-						If Dist < 9.0 + ((PlayerRoom\RoomTemplate\RoomID = r_gate_a) * 16.0) 
-							For n2.NPCs = Each NPCs
-								If n2\NPCType = NPCTypeMTF And n2 <> n
-									If n2\State = MTF_WANDERING_AROUND
-										If EntityDistanceSquared(n\Collider, n2\Collider) < 36.0
-											n\PrevState = 1
-											n2\LastSeen = 70.0 * Rnd(30.0, 40.0)
-											n2\EnemyX = EntityX(me\Collider, True)
-											n2\EnemyY = EntityY(me\Collider, True)
-											n2\EnemyZ = EntityZ(me\Collider, True)
-											n2\State2 = n\State2
-											n2\PathTimer = 0.0
-											n2\PathStatus = PATH_STATUS_NO_SEARCH
-											n2\Reload = 70.0 * (4.0 - SelectedDifficulty\AggressiveNPCs)
-											n2\PrevState = 0
-											n2\State = MTF_SEARCHING_PLAYER
-										EndIf
-									EndIf
-								EndIf
-							Next
-							
-							If n\PrevState = 1
-								SetNPCFrame(n, 423.0)
-								n\PrevState = 2
-							ElseIf n\PrevState = 2
-								n\CurrSpeed = 0.0
-								If n\Frame > 200.0
-									AnimateNPC(n, 424.0, 463.0, 0.5, False)
-									If n\Frame > 462.9 Then SetNPCFrame(n, 78.0)
-								Else
-									AnimateNPC(n, 78.0, 193.0, 0.2, False)
-								EndIf
-							EndIf
-						Else
+						If n\State3 > 0.0
 							PositionEntity(n\OBJ, n\EnemyX, n\EnemyY, n\EnemyZ, True)
 							PointEntity(n\Collider, n\OBJ)
-							n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
+							n\CurrSpeed = CurveValue(-n\Speed, n\CurrSpeed, 20.0)
 							TranslateEntity(n\Collider, Cos(EntityYaw(n\Collider, True) + 90.0) * n\CurrSpeed * fps\Factor[0], 0.0, Sin(EntityYaw(n\Collider, True) + 90.0) * n\CurrSpeed * fps\Factor[0], True)
-							AnimateNPC(n, 488.0, 522.0, n\CurrSpeed * 26.0)
+							AnimateNPC(n, 522.0, 488.0, n\CurrSpeed * 26.0)
+						Else
+							If Dist < 9.0 + ((PlayerRoom\RoomTemplate\RoomID = r_gate_a) * 16.0) And n\State3 = 0.0
+								n\CurrSpeed = 0.0
+								If n\PrevState = 1
+									SetNPCFrame(n, 423.0)
+									n\PrevState = 2
+								ElseIf n\PrevState = 2
+									If n\Frame > 200.0
+										AnimateNPC(n, 424.0, 463.0, 0.5, False)
+										If n\Frame > 462.9 Then SetNPCFrame(n, 78.0)
+									Else
+										AnimateNPC(n, 78.0, 193.0, 0.2, False)
+									EndIf
+								EndIf
+							Else
+								PositionEntity(n\OBJ, n\EnemyX, n\EnemyY, n\EnemyZ, True)
+								PointEntity(n\Collider, n\OBJ)
+								n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
+								TranslateEntity(n\Collider, Cos(EntityYaw(n\Collider, True) + 90.0) * n\CurrSpeed * fps\Factor[0], 0.0, Sin(EntityYaw(n\Collider, True) + 90.0) * n\CurrSpeed * fps\Factor[0], True)
+								AnimateNPC(n, 488.0, 522.0, n\CurrSpeed * 26.0)
+							EndIf
 						EndIf
 						RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider, True), 0.0, True)
 						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 10.0)
