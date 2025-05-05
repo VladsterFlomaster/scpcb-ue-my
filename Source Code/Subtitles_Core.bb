@@ -72,10 +72,11 @@ Function UpdateSubtitles%()
 	Local Queue.QueuedSubtitlesMsg
 	Local LastSubtitles.SubtitlesMsg
 	Local CoordEx% = (10 * MenuScale)
+	Local FactorToken% = (me\SelectedEnding <> -1)
 	
 	For Queue.QueuedSubtitlesMsg = Each QueuedSubtitlesMsg
 		If Queue\TimeStart > 0.0
-			Queue\TimeStart = Queue\TimeStart - fps\Factor[0]
+			Queue\TimeStart = Queue\TimeStart - fps\Factor[FactorToken]
 		Else
 			Local TxtLine$ = Queue\Txt
 			Local HasSplit% = False
@@ -140,16 +141,16 @@ Function UpdateSubtitles%()
 	Next
 	
 	Local sub.SubtitlesMsg
-	Local FPSFactorEx# = fps\Factor[0] / 7.0
+	Local FPSFactorEx# = fps\Factor[FactorToken] / 7.0
 	
 	For sub.SubtitlesMsg = Each SubtitlesMsg
 		; ~ Gradually reveal the text
 		If sub\TextIndex < Len(sub\Txt)
-			sub\TextIndex = sub\TextIndex + fps\Factor[0]
+			sub\TextIndex = sub\TextIndex + fps\Factor[FactorToken]
 			sub\CurrentText = Left(sub\Txt, Floor(sub\TextIndex))
 		EndIf
 		
-		sub\TimeLeft = sub\TimeLeft - fps\Factor[0]
+		sub\TimeLeft = sub\TimeLeft - fps\Factor[FactorToken]
 		If sub\TimeLeft < 0.0
 			sub\Alpha = Max(sub\Alpha - FPSFactorEx, 0.0)
 			If sub\Alpha <= 0.0 Then Delete(sub)

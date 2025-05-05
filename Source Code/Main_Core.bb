@@ -670,7 +670,6 @@ Function UpdateGame%()
 		
 		UpdateMessages()
 		UpdateHintMessages()
-		UpdateSubtitles()
 		
 		UpdateConsole()
 		
@@ -683,6 +682,7 @@ Function UpdateGame%()
 		ElseIf me\SelectedEnding = -1
 			UpdateMenu()
 		EndIf
+		UpdateSubtitles()
 	Wend
 	
 	; ~ Go out of function immediately if the game has been quit
@@ -711,7 +711,6 @@ Function RenderGame%()
 	
 	RenderMessages()
 	RenderHintMessages()
-	RenderSubtitles()
 	
 	RenderConsole()
 	
@@ -721,8 +720,12 @@ Function RenderGame%()
 	
 	If me\EndingTimer < 0.0
 		If me\SelectedEnding <> -1 Then RenderEnding()
+		RenderSubtitles()
 	ElseIf me\SelectedEnding = -1
+		RenderSubtitles()
 		RenderMenu()
+	Else
+		RenderSubtitles()
 	EndIf
 	
 	CatchErrors("Uncaught: RenderGame()")
@@ -1085,7 +1088,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					CreateConsoleMsg("- spawnitem [item name / ID]")
 					CreateConsoleMsg("- spawndrink [drink name]")
 					CreateConsoleMsg("- itemlist")
-					CreateConsoleMsg("- ending")
+					CreateConsoleMsg("- ending [ID]")
 					CreateConsoleMsg("- notarget")
 					CreateConsoleMsg("- godmode")
 					CreateConsoleMsg("- noclip")
@@ -1445,21 +1448,7 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			;[Block]
 			StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
 			
-			Select StrTemp
-				Case "A"
-					;[Block]
-					me\SelectedEnding = Rand(Ending_A1, Ending_A2)
-					;[End Block]
-				Case "B"
-					;[Block]
-					me\SelectedEnding = Rand(Ending_B1, Ending_B2)
-					;[End Block]
-				Default
-					;[Block]
-					me\SelectedEnding = Rand(Ending_A1, Ending_B2)
-					;[End Block]
-			End Select
-			
+			me\SelectedEnding = Clamp(Int(StrTemp), Ending_A1, Ending_B2)
 			me\Terminated = True
 			;[End Block]
 		Case "noclipspeed"
@@ -9111,18 +9100,13 @@ Function UpdateEnding%()
 					If UpdateMenuButton(x, y, 430 * MenuScale, 60 * MenuScale, GetLocalString("menu", "mainmenu"), Font_Default_Big)
 						ShouldPlay = 23
 						NowPlaying = ShouldPlay
-						For i = 0 To MaxTempSounds - 1
-							If TempSounds[i] <> 0
-								FreeSound_Strict(TempSounds[i]) : TempSounds[i] = 0
-								TempSoundsName[i] = ""
-							EndIf
-						Next
-						StopStream_Strict(MusicCHN) : MusicCHN = 0
-						MusicCHN = StreamSound_Strict("SFX\Music\" + Music[NowPlaying] + ".ogg", 0.0, ModeLoop)
-						SetStreamVolume_Strict(MusicCHN, opt\MusicVolume * opt\MasterVolume)
 						me\EndingTimer = -2000.0
 						ShouldDeleteGadgets = True
 						ResetInput()
+						KillSounds()
+						StopStream_Strict(MusicCHN) : MusicCHN = 0
+						MusicCHN = StreamSound_Strict("SFX\Music\" + Music[NowPlaying] + ".ogg", 0.0, ModeLoop)
+						SetStreamVolume_Strict(MusicCHN, opt\MusicVolume * opt\MasterVolume)
 						InitCredits()
 					EndIf
 				Else

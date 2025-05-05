@@ -3711,6 +3711,49 @@
 			"color": "chaos"
 		}
 	],
+	"SFX\\Ending\\Ending0.ogg": [
+		{
+			"text": "Sir, we're having a major problem here!",
+			"delay": 0.8,
+			"color": "mtf"
+		},
+		{
+			"text": "Please elaborate. Has the target been captured yet?",
+			"delay": 4.5,
+			"color": "mtf"
+		},
+		{
+			"text": "I'm not sure what's happening here. We entered the old service tunnel and it sorta… closed up on us. Now we're trapped inside. Sanders is dead. Target's been lost!",
+			"delay": 9.4,
+			"length": 12.0,
+			"color": "mtf"
+		},
+		{
+			"text": "Are you saying that the tunnel collapsed on you?",
+			"delay": 21.9,
+			"color": "mtf"
+		},
+		{
+			"text": "No! It didn't collapse. It seemed like an anomalous event. Come see for yourself, and send someone to get us out of here!",
+			"delay": 25.5,
+			"color": "mtf"
+		}
+	],
+	"SFX\\Ending\\Ending1.ogg": [
+		{
+			"text": "Testing log [REDACTED]. Subject [REDACTED]-[REDACTED].",
+			"delay": 2.1
+		},
+		{
+			"text": "Subject demonstrates extraordinary luck and complete mastery of even the most fatal of circumstances and an uncanny ability to predict even the most unpredictable of hazards, almost as if it has performed these impossible tasks several times before.",
+			"delay": 7.8,
+			"length": 16.0
+		},
+		{
+			"text": "Further testing is required to determine whether the subject should receive SCP classification.",
+			"delay": 24.4
+		}
+	],
 	/* ENDINGS - GATE B */
 	"SFX\\Ending\\GateB\\682Battle.ogg": [
 		{
@@ -3741,6 +3784,46 @@
 	"SFX\\Ending\\GateB\\THEREHEIS.ogg": [
 		{
 			"text": "There he is! Start shooting!",
+			"color": "mtf"
+		}
+	],
+	"SFX\\Ending\\Ending2.ogg": [
+		{
+			"text": "Sir, we found a dead Class-D on the walkway outside Gate B. He's got multiple gun shot wounds in his chest. I'd assume he was shot when we were fighting SCP-682.",
+			"delay": 0.5,
+			"length": 12.0,
+			"color": "mtf"
+		},
+		{
+			"text": "I'd like to know how the hell did a Class-D get past the gate? Deliver me the security tapes from all the cameras near the gate and find out who was stationed there, before and during 682's escape attempt.",
+			"delay": 11.5,
+			"length": 16.0,
+			"color": "mtf"
+		},
+		{
+			"text": "Roger that sir.",
+			"delay": 26.0,
+			"color": "mtf"
+		}
+	],
+	"SFX\\Ending\\Ending3.ogg": [
+		{
+			"text": "This is CH-1 to OH-6, have you located the target, over?",
+			"color": "mtf"
+		},
+		{
+			"text": "OH-6 to CH-1, no sign of the target. I think we should send an MTF-..",
+			"delay": 6.05,
+			"color": "mtf"
+		},
+		{
+			"text": "*ROARS*",
+			"delay": 10.95,
+			"color": "682"
+		},
+		{
+			"text": "CH-1 to OH-6, do you copy?",
+			"delay": 14.95,
 			"color": "mtf"
 		}
 	],
