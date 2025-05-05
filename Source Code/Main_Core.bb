@@ -5285,7 +5285,7 @@ Function UpdateGUI%()
 					
 					me\SndVolume = Max(4.0, me\SndVolume)
 					
-					If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
+					If n_I\Curr513_1 = Null And (Not wi\Headphones) And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
 					
 					SelectedItem = Null
 					;[End Block]
@@ -5298,10 +5298,13 @@ Function UpdateGUI%()
 					
 					If n_I\Curr513_1 = Null And (Not me\Deaf) Then n_I\Curr513_1 = CreateNPC(NPCType513_1, 0.0, 0.0, 0.0)
 					
-					If me\Deaf Then Kill(True)
+					If me\Deaf
+						msg\DeathMsg = GetLocalString("death", "513")
+						Kill(True)
+					EndIf
+					me\BlurTimer = Max(400.0, me\BlurTimer)
 					SetDeafState(70.0 * (45.0 + (15.0 * SelectedDifficulty\OtherFactors)))
 					me\BigCameraShake = 8.0
-					me\BlurTimer = Max(200.0, me\BlurTimer)
 					SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 29)
 					
 					For np.NPCs = Each NPCs
@@ -5309,20 +5312,26 @@ Function UpdateGUI%()
 							Select np\NPCType
 								Case NPCType008_1, NPCType008_1_Surgeon
 									;[Block]
-									SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
-									np\LastSeen = 0.0
-									np\State = 5.0
+									If np\State <> 5.0
+										SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
+										np\LastSeen = 0.0
+										np\State = 5.0
+									EndIf
 									;[End Block]
 								Case NPCType049
 									;[Block]
-									SetNPCFrame(np, 474.0)
-									np\State = 6.0
+									If np\State <> 6.0
+										SetNPCFrame(np, 474.0)
+										np\State = 6.0
+									EndIf
 									;[End Block]
 								Case NPCType049_2
 									;[Block]
-									SetNPCFrame(np, 944.0)
-									np\LastSeen = 0.0
-									np\State = 5.0
+									If np\State <> 5.0
+										SetNPCFrame(np, 944.0)
+										np\LastSeen = 0.0
+										np\State = 5.0
+									EndIf
 									;[End Block]
 								Case NPCType860_2
 									;[Block]
@@ -5333,10 +5342,12 @@ Function UpdateGUI%()
 									;[End Block]
 								Case NPCType939
 									;[Block]
-									LoadNPCSound(np, "SFX\SCP\939\" + (np\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
-									np\SoundCHN = PlaySoundEx(np\Sound, Camera, np\Collider, 10.0, 1.0, True)
-									SetNPCFrame(np, 474.0)
-									np\State = 6.0
+									If np\State <> 6.0
+										LoadNPCSound(np, "SFX\SCP\939\" + (np\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
+										np\SoundCHN = PlaySoundEx(np\Sound, Camera, np\Collider, 10.0, 1.0, True)
+										SetNPCFrame(np, 474.0)
+										np\State = 6.0
+									EndIf
 									;[End Block]
 								Case NPCType1048_A
 									;[Block]
@@ -5344,11 +5355,13 @@ Function UpdateGUI%()
 									;[End Block]
 								Case NPCTypeMTF
 									;[Block]
-									If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
-									SetNPCFrame(np, 1050.0)
-									If np\State <> MTF_STATE_STUNNED Then np\PrevState = np\State
-									np\LastSeen = 0.0
-									np\State = MTF_STATE_STUNNED
+									If np\State <> MTF_STATE_STUNNED
+										If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
+										SetNPCFrame(np, 1050.0)
+										np\PrevState = np\State
+										np\LastSeen = 0.0
+										np\State = MTF_STATE_STUNNED
+									EndIf
 									;[End Block]
 							End Select
 						EndIf
@@ -9627,6 +9640,7 @@ Function Update009%()
 			If I_009\Revert
 				I_009\Timer = Max(I_009\Timer - (fps\Factor[0] * 0.02), 0.0)
 			ElseIf (Not I_427\Using)
+				CanSave = 0
 				I_009\Timer = Min(I_009\Timer + (fps\Factor[0] * 0.075), 100.0)
 			EndIf
 		EndIf
@@ -9913,7 +9927,7 @@ Function Update409%()
 			If I_409\Revert
 				I_409\Timer = Max(I_409\Timer - (fps\Factor[0] * 0.02), 0.0)
 			ElseIf (Not I_427\Using)
-				I_409\Timer = Min(I_409\Timer + (fps\Factor[0] * 0.004), 100.0)
+				I_409\Timer = Min(I_409\Timer + (fps\Factor[0] * 0.005), 100.0)
 				me\BlurTimer = Max(I_409\Timer * 3.0 * (2.0 - me\CrouchState), me\BlurTimer)
 			EndIf
 		EndIf
