@@ -2920,159 +2920,169 @@ Function UpdateEvent_Cont2_012%(e.Events)
 							GiveAchievement("012")
 							
 							PlaySound_Strict(snd_I\HorrorSFX[7])
-							PlaySoundEx(snd_I\LeverSFX, Camera, e\room\RoomLevers[0]\OBJ, 2.0)
 							
-							SetTemplateVelocity(ParticleEffect[19], 0.007, 0.008, -0.001, 0.0012, -0.007, 0.008)
-							
-							Local i%
-							
-							For i = 0 To 1
-								SetEmitter(e\room, EntityX(e\room\RoomLevers[0]\OBJ, True), EntityY(e\room\RoomLevers[0]\OBJ, True), EntityZ(e\room\RoomLevers[0]\OBJ, True), 19)
-							Next
 							If (Not e\room\RoomDoors[0]\Open) Then OpenCloseDoor(e\room\RoomDoors[0])
 							
 							e\EventState = 1.0
 						EndIf
 					EndIf
-				Else
-					If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Music\012Golgotha.ogg")
-					e\SoundCHN = LoopSoundEx(e\Sound, e\SoundCHN, Camera, e\room\Objects[0])
-					
-					e\EventState = CurveValue(90.0, e\EventState, 500.0)
-					PositionEntity(e\room\Objects[0], EntityX(e\room\Objects[0], True), (-130.0 - (448.0 * Sin(e\EventState))) * RoomScale, EntityZ(e\room\Objects[0], True), True)
-					
+				ElseIf e\EventState = 1.0
 					RotateEntity(e\room\RoomLevers[0]\OBJ, CurveAngle(-80.0, EntityPitch(e\room\RoomLevers[0]\OBJ), 10.0), EntityYaw(e\room\RoomLevers[0]\OBJ), 0.0)
+					If EntityPitch(e\room\RoomLevers[0]\OBJ) < -79.0
+						PlaySoundEx(snd_I\LeverSFX, Camera, e\room\RoomLevers[0]\OBJ, 2.0)
+						e\EventState4 = 1.0
+						e\EventState = 1.01
+					EndIf
+				Else
+					Local NotProtected% = (I_714\Using <> 2 And wi\GasMask <> 4 And wi\HazmatSuit <> 4)
 					
-					UpdateRedLight(e\room\Objects[1], 1500, 800)
-					
-					If I_714\Using <> 2 And wi\GasMask <> 4 And wi\HazmatSuit <> 4
-						If me\Sanity < -800.0 And e\EventState3 = 0.0
-							TFormPoint(-360.0, -700.0, 330.0, e\room\OBJ, 0)
-							PositionEntity(me\Collider, TFormedX(), TFormedY(), TFormedZ(), True)
-							RotateEntity(me\Collider, 0.0, e\room\Angle, 0.0, True)
-							ResetEntity(me\Collider)
-							me\LightBlink = 5.0
-							me\BlinkTimer = -10.0
-							e\EventState3 = 1.0
+					If e\EventState4 = 1.0
+						If (Not NotProtected)
+							e\EventState4 = UpdateLever(e\room\RoomLevers[0]\OBJ)
+						Else
+							UpdateLever(e\room\RoomLevers[0]\OBJ, True)
 						EndIf
+						e\EventState = CurveValue(90.0, e\EventState, 500.0)
 						
-						Local Pvt%, Angle#
+						UpdateRedLight(e\room\Objects[1], 1500, 800)
 						
-						If EntityVisible(e\room\Objects[0], Camera)
-							CanSave = 0
+						If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Music\012Golgotha.ogg")
+						e\SoundCHN = LoopSoundEx(e\Sound, e\SoundCHN, Camera, e\room\Objects[0])
+						
+						If NotProtected
+							If me\Sanity < -800.0 And e\EventState3 = 0.0
+								TFormPoint(-360.0, -700.0, 330.0, e\room\OBJ, 0)
+								PositionEntity(me\Collider, TFormedX(), TFormedY(), TFormedZ(), True)
+								RotateEntity(me\Collider, 0.0, e\room\Angle, 0.0, True)
+								ResetEntity(me\Collider)
+								me\LightBlink = 5.0
+								me\BlinkTimer = -10.0
+								e\EventState3 = 1.0
+							EndIf
 							
-							me\RestoreSanity = False
+							Local Pvt%, Angle#
 							
-							ShouldPlay = 32
-							
-							Pvt = CreatePivot()
-							PositionEntity(Pvt, EntityX(Camera), EntityY(e\room\Objects[0], True) - 0.05, EntityZ(Camera))
-							PointEntity(Pvt, e\room\Objects[0])
-							RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), 80.0 - (e\EventState2 / 200.0)), 0.0)
-							
-							TurnEntity(Pvt, 90.0, 0.0, 0.0)
-							CameraPitch = CurveAngle(EntityPitch(Pvt) + 25.0, CameraPitch + 90.0, 80.0 - (e\EventState2 / 200.0))
-							CameraPitch = CameraPitch - 90.0
-							
-							Local Dist# = DistanceSquared(EntityX(me\Collider), EntityX(e\room\Objects[0], True), EntityZ(me\Collider), EntityZ(e\room\Objects[0], True))
-							Local SqrValue# = Sqr(Dist)
-							
-							me\HeartBeatRate = 150.0
-							me\HeartBeatVolume = Max(3.0 - SqrValue, 0.0) / 3.0
-							
-							Local SinValue# = Sin(Float(MilliSec) / 20.0) + 1.0
-							Local de.Decals
-							
-							me\BlurVolume = Max((2.0 - SqrValue) * (e\EventState2 / 800.0) * SinValue, me\BlurVolume)
-							me\CurrCameraZoom = Max(me\CurrCameraZoom, SinValue * 8.0 * Max((3.0 - SqrValue), 0.0))
-							
-							StopBreathSound()
-							
-							If Dist < 0.36
-								Local Tex%
+							If EntityVisible(e\room\Objects[0], Camera)
+								CanSave = 0
 								
-								If me\Sanity < -800.0 Then MakeMeUnplayable(False)
-								me\Sanity = Max(me\Sanity - (fps\Factor[0] * (1.0 + (0.2 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
-								If e\EventState3 = 1.0 Then e\EventState2 = Min(e\EventState2 + fps\Factor[0], 70.0 * 86.0)
-								If e\EventState2 > 70.0 And e\EventState2 - fps\Factor[0] <= 70.0
-									e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech0.ogg"), True)
-								ElseIf e\EventState2 > 70.0 * 13.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 13.0
-									CreateMsg(GetLocalString("msg", "012_1"), 8.0)
-									me\Injuries = me\Injuries + 0.5
-									e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech1.ogg"), True)
-								ElseIf e\EventState2 > 70.0 * 31.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 31.0
-									Tex = LoadTexture_Strict("GFX\Map\Textures\scp_012(2).png")
-									EntityTexture(e\room\Objects[3], Tex)
-									DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+								me\RestoreSanity = False
+								
+								ShouldPlay = 32
+								
+								Pvt = CreatePivot()
+								PositionEntity(Pvt, EntityX(Camera), EntityY(e\room\Objects[0], True) - 0.05, EntityZ(Camera))
+								PointEntity(Pvt, e\room\Objects[0])
+								RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), 80.0 - (e\EventState2 / 200.0)), 0.0)
+								
+								TurnEntity(Pvt, 90.0, 0.0, 0.0)
+								CameraPitch = CurveAngle(EntityPitch(Pvt) + 25.0, CameraPitch + 90.0, 80.0 - (e\EventState2 / 200.0))
+								CameraPitch = CameraPitch - 90.0
+								
+								Local Dist# = DistanceSquared(EntityX(me\Collider), EntityX(e\room\Objects[0], True), EntityZ(me\Collider), EntityZ(e\room\Objects[0], True))
+								Local SqrValue# = Sqr(Dist)
+								
+								me\HeartBeatRate = 150.0
+								me\HeartBeatVolume = Max(3.0 - SqrValue, 0.0) / 3.0
+								
+								Local SinValue# = Sin(Float(MilliSec) / 20.0) + 1.0
+								Local de.Decals
+								
+								me\BlurVolume = Max((2.0 - SqrValue) * (e\EventState2 / 800.0) * SinValue, me\BlurVolume)
+								me\CurrCameraZoom = Max(me\CurrCameraZoom, SinValue * 8.0 * Max((3.0 - SqrValue), 0.0))
+								
+								StopBreathSound()
+								
+								If Dist < 0.36
+									Local Tex%
 									
-									CreateMsg(GetLocalString("msg", "012_2"), 8.0)
-									me\Injuries = Max(me\Injuries, 1.5)
-									e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech" + Rand(2, 3) + ".ogg"), True)
-								ElseIf e\EventState2 > 70.0 * 49.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 49.0
-									CreateMsg(GetLocalString("msg", "012_3"), 8.0)
-									me\Injuries = me\Injuries + 0.3
-									e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech4.ogg"), True)
-								ElseIf e\EventState2 > 70.0 * 63.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 63.0
-									Tex = LoadTexture_Strict("GFX\Map\Textures\scp_012(3).png")
-									EntityTexture(e\room\Objects[3], Tex)
-									DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+									If me\Sanity < -800.0 Then MakeMeUnplayable(False)
+									me\Sanity = Max(me\Sanity - (fps\Factor[0] * (1.0 + (0.2 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
+									If e\EventState3 = 1.0 Then e\EventState2 = Min(e\EventState2 + fps\Factor[0], 70.0 * 86.0)
+									If e\EventState2 > 70.0 And e\EventState2 - fps\Factor[0] <= 70.0
+										e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech0.ogg"), True)
+									ElseIf e\EventState2 > 70.0 * 13.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 13.0
+										CreateMsg(GetLocalString("msg", "012_1"), 8.0)
+										me\Injuries = me\Injuries + 0.5
+										e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech1.ogg"), True)
+									ElseIf e\EventState2 > 70.0 * 31.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 31.0
+										Tex = LoadTexture_Strict("GFX\Map\Textures\scp_012(2).png")
+										EntityTexture(e\room\Objects[3], Tex)
+										DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+										
+										CreateMsg(GetLocalString("msg", "012_2"), 8.0)
+										me\Injuries = Max(me\Injuries, 1.5)
+										e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech" + Rand(2, 3) + ".ogg"), True)
+									ElseIf e\EventState2 > 70.0 * 49.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 49.0
+										CreateMsg(GetLocalString("msg", "012_3"), 8.0)
+										me\Injuries = me\Injuries + 0.3
+										e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech4.ogg"), True)
+									ElseIf e\EventState2 > 70.0 * 63.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 63.0
+										Tex = LoadTexture_Strict("GFX\Map\Textures\scp_012(3).png")
+										EntityTexture(e\room\Objects[3], Tex)
+										DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+										
+										me\Injuries = me\Injuries + 0.5
+										e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech5.ogg"), True)
+									ElseIf e\EventState2 > 70.0 * 74.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 74.0
+										Tex = LoadTexture_Strict("GFX\Map\Textures\scp_012(4).png")
+										EntityTexture(e\room\Objects[3], Tex)
+										DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+										
+										CreateMsg(GetLocalString("msg", "012_4"), 8.0)
+										me\CameraShake = 2.0 * (I_1025\FineState[3] = 0.0)
+										me\Injuries = me\Injuries + 0.8
+										e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech6.ogg"), True)
+										PlaySound_Strict(LoadTempSound("SFX\SCP\1162_ARC\BodyHorrorExchange" + Rand(0, 3) + ".ogg"))
+										If (Not me\Crouch) Then SetCrouch(True)
+										
+										de.Decals = CreateDecal(DECAL_BLOOD_6, PickedX(), PickedY() + 0.005, PickedZ(), 90.0, Rnd(360.0), 0.0, 0.1)
+										de\MaxSize = 0.45 : de\SizeChange = 0.0002
+										EntityParent(de\OBJ, e\room\OBJ)
+									ElseIf e\EventState2 > 70.0 * 85.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 85.0
+										msg\DeathMsg = Format(GetLocalString("death", "012"), SubjectName)
+										Kill(True)
+									EndIf
 									
-									me\Injuries = me\Injuries + 0.5
-									e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech5.ogg"), True)
-								ElseIf e\EventState2 > 70.0 * 74.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 74.0
-									Tex = LoadTexture_Strict("GFX\Map\Textures\scp_012(4).png")
-									EntityTexture(e\room\Objects[3], Tex)
-									DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
-									
-									CreateMsg(GetLocalString("msg", "012_4"), 8.0)
-									me\CameraShake = 2.0 * (I_1025\FineState[3] = 0.0)
-									me\Injuries = me\Injuries + 0.8
-									e\SoundCHN2 = PlaySound_Strict(LoadTempSound("SFX\SCP\012\Speech6.ogg"), True)
-									PlaySound_Strict(LoadTempSound("SFX\SCP\1162_ARC\BodyHorrorExchange" + Rand(0, 3) + ".ogg"))
-									If (Not me\Crouch) Then SetCrouch(True)
-									
-									de.Decals = CreateDecal(DECAL_BLOOD_6, PickedX(), PickedY() + 0.005, PickedZ(), 90.0, Rnd(360.0), 0.0, 0.1)
-									de\MaxSize = 0.45 : de\SizeChange = 0.0002
-									EntityParent(de\OBJ, e\room\OBJ)
-								ElseIf e\EventState2 > 70.0 * 85.0 And e\EventState2 - fps\Factor[0] <= 70.0 * 85.0
-									msg\DeathMsg = Format(GetLocalString("death", "012"), SubjectName)
-									Kill(True)
+									RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(me\Collider) + Sin(e\EventState2 * (e\EventState2 / 2000.0)) * (e\EventState2 / 300.0), EntityYaw(me\Collider), 80.0), 0.0)
+								Else
+									me\Sanity = Max(me\Sanity - (fps\Factor[0] * (0.6 + (0.12 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
+									Angle = WrapAngle(EntityYaw(Pvt) - EntityYaw(me\Collider))
+									If Angle < 40.0
+										me\ForceMove = (40.0 - Angle) * 0.02
+									ElseIf Angle > 310.0
+										me\ForceMove = (40.0 - Abs(360.0 - Angle)) * 0.02
+									EndIf
 								EndIf
 								
-								RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(me\Collider) + Sin(e\EventState2 * (e\EventState2 / 2000.0)) * (e\EventState2 / 300.0), EntityYaw(me\Collider), 80.0), 0.0)
-							Else
-								me\Sanity = Max(me\Sanity - (fps\Factor[0] * (0.6 + (0.12 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
+								FreeEntity(Pvt) : Pvt = 0
+							ElseIf DistanceSquared(EntityX(me\Collider), EntityX(e\room\RoomDoors[0]\FrameOBJ), EntityZ(me\Collider), EntityZ(e\room\RoomDoors[0]\FrameOBJ)) < 25.0 And EntityY(me\Collider) < -2.5
+								CanSave = 0
+								
+								me\Sanity = Max(me\Sanity - (fps\Factor[0] * (0.4 + (0.08 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
+								me\RestoreSanity = False
+								
+								Pvt = CreatePivot()
+								PositionEntity(Pvt, EntityX(Camera), EntityY(me\Collider), EntityZ(Camera))
+								PointEntity(Pvt, e\room\RoomDoors[0]\FrameOBJ)
+								CameraPitch = CurveAngle(90.0, CameraPitch + 90.0, 100.0)
+								CameraPitch = CameraPitch - 90.0
+								RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), 150.0), 0.0)
+								
 								Angle = WrapAngle(EntityYaw(Pvt) - EntityYaw(me\Collider))
 								If Angle < 40.0
-									me\ForceMove = (40.0 - Angle) * 0.02
+									me\ForceMove = (40.0 - Angle) * 0.008
 								ElseIf Angle > 310.0
-									me\ForceMove = (40.0 - Abs(360.0 - Angle)) * 0.02
+									me\ForceMove = (40.0 - Abs(360.0 - Angle)) * 0.008
 								EndIf
+								FreeEntity(Pvt) : Pvt = 0
 							EndIf
-							
-							FreeEntity(Pvt) : Pvt = 0
-						ElseIf DistanceSquared(EntityX(me\Collider), EntityX(e\room\RoomDoors[0]\FrameOBJ), EntityZ(me\Collider), EntityZ(e\room\RoomDoors[0]\FrameOBJ)) < 25.0 And EntityY(me\Collider) < -2.5
-							CanSave = 0
-							
-							me\Sanity = Max(me\Sanity - (fps\Factor[0] * (0.4 + (0.08 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)), -1000.0)
-							me\RestoreSanity = False
-							
-							Pvt = CreatePivot()
-							PositionEntity(Pvt, EntityX(Camera), EntityY(me\Collider), EntityZ(Camera))
-							PointEntity(Pvt, e\room\RoomDoors[0]\FrameOBJ)
-							CameraPitch = CurveAngle(90.0, CameraPitch + 90.0, 100.0)
-							CameraPitch = CameraPitch - 90.0
-							RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), 150.0), 0.0)
-							
-							Angle = WrapAngle(EntityYaw(Pvt) - EntityYaw(me\Collider))
-							If Angle < 40.0
-								me\ForceMove = (40.0 - Angle) * 0.008
-							ElseIf Angle > 310.0
-								me\ForceMove = (40.0 - Abs(360.0 - Angle)) * 0.008
-							EndIf
-							FreeEntity(Pvt) : Pvt = 0
 						EndIf
+					Else
+						e\EventState4 = UpdateLever(e\room\RoomLevers[0]\OBJ)
+						If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
+						e\EventState = CurveValue(-90.0, e\EventState, 500.0)
 					EndIf
+					PositionEntity(e\room\Objects[0], EntityX(e\room\Objects[0], True), e\room\y + Min(((-570.0 * Sin(e\EventState))) * RoomScale, -130.0 * RoomScale), EntityZ(e\room\Objects[0], True), True)
 				EndIf
 			EndIf
 		Else
