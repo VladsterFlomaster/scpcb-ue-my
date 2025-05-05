@@ -670,6 +670,7 @@ Function UpdateGame%()
 		
 		UpdateMessages()
 		UpdateHintMessages()
+		UpdateSubtitles()
 		
 		UpdateConsole()
 		
@@ -682,7 +683,6 @@ Function UpdateGame%()
 		ElseIf me\SelectedEnding = -1
 			UpdateMenu()
 		EndIf
-		UpdateSubtitles()
 	Wend
 	
 	; ~ Go out of function immediately if the game has been quit
