@@ -5320,20 +5320,26 @@ Function UpdateGUI%()
 							Select np\NPCType
 								Case NPCType008_1, NPCType008_1_Surgeon
 									;[Block]
-									SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
-									np\LastSeen = 0.0
-									np\State = 5.0
+									If np\State <> 5.0
+										SetNPCFrame(np, 62.0 - (3.0 * (np\NPCType = NPCType008_1_Surgeon)))
+										np\LastSeen = 0.0
+										np\State = 5.0
+									EndIf
 									;[End Block]
 								Case NPCType049
 									;[Block]
-									SetNPCFrame(np, 474.0)
-									np\State = 6.0
+									If np\State <> 6.0
+										SetNPCFrame(np, 474.0)
+										np\State = 6.0
+									EndIf
 									;[End Block]
 								Case NPCType049_2
 									;[Block]
-									SetNPCFrame(np, 944.0)
-									np\LastSeen = 0.0
-									np\State = 5.0
+									If np\State <> 5.0
+										SetNPCFrame(np, 944.0)
+										np\LastSeen = 0.0
+										np\State = 5.0
+									EndIf
 									;[End Block]
 								Case NPCType860_2
 									;[Block]
@@ -5344,10 +5350,12 @@ Function UpdateGUI%()
 									;[End Block]
 								Case NPCType939
 									;[Block]
-									LoadNPCSound(np, "SFX\SCP\939\" + (np\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
-									np\SoundCHN = PlaySoundEx(np\Sound, Camera, np\Collider, 10.0, 1.0, True)
-									SetNPCFrame(np, 474.0)
-									np\State = 6.0
+									If np\State <> 6.0
+										LoadNPCSound(np, "SFX\SCP\939\" + (np\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
+										np\SoundCHN = PlaySoundEx(np\Sound, Camera, np\Collider, 10.0, 1.0, True)
+										SetNPCFrame(np, 474.0)
+										np\State = 6.0
+									EndIf
 									;[End Block]
 								Case NPCType1048_A
 									;[Block]
@@ -5355,11 +5363,13 @@ Function UpdateGUI%()
 									;[End Block]
 								Case NPCTypeMTF
 									;[Block]
-									If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
-									SetNPCFrame(np, 1050.0)
-									If np\State <> MTF_STATE_STUNNED Then np\PrevState = np\State
-									np\LastSeen = 0.0
-									np\State = MTF_STATE_STUNNED
+									If np\State <> MTF_STATE_STUNNED
+										If np = n_I\MTFLeader Then PlayMTFSound(LoadTempSound("SFX\Character\MTF\OMFG.ogg"), np)
+										SetNPCFrame(np, 1050.0)
+										np\PrevState = np\State
+										np\LastSeen = 0.0
+										np\State = MTF_STATE_STUNNED
+									EndIf
 									;[End Block]
 							End Select
 						EndIf
