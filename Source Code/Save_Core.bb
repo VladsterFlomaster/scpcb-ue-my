@@ -2456,6 +2456,17 @@ Function LoadGameQuick%(File$)
 	
 	CloseFile(f)
 	
+	; ~ Reset lamp pitch
+	If me\BigCameraShake = 0.0
+		Local p.Props
+		
+		For p.Props = Each Props
+			For p.Props = Each Props
+				If p\IsLamp Then RotateEntity(p\OBJ, 0.0, EntityYaw(p\OBJ, True), EntityRoll(p\OBJ, True), True)
+			Next
+		Next
+	EndIf
+	
 	ClearFogColor()
 	
 	d_I\AnimButton = 0

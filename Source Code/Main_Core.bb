@@ -860,7 +860,7 @@ Function ResetNegativeStats%(Revive% = False)
 	I_966\HasInsomnia = 0.0
 	I_966\InsomniaEffectTimer = 0.0
 	
-	EntityFX(pm\OBJ, 255.0, 255.0, 255.0)
+	EntityFX(pm\OBJ, 0)
 	EntityColor(pm\OBJ, 255.0, 255.0, 255.0)
 	
 	If Revive
