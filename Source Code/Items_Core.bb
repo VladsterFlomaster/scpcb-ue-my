@@ -688,10 +688,10 @@ Function UpdateItems%()
 									xTemp = xTemp * PushVal
 									zTemp = zTemp * PushVal
 									
-									While Abs(xTemp) + Abs(zTemp) < 0.001
+									If Abs(xTemp) + Abs(zTemp) < 0.001
 										xTemp = xTemp + RandomVal
 										zTemp = zTemp + RandomVal
-									Wend
+									EndIf
 									
 									TranslateEntity(i2\Collider, xTemp, 0.0, zTemp)
 									TranslateEntity(i\Collider, -xTemp, 0.0, -zTemp)
