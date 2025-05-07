@@ -2545,7 +2545,7 @@ Function UpdateAutoSave%()
 		SaveGame(CurrSave\Name + "_" + as\Amount)
 	Else
 		as\Timer = as\Timer - fps\Factor[0]
-		If as\Timer <= 70.0 * 5.0 Then CreateHintMsg(Format(GetLocalString("save", "autosave.in"), Str(Int(Ceil(as\Timer) / 70.0))))
+		If as\Timer <= 70.0 * 5.0 Then CreateHintMsg(Format(GetLocalString("save", "autosave.in"), Int(Ceil(as\Timer) / 70.0)))
 	EndIf
 End Function
 
