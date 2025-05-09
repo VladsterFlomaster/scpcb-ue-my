@@ -33,7 +33,7 @@ Function SaveGame%(File$)
 	WriteString(f, SelectedDifficulty\Name)
 	
 	WriteInt(f, CODE_DR_MAYNARD)
-	WriteInt(f, CODE_O5_COUNCIL)
+	WriteInt(f, CODE_CMR)
 	WriteInt(f, CODE_MAINTENANCE_TUNNELS)
 	WriteInt(f, CODE_DR_GEARS)
 	
@@ -593,7 +593,7 @@ Function LoadGame%(File$)
 	ReadString(f)
 	
 	CODE_DR_MAYNARD = ReadInt(f)
-	CODE_O5_COUNCIL = ReadInt(f)
+	CODE_CMR = ReadInt(f)
 	CODE_MAINTENANCE_TUNNELS = ReadInt(f)
 	CODE_DR_GEARS = ReadInt(f)
 	

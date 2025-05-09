@@ -238,7 +238,7 @@
 	"translations": {
 		"009": {
 			"name": "Ice-olated Incident",
-			"description": "Found a room contaminated with red ice."
+			"description": "Interact with red ice."
 		},
 		"106": {
 			"name": "A Decayed March",
@@ -423,6 +423,10 @@
 		"apollyon": {
 			"name": "The Great Survivor",
 			"description": "Beat the game on \"Apollyon\" difficulty."
+		},
+		"cmr": {
+			"name": "Control Over the Foundation",
+			"description": "Entered the Command Meeting Room."
 		}
 	}
 }
