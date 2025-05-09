@@ -3759,12 +3759,14 @@ Function UseDoor%(PlaySFX% = True)
 					If (Temp > KEY_860) And (Temp <> KEY_005)
 						If msg\Timer < 70.0 * 5.0 Then CreateMsg(GetLocalString("msg", "wood.wontbudge"))
 					Else
-						If d_I\ClosestDoor\Locked = 2 Lor Temp <> d_I\ClosestDoor\KeyCard
+						If d_I\ClosestDoor\Locked = 2
 							If Temp <> KEY_005
 								CreateMsg(GetLocalString("msg", "wood.not.fit"))
 							Else
 								CreateMsg(GetLocalString("msg", "wood.nothappend.005"))
 							EndIf
+						ElseIf (Temp <> d_I\ClosestDoor\KeyCard) And (Temp <> KEY_005)
+							CreateMsg(GetLocalString("msg", "wood.not.fit"))
 						Else
 							CreateMsg(GetLocalString("msg", "wood.unlock"))
 							d_I\ClosestDoor\Locked = 0
