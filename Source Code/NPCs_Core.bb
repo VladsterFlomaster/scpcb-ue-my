@@ -869,8 +869,6 @@ Function UpdateNPCs%()
 		Else
 			If GravityDist < PowTwo(HideDistance * 0.6) Lor n\NPCType = NPCType1499_1
 				If n\InFacility = InFacility
-					TranslateEntity(n\Collider, 0.0, n\DropSpeed, 0.0)
-					
 					Local r.Rooms
 					Local CollidedFloor% = False
 					Local CollCount% = CountCollisions(n\Collider)
@@ -913,11 +911,13 @@ Function UpdateNPCs%()
 							
 							If UpdateGravity
 								n\DropSpeed = Max(n\DropSpeed - 0.005 * fps\Factor[0] * n\GravityMult, -n\MaxGravity)
+								TranslateEntity(n\Collider, 0.0, n\DropSpeed, 0.0)
 							Else
 								If n\FallingPickDistance > 0.0
 									n\DropSpeed = 0.0
 								Else
 									n\DropSpeed = Max(n\DropSpeed - 0.005 * fps\Factor[0] * n\GravityMult, -n\MaxGravity)
+									TranslateEntity(n\Collider, 0.0, n\DropSpeed, 0.0)
 								EndIf
 							EndIf
 						Else
