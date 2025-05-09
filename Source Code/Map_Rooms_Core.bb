@@ -936,7 +936,6 @@ Function FillRoom%(r.Rooms)
 						Screen = CreateSprite()
 						EntityFX(Screen, 17)
 						SpriteViewMode(Screen, 2)
-						MoveEntity(Screen, 0.0, 0.0, -0.0045)
 						ScaleSprite(Screen, MeshWidth(mon_I\MonitorModelID[MONITOR_DEFAULT_MODEL]) * Scale * 0.475, MeshHeight(mon_I\MonitorModelID[MONITOR_DEFAULT_MODEL]) * Scale * 0.475)
 						Select i
 							Case 0
