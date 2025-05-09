@@ -670,7 +670,6 @@ Function UpdateGame%()
 		
 		UpdateMessages()
 		UpdateHintMessages()
-		UpdateSubtitles()
 		
 		UpdateConsole()
 		
@@ -679,9 +678,13 @@ Function UpdateGame%()
 		UpdateAchievementMsg()
 		
 		If me\EndingTimer < 0.0
+			UpdateSubtitles()
 			If me\SelectedEnding <> -1 Then UpdateEnding()
 		ElseIf me\SelectedEnding = -1
+			UpdateSubtitles()
 			UpdateMenu()
+		Else
+			UpdateSubtitles()
 		EndIf
 	Wend
 	
