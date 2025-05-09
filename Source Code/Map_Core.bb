@@ -3739,6 +3739,7 @@ Function UseDoor%(PlaySFX% = True)
 					;[End Block]
 				Case CODE_CMR
 					;[Block]
+					GiveAchievement("cmr")
 					;[End Block]
 			End Select
 			;[End Block]
