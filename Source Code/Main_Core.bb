@@ -1984,8 +1984,10 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 						RemoveNPC(e\room\NPC[i])
 						If i < 2 Then FreeEntity(e\room\Objects[i]) : e\room\Objects[i] = 0
 					Next
-					e\room\NPC[7]\State3 = 2.0
-					e\room\NPC[7]\IsDead = True
+					If e\room\NPC[7] <> Null
+						e\room\NPC[7]\State3 = 2.0
+						e\room\NPC[7]\IsDead = True
+					EndIf
 					If n_I\Curr173\Idle = 1 Then n_I\Curr173\Idle = 0
 					PositionEntity(n_I\Curr173\Collider, 0.0, -500.0, 0.0)
 					ResetEntity(n_I\Curr173\Collider)
@@ -2242,8 +2244,10 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 						RemoveNPC(e\room\NPC[i])
 						If i < 2 Then FreeEntity(e\room\Objects[i]) : e\room\Objects[i] = 0
 					Next
-					e\room\NPC[7]\State3 = 2.0
-					e\room\NPC[7]\IsDead = True
+					If e\room\NPC[7] <> Null
+						e\room\NPC[7]\State3 = 2.0
+						e\room\NPC[7]\IsDead = True
+					EndIf
 					If n_I\Curr173\Idle = 1 Then n_I\Curr173\Idle = 0
 					PositionEntity(n_I\Curr173\Collider, 0.0, -500.0, 0.0)
 					ResetEntity(n_I\Curr173\Collider)
