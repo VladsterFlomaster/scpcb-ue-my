@@ -2741,6 +2741,7 @@ Function UpdateNPCType513_1%(n.NPCs)
 						n\LastSeen = 1
 						me\Sanity = Min(-450.0, me\Sanity)
 						me\CameraShake = 0.7
+						me\BlurTimer = Max(600.0, me\BlurTimer)
 						me\HeartBeatVolume = 0.7
 						me\HeartBeatRate = 150
 						PlaySound_Strict(LoadTempSound("SFX\SCP\513_1\Bell" + Rand(0, 2) + ".ogg"))
