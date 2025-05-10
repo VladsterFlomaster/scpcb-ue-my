@@ -2756,7 +2756,7 @@ Function LoadEntities%()
 		End Select
 		ExtractAnimSeq(pm\OBJ, StartFrame, EndFrame)
 	Next
-	SetPlayerAnimation(PLAYER_ANIM_IDLE)
+	SetPlayerModelAnimation(PLAYER_ANIM_IDLE)
 	pm\BodyTextureName[PLAYER_BODY_NORMAL_TEX] = ""
 	pm\BodyTextureName[PLAYER_BODY_HAZMAT_TEX] = "_hazmat"
 	pm\BodyTextureName[PLAYER_BODY_HAZMAT_HEAVY_TEX] = "_hazmat_heavy"

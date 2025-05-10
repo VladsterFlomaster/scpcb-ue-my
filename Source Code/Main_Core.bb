@@ -863,8 +863,8 @@ Function ResetNegativeStats%(Revive% = False)
 	I_966\HasInsomnia = 0.0
 	I_966\InsomniaEffectTimer = 0.0
 	
-	EntityFX(pm\OBJ, 0)
-	EntityColor(pm\OBJ, 255.0, 255.0, 255.0)
+	SetPlayerModelFX(0)
+	SetPlayerModelColor(255.0, 255.0, 255.0)
 	
 	If Revive
 		ClearCheats()
@@ -2751,7 +2751,7 @@ Function InteractObject%(OBJ%, Dist#, MouseType% = 0)
 				Case 0
 					;[Block]
 					If mo\MouseHit1
-						SetPlayerAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, OBJ)
+						SetPlayerModelAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, OBJ)
 						Return(True)
 					EndIf
 					;[End Block]
@@ -2814,7 +2814,7 @@ Function RefillCup%()
 	EndIf
 End Function
 
-Function SetPlayerAnimation%(ID%, InteractionOBJ% = 0)
+Function SetPlayerModelAnimation%(ID%, InteractionOBJ% = 0)
 	If InteractionOBJ <> 0
 		Local Pvt% = CreatePivot()
 		
@@ -2833,6 +2833,14 @@ Function SetPlayerAnimation%(ID%, InteractionOBJ% = 0)
 	Else
 		pm\AnimID = ID
 	EndIf
+End Function
+
+Function SetPlayerModelColor%(R#, G#, B#)
+	EntityColor(pm\OBJ, R, G, B)
+End Function
+
+Function SetPlayerModelFX%(FX%)
+	EntityFX(pm\OBJ, FX)
 End Function
 
 Function UpdatePlayerModel%()
@@ -3002,7 +3010,7 @@ Function UpdateMoving%()
 			If KeyDown(key\MOVEMENT_LEFT) Then MoveEntity(me\Collider, (-Temp2) * fps\Factor[0], 0.0, 0.0)
 			If KeyDown(key\MOVEMENT_RIGHT) Then MoveEntity(me\Collider, Temp2 * fps\Factor[0], 0.0, 0.0)
 			
-			SetPlayerAnimation(PLAYER_ANIM_NOCLIP)
+			SetPlayerModelAnimation(PLAYER_ANIM_NOCLIP)
 			
 			ResetEntity(me\Collider)
 		Else
@@ -3012,50 +3020,50 @@ Function UpdateMoving%()
 			If me\Playable = 2 And me\FallTimer >= 0.0 And (Not me\Terminated)
 				If (Not me\Zombie)
 					If pm\AnimID > PLAYER_ANIM_NOCLIP
-						If AnimTime(pm\OBJ) >= AnimLength(pm\OBJ) - 0.1 Then SetPlayerAnimation(PLAYER_ANIM_IDLE + me\Crouch)
+						If AnimTime(pm\OBJ) >= AnimLength(pm\OBJ) - 0.1 Then SetPlayerModelAnimation(PLAYER_ANIM_IDLE + me\Crouch)
 					Else
-						SetPlayerAnimation(PLAYER_ANIM_IDLE + me\Crouch)
+						SetPlayerModelAnimation(PLAYER_ANIM_IDLE + me\Crouch)
 					EndIf
 					If Sprint > 0.0
 						If KeyDown(key\MOVEMENT_DOWN)
 							If (Not KeyDown(key\MOVEMENT_UP))
 								Temp = True
 								Angle = 180.0
-								SetPlayerAnimation(PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch))
+								SetPlayerModelAnimation(PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch))
 								If KeyDown(key\MOVEMENT_LEFT)
 									If (Not KeyDown(key\MOVEMENT_RIGHT))
 										Angle = 135.0
-										SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+										SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 									EndIf
 								ElseIf KeyDown(key\MOVEMENT_RIGHT)
 									Angle = -135.0
-									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+									SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							Else
 								If KeyDown(key\MOVEMENT_LEFT)
 									If (Not KeyDown(key\MOVEMENT_RIGHT))
 										Temp = True
 										Angle = 90.0
-										SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+										SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 									EndIf
 								ElseIf KeyDown(key\MOVEMENT_RIGHT)
 									Temp = True
 									Angle = -90.0
-									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+									SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							EndIf
 						ElseIf KeyDown(key\MOVEMENT_UP)
 							Temp = True
 							Angle = 0.0
-							SetPlayerAnimation(PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch))
+							SetPlayerModelAnimation(PLAYER_ANIM_WALK + (Sprint = 2.5) + (2 * me\Crouch))
 							If KeyDown(key\MOVEMENT_LEFT)
 								If (Not KeyDown(key\MOVEMENT_RIGHT))
 									Angle = 45.0
-									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+									SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							ElseIf KeyDown(key\MOVEMENT_RIGHT)
 								Angle = -45.0
-								SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+								SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 							EndIf
 						ElseIf me\ForceMove > 0.0
 							Temp = True
@@ -3065,12 +3073,12 @@ Function UpdateMoving%()
 								If (Not KeyDown(key\MOVEMENT_RIGHT))
 									Temp = True
 									Angle = 90.0
-									SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+									SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_LEFT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 								EndIf
 							ElseIf KeyDown(key\MOVEMENT_RIGHT)
 								Temp = True
 								Angle = -90.0
-								SetPlayerAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
+								SetPlayerModelAnimation(PLAYER_ANIM_WALK_STRAFE_RIGHT + (2 * (Sprint = 2.5)) + (4 * me\Crouch))
 							EndIf
 						EndIf
 					EndIf
@@ -3209,7 +3217,7 @@ Function UpdateMoving%()
 	Local Prev2022Used# = I_2022\Used
 	
 	I_2022\Used = Max(0.0, I_2022\Used - (fps\Factor[0] * 0.0001))
-	If I_2022\Used < 1.0 And Prev2022Used >= 1.0 Then EntityFX(pm\OBJ, 0)
+	If I_2022\Used < 1.0 And Prev2022Used >= 1.0 Then SetPlayerModelFX(0)
 	If I_2022\HealTimer > 0.0
 		me\Injuries = Max(me\Injuries - FPSFactorEx / 10.0, 0.0)
 		I_2022\HealTimer = Max(I_2022\HealTimer - FPSFactorEx, 0.0)
@@ -6503,7 +6511,7 @@ Function UpdateGUI%()
 								I_1025\State[2] = 1.0
 								PlaySound_Strict(LoadTempSound("SFX\SCP\294\Burn.ogg"))
 								me\VomitTimer = 30.0
-								EntityFX(pm\OBJ, 1)
+								SetPlayerModelFX(1)
 							EndIf
 							I_2022\Used = I_2022\Used + 1.0
 						Else
@@ -9680,7 +9688,7 @@ Function Update009%()
 		
 		Local Clr# = Max(100.0, 255.0 - I_009\Timer * 2.0)
 		
-		EntityColor(pm\OBJ, 255.0, Clr, Clr)
+		SetPlayerModelColor(255.0, Clr, Clr)
 		If (Not I_009\Revert)
 			me\Injuries = me\Injuries + (fps\Factor[0] * 0.00001)
 			If I_009\Timer > 91.0
@@ -9965,7 +9973,7 @@ Function Update409%()
 			EndIf
 		EndIf
 		EntityAlpha(t\OverlayID[7], Min((PowTwo(I_409\Timer * 0.2)) / 1000.0, 0.5))
-		EntityColor(pm\OBJ, Max(100.0, 255.0 - (I_409\Timer * 1.56)), Max(230.0, 255.0 - I_409\Timer), Max(240.0, 255.0 - I_409\Timer))
+		SetPlayerModelColor(Max(100.0, 255.0 - (I_409\Timer * 1.56)), Max(230.0, 255.0 - I_409\Timer), Max(240.0, 255.0 - I_409\Timer))
 		If I_409\Revert
 			If I_409\Timer <= 35.0 And PrevI409Timer > 35.0
 				CreateMsg(GetLocalString("msg", "409legs_1"))

@@ -658,7 +658,7 @@ Function LoadGame%(File$)
 	me\RefinedItems = ReadInt(f)
 	
 	I_2022\Used = ReadFloat(f)
-	EntityFX(pm\OBJ, (I_2022\Used > 2.0))
+	SetPlayerModelFX((I_2022\Used > 2.0))
 	I_2022\HealTimer = ReadFloat(f)
 	
 	I_005\ChanceToSpawn = ReadByte(f)
@@ -1665,7 +1665,7 @@ Function LoadGameQuick%(File$)
 	me\RefinedItems = ReadInt(f)
 	
 	I_2022\Used = ReadFloat(f)
-	EntityFX(pm\OBJ, (I_2022\Used > 2.0))
+	SetPlayerModelFX((I_2022\Used > 2.0))
 	I_2022\HealTimer = ReadFloat(f)
 	
 	I_005\ChanceToSpawn = ReadByte(f)
@@ -2509,7 +2509,7 @@ Function LoadGameQuick%(File$)
 	Else
 		ChangePlayerBodyTexture(PLAYER_BODY_NORMAL_TEX)
 	EndIf
-	EntityColor(pm\OBJ, 255.0, 255.0, 255.0)
+	SetPlayerModelColor(255.0, 255.0, 255.0)
 	
 	CatchErrors("Uncaught: LoadGameQuick(" + File + ")")
 End Function
