@@ -6592,7 +6592,6 @@ Function UpdateGUI%()
 					Temp = (SelectedItem\State > 0.0 Lor SelectedItem\ItemTemplate\ID = it_e_readerulti)
 					If SelectedItem\ItemTemplate\Img = 0
 						StrTemp = "_off"
-						; ~ TODO: CHANGE GREEN LIGHTING!
 						If SelectedItem\State > 0.0 Lor Temp Then StrTemp = "_on"
 						SelectedItem\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\e_reader" + StrTemp + ".png"
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
