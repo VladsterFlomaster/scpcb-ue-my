@@ -9677,7 +9677,10 @@ Function Update009%()
 		
 		If EntityHidden(t\OverlayID[10]) Then ShowEntity(t\OverlayID[10])
 		EntityAlpha(t\OverlayID[10], Min(0.1, (I_009\Timer - 91.0) / 10.0))
-		EntityColor(pm\OBJ, 255.0, Max(100.0, 255.0 - I_009\Timer * 2.0), Max(100.0, 255.0 - I_009\Timer * 2.0))
+		
+		Local Clr# = Max(100.0, 255.0 - I_009\Timer * 2.0)
+		
+		EntityColor(pm\OBJ, 255.0, Clr, Clr)
 		If (Not I_009\Revert)
 			me\Injuries = me\Injuries + (fps\Factor[0] * 0.00001)
 			If I_009\Timer > 91.0
