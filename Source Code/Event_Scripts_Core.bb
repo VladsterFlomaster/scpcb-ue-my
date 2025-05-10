@@ -6532,10 +6532,11 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			EndIf
 		Next
 		If I_009\Timer = 0.0 And wi\HazmatSuit = 0
-			If EntityY(me\Collider, True) < IceTriggerY Then I_009\Timer = 0.001
+			If EntityY(me\Collider, True) < IceTriggerY
+				GiveAchievement("009")
+				I_009\Timer = 0.001
+			EndIf
 		EndIf
-		
-		If EntityY(me\Collider, True) < IceTriggerY Then GiveAchievement("009")
 		
 		If e\EventState = 0.0
 			UpdateRedLight(e\room\Objects[1], 1500, 800)
