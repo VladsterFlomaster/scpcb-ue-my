@@ -850,7 +850,7 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 					; ~ Slow the player down to match his speed to the guards
 					me\CurrSpeed = Min(me\CurrSpeed - (me\CurrSpeed * (0.008 / EntityDistance(e\room\NPC[3]\Collider, me\Collider)) * fps\Factor[0]), me\CurrSpeed)
 					; ~ Speed up the second guard to match his speed to the player
-					If e\room\NPC[4]\State = 3.0 Then e\room\NPC[4]\CurrSpeed = Min(e\room\NPC[4]\CurrSpeed + (e\room\NPC[4]\CurrSpeed * (0.006 * EntityDistance(e\room\NPC[4]\Collider, me\Collider)) * fps\Factor[0]), e\room\NPC[4]\Speed * 1.3)
+					If e\room\NPC[4]\State = 3.0 Then e\room\NPC[4]\CurrSpeed = Min(e\room\NPC[4]\CurrSpeed + (e\room\NPC[4]\CurrSpeed * (0.006 * EntityDistance(e\room\NPC[4]\Collider, me\Collider)) * fps\Factor[0]), e\room\NPC[4]\Speed)
 					
 					Dist = DistanceSquared(EntityX(me\Collider), EntityX(e\room\NPC[3]\Collider), EntityZ(me\Collider), EntityZ(e\room\NPC[3]\Collider))
 					
