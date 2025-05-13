@@ -3475,10 +3475,10 @@ Function UpdateNPCType966%(n.NPCs)
 							EndIf
 							I_966\HasInsomnia = 1.0 - (0.5 * I_714\Using)
 							
-							Local InsomniaMult# = (2100.0 + (700.0 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)
+							Local InsomniaMult# = (4200.0 + (1400.0 * SelectedDifficulty\OtherFactors)) / (1.0 + I_714\Using)
 							
 							I_966\InsomniaEffectTimer = Max(I_966\InsomniaEffectTimer, InsomniaMult)
-							I_966\InsomniaEffectTimer = Min(I_966\InsomniaEffectTimer + (fps\Factor[0] * ((5.0 + SelectedDifficulty\OtherFactors) - ((2.0 + (0.5 * SelectedDifficulty\OtherFactors)) * I_714\Using))), InsomniaMult * 2.0)
+							I_966\InsomniaEffectTimer = Min(I_966\InsomniaEffectTimer + (fps\Factor[0] * ((6.0 + SelectedDifficulty\OtherFactors) - ((2.5 + SelectedDifficulty\OtherFactors) * I_714\Using))), InsomniaMult * 2.0)
 						EndIf
 					EndIf
 					n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 20.0)
