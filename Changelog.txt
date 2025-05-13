@@ -6,6 +6,8 @@
 - Added breath steam at the ending areas and SCP-009's containment chamber.
 - Update bump textures.
 - Added new images for SCP-895.
+- Can recontain SCP-012.
+- The crystallization from SCP-409 is faster.
 
 [Rooms]
 - Made HCZ and EZ slightly darker.
@@ -19,14 +21,16 @@
 - Design improvements for some rooms...
 
 [NPCs]
-- Buffed SCP-966 insomnia to reduce stamina regeneration from 66.6% -> 50%
 - NPCs can hear you further away.
+- Buffed SCP-966 insomnia to reduce stamina regeneration from 66.6% -> 50%
 - SCP-966's spawnrate increased.
 - SCP-966 can activate the tesla gates themselves.
+- SCP-966's insomnia effect last longer.
 - NPCs less likely to spawn when Remote Door Controls are off.
 - Changed Apache helicopter's texture.
 - Changed SCP-173's texture.
 - Improved MTF model.
+- Increased speed of SCP-106 in the Labyrinth section of the Pocket Dimension.
 
 [Items]
 - Added new SCP-513 variation.
@@ -34,6 +38,7 @@
 
 - Yellow Severed Hand can only be obtained after processing SCP-1123 in SCP-914.
 - Strange Bottle and Blue First Aid Kit have new outcomes.
+- Syringes stamina boost last longer.
 
 [Bug Fixes]
 - Fixed SCP-173's spawning events.
@@ -41,6 +46,7 @@
 - Fixed some MAVs.
 - Fixed battery position in «room2_7_lcz/room3_lcz».
 - Fixed flash sprite for Apache helicopters.
+- Fixed Z-Fighting with monitor screens.
 
 {v1.5.3}
 
