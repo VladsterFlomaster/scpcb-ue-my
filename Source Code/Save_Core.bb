@@ -2287,8 +2287,8 @@ Function LoadGameQuick%(File$)
 				If e\room\Objects[0] <> 0 Then FreeEntity(e\room\Objects[0]) : e\room\Objects[0] = 0
 				If e\room\Objects[4] <> 0 Then FreeEntity(e\room\Objects[4]) : e\room\Objects[4] = 0
 				If e\room\Objects[5] <> 0 Then FreeEntity(e\room\Objects[5]) : e\room\Objects[5] = 0
-				If e\room\Objects[7] <> 0 Then FreeEntity(e\room\Objects[7]) : e\room\Objects[7] = 0
 				If e\room\Objects[8] <> 0 Then FreeEntity(e\room\Objects[8]) : e\room\Objects[8] = 0
+				If e\room\Objects[7] <> 0 Then FreeEntity(e\room\Objects[7]) : e\room\Objects[7] = 0
 				If e\room\Objects[9] <> 0 Then FreeEntity(e\room\Objects[9]) : e\room\Objects[9] = 0
 				If e\room\Objects[10] <> 0 Then FreeEntity(e\room\Objects[10]) : e\room\Objects[10] = 0
 				If e\room\Objects[11] <> 0 Then FreeEntity(e\room\Objects[11]) : e\room\Objects[11] = 0
