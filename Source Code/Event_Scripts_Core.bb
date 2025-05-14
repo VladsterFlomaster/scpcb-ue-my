@@ -3,7 +3,7 @@ Function UpdateEvent_Room1_Dead_End_LCZ_106%(e.Events)
 	
 	If (Not n_I\Curr106\Contained)
 		If e\EventState = 0.0
-			If e\room\Dist < 8.0 And e\room\Dist > 0.0
+			If e\room\Dist > 0.0 And e\room\Dist < 8.0
 				If n_I\Curr106\State > 1.0
 					RemoveEvent(e)
 				Else

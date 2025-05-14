@@ -2285,12 +2285,14 @@ Function LoadGameQuick%(File$)
 			Case e_gate_a ; ~ Erase endings stuff
 				;[Block]
 				If e\room\Objects[0] <> 0 Then FreeEntity(e\room\Objects[0]) : e\room\Objects[0] = 0
-				
-				For i = 4 To 13
-					If i <> 6
-						If e\room\Objects[i] <> 0 Then FreeEntity(e\room\Objects[i]) : e\room\Objects[i] = 0
-					EndIf
-				Next
+				If e\room\Objects[4] <> 0 Then FreeEntity(e\room\Objects[4]) : e\room\Objects[4] = 0
+				If e\room\Objects[5] <> 0 Then FreeEntity(e\room\Objects[5]) : e\room\Objects[5] = 0
+				If e\room\Objects[7] <> 0 Then FreeEntity(e\room\Objects[7]) : e\room\Objects[7] = 0
+				If e\room\Objects[8] <> 0 Then FreeEntity(e\room\Objects[8]) : e\room\Objects[8] = 0
+				If e\room\Objects[9] <> 0 Then FreeEntity(e\room\Objects[9]) : e\room\Objects[9] = 0
+				If e\room\Objects[10] <> 0 Then FreeEntity(e\room\Objects[10]) : e\room\Objects[10] = 0
+				If e\room\Objects[11] <> 0 Then FreeEntity(e\room\Objects[11]) : e\room\Objects[11] = 0
+				If e\room\Objects[12] <> 0 Then FreeEntity(e\room\Objects[12]) : e\room\Objects[12] = 0
 				;[End Block]
 			Case e_gate_b
 				;[Block]
