@@ -1146,7 +1146,7 @@ Function FillRoom%(r.Rooms)
 			SpriteViewMode(r\Objects[0], 2) 
 			EntityBlend(r\Objects[0], 3) 
 			EntityFX(r\Objects[0], 1 + 8 + 16)
-			PositionEntity(r\Objects[0], r\x, r\y + 0.8, r\z)
+			PositionEntity(r\Objects[0], r\x, r\y + 1.0, r\z)
 			EntityParent(r\Objects[0], r\OBJ)
 			HideEntity(r\Objects[0])
 			
