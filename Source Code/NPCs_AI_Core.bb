@@ -180,7 +180,7 @@ Function UpdateNPCType008_1_Surgeon%(n.NPCs)
 					Local n2.NPCs
 					
 					For n2.NPCs = Each NPCs
-						If n2\NPCType = NPCTypeMTF And (Not n2\IsDead)
+						If (n2\NPCType = NPCTypeMTF Lor n2\NPCType = NPCType035_Tentacle) And (Not n2\IsDead)
 							If NPCSeesNPC(n2, n) = 1
 								n\Target = n2
 								n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
@@ -454,7 +454,7 @@ Function UpdateNPCType008_1%(n.NPCs)
 					Local n2.NPCs
 					
 					For n2.NPCs = Each NPCs
-						If n2\NPCType = NPCTypeMTF And (Not n2\IsDead)
+						If (n2\NPCType = NPCTypeMTF Lor n2\NPCType = NPCType035_Tentacle) And (Not n2\IsDead)
 							If NPCSeesNPC(n2, n) = 1
 								n\Target = n2
 								n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
@@ -572,8 +572,9 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 	
 	If (Not n\IsDead)
 		Local Dist# = EntityDistanceSquared(n\Collider, me\Collider)
+		Local n2.NPCs
 		
-		If Dist < PowTwo(HideDistance * 1.75)
+		If Dist < PowTwo(HideDistance)
 			Local PrevFrame# = n\Frame
 			
 			Select n\State 
@@ -609,14 +610,30 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 				Case 1.0 ; ~ Idles
 					;[Block]
 					AnimateNPC(n, 33.0, 174.0, 0.3)
+					; ~ Randomly rotates
+					If Rand(400) = 1 Then n\Angle = Rnd(360.0)
+					RotateEntity(n\Collider, 0.0, CurveAngle(n\Angle + Sin(MilliSec / 50) * 2.0, EntityYaw(n\Collider), 150.0), 0.0, True)
 					
-					If Dist < 3.24 And (Not (chs\NoTarget Lor I_268\InvisibilityOn))
-						n\State = 2.0
+					If n\TargetUpdateTimer =< 0.0
+						For n2.NPCs = Each NPCs
+							Select n2\NPCType
+								Case NPCType008_1, NPCType008_1_Surgeon, NPCType049, NPCType049_2, NPCType066, NPCType096, NPCType106, NPCTypeMTF
+									;[Block]
+									If EntityDistanceSquared(n\Collider, n2\Collider) < 3.24 And (Not n2\IsDead)
+										n\Target = n2
+										n\State = 2.0
+										Return
+									EndIf
+									;[End Block]
+							End Select
+						Next
+						If Dist < 3.24 And (Not (chs\NoTarget Lor I_268\InvisibilityOn))
+							n\State = 2.0
+							Return
+						EndIf
+						n\TargetUpdateTimer = 35.0
 					Else
-						; ~ Randomly rotates
-						If Rand(400) = 1 Then n\Angle = Rnd(360.0)
-						
-						RotateEntity(n\Collider, 0.0, CurveAngle(n\Angle + Sin(MilliSec / 50) * 2.0, EntityYaw(n\Collider), 150.0), 0.0, True)
+						n\TargetUpdateTimer = n\TargetUpdateTimer - fps\Factor[0]
 					EndIf
 					;[End Block]
 				Case 2.0 ; ~ Attacks
@@ -626,39 +643,69 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 						AnimateNPC(n, 33.0, 174.0, 2.0, False)
 						If n\Frame > 173.9 Then SetNPCFrame(n, 2.0)
 					Else
-						PointEntity(n\OBJ, me\Collider)
+						If n\Target = Null
+							PointEntity(n\OBJ, me\Collider)
+						Else
+							PointEntity(n\OBJ, n\Target\Collider)
+						EndIf
 						RotateEntity(n\Collider, 0.0, CurveAngle(EntityYaw(n\OBJ), EntityYaw(n\Collider), 10.0), 0.0)
 						
 						AnimateNPC(n, 2.0, 32.0, 0.3, False)
 						
 						If n\Frame > 5.0 And PrevFrame <= 5.0
-							If Dist < 3.24
-								If Abs(DeltaYaw(n\Collider, me\Collider)) < 20.0
-									If wi\HazmatSuit > 0
-										PlaySound_Strict(LoadTempSound("SFX\Character\BodyFall.ogg"))
-										me\Injuries = me\Injuries + Rnd(0.5)
-									Else
-										PlaySound_Strict(snd_I\DamageSFX[Rand(9, 10)])
-										InjurePlayer(Rnd(0.75, 1.15) * DifficultyDMGMult, 0.0, 100.0, 0.4 * DifficultyDMGMult, 0.175 * DifficultyDMGMult)
-										
-										If me\Injuries > 3.0
-											If PlayerRoom\RoomTemplate\RoomID = r_room2_ez
-												msg\DeathMsg = GetLocalString("death", "035.offices")
-											Else
-												msg\DeathMsg = GetLocalString("death", "035.default")
+							If n\Target = Null
+								If Dist < 3.24
+									If Abs(DeltaYaw(n\Collider, me\Collider)) < 20.0
+										If wi\HazmatSuit > 0
+											PlaySound_Strict(LoadTempSound("SFX\Character\BodyFall.ogg"))
+											me\Injuries = me\Injuries + Rnd(0.5)
+										Else
+											PlaySound_Strict(snd_I\DamageSFX[Rand(9, 10)])
+											InjurePlayer(Rnd(0.75, 1.15) * DifficultyDMGMult, 0.0, 100.0, 0.4 * DifficultyDMGMult, 0.175 * DifficultyDMGMult)
+											
+											If me\Injuries > 3.0
+												If PlayerRoom\RoomTemplate\RoomID = r_room2_ez
+													msg\DeathMsg = GetLocalString("death", "035.offices")
+												Else
+													msg\DeathMsg = GetLocalString("death", "035.default")
+												EndIf
+												Kill(True)
 											EndIf
-											Kill(True)
 										EndIf
+										me\CameraShake = 2.0 * (I_1025\FineState[3] = 0.0)
+									Else
+										PlaySoundEx(snd_I\MissSFX, Camera, n\Collider)
 									EndIf
-									me\CameraShake = 2.0 * (I_1025\FineState[3] = 0.0)
 								Else
-									PlaySoundEx(snd_I\MissSFX, Camera, n\Collider)
+									PlaySoundEx(snd_I\MissSFX, Camera, n\Collider, 3.0)
 								EndIf
 							Else
-								PlaySoundEx(snd_I\MissSFX, Camera, n\Collider, 3.0)
+								If EntityDistanceSquared(n\Collider, n\Target\Collider) < 3.24
+									If Abs(DeltaYaw(n\Collider, n\Target\Collider)) < 20.0
+										PlaySound_Strict(snd_I\DamageSFX[Rand(9, 10)])
+										If n\Target\HP > 0
+											n\Target\HP = Max(n\Target\HP - Rnd(50.0, 70.0), 0.0)
+										Else
+											n\Target = Null
+											n\State = 1.0
+											Return
+										EndIf
+									Else
+										PlaySoundEx(snd_I\MissSFX, Camera, n\Collider)
+									EndIf
+								Else
+									PlaySoundEx(snd_I\MissSFX, Camera, n\Collider, 3.0)
+								EndIf
 							EndIf
 						ElseIf n\Frame > 31.9
 							SetNPCFrame(n, 173.0)
+							n\Target = Null
+							n\State = 1.0
+						EndIf
+					EndIf
+					If n\Target <> Null
+						If n\Target\IsDead
+							n\Target = Null
 							n\State = 1.0
 						EndIf
 					EndIf
@@ -1290,7 +1337,7 @@ Function UpdateNPCType049_2%(n.NPCs)
 					Local n2.NPCs
 					
 					For n2.NPCs = Each NPCs
-						If n2\NPCType = NPCTypeMTF And (Not n2\IsDead)
+						If (n2\NPCType = NPCTypeMTF Lor n2\NPCType = NPCType035_Tentacle) And (Not n2\IsDead)
 							If NPCSeesNPC(n2, n) = 1
 								n\Target = n2
 								n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
