@@ -111,7 +111,7 @@ Function AddLight.Lights(room.Rooms, x#, y#, z#, Type_%, Range#, R%, G%, B%, Has
 	If HasSprite
 		l\Sprite = CreateSprite()
 		PositionEntity(l\Sprite, x, y, z)
-		ScaleSprite(l\Sprite, 0.13 , 0.13)
+		ScaleSprite(l\Sprite, 0.13, 0.13)
 		EntityTexture(l\Sprite, misc_I\LightSpriteID[LIGHT_SPRITE_DEFAULT])
 		EntityFX(l\Sprite, 1 + 8)
 		EntityBlend(l\Sprite, 3)

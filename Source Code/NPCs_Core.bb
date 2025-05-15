@@ -476,14 +476,12 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			For i = -1 To 1 Step 2
 				Local Light1% = CreateLight(2, n\OBJ)
 				
-				j = 1.65 * i
 				LightRange(Light1, 2.0)
 				LightColor(Light1, 255.0, 255.0, 255.0)
-				PositionEntity(Light1, j, 1.17, -0.25)
+				PositionEntity(Light1, 1.5 * i, 0.57, -0.25)
 				
-				Local LightSprite% = CreateSprite(n\OBJ)
+				Local LightSprite% = CreateSprite(Light1)
 				
-				PositionEntity(LightSprite, j, 1.17, 0.0, -0.25)
 				ScaleSprite(LightSprite, 0.13, 0.13)
 				EntityTexture(LightSprite, misc_I\LightSpriteID[LIGHT_SPRITE_DEFAULT])
 				EntityBlend(LightSprite, 3)
