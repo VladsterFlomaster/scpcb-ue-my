@@ -6872,8 +6872,9 @@ Function UpdateEvent_Gate_A%(e.Events)
 			For i = 2 To 4
 				If e\room\NPC[i] <> Null
 					If e\room\NPC[i]\State < 2.0
-						PositionEntity(e\room\NPC[i]\Collider, EntityX(e\room\Objects[1], True) + Cos(e\EventState / 10.0 + (120.0 * i)) * 6000.0 * RoomScale, e\room\y + 11.0, EntityZ(e\room\Objects[1], True) + Sin(e\EventState / 10.0 + (120.0 * i)) * 6000.0 * RoomScale)
-						RotateEntity(e\room\NPC[i]\Collider, 7.0, (e\EventState / 10.0 + (120.0 * i)), 20.0)
+						Dist = e\EventState / 10.0 + (120.0 * i)
+						PositionEntity(e\room\NPC[i]\Collider, EntityX(e\room\Objects[1], True) + Cos(Dist) * 6000.0 * RoomScale, e\room\y + 11.0, EntityZ(e\room\Objects[1], True) + Sin(Dist) * 6000.0 * RoomScale)
+						RotateEntity(e\room\NPC[i]\Collider, 7.0, Dist, 20.0)
 					EndIf
 				EndIf
 			Next
@@ -8149,7 +8150,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				
 				If n_I\Curr106\State < 3.0 ; ~ SCP-106 circles around the starting room
 					Angle = (e\EventState / 10.0 Mod 360.0)
-					PositionEntity(n_I\Curr106\Collider, EntityX(e\room\OBJ), 0.55 + Sin(e\EventState / 14.0 + i * 20.0) * 0.4, EntityZ(e\room\OBJ))
+					PositionEntity(n_I\Curr106\Collider, e\room\x, e\room\y + 0.55 + Sin(e\EventState / 14.0 + i * 20.0) * 0.4, e\room\z)
 					RotateEntity(n_I\Curr106\Collider, 0.0, Angle, 0.0)
 					MoveEntity(n_I\Curr106\Collider, 0.0, 0.0, 6.0 - Sin(e\EventState / 10.0))
 					AnimateNPC(n_I\Curr106, 55.0, 104.0, 0.5)
@@ -8522,7 +8523,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				
 				If e\EventState3 > 12.0
 					n_I\Curr106\Idle = 1
-					PositionEntity(n_I\Curr106\Collider, EntityX(e\room\Objects[e\EventState3], True), 0.27, EntityZ(e\room\Objects[e\EventState3], True))
+					PositionEntity(n_I\Curr106\Collider, EntityX(e\room\Objects[e\EventState3], True), e\room\y + 0.27, EntityZ(e\room\Objects[e\EventState3], True))
 					
 					PointEntity(n_I\Curr106\Collider, Camera)
 					TurnEntity(n_I\Curr106\Collider, 0.0, Sin(MilliSec / 20.0) * 6.0, 0.0, True)
@@ -8545,7 +8546,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 						n_I\Curr106\State = 3.0
 						n_I\Curr106\State2 = 0.0
 						n_I\Curr106\State3 = 100000.0
-						PositionEntity(n_I\Curr106\Collider, EntityX(e\room\Objects[e\EventState3], True), -1.0, EntityZ(e\room\Objects[e\EventState3], True))
+						PositionEntity(n_I\Curr106\Collider, EntityX(e\room\Objects[e\EventState3], True), e\room\y - 1.0, EntityZ(e\room\Objects[e\EventState3], True))
 						ResetEntity(n_I\Curr106\Collider)
 					EndIf
 				Else

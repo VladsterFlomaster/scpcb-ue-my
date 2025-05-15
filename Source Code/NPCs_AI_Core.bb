@@ -2014,7 +2014,6 @@ Function UpdateNPCType106%(n.NPCs)
 	
 	Local e.Events, de.Decals
 	Local Pvt%
-	Local Dist# = EntityDistanceSquared(n\Collider, me\Collider)
 	Local Spawn106% = True
 	
 	; ~ Checking if SCP-106 is allowed to spawn
@@ -2042,6 +2041,8 @@ Function UpdateNPCType106%(n.NPCs)
 	EndIf
 	
 	If n\Idle = 0 And Spawn106
+		Local Dist# = EntityDistanceSquared(n\Collider, me\Collider)
+		
 		Select n\State
 			Case 0.0 ; ~ Reset the timer
 				;[Block]
@@ -2049,6 +2050,9 @@ Function UpdateNPCType106%(n.NPCs)
 				If n\Shadow <> Null Then PositionEntity(n\Shadow\OBJ, 0.0, -500.0, 0.0)
 				ResetEntity(n\Collider)
 				HideEntity(n\OBJ2)
+				n\PathLocation = 0
+				n\PathStatus = PATH_STATUS_NO_SEARCH
+				n\PathTimer = 0.0
 				n\State = 1.0
 				;[End Block]
 			Case 1.0 ; ~ Idling outside the map
@@ -2087,6 +2091,7 @@ Function UpdateNPCType106%(n.NPCs)
 					FreeEntity(Pvt) : Pvt = 0
 					
 					PositionEntity(n\Collider, n\EnemyX, n\EnemyY, n\EnemyZ)
+					ResetEntity(n\Collider)
 					de.Decals = CreateDecal(DECAL_CORROSIVE_1, n\EnemyX, n\EnemyY + 0.005, n\EnemyZ, 90.0, Rnd(360.0), 0.0, 0.05, 0.8)
 					de\SizeChange = 0.001
 					EntityParent(de\OBJ, PlayerRoom\OBJ)
@@ -2270,31 +2275,6 @@ Function UpdateNPCType106%(n.NPCs)
 				EndIf
 				MoveEntity(n\Collider, 0.0, 0.0, n\CurrSpeed * fps\Factor[0])
 				
-				If me\FallTimer < -250.0 Then MoveToPocketDimension()
-				
-				If n\Reload = 0.0 ; ~ Timer idea -- Juanjpro
-					If Dist > 100.0 And (Not IsPlayerOutsideFacility()) And PlayerRoom\RoomTemplate\RoomID <> r_dimension_106
-						If (Not EntityInView(n\OBJ, Camera))
-							Local Pick% = 0
-							
-							TurnEntity(me\Collider, 0.0, 180.0, 0.0)
-							If (Not (chs\NoTarget Lor I_268\InvisibilityOn)) Then Pick = EntityPick(me\Collider, 5.0)
-							TurnEntity(me\Collider, 0.0, 180.0, 0.0)
-							If Pick <> 0
-								TeleportEntity(n\Collider, PickedX(), PickedY(), PickedZ(), n\CollRadius)
-								PointEntity(n\Collider, me\Collider)
-								RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider), 0.0)
-								MoveEntity(n\Collider, 0.0, 0.0, -2.0)
-								PlaySoundEx(snd_I\SCP106SFX[3], Camera, n\Collider, 10.0, 1.0, True)
-								n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
-								n\PathTimer = 0.0
-								n\Reload = (70.0 * 10.0) / (SelectedDifficulty\OtherFactors + 1.0)
-							EndIf
-						EndIf
-					EndIf
-				EndIf
-				n\Reload = Max(0.0, n\Reload - fps\Factor[0])
-				
 				UpdateSoundOrigin(n\SoundCHN2, Camera, n\Collider)
 				
 				If Dist < PowTwo(Min(HideDistance, fog\FarDist * LightVolume * 0.5))
@@ -2304,15 +2284,37 @@ Function UpdateNPCType106%(n.NPCs)
 					EntityAlpha(n\OBJ2, Clamp(Sqr(Dist) - fog\FarDist * LightVolume * 0.5, 0.0, 1.0))
 				EndIf
 				
-				If n\State3 =< 0.0
-					If (Not EntityInView(n\OBJ, Camera)) And Dist > 25.0
-						PositionEntity(n\Collider, 0.0, -500.0, 0.0)
-						ResetEntity(n\Collider)
-						
-						HideEntity(n\OBJ2)
-						
-						n\State2 = Rnd(22000.0, 27000.0)
-						n\State = 0.0
+				If PlayerRoom\RoomTemplate\RoomID <> r_gate_a
+					If me\FallTimer < -250.0 Then MoveToPocketDimension()
+					
+					If n\Reload = 0.0 ; ~ Timer idea -- Juanjpro
+						If Dist > 100.0 And PlayerRoom\RoomTemplate\RoomID <> r_dimension_106
+							If (Not EntityInView(n\OBJ, Camera))
+								Local Pick% = 0
+								
+								TurnEntity(me\Collider, 0.0, 180.0, 0.0)
+								If (Not (chs\NoTarget Lor I_268\InvisibilityOn)) Then Pick = EntityPick(me\Collider, 5.0)
+								TurnEntity(me\Collider, 0.0, 180.0, 0.0)
+								If Pick <> 0
+									TeleportEntity(n\Collider, PickedX(), PickedY(), PickedZ(), n\CollRadius)
+									PointEntity(n\Collider, me\Collider)
+									RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider), 0.0)
+									MoveEntity(n\Collider, 0.0, 0.0, -2.0)
+									PlaySoundEx(snd_I\SCP106SFX[3], Camera, n\Collider, 10.0, 1.0, True)
+									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
+									n\PathTimer = 0.0
+									n\Reload = (70.0 * 10.0) / (SelectedDifficulty\OtherFactors + 1.0)
+								EndIf
+							EndIf
+						EndIf
+					EndIf
+					n\Reload = Max(0.0, n\Reload - fps\Factor[0])
+					
+					If n\State3 =< 0.0
+						If (Not EntityInView(n\OBJ, Camera)) And Dist > 25.0
+							n\State2 = Rnd(22000.0, 27000.0)
+							n\State = 0.0
+						EndIf
 					EndIf
 				EndIf
 				;[End Block]
