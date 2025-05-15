@@ -3974,6 +3974,8 @@ Function FillRoom%(r.Rooms)
 			
 			it.Items = CreateItem("Gas Mask", it_gasmask, r\x + 954.0 * RoomScale, r\y - 504.0 * RoomScale, r\z + 235.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
+			
+			CreateCustomCenter(r, r\x - 918.0 * RoomScale, r\z - 918.0 * RoomScale)
 			;[End Block]
 		Case r_room3_4_ez
 			;[Block]
