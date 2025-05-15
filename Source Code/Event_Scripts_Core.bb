@@ -3785,6 +3785,8 @@ Function UpdateEvent_Room4_IC%(e.Events)
 	EndIf
 End Function
 
+Dim PlacedIn.Rooms(0)
+
 Function UpdateEvent_Cont1_035%(e.Events)
 	If PlayerRoom = e\room
 		; ~ EventState2: has SCP-035 told the code to the storage room (True / False)
@@ -4035,6 +4037,43 @@ Function UpdateEvent_Cont1_035%(e.Events)
 							For i = 0 To 2
 								e\room\RoomDoors[i]\Locked = 0
 							Next
+							
+							Local r.Rooms
+							Local Attempts% = 0
+							Local MaxAttempts% = 1000
+							
+							i = 0
+							Dim PlacedIn.Rooms(5)
+							While i < 5 And Attempts < MaxAttempts
+								Attempts = Attempts + 1
+								For r.Rooms = Each Rooms
+									If r\RoomTemplate\Commonness > 0 And Rand(50) = 1
+										Local AlreadyPlaced% = False
+										Local j%
+										
+										For j = 0 To i - 1
+											If PlacedIn(j) = r
+												AlreadyPlaced = True
+												Exit
+											EndIf
+										Next
+										
+										If (Not AlreadyPlaced)
+											If r\RoomCenter <> 0
+												CreateNPC(NPCType035_Tentacle, EntityX(r\RoomCenter) + Rnd(-0.2, 0.2), r\y + 0.2, EntityZ(r\RoomCenter) + Rnd(-0.2, 0.2))
+											Else
+												CreateNPC(NPCType035_Tentacle, r\x + Rnd(-0.2, 0.2), r\y + 0.2, r\z + Rnd(-0.2, 0.2))
+											EndIf
+											CreateConsoleMsg("Spawned in: " + r\RoomTemplate\RoomID)
+											PlacedIn(i) = r
+											i = i + 1
+											Exit
+										EndIf
+									EndIf
+								Next
+							Wend
+							Dim PlacedIn.Rooms(0)
+							
 							OpenCloseDoor(e\room\RoomDoors[1])
 							For d.Doors = Each Doors
 								If d\DoorType = HEAVY_DOOR
