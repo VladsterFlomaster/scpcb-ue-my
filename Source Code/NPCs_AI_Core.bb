@@ -686,7 +686,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 									If Abs(DeltaYaw(n\Collider, n\Target\Collider)) < 20.0
 										PlaySound_Strict(snd_I\DamageSFX[Rand(9, 10)])
 										If n\Target\HP > 0
-											n\Target\HP = Max(n\Target\HP - Rnd(50.0, 70.0), 0.0)
+											n\Target\HP = Max(n\Target\HP - Rnd(40.0, 80.0), 0.0)
 										Else
 											n\Target = Null
 											n\State = 1.0
