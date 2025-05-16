@@ -6098,14 +6098,15 @@ Function UpdateEvent_Cont2_008%(e.Events)
 					OpenCloseDoor(e\room\RoomDoors[2])
 					
 					TFormPoint(-240.0, -5052.8, -635.0, e\room\OBJ, 0)
-					n.NPCs = CreateNPC(NPCType008_1_Surgeon, TFormedX(), TFormedY(), TFormedZ())
+					n.NPCs = CreateNPC(NPCType008_1, TFormedX(), TFormedY(), TFormedZ())
 					n\State = 3.0
 					
 					n.NPCs = CreateNPC(NPCType008_1, e\room\x, -250.0, e\room\z)
+					ChangeNPCTextureID(n, NPC_008_1_TEXTURE)
 					n\State = 3.0 : n\IdleTimer = 70.0 * -30.0
 					
 					n.NPCs = CreateNPC(NPCType008_1, e\room\x, -250.0, e\room\z)
-					ChangeNPCTextureID(n, NPC_008_1_TEXTURE)
+					ChangeNPCTextureID(n, NPC_008_1_TEXTURE_2)
 					n\State = 3.0 : n\IdleTimer = 70.0 * -60.0
 					
 					e\EventState2 = 2.0
@@ -7627,7 +7628,7 @@ Function UpdateEvent_Gate_B%(e.Events)
 End Function
 
 Function UpdateEvent_Room2_EZ_035%(e.Events)
-	Local e2.Events
+	Local e2.Events, n.NPCs
 	Local Is035Released% = False
 	
 	For e2.Events = Each Events
@@ -7641,29 +7642,21 @@ Function UpdateEvent_Room2_EZ_035%(e.Events)
 	
 	If Is035Released
 		If e\room\Dist < 8.0
-			If e\room\NPC[0] = Null
-				e\room\NPC[0] = CreateNPC(NPCTypeD, e\room\x, e\room\y + 52.0 * RoomScale, e\room\z)
-				e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\IsDead = True
-				SetNPCFrame(e\room\NPC[0], 19.0)
-				RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 180.0, 0.0)
-				MoveEntity(e\room\NPC[0]\Collider, 0.0, 0.0, -0.5)
-				ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_VICTIM_035_CORPSE_TEXTURE)
+			If e\EventState = 0.0
+				n.NPCs = CreateNPC(NPCTypeD, e\room\x, e\room\y + 52.0 * RoomScale, e\room\z)
+				n\State3 = -1.0 : n\IsDead = True
+				SetNPCFrame(n, 19.0)
+				RotateEntity(n\Collider, 0.0, e\room\Angle + 180.0, 0.0)
+				MoveEntity(n\Collider, 0.0, 0.0, -0.5)
+				ChangeNPCTextureID(n, NPC_CLASS_D_VICTIM_035_CORPSE_TEXTURE)
+				
+				n.NPCs = CreateNPC(NPCType035_Tentacle, e\room\x, e\room\y + 0.2, e\room\z)
+				RotateEntity(n\Collider, 0.0, e\room\Angle, 0.0)
+				MoveEntity(n\Collider, 0.0, 0.0, 0.6)
+				
+				RemoveEvent(e)
 			EndIf
-			If EntityDistanceSquared(e\room\NPC[0]\Collider, me\Collider) < 6.25
-				me\Injuries = me\Injuries + (fps\Factor[0] / (5000.0 * (1.0 + (wi\HazmatSuit > 0))))
-				If e\room\NPC[1] = Null
-					e\room\NPC[1] = CreateNPC(NPCType035_Tentacle, EntityX(e\room\NPC[0]\Collider), 0.13, EntityZ(e\room\NPC[0]\Collider))
-					RotateEntity(e\room\NPC[1]\Collider, 0.0, e\room\Angle, 0.0)
-					MoveEntity(e\room\NPC[1]\Collider, 0.0, 0.0, 0.6)
-				EndIf
-			EndIf
-		Else
-			If e\room\Dist > HideDistance Then RemoveNPC(e\room\NPC[1])
 		EndIf
-	EndIf
-	
-	If e\room\NPC[1] <> Null
-		If e\room\NPC[1]\IsDead Then RemoveEvent(e)
 	EndIf
 End Function 
 

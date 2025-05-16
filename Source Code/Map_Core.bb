@@ -1153,7 +1153,7 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 							Local DetailEntityPosX# = (lX * Tempf4) - (Tempf3 / 2.0)
 							Local DetailEntityPosZ# = (lY * Tempf4) - (Tempf3 / 2.0)
 							
-							If ColorR > Rand(100, 260)
+							If ColorR > Rand(100, 255)
 								Detail_Entity = 0
 								Select Rand(0, 7)
 									Case 0, 1, 2, 3, 4, 5, 6 ; ~ Create a tree
@@ -1333,7 +1333,7 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 							Local DetailEntityPosX# = (lX * Tempf4) - (Tempf3 / 2.0)
 							Local DetailEntityPosZ# = (lY * Tempf4) - (Tempf3 / 2.0)
 							
-							If ColorR > Rand(100, 260)
+							If ColorR > Rand(100, 255)
 								Detail_Entity = 0
 								Select Rand(0, 7)
 									Case 0, 1, 2, 3, 4, 5, 6 ; ~ Create a tree

@@ -49,19 +49,20 @@ Function FillRoom%(r.Rooms)
 			EntityPickMode(r\Objects[2], 1)
 			EntityParent(r\Objects[2], r\OBJ)
 			
-			it.Items = CreateItem("Log of Anomalous Items", it_paper, r\x + 192.0 * RoomScale, r\y + 96.0 * RoomScale, r\z + 461.0 * RoomScale)
+			xTemp = r\x + 192.0 * RoomScale
+			it.Items = CreateItem("Log of Anomalous Items", it_paper, xTemp, r\y + 96.0 * RoomScale, r\z + 461.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("S-NAV Navigator", it_nav, r\x + 192.0 * RoomScale, r\y + 96.0 * RoomScale, r\z - 224.0 * RoomScale)
+			it.Items = CreateItem("S-NAV Navigator", it_nav, xTemp, r\y + 96.0 * RoomScale, r\z - 224.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("Playing Card", it_playcard, r\x + 192.0 * RoomScale, r\y + 288.0 * RoomScale, r\z + 430.0 * RoomScale)
+			it.Items = CreateItem("Playing Card", it_playcard, xTemp, r\y + 288.0 * RoomScale, r\z + 430.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateRandomBattery(r\x + 192.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 260.0 * RoomScale)
+			it.Items = CreateRandomBattery(xTemp, r\y + 192.0 * RoomScale, r\z - 260.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("Clipboard", it_clipboard, r\x + 192.0 * RoomScale, r\y + 192.0 * RoomScale, r\z + 110.0 * RoomScale)
+			it.Items = CreateItem("Clipboard", it_clipboard, xTemp, r\y + 192.0 * RoomScale, r\z + 110.0 * RoomScale)
 			; ~ A hacky fix for clipboard's model and icon
 			it\InvImg = it\ItemTemplate\InvImg
 			SetAnimTime(it\OBJ, 0.0)
