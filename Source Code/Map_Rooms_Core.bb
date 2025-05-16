@@ -3447,7 +3447,7 @@ Function FillRoom%(r.Rooms)
 			Scale = RoomScale * 2.5
 			ScaleEntity(r\Objects[0], Scale, Scale, Scale)
 			EntityType(r\Objects[0], HIT_MAP)
-			PositionEntity(r\Objects[0], r\x + 1252.0 * RoomScale, r\y, r\z + 101.0 * RoomScale)
+			PositionEntity(r\Objects[0], r\x + 1264.0 * RoomScale, r\y, r\z + 101.0 * RoomScale)
 			EntityParent(r\Objects[0], r\OBJ)
 			
 			If Rand(3) = 1
