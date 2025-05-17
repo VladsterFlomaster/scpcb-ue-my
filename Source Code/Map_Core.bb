@@ -4912,7 +4912,7 @@ End Function
 
 Function HideRoomsNoColl%(room.Rooms)
 	Local i%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
 	
 	If (Not EntityHidden(room\OBJ))
 		For p.Props = Each Props
@@ -4950,6 +4950,10 @@ Function HideRoomsNoColl%(room.Rooms)
 			EndIf
 		Next
 		
+		For s.Screens = Each Screens
+			If s\room = room Then HideEntity(s\OBJ)
+		Next
+		
 		For i = 0 To MaxRoomObjects - 1
 			If room\Objects[i] <> 0
 				If (Not room\ScriptedObject[i]) Then HideEntity(room\Objects[i])
@@ -4964,7 +4968,7 @@ End Function
 
 Function ShowRoomsNoColl%(room.Rooms)
 	Local i%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
 	
 	If EntityHidden(room\OBJ)
 		For p.Props = Each Props
@@ -5002,6 +5006,10 @@ Function ShowRoomsNoColl%(room.Rooms)
 			EndIf
 		Next
 		
+		For s.Screens = Each Screens
+			If s\room = room Then ShowEntity(s\OBJ)
+		Next
+		
 		For i = 0 To MaxRoomObjects - 1
 			If room\Objects[i] <> 0
 				If (Not room\ScriptedObject[i]) Then ShowEntity(room\Objects[i])
@@ -5028,7 +5036,7 @@ End Function
 
 Function HideRoomsColl%(room.Rooms)
 	Local i%, j%, k%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
 	
 	If (Not room\HiddenAlpha)
 		For p.Props = Each Props
@@ -5083,6 +5091,11 @@ Function HideRoomsColl%(room.Rooms)
 		Next
 		
 		; ~ Hide it anyway because the player/NPC cannot interact with it
+		For s.Screens = Each Screens
+			If s\room = room Then HideEntity(s\OBJ)
+		Next
+		
+		; ~ Hide it anyway because the player/NPC cannot interact with it
 		For i = 0 To MaxRoomObjects - 1
 			If room\Objects[i] <> 0
 				If (Not room\ScriptedObject[i]) Then HideEntity(room\Objects[i])
@@ -5098,7 +5111,7 @@ End Function
 
 Function ShowRoomsColl%(room.Rooms)
 	Local i%, j%, k%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
 	
 	If room\HiddenAlpha
 		For p.Props = Each Props
@@ -5134,6 +5147,10 @@ Function ShowRoomsColl%(room.Rooms)
 				ShowEntity(lvr\OBJ)
 				ShowEntity(lvr\BaseOBJ)
 			EndIf
+		Next
+		
+		For s.Screens = Each Screens
+			If s\room = room Then ShowEntity(s\OBJ)
 		Next
 		
 		For i = 0 To MaxRoomObjects - 1
