@@ -4468,38 +4468,22 @@ Function RenderSecurityCams%()
 						Local BufferBack% = BackBuffer()
 						
 						If sc_I\CoffinCam = Null Lor Rand(5) = 5 Lor sc\CoffinEffect <> 3
-							If (Not EntityHidden(Camera))
-								ShowEntity(sc\Cam)
-								HideEntity(Camera)
-							EndIf
+							ShowEntity(sc\Cam)
 							Cls()
-							
 							SetBuffer(BufferBack)
 							RenderWorld(RenderTween)
 							CopyRect(0, 0, 512, 512, 0, 0, BufferBack, TextureBuffer(sc_I\ScreenTex))
-							
-							If (Not EntityHidden(sc\Cam))
-								ShowEntity(Camera)
-								HideEntity(sc\Cam)
-							EndIf
+							HideEntity(sc\Cam)
 						Else
-							If (Not EntityHidden(Camera))
-								HideEntity(Camera)
-								ShowEntity(sc_I\CoffinCam\room\OBJ)
-								EntityAlpha(GetChild(sc_I\CoffinCam\room\OBJ, 2), 1.0)
-								ShowEntity(sc_I\CoffinCam\Cam)
-							EndIf
+							ShowEntity(sc_I\CoffinCam\room\OBJ)
+							EntityAlpha(GetChild(sc_I\CoffinCam\room\OBJ, 2), 1.0)
+							ShowEntity(sc_I\CoffinCam\Cam)
 							Cls()
-							
 							SetBuffer(BufferBack)
 							RenderWorld(RenderTween)
 							CopyRect(0, 0, 512, 512, 0, 0, BufferBack, TextureBuffer(sc_I\ScreenTex))
-							
-							If (Not EntityHidden(sc_I\CoffinCam\room\OBJ))
-								HideEntity(sc_I\CoffinCam\Cam)
-								ShowEntity(Camera)
-								HideEntity(sc_I\CoffinCam\room\OBJ)
-							EndIf
+							HideEntity(sc_I\CoffinCam\Cam)
+							HideEntity(sc_I\CoffinCam\room\OBJ)
 						EndIf
 					EndIf
 				Else

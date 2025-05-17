@@ -3444,7 +3444,7 @@ Function FillRoom%(r.Rooms)
 				EndIf
 			Next
 			If r\Objects[0] = 0 Then r\Objects[0] = LoadAnimMesh_Strict("GFX\Map\Props\scp_789_j.b3d")
-			Scale = RoomScale * 2.5
+			Scale = 2.5 * RoomScale
 			ScaleEntity(r\Objects[0], Scale, Scale, Scale)
 			EntityType(r\Objects[0], HIT_MAP)
 			PositionEntity(r\Objects[0], r\x + 1209.0 * RoomScale, r\y, r\z + 98.0 * RoomScale)
