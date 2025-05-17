@@ -1581,6 +1581,7 @@ Type SoundInstance
 	Field BlindsSFX%
 	Field SparkShortSFX%
 	Field SinkHoleSFX%
+	Field WatchesSFX%
 End Type
 
 Global snd_I.SoundInstance
@@ -1820,6 +1821,8 @@ Function LoadSounds%()
 	
 	snd_I\SparkShortSFX = LoadSound_Strict("SFX\Room\SparkShort.ogg")
 	
+	snd_I\WatchesSFX = LoadSound_Strict("SFX\Room\Watches.ogg")
+	
 	I_1123\Sound = LoadSound_Strict("SFX\SCP\1123\Ambient.ogg")
 End Function
 
@@ -1965,6 +1968,8 @@ Function RemoveSoundInstances%()
 	snd_I\SparkShortSFX = 0
 	
 	snd_I\SinkHoleSFX = 0
+	
+	snd_I\WatchesSFX = 0
 	
 	Delete(snd_I) : snd_I = Null
 End Function

@@ -9643,7 +9643,7 @@ End Function
 Global EscapeTimer%
 Global EscapeSecondsTimer#
 
-Global BreachTime%
+Global BreachTime%, PrevBreachSeconds% = -1
 
 Function UpdateEscapeTimer%()
 	Local ev.Events

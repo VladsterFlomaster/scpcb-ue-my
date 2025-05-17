@@ -83,6 +83,9 @@ Function UpdateProps%()
 		Local SecondsAngle# = Float(Seconds) * 6.0
 		Local MinuteAngle# = Float(Minutes) * 6.0
 		Local HourAngle# = (Float(Hours Mod 12) + Float(Minutes) / 60.0) * 30.0
+		Local PlaySnd% = (Seconds <> PrevBreachSeconds)
+		
+		PrevBreachSeconds = Seconds
 	EndIf
 	
 	For p.Props = Each Props
@@ -92,6 +95,7 @@ Function UpdateProps%()
 				RotateEntity(p\SecondsArrow, 0.0, -SecondsAngle, 0.0)
 				RotateEntity(p\MinutesArrow, 0.0, -MinuteAngle, 0.0)
 				RotateEntity(p\HoursArrow, 0.0, -HourAngle, 0.0)
+				If PlaySnd Then PlaySoundEx(snd_I\WatchesSFX, Camera, p\OBJ, 4.0, 0.6)
 			EndIf
 		EndIf
 	Next
