@@ -4047,7 +4047,7 @@ Function UpdateEvent_Cont1_035%(e.Events)
 							While i < 5 And Attempts < MaxAttempts
 								Attempts = Attempts + 1
 								For r.Rooms = Each Rooms
-									If r\RoomTemplate\Commonness > 0 And Rand(50) = 1
+									If r\RoomTemplate\Commonness > 0 And r\Zone = 3 And Rand(5) = 1
 										Local AlreadyPlaced% = False
 										Local j%
 										
@@ -4062,9 +4062,9 @@ Function UpdateEvent_Cont1_035%(e.Events)
 											Local x#, y#, z#
 											
 											If r\RoomCenter <> 0
-												x = EntityX(r\RoomCenter) + Rnd(-0.2, 0.2) : y = r\y + 0.2 : z = EntityZ(r\RoomCenter) + Rnd(-0.2, 0.2)
+												x = EntityX(r\RoomCenter) + Rnd(-0.2, 0.2) : y = r\y + 0.12 : z = EntityZ(r\RoomCenter) + Rnd(-0.2, 0.2)
 											Else
-												x = r\x + Rnd(-0.2, 0.2) : y = r\y + 0.2 : z = r\z + Rnd(-0.2, 0.2)
+												x = r\x + Rnd(-0.2, 0.2) : y = r\y + 0.12 : z = r\z + Rnd(-0.2, 0.2)
 											EndIf
 											CreateNPC(NPCType035_Tentacle, x, y, z)
 											CreateDecal(DECAL_CORROSIVE_1, x, r\y + 0.005, z, 90.0, Rnd(360.0), 0.0, 0.4)
