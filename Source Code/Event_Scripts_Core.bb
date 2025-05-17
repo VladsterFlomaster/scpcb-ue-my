@@ -6536,7 +6536,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 	If e\room\Dist < 5.0
 		If e\EventState = 0.0
 			e\SoundCHN2 = LoopSoundEx(RoomAmbience[5], e\SoundCHN2, Camera, e\room\OBJ)
-		ElseIf e\EventState > 0.19
+		ElseIf e\EventState > 0.34
 			e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
 		EndIf
 	EndIf
@@ -6556,30 +6556,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			EntityType(it\Collider, HIT_ITEM)
 		EndIf
 		
-		Local n.NPCs
 		Local i%
-		Local IceTriggerY# = e\room\y - 1.6
-		
-		For n.NPCs = Each NPCs
-			If n\IceTimer = 0.0
-				Select n\NPCType
-					Case NPCType513_1, NPCType372, NPCType106, NPCType173
-						;[Block]
-						; ~ Skip
-						;[End Block]
-					Default
-						;[Block]
-						If EntityY(n\Collider, True) < IceTriggerY Then n\IceTimer = 0.001
-						;[End Block]
-				End Select
-			EndIf
-		Next
-		If I_009\Timer = 0.0 And wi\HazmatSuit = 0
-			If EntityY(me\Collider, True) < IceTriggerY
-				GiveAchievement("009")
-				I_009\Timer = 0.001
-			EndIf
-		EndIf
 		
 		If e\EventState = 0.0
 			UpdateRedLight(e\room\Objects[1], 1500, 800)
@@ -6597,20 +6574,45 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		Else
 			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 			
-			If e\EventState > 0.2
-				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.0001), 0.2)
-			ElseIf e\EventState = 0.2
+			If e\EventState > 0.35
+				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.00007), 0.35)
+			ElseIf e\EventState = 0.35
 				For i = 0 To 2
 					e\room\RoomDoors[i]\Locked = 0
 				Next
 				EntityPickMode(e\room\Objects[2], 0)
 				EntityType(e\room\Objects[2], 0)
-				e\EventState = 0.19
-			ElseIf e\EventState = 0.19
-				If EntityY(me\Collider) < IceTriggerY Then DecalStep = 2
-				UpdateBreathSteam()
+				e\EventState = 0.34
 			EndIf
 			EntityAlpha(e\room\Objects[2], e\EventState)
+		EndIf
+		
+		Local n.NPCs
+		Local IceTriggerY# = e\room\y - 1.6
+		
+		For n.NPCs = Each NPCs
+			If n\IceTimer = 0.0
+				Select n\NPCType
+					Case NPCType513_1, NPCType372, NPCType106, NPCType173
+						;[Block]
+						; ~ Skip
+						;[End Block]
+					Default
+						;[Block]
+						If EntityY(n\Collider, True) < IceTriggerY Then n\IceTimer = 0.001
+						;[End Block]
+				End Select
+			EndIf
+		Next
+		If EntityY(me\Collider, True) < IceTriggerY
+			If e\EventState = 0.34
+				DecalStep = 2
+				UpdateBreathSteam()
+			EndIf
+			If I_009\Timer = 0.0 And wi\HazmatSuit = 0
+				GiveAchievement("009")
+				I_009\Timer = 0.001
+			EndIf
 		EndIf
 	EndIf
 End Function
