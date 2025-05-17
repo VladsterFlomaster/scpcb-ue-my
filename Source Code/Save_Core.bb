@@ -543,6 +543,7 @@ Function SaveGame%(File$)
 	Next
 	
 	WriteInt(f, EscapeTimer)
+	WriteInt(f, BreachTime)
 	
 	Local sc.SecurityCams
 	
@@ -1465,6 +1466,7 @@ Function LoadGame%(File$)
 	Next
 	
 	EscapeTimer = ReadInt(f)
+	BreachTime = ReadInt(f)
 	
 	Local sc.SecurityCams
 	
@@ -2439,7 +2441,8 @@ Function LoadGameQuick%(File$)
 		Next
 	Next
 	
-	EscapeTimer = ReadInt(f)
+	ReadInt(f) ; ~ Skip escape timer
+	BreachTime = ReadInt(f)
 	
 	; ~ This will hopefully fix the SCP-895 crash bug after the player died by it's sanity effect and then quickloaded the game -- ENDSHN
 	Local sc.SecurityCams

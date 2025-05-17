@@ -13,6 +13,7 @@ Type Props
 	Field TexPath$
 	Field IsCooler%
 	Field IsLamp%
+	Field SecondsArrow%, MinutesArrow%, HoursArrow%
 End Type
 
 Type TempProps
@@ -40,10 +41,18 @@ Function CreateProp.Props(room.Rooms, Name$, x#, y#, z#, Pitch#, Yaw#, Roll#, Sc
 	p\Name = Name
 	p\room = room
 	p\TexPath = TexturePath
-	p\IsCooler = (Name = "GFX\Map\Props\water_cooler.b3d")
-	p\IsLamp = (Name = "GFX\Map\Props\lamp_c.b3d")
+	p\IsCooler = (Name = "water_cooler")
+	p\IsLamp = (Name = "lamp_c")
 	
-	If p\OBJ = 0 Then p\OBJ = LoadMesh_Strict(Name)
+	Local IsWatches% = (Name = "watches")
+	
+	If p\OBJ = 0
+		If IsWatches
+			p\OBJ = LoadAnimMesh_Strict("GFX\Map\Props\" + Name + ".b3d")
+		Else
+			p\OBJ = LoadMesh_Strict("GFX\Map\Props\" + Name + ".b3d")
+		EndIf
+	EndIf
 	PositionEntity(p\OBJ, x, y, z)
 	RotateEntity(p\OBJ, Pitch, Yaw, Roll)
 	If room <> Null Then EntityParent(p\OBJ, room\OBJ)
@@ -52,23 +61,45 @@ Function CreateProp.Props(room.Rooms, Name$, x#, y#, z#, Pitch#, Yaw#, Roll#, Sc
 	EntityFX(p\OBJ, FX)
 	EntityPickMode(p\OBJ, 2)
 	
+	If IsWatches
+		p\SecondsArrow = FindChild(p\OBJ, "bigarrow")
+		p\MinutesArrow = FindChild(p\OBJ, "middlearrow")
+		p\HoursArrow = FindChild(p\OBJ, "smallarrow")
+	EndIf
 	Return(p)
 End Function
 
-Function UpdateLampShaking%()
+Function UpdateProps%()
 	Local p.Props
 	Local ShakeValue# = Sin(MilliSec) * Min(5.0 * me\BigCameraShake, 15.0)
 	
+	If BreachTime > 0
+		Local Seconds% = BreachTime Mod 60
+		Local Minutes% = Floor(BreachTime / 60)
+		Local Hours% = Floor(Minutes / 60)
+		
+		Minutes = Minutes - (Hours * 60)
+		
+		Local SecondsAngle# = Float(Seconds) * 6.0
+		Local MinuteAngle# = Float(Minutes) * 6.0
+		Local HourAngle# = (Float(Hours Mod 12) + Float(Minutes) / 60.0) * 30.0
+	EndIf
+	
 	For p.Props = Each Props
-		If p\IsLamp
-			If p\room = PlayerRoom Lor IsRoomAdjacent(PlayerRoom, p\room) Then RotateEntity(p\OBJ, ShakeValue, EntityYaw(p\OBJ, True), EntityRoll(p\OBJ, True), True)
+		If p\room = PlayerRoom Lor IsRoomAdjacent(PlayerRoom, p\room)
+			If p\IsLamp And me\BigCameraShake > 0.0 Then RotateEntity(p\OBJ, ShakeValue, EntityYaw(p\OBJ, True), EntityRoll(p\OBJ, True), True)
+			If p\SecondsArrow <> 0
+				RotateEntity(p\SecondsArrow, 0.0, -SecondsAngle, 0.0)
+				RotateEntity(p\MinutesArrow, 0.0, -MinuteAngle, 0.0)
+				RotateEntity(p\HoursArrow, 0.0, -HourAngle, 0.0)
+			EndIf
 		EndIf
 	Next
 End Function
 
-Function RemoveProp%(pr.Props)
-	FreeEntity(pr\OBJ) : pr\OBJ = 0
-	Delete(pr) : pr = Null
+Function RemoveProp%(p.Props)
+	FreeEntity(p\OBJ) : p\OBJ = 0
+	Delete(p) : p = Null
 End Function
 
 Type TempLights
@@ -736,7 +767,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					Temp2s = ReadString(f)
 					; ~ A hacky way to use .b3d format
 					If FileExtension(Temp2s) = "b3d" Then Temp2s = Left(Temp2s, Len(Temp2s) - 4)
-					tp\Name = "GFX\Map\Props\" + Temp2s + ".b3d"
+					tp\Name = Temp2s
 					
 					tp\Pitch = ReadFloat(f)
 					tp\Yaw = ReadFloat(f)

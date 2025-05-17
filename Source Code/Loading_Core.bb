@@ -3523,7 +3523,8 @@ Function NullGame%(PlayButtonSFX% = True)
 	BatMsgTimer = 0.0
 	
 	EscapeSecondsTimer = 0.0
-	EscapeTimer = 0.0
+	EscapeTimer = 0
+	BreachTime = 0
 	
 	If Camera <> 0 Then FreeEntity(Camera) : Camera = 0
 	If Sky <> 0 Then FreeEntity(Sky) : Sky = 0

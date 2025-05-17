@@ -27,8 +27,9 @@ Function FillRoom%(r.Rooms)
 			
 			; ~ Clock
 			r\Objects[0] = LoadMesh_Strict("GFX\Map\Props\watches.b3d")
-			ScaleEntity(r\Objects[0], RoomScale, RoomScale, RoomScale)
-			RotateEntity(r\Objects[0], 0.0, 128.0, 270.0)
+			Scale = 40.0 * RoomScale
+			ScaleEntity(r\Objects[0], Scale, Scale, Scale)
+			RotateEntity(r\Objects[0], 0.0, 128.0, 0.0)
 			PositionEntity(r\Objects[0], r\x - 659.0 * RoomScale, r\y + 133.0 * RoomScale, r\z + 207.0 * RoomScale)
 			EntityParent(r\Objects[0], r\OBJ)
 			
@@ -4346,7 +4347,7 @@ Function FillRoom%(r.Rooms)
 			EntityParent(r\Objects[25], r\OBJ)
 			
 			it.Items = CreateItem("Burnt Note", it_paper, r\x, r\y + 0.5, r\z + 896.0 * RoomScale)
-			it.Items = CreateItem("George Maynard's Badge", it_badge, r\x - 1300 * RoomScale, r\y + 0.5, r\z + 8700 * RoomScale)
+			it.Items = CreateItem("George Maynard's Badge", it_badge, r\x - 1300.0 * RoomScale, r\y + 0.5, r\z + 8700.0 * RoomScale)
 			;[End Block]
 		Case r_dimension_1499
 			;[Block]

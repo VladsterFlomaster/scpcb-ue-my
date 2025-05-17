@@ -570,6 +570,7 @@ Function UpdateGame%()
 			UpdateNVG()
 			UpdateGUI()
 		EndIf
+		UpdateProps()
 		
 		If fps\Factor[0] = 0.0
 			UpdateWorld(0.0)
@@ -3265,7 +3266,6 @@ Function UpdateMouseLook%()
 	
 	me\CameraShake = Max(me\CameraShake - FPSFactorEx, 0.0)
 	me\BigCameraShake = Max(me\BigCameraShake - FPSFactorEx, 0.0)
-	If me\BigCameraShake > 0.0 Then UpdateLampShaking()
 	CameraZoom(Camera, Min(1.0 + (me\CurrCameraZoom / 400.0), 1.1) / CameraZoomValue)
 	me\CurrCameraZoom = Max(me\CurrCameraZoom - fps\Factor[0], 0.0)
 	
@@ -9431,7 +9431,7 @@ Function UpdateMTF%()
 	Local i%
 	
 	If MTFTimer = 0.0
-		If Rand(200) = 1 And PlayerRoom\RoomTemplate\RoomID <> r_dimension_1499
+		If Rand(50) = 1 And PlayerRoom\RoomTemplate\RoomID <> r_dimension_1499
 			Local entrance.Rooms = Null
 			
 			For r.Rooms = Each Rooms
@@ -9440,7 +9440,6 @@ Function UpdateMTF%()
 					Exit
 				EndIf
 			Next
-			
 			
 			If entrance <> Null
 				If me\Zone = 2
@@ -9459,6 +9458,7 @@ Function UpdateMTF%()
 							n_I\MTFCoLeader = n
 						EndIf
 					Next
+					BreachTime = 46800 ; ~ 13:00
 				EndIf
 			EndIf
 		EndIf
@@ -9643,6 +9643,8 @@ End Function
 Global EscapeTimer%
 Global EscapeSecondsTimer#
 
+Global BreachTime%
+
 Function UpdateEscapeTimer%()
 	Local ev.Events
 	
@@ -9658,6 +9660,7 @@ Function UpdateEscapeTimer%()
 	EscapeSecondsTimer = EscapeSecondsTimer - fps\Factor[0]
 	If EscapeSecondsTimer <= 0.0
 		EscapeTimer = EscapeTimer + 1
+		If BreachTime > 0 Then BreachTime = BreachTime + 1
 		EscapeSecondsTimer = 70.0
 	EndIf
 End Function
