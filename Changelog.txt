@@ -3,6 +3,7 @@
 [Bug Fixes]
 - Fixed MAV in Maintenance Tunnels.
 - Fixed MAV after opening the door leading to Command Meeting Room.
+- Fixed textures in some rooms.
 - Fixed position of the SCP-012 box.
 
 [Known issues]
