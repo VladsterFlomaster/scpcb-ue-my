@@ -1,4 +1,4 @@
-; ~ Converter Universal for SCP - Containment Breach Ultimate Edition Reborn v1.5.3
+; ~ Converter Universal for SCP - Containment Breach Ultimate Edition Reborn v1.5.4
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ; ~ Contact us: https://discord.gg/n7KdW4u
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -341,7 +341,7 @@ Function SaveRoomMesh(BaseMesh%, FileName$) ; ~ Base mesh should be a 3D World S
 		ClassName = Lower(KeyValue(Node, "classname"))
 		
 		Select ClassName
-			Case "screen", "waypoint", "light", "light_fix", "spotlight", "soundemitter", "model", "mesh"
+			Case "screen", "save_screen", "waypoint", "light", "light_fix", "spotlight", "soundemitter", "model", "mesh"
 				;[Block]
 				Temp1i = Temp1i + 1
 				;[End Block]
@@ -363,7 +363,25 @@ Function SaveRoomMesh(BaseMesh%, FileName$) ; ~ Base mesh should be a 3D World S
 				WriteFloat(f, EntityY(Node))
 				WriteFloat(f, EntityZ(Node))
 				
-				WriteString(f, KeyValue(Node, "imgpath", ""))
+				RuntimeError(Format(Format(GetLocalString("runerr", "screen.support"), FileName), "GFX\Map\Screens\" + KeyValue(Node, "imgpath")))
+				;[End Block]
+			Case "save_screen"
+				;[Block]
+				WriteFloat(f, EntityX(Node))
+				WriteFloat(f, EntityY(Node))
+				WriteFloat(f, EntityZ(Node))
+				
+				ReadString(f)
+				
+				WriteFloat(f, EntityPitch(Node))
+				WriteFloat(f, EntityYaw(Node))
+				WriteFloat(f, EntityRoll(Node))
+				
+				WriteFloat(f, EntityScaleX(Node))
+				WriteFloat(f, EntityScaleY(Node))
+				WriteFloat(f, EntityScaleZ(Node))
+				
+				WriteString(f, KeyValue(Node, "imgpath"))
 				;[End Block]
 			Case "waypoint"
 				;[Block]

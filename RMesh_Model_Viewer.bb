@@ -1,4 +1,4 @@
-; ~ RMESH Model Viewer for SCP - Containment Breach Ultimate Edition Reborn v1.5.3
+; ~ RMESH Model Viewer for SCP - Containment Breach Ultimate Edition Reborn v1.5.4
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
 ; ~ Contact us: https://discord.gg/n7KdW4u
 ;----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -352,38 +352,10 @@ Type Props
 	Field OBJ%
 End Type
 
-Function CheckForPropModel%(File$)
-	Local Path$ = "GFX\map\Props\"
-	
-	Select File
-		Case Path + "door01.b3d"
-			;[Block]
-			Return(CopyEntity(DoorModelID[0]))
-			;[End Block]
-		Case Path + "contdoorleft.b3d"
-			;[Block]
-			Return(CopyEntity(DoorModelID[1]))
-			;[End Block]
-		Case Path + "contdoorright.b3d"
-			;[Block]
-			Return(CopyEntity(DoorModelID[2]))
-			;[End Block]
-		Default
-			;[Block]
-			Return(LoadMesh_Strict(File))
-			;[End Block]
-	End Select
-End Function
-
 Function CreateProp%(File$)
 	Local p.Props
 	
-	; ~ A hacky way to use .b3d format
-	If Right(File, 2) = ".x"
-		File = Left(File, Len(File) - 2)
-	ElseIf Right(File, 4) = ".b3d"
-		File = Left(File, Len(File) - 4)
-	EndIf
+	If FileExtension(File) = "b3d" Then File = Left(File, Len(File) - 4)
 	File = File + ".b3d"
 	
 	For p.Props = Each Props
@@ -392,8 +364,7 @@ Function CreateProp%(File$)
 	
 	p.Props = New Props
 	p\File = File
-	; ~ A hacky optimization (just copy models that loaded as variable). Also fixes wrong models folder if the CBRE was used
-	p\OBJ = CheckForPropModel(File)
+	p\OBJ = LoadMesh_Strict(File)
 	Return(p\OBJ)
 End Function
 
@@ -607,6 +578,25 @@ Function LoadRMesh%(File$)
 				ReadFloat(f)
 				ReadFloat(f)
 				ReadFloat(f)
+				Temp2s = ReadString(f)
+				RuntimeError(Format(Format(GetLocalString("runerr", "screen.support"), File), "GFX\Map\Screens\" + Temp2s))
+				;[End Block]
+			Case "save_screen"
+				;[Block]
+				ReadFloat(f)
+				ReadFloat(f)
+				ReadFloat(f)
+				
+				ReadString(f)
+				
+				ReadFloat(f)
+				ReadFloat(f)
+				ReadFloat(f)
+				
+				ReadFloat(f)
+				ReadFloat(f)
+				ReadFloat(f)
+				
 				ReadString(f)
 				;[End Block]
 			Case "waypoint"
