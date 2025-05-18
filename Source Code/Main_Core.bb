@@ -94,6 +94,7 @@ Function ResetInput%()
 	mo\MouseHit2 = False
 	mo\MouseDown1 = False
 	mo\MouseUp1 = False
+	mo\DoubleClick = False
 	MouseHit(1)
 	MouseHit(2)
 	MouseDown(1)
