@@ -7697,22 +7697,24 @@ Function UpdateEvent_Room2_2_EZ_Duck%(e.Events)
 	EndIf
 End Function
 
-Function UpdateEvent_Room2_6_EZ_789_J%(e.Events)
+Function UpdateEvent_Toilets_789_J%(e.Events)
 	Local it.Items
 	
 	Select e\EventState
 		Case 0.0
 			;[Block]
-			TFormPoint(502.0, 128.0, 83.0, e\room\OBJ, 0)
-			it.Items = CreateItem("Document SCP-789-J", it_paper, TFormedX(), TFormedY(), TFormedZ())
-			EntityType(it\Collider, HIT_ITEM)
+			If e\room\RoomTemplate\RoomID = r_room2_6_ez
+				TFormPoint(502.0, 128.0, 83.0, e\room\OBJ, 0)
+				it.Items = CreateItem("Document SCP-789-J", it_paper, TFormedX(), TFormedY(), TFormedZ())
+				EntityType(it\Collider, HIT_ITEM)
+			EndIf
 			
 			e\EventState = 1.0
 			;[End Block]
 		Case 1.0
 			;[Block]
 			If PlayerRoom = e\room
-				If EntityDistanceSquared(me\Collider, e\room\Objects[0]) < 2.25
+				If EntityDistanceSquared(me\Collider, e\room\Objects[0]) < 0.36
 					GiveAchievement("789j")
 					e\SoundCHN = PlaySoundEx(LoadTempSound("SFX\SCP\Joke\789J.ogg"), Camera, e\room\Objects[0], 10.0, 1.0, True)
 					
@@ -7728,7 +7730,10 @@ Function UpdateEvent_Room2_6_EZ_789_J%(e.Events)
 				AnimateEx(e\room\Objects[0], AnimTime(e\room\Objects[0]), 31.0, 240.0, 0.52, False)
 			EndIf
 			UpdateSoundOrigin(e\SoundCHN, Camera, e\room\Objects[0], 10.0, 1.5)
-			If (Not ChannelPlaying(e\SoundCHN)) Then RemoveEvent(e)
+			If (Not ChannelPlaying(e\SoundCHN)) And (Not EntityInView(e\room\Objects[0], Camera))
+				SetAnimTime(e\room\Objects[0], 1.0)
+				RemoveEvent(e)
+			EndIf
 			;[End Block]
 	End Select
 End Function

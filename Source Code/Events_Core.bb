@@ -67,21 +67,22 @@ Const e_gate_b_entrance% = 47, e_gate_b% = 48
 Const e_room1_dead_end_ez_guard% = 49
 Const e_room2_ez_035% = 50
 Const e_room2_2_ez_duck% = 51
-Const e_room2_6_ez_789_j% = 52, e_room2_6_ez_guard% = 53
-;Const e_room2_office% = 54
-Const e_room2_cafeteria% = 54
-Const e_room2_ic% = 55
-Const e_room2_medibay% = 56
-Const e_room2_scientists_2% = 57
-Const e_cont2_860_1% = 58
-Const e_room2c_ec% = 59
-Const e_room3_2_ez_duck% = 60
+Const e_room2_6_ez_guard% = 52
+Const e_room2_cafeteria% = 53
+Const e_room2_ic% = 54
+;Const e_room2_office% = 55
+Const e_room2_medibay% = 55
+Const e_room2_scientists_2% = 56
+Const e_cont2_860_1% = 57
+Const e_room2c_ec% = 58
+Const e_room3_2_ez_duck% = 59
 ; ~ OTHERS
-Const e_096_spawn% = 61
-Const e_106_sinkhole% = 62
-Const e_106_victim% = 63, e_106_victim_wall% = 64
-Const e_173_spawn% = 65
-Const e_682_roar% = 66
+Const e_096_spawn% = 60
+Const e_106_sinkhole% = 61
+Const e_106_victim% = 62, e_106_victim_wall% = 63
+Const e_173_spawn% = 64
+Const e_682_roar% = 65
+Const e_toilets_789_j% = 66
 Const e_1048_a% = 67
 Const e_brownout% = 68
 Const e_checkpoint% = 69
@@ -295,10 +296,6 @@ Function FindEventID%(EventName$)
 			;[Block]
 			Return(e_gate_b)
 			;[End Block]
-		Case "room2_6_ez_789_j"
-			;[Block]
-			Return(e_room2_6_ez_789_j)
-			;[End Block]
 		Case "room2_6_ez_guard"
 			;[Block]
 			Return(e_room2_6_ez_guard)
@@ -366,6 +363,10 @@ Function FindEventID%(EventName$)
 		Case "682_roar"
 			;[Block]
 			Return(e_682_roar)
+			;[End Block]
+		Case "toilets_789_j"
+			;[Block]
+			Return(e_toilets_789_j)
 			;[End Block]
 		Case "1048_a"
 			;[Block]
@@ -852,9 +853,9 @@ Function UpdateEvents%()
 				;[Block]
 				UpdateEvent_Room2_EZ_035(e)
 				;[End Block]
-			Case e_room2_6_ez_789_j
+			Case e_toilets_789_j
 				;[Block]
-				UpdateEvent_Room2_6_EZ_789_J(e)
+				UpdateEvent_Toilets_789_J(e)
 				;[End Block]
 			Case e_room2_2_ez_duck
 				;[Block]
@@ -1190,4 +1191,4 @@ Function UpdateForest%()
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS
