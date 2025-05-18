@@ -1,3 +1,15 @@
+{1.5.4.1}
+
+[Bug Fixes]
+- Fixed MAV in Maintenance Tunnels.
+- Fixed MAV after opening the door leading to Command Meeting Room.
+
+[Known issues]
+- Rooms can overlap and block the way.
+- Tabbing out of the game and tabbing back in freezes the game view/turning off monitor freezes the game.
+- Battery issues caused by having multiple night vision devices.
+- Corrosive door textures not saving correctly.
+
 {v1.5.4}
 
 [Global]
@@ -81,6 +93,12 @@
 
 - Hopefully fixed NPCs gravity.
 
+[Known issues]
+- Rooms can overlap and block the way.
+- Tabbing out of the game and tabbing back in freezes the game view/turning off monitor freezes the game.
+- Battery issues caused by having multiple night vision devices.
+- Corrosive door textures not saving correctly.
+
 {v1.5.3}
 
 [Global]
@@ -106,6 +124,12 @@
 - Fixed some collion issues on props.
 - Fixed corner in SCP-012's chamber being safe from the effects.
 - Fixed SCP-500 bottle giving SCP-427 when you already have one.
+
+[Known issues]
+- Rooms can overlap and block the way.
+- Tabbing out of the game and tabbing back in freezes the game view/turning off monitor freezes the game.
+- Battery issues caused by having multiple night vision devices.
+- Corrosive door textures not saving correctly.
 
 {v1.5.2}
 

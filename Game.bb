@@ -23,7 +23,7 @@ If FileSize("RapidBson.dll") = 0 Then InitErrorStr = InitErrorStr + "RapidBson.d
 
 If Len(InitErrorStr) > 0 Then RuntimeError("The following DLLs were not found in the game directory:" + Chr(13) + Chr(10) + Chr(13) + Chr(10) + InitErrorStr + ".")
 
-Const VersionNumber$ = "1.5.4"
+Const VersionNumber$ = "1.5.4.1"
 
 If FileType(GetEnv("AppData") + "\scpcb-ue\") <> 2 Then CreateDir(GetEnv("AppData") + "\scpcb-ue")
 If FileType(GetEnv("AppData") + "\scpcb-ue\Data\") <> 2 Then CreateDir(GetEnv("AppData") + "\scpcb-ue\Data")
@@ -51,4 +51,4 @@ Include "Source Code\Launcher_Core.bb"
 Include "Source Code\Main_Core.bb"
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D_TSS
+;~C#Blitz3D TSS
