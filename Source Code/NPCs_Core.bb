@@ -116,7 +116,6 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 		Case NPCType035_Tentacle
 			;[Block]
 			n\NVGName = GetLocalString("npc", "undefine")
-			n\MaxGravity = 0.0
 			n\HP = 500
 			
 			n\Collider = CreatePivot()
@@ -1391,7 +1390,7 @@ Function ConsoleSpawnNPC%(Name$, NPCState$ = "")
 			PlayerPosX = EntityX(me\Collider) : PlayerPosY = EntityY(me\Collider) : PlayerPosZ = EntityZ(me\Collider)
 			PositionEntity(Pvt, PlayerPosX, PlayerPosY, PlayerPosZ)
 			TurnEntity(Pvt, 90.0, 0.0, 0.0)
-			If EntityPick(Pvt, 10.0) Then PlayerPosX = PickedX() : PlayerPosY = PickedY() + 0.2 : PlayerPosZ = PickedZ()
+			If EntityPick(Pvt, 10.0) Then PlayerPosX = PickedX() : PlayerPosY = PickedY() + 0.22 : PlayerPosZ = PickedZ()
 			FreeEntity(Pvt) : Pvt = 0
 			n.NPCs = CreateNPC(NPCType035_Tentacle, PlayerPosX, PlayerPosY, PlayerPosZ)
 			ConsoleMsg = Format(GetLocalString("console", "spawn"), GetLocalString("npc", "tentacle"))

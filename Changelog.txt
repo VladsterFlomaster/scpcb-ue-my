@@ -5,6 +5,7 @@
 - Fixed MAV after opening the door leading to Command Meeting Room.
 - Fixed textures in some rooms.
 - Fixed position of the SCP-012 box.
+- Fixed SCP-035 tentacle's gravity.
 
 [Known issues]
 - Rooms can overlap and block the way.

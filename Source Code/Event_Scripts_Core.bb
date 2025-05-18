@@ -4062,9 +4062,9 @@ Function UpdateEvent_Cont1_035%(e.Events)
 											Local x#, y#, z#
 											
 											If r\RoomCenter <> 0
-												x = EntityX(r\RoomCenter) + Rnd(-0.2, 0.2) : y = r\y + 0.12 : z = EntityZ(r\RoomCenter) + Rnd(-0.2, 0.2)
+												x = EntityX(r\RoomCenter) + Rnd(-0.2, 0.2) : y = r\y + 0.22 : z = EntityZ(r\RoomCenter) + Rnd(-0.2, 0.2)
 											Else
-												x = r\x + Rnd(-0.2, 0.2) : y = r\y + 0.12 : z = r\z + Rnd(-0.2, 0.2)
+												x = r\x + Rnd(-0.2, 0.2) : y = r\y + 0.22 : z = r\z + Rnd(-0.2, 0.2)
 											EndIf
 											CreateNPC(NPCType035_Tentacle, x, y, z)
 											CreateDecal(DECAL_CORROSIVE_1, x, r\y + 0.005, z, 90.0, Rnd(360.0), 0.0, 0.4, 10., 0, 1, 180, 20, 20)
@@ -4117,14 +4117,11 @@ Function UpdateEvent_Cont1_035%(e.Events)
 				If EntityX(me\Collider) < Max(EntityX(e\room\Objects[2], True), EntityX(e\room\Objects[3], True))
 					If EntityZ(me\Collider) > Min(EntityZ(e\room\Objects[2], True), EntityZ(e\room\Objects[3], True))
 						If EntityZ(me\Collider) < Max(EntityZ(e\room\Objects[2], True), EntityZ(e\room\Objects[3], True))
-							If e\room\NPC[0] = Null Then e\room\NPC[0] = CreateNPC(NPCType035_Tentacle, 0.0, 0.0, 0.0)
-							
-							PositionEntity(e\room\NPC[0]\Collider, EntityX(e\room\Objects[1], True), 0.13, EntityZ(e\room\Objects[1], True))
-							
-							If e\room\NPC[0]\State > 0.0
-								If e\room\NPC[1] = Null Then e\room\NPC[1] = CreateNPC(NPCType035_Tentacle, 0.0, 0.0, 0.0)
+							If e\room\NPC[1] = Null
+								e\room\NPC[1] = CreateNPC(NPCType035_Tentacle, EntityX(e\room\Objects[1], True), e\room\y + 0.22, EntityZ(e\room\Objects[1], True))
+							Else
+								If e\room\NPC[1]\State > 0.0 And e\room\NPC[2] = Null Then e\room\NPC[2] = CreateNPC(NPCType035_Tentacle, e\room\x, e\room\y + 0.22, e\room\z)
 							EndIf
-							
 							me\Stamina = CurveValue(Min(60.0, me\Stamina), me\Stamina, 20.0)
 							
 							Temp = True
@@ -4144,20 +4141,6 @@ Function UpdateEvent_Cont1_035%(e.Events)
 							
 							If me\Terminated And me\Bloodloss >= 100.0 Then msg\DeathMsg = Format(GetLocalString("death", "035"), SubjectName)
 						EndIf
-					EndIf
-				EndIf
-			EndIf
-			
-			If e\room\NPC[1] <> Null
-				PositionEntity(e\room\NPC[1]\Collider, EntityX(e\room\OBJ, True), 0.13, EntityZ(e\room\OBJ, True))
-				
-				Local Angle# = WrapAngle(EntityYaw(e\room\NPC[1]\Collider) - e\room\Angle)
-				
-				If Angle > 90.0 
-					If Angle < 225.0
-						RotateEntity(e\room\NPC[1]\Collider, 0.0, e\room\Angle - 269.0, 0.0)
-					Else
-						RotateEntity(e\room\NPC[1]\Collider, 0.0, e\room\Angle - 1.0, 0.0)
 					EndIf
 				EndIf
 			EndIf
@@ -4185,10 +4168,6 @@ Function UpdateEvent_Cont1_035%(e.Events)
 					EndIf
 				Next
 			EndIf
-		ElseIf e\EventState < 0.0
-			For i = 0 To 1
-				RemoveNPC(e\room\NPC[i])
-			Next
 		Else
 			If e\room\NPC[0] <> Null Then UpdateSoundOrigin(e\room\NPC[0]\SoundCHN, Camera, e\room\OBJ, 6.0, 0.8, True)
 		EndIf
@@ -7652,7 +7631,7 @@ Function UpdateEvent_Room2_EZ_035%(e.Events)
 				MoveEntity(n\Collider, 0.0, 0.0, -0.5)
 				ChangeNPCTextureID(n, NPC_CLASS_D_VICTIM_035_CORPSE_TEXTURE)
 				
-				n.NPCs = CreateNPC(NPCType035_Tentacle, e\room\x, e\room\y + 0.2, e\room\z)
+				n.NPCs = CreateNPC(NPCType035_Tentacle, e\room\x, e\room\y + 0.22, e\room\z)
 				RotateEntity(n\Collider, 0.0, e\room\Angle, 0.0)
 				MoveEntity(n\Collider, 0.0, 0.0, 0.6)
 				
