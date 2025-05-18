@@ -9695,7 +9695,10 @@ Function Update009%()
 		SetPlayerModelColor(255.0, Clr, Clr)
 		If (Not I_009\Revert)
 			me\Injuries = me\Injuries + (fps\Factor[0] * 0.00001)
-			If I_009\Timer > 91.0
+			If I_009\Timer > 20.0 And PrevI009Timer =< 20.0
+				PlaySound_Strict(LoadTempSound("SFX\SCP\294\Burn.ogg"))
+				InjurePlayer(1.2, 0.0, 700.0)
+			ElseIf I_009\Timer > 91.0
 				If PrevI009Timer <= 91.0
 					MakeMeUnplayable(False)
 					SetAnimTime(pm\OBJ, AnimTime(pm\OBJ), AnimSeq(pm\OBJ))
