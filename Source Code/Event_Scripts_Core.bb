@@ -4067,7 +4067,7 @@ Function UpdateEvent_Cont1_035%(e.Events)
 												x = r\x + Rnd(-0.2, 0.2) : y = r\y + 0.12 : z = r\z + Rnd(-0.2, 0.2)
 											EndIf
 											CreateNPC(NPCType035_Tentacle, x, y, z)
-											CreateDecal(DECAL_CORROSIVE_1, x, r\y + 0.005, z, 90.0, Rnd(360.0), 0.0, 0.4)
+											CreateDecal(DECAL_CORROSIVE_1, x, r\y + 0.005, z, 90.0, Rnd(360.0), 0.0, 0.4, 10., 0, 1, 180, 20, 20)
 											PlacedIn(i) = r
 											i = i + 1
 											Exit
