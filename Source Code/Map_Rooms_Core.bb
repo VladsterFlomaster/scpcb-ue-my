@@ -3337,7 +3337,7 @@ Function FillRoom%(r.Rooms)
 			it.Items = CreateItem("Ballistic Helmet", it_helmet, r\x + 344.0 * RoomScale, r\y + 210.0 * RoomScale, r\z - 900.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("SCP-268", it_scp268, r\x + 424.0 * RoomScale, r\y + 60.0 * RoomScale, r\z + 282.0 * RoomScale)
+			it.Items = CreateItem("SCP-268", it_scp268, r\x + 379.0 * RoomScale, r\y + 200.0 * RoomScale, r\z + 270.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
 			CreateCustomCenter(r, r\x, r\z - 639.0 * RoomScale)
