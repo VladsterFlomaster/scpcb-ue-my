@@ -3,39 +3,65 @@
 [Global]
 - Added SCP-079 door opening/closing sound for some doors.
 - Added SCP-009.
-- Added breath steam at the ending areas and SCP-009's containment chamber.
-- Update bump textures.
+- Added breath steam at the ending areas.
 - Added new images for SCP-895.
-- Can recontain SCP-012.
+- Added new animations for player's body.
+- Added subtitles for ending screen lines.
+
+- Updated bump textures.
+- Player can recontain SCP-012.
 - The crystallization from SCP-409 is faster.
+- After SCP-035 is released from its containment chamber, 5 tentacles will appear in EZ in a random room.
+- Player's body now changes color depending on the SCP-409's stage.
+
+- Optimized the game...
+
+[Launcher]
+- Now the «Set the language» string is always displayed.
 
 [Rooms]
-- Made HCZ and EZ slightly darker.
 - Added blackout event to «room2c_2_lcz».
-- Decrease clearance level of HCZ to EZ checkpoint to level 4.
-- The lid of SCP-008 is now moving slightly due to the SCP-008 flow.
+- Added toilets in HCZ (in «room2_7_hcz»).
 - Added new signs for SCPs.
 
+- Made HCZ and EZ slightly darker.
+- Decrease clearance level of HCZ to EZ checkpoint to level 4.
+- The lid of SCP-008 is now moving slightly due to the SCP-008 flow.
 - Renamed «room1_o5» to «room1_cmr».
+- Removed «cloth_bump.png».
+- Upscaled some textures.
 
 - Design improvements for some rooms...
 
 [NPCs]
+- Added new SCP-008-1 texture.
+
+- SCP-035 tentacles can attack zombies and MTF.
+- Zombies can attack SCP-035 tentacles.
 - NPCs can hear you further away.
-- Buffed SCP-966 insomnia to reduce stamina regeneration from 66.6% -> 50%
-- SCP-966's spawnrate increased.
-- SCP-966 can activate the tesla gates themselves.
-- SCP-966's insomnia effect last longer.
+- Changes for SCP-966:
+	- Buffed SCP-966 insomnia to reduce stamina regeneration from 66.6% -> 50%
+	- SCP-966's spawnrate increased.
+	- SCP-966 can activate the tesla gates themselves.
+	- SCP-966's insomnia effect last longer.
 - NPCs less likely to spawn when Remote Door Controls are off.
 - Changed Apache helicopter's texture.
 - Changed SCP-173's texture.
 - Improved MTF model.
+- Improved guard/SCP-049-2 texture.
 - Increased speed of SCP-106 in the Labyrinth section of the Pocket Dimension.
+- Removed tesla textures. Replaced by changing the model's color.
+- Changed speed multiplier depending on other factors:
+	- HARD: 1.2 -> 1.15
+	- EXTREME: 1.3 - > 1.2
+- MTFs step back from player if player comes close.
 
 [Items]
 - Added new SCP-513 variation.
 - Added headphones.
 
+- Improved battery model and texture.
+- Improved SCP-1123's texture.
 - Yellow Severed Hand can only be obtained after processing SCP-1123 in SCP-914.
 - Strange Bottle and Blue First Aid Kit have new outcomes.
 - Syringes stamina boost last longer.
@@ -47,6 +73,13 @@
 - Fixed battery position in «room2_7_lcz/room3_lcz».
 - Fixed flash sprite for Apache helicopters.
 - Fixed Z-Fighting with monitor screens.
+- Fixed position of the tesla sprite.
+- Fixed speed of the guard following the player in the intro scene.
+- Fixed «AnnouncLost.ogg» sound not playing when all MTF members are dead.
+- Fixed S-NAV Navigator's battery meter not visible if location is unknown.
+- Fixed SCP-106's AI.
+
+- Hopefully fixed NPCs gravity.
 
 {v1.5.3}
 
