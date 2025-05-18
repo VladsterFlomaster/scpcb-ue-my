@@ -41,16 +41,16 @@ Function CreateProp.Props(room.Rooms, Name$, x#, y#, z#, Pitch#, Yaw#, Roll#, Sc
 	p\Name = Name
 	p\room = room
 	p\TexPath = TexturePath
-	p\IsCooler = (Name = "water_cooler")
-	p\IsLamp = (Name = "lamp_c")
+	p\IsCooler = (Name = "water_cooler.b3d")
+	p\IsLamp = (Name = "lamp_c.b3d")
 	
-	Local IsWatches% = (Name = "watches")
+	Local IsWatches% = (Name = "watches.b3d")
 	
 	If p\OBJ = 0
 		If IsWatches
-			p\OBJ = LoadAnimMesh_Strict("GFX\Map\Props\" + Name + ".b3d")
+			p\OBJ = LoadAnimMesh_Strict("GFX\Map\Props\" + Name)
 		Else
-			p\OBJ = LoadMesh_Strict("GFX\Map\Props\" + Name + ".b3d")
+			p\OBJ = LoadMesh_Strict("GFX\Map\Props\" + Name)
 		EndIf
 	EndIf
 	PositionEntity(p\OBJ, x, y, z)
@@ -771,7 +771,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					Temp2s = ReadString(f)
 					; ~ A hacky way to use .b3d format
 					If FileExtension(Temp2s) = "b3d" Then Temp2s = Left(Temp2s, Len(Temp2s) - 4)
-					tp\Name = Temp2s
+					tp\Name = Temp2s + ".b3d"
 					
 					tp\Pitch = ReadFloat(f)
 					tp\Yaw = ReadFloat(f)
