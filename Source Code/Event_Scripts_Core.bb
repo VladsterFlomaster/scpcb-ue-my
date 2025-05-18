@@ -6132,12 +6132,14 @@ Function UpdateEvent_Cont2_049%(e.Events)
 				TurnEntity(n\Collider, 0.0, e\room\Angle + 60.0, 0.0)
 				
 				TFormPoint(528.0, -2672.0, 96.0, e\room\OBJ, 0)
-				If n_I\Curr049 <> Null And n_I\Curr049\State <> 66.0
-					e\room\NPC[0] = n_I\Curr049
-					e\room\NPC[0]\State = 2.0 : e\room\NPC[0]\Idle = 1 : e\room\NPC[0]\HideFromNVG = True
-					TeleportEntity(e\room\NPC[0]\Collider, TFormedX(), TFormedY(), TFormedZ(), e\room\NPC[0]\CollRadius, True)
-					e\room\NPC[0]\CurrentRoom = e\room
-					PointEntity(e\room\NPC[0]\Collider, e\room\OBJ)
+				If n_I\Curr049 <> Null
+					If n_I\Curr049\State <> 66.0
+						e\room\NPC[0] = n_I\Curr049
+						e\room\NPC[0]\State = 2.0 : e\room\NPC[0]\Idle = 1 : e\room\NPC[0]\HideFromNVG = True
+						TeleportEntity(e\room\NPC[0]\Collider, TFormedX(), TFormedY(), TFormedZ(), e\room\NPC[0]\CollRadius, True)
+						e\room\NPC[0]\CurrentRoom = e\room
+						PointEntity(e\room\NPC[0]\Collider, e\room\OBJ)
+					EndIf
 				Else
 					n_I\Curr049 = CreateNPC(NPCType049, TFormedX(), TFormedY(), TFormedZ())
 					n_I\Curr049\State = 2.0 : n_I\Curr049\Idle = 1 : n_I\Curr049\HideFromNVG = True
