@@ -3082,7 +3082,7 @@ Function UpdateEvent_Cont2_012%(e.Events)
 						If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 						e\EventState = CurveValue(-90.0, e\EventState, 500.0)
 					EndIf
-					PositionEntity(e\room\Objects[0], EntityX(e\room\Objects[0], True), e\room\y + Min(((-570.0 * Sin(e\EventState))) * RoomScale, -130.0 * RoomScale), EntityZ(e\room\Objects[0], True), True)
+					PositionEntity(e\room\Objects[0], EntityX(e\room\Objects[0], True), e\room\y + Min(((-570.0 * Sin(e\EventState))) * RoomScale, -180.0 * RoomScale), EntityZ(e\room\Objects[0], True), True)
 				EndIf
 			EndIf
 		Else
