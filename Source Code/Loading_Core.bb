@@ -1170,12 +1170,15 @@ Function LoadMaterials%(File$)
 End Function
 
 Function InitLoadingScreens%(File$)
-	Local LocalLoadingScreen% = JsonParseFromFile(lang\LanguagePath + File)
+	If LoadingScreensDoc <> 0 Then JsonFreeDocument(LoadingScreensDoc) : LoadingScreensDoc = 0
+	LoadingScreensDoc = JsonParseFromFile(lang\LanguagePath + File)
 	
-	If JsonIsArray(LocalLoadingScreen) ; ~ Has localized loading screens -> Use localized only
-		LoadingScreens = JsonGetArray(LocalLoadingScreen)
+	If JsonIsArray(LoadingScreensDoc) ; ~ Has localized loading screens -> Use localized only
+		LoadingScreens = JsonGetArray(LoadingScreensDoc)
 	Else
-		LoadingScreens = JsonGetArray(JsonParseFromFile(File))
+		JsonFreeDocument(LoadingScreensDoc) : LoadingScreensDoc = 0
+		LoadingScreensDoc = JsonParseFromFile(File)
+		LoadingScreens = JsonGetArray(LoadingScreensDoc)
 	EndIf
 End Function
 
@@ -2403,7 +2406,9 @@ Function LoadData%()
 	LocalSubColors = JsonGetValue(LocalSubFile, "colors")
 	SubtitlesInit = True
 	
-	SCP1499Chunks = JsonGetArray(JsonParseFromFile(SCP1499ChunksFile))
+	If SCP1499ChunksDoc <> 0 Then JsonFreeDocument(SCP1499ChunksDoc) : SCP1499ChunksDoc = 0
+	SCP1499ChunksDoc = JsonParseFromFile(SCP1499ChunksFile)
+	SCP1499Chunks = JsonGetArray(SCP1499ChunksDoc)
 	
 	SubjectName = GetLocalString("misc", "subject")
 	PlayerFallingPickDistance = 10.0
@@ -3053,8 +3058,8 @@ Function RemoveTextureInstances%()
 	DestroyS2IMap(AchievementsIndex) : AchievementsIndex = 0
 	DestroyS2IMap(AchievementsImages) : AchievementsImages = 0
 	DestroyS2IMap(UnlockedAchievements) : UnlockedAchievements = 0
-	AchievementsArray = 0
-	LocalAchievementsArray = 0
+	If AchievementsArray <> 0 Then JsonFreeDocument(AchievementsArray) : AchievementsArray = 0
+	If LocalAchievementsArray <> 0 Then JsonFreeDocument(LocalAchievementsArray) : LocalAchievementsArray = 0
 	
 	For i = 0 To MaxIconIDAmount - 1
 		FreeImage(t\IconID[i]) : t\IconID[i] = 0
@@ -3072,13 +3077,17 @@ Function RemoveTextureInstances%()
 End Function
 
 Function Init294Drinks%()
-	Local LocalDrinks% = JsonParseFromFile(lang\LanguagePath + SCP294File)
+	If I_294\DrinksDoc <> 0 Then JsonFreeDocument(I_294\DrinksDoc) : I_294\DrinksDoc = 0
+	I_294\DrinksDoc = JsonParseFromFile(lang\LanguagePath + SCP294File)
+	
 	Local i%, j%
 	
-	If JsonIsArray(LocalDrinks) ; ~ Has localized SCP-294 drinks -> Use localized only
-		I_294\Drinks = JsonGetArray(LocalDrinks)
+	If JsonIsArray(I_294\DrinksDoc) ; ~ Has localized SCP-294 drinks -> Use localized only
+		I_294\Drinks = JsonGetArray(I_294\DrinksDoc)
 	Else
-		I_294\Drinks = JsonGetArray(JsonParseFromFile(SCP294File))
+		JsonFreeDocument(I_294\DrinksDoc) : I_294\DrinksDoc = 0
+		I_294\DrinksDoc = JsonParseFromFile(SCP294File)
+		I_294\Drinks = JsonGetArray(I_294\DrinksDoc)
 	EndIf
 	
 	I_294\DrinksMap = CreateS2IMap()
@@ -3543,8 +3552,8 @@ Function NullGame%(PlayButtonSFX% = True)
 		Delete(ach)
 	Next
 	
-	SubFile = 0
-	LocalSubFile = 0
+	If SubFile <> 0 Then JsonFreeDocument(SubFile) : SubFile = 0
+	If LocalSubFile <> 0 Then JsonFreeDocument(LocalSubFile) : LocalSubFile = 0
 	SubColors = 0
 	LocalSubColors = 0
 	SubtitlesInit = False

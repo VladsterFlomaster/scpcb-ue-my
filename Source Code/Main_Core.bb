@@ -10232,6 +10232,7 @@ Type SCP294
 	Field ToInput$
 	Field DrinksMap%
 	Field Drinks%
+	Field DrinksDoc%
 End Type
 
 Global I_294.SCP294

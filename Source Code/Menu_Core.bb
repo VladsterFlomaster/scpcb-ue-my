@@ -1841,10 +1841,10 @@ Function ResetLoadingTextColor%()
 	ChangeColor = True
 End Function
 
-Global LoadingScreens%
+Global LoadingScreens%, LoadingScreensDoc% = 0
 Global LoadingBack%, LoadingBackWidth%, LoadingBackHeight%, LoadingImage%
 Global SelectedLoadingScreens%, LoadingScreenTitle$
-Global Descriptions%, DescriptionIndex%
+Global Descriptions%, DescriptionIndex%, DescriptionDoc%
 Global ImageAlignX$, ImageAlignY$
 Global CWMText$
 
@@ -1865,7 +1865,9 @@ Function RenderLoading%(Percent%, Assets$ = "")
 			SelectedLoadingScreens = JsonGetArrayValue(LoadingScreens, Rand(0, ArraySize - 1))
 			LoadingScreenTitle = JsonGetString(JsonGetValue(SelectedLoadingScreens, "title"))
 			If JsonIsNull(JsonGetValue(SelectedLoadingScreens, "descriptions"))
-				Descriptions = JsonGetArray(JsonParseFromString("[" + Chr(34) + Chr(34) + "]")) ; ~ Create an empty description array
+				If DescriptionDoc <> 0 Then JsonFreeDocument(DescriptionDoc) : DescriptionDoc = 0
+				DescriptionDoc = JsonParseFromString("[" + Chr(34) + Chr(34) + "]")
+				Descriptions = JsonGetArray(DescriptionDoc) ; ~ Create an empty description array
 			Else
 				Descriptions = JsonGetArray(JsonGetValue(SelectedLoadingScreens, "descriptions"))
 			EndIf

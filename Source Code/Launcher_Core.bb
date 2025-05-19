@@ -469,6 +469,7 @@ Function UpdateLanguageSelector%()
 			If (Not S2IMapContains(CountryFlags, lan\Flag)) Then Return(True)
 		Next
 	Else
+		If File <> 0 Then JsonFreeDocument(File) : File = 0
 		Return(True)
 	EndIf
 	
