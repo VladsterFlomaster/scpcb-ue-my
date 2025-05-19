@@ -10,6 +10,7 @@
 - Fixed position of the SCP-012 box.
 - Fixed SCP-035 tentacle's gravity.
 - Fixed SCP-049 still appearing in the elevator after being crystallized.
+- Fixed S-Nav Navigator working without batteries.
 
 [Known issues]
 - Rooms can overlap and block the way.
