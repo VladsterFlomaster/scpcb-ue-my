@@ -8,10 +8,10 @@ End Type
 
 Function ApplyBumpMap%(Texture%)
 	TextureBlend(Texture, 6)
-	TextureBumpEnvMat(Texture, 0, 0, -0.013)
-	TextureBumpEnvMat(Texture, 0, 1, -0.013)
-	TextureBumpEnvMat(Texture, 1, 0, 0.013)
-	TextureBumpEnvMat(Texture, 1, 1, 0.013)
+	TextureBumpEnvMat(Texture, 0, 0, -0.014)
+	TextureBumpEnvMat(Texture, 0, 1, -0.014)
+	TextureBumpEnvMat(Texture, 1, 0, 0.014)
+	TextureBumpEnvMat(Texture, 1, 1, 0.014)
 	TextureBumpEnvOffset(Texture, 0.5)
 	TextureBumpEnvScale(Texture, 1.0)
 End Function
