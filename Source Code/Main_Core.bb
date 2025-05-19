@@ -7744,14 +7744,14 @@ Function RenderGUI%()
 						Local NAV_WIDTH_HALF% = NAV_WIDTH / 2
 						Local NAV_HEIGHT_HALF% = NAV_HEIGHT / 2
 						
-						If (Not PlayerInReachableRoom(True)) Lor InFacility <> NullFloor
-							If (MilliSec Mod 800) < 200
-								Color(200, 0, 0)
-								TextEx(x, y + NAV_HEIGHT_HALF - (80 * MenuScale), GetLocalString("msg", "nav.error"), True)
-								TextEx(x, y + NAV_HEIGHT_HALF - (60 * MenuScale), GetLocalString("msg", "nav.locunknown"), True)
-							EndIf
-						Else
-							If (SelectedItem\State > 0.0 Lor SelectedItem\ItemTemplate\ID = it_nav300 Lor SelectedItem\ItemTemplate\ID = it_navulti) And (CoffinDistance > 16.0 Lor Rnd(16.0) < CoffinDistance)
+						If (SelectedItem\State > 0.0 Lor SelectedItem\ItemTemplate\ID = it_nav300 Lor SelectedItem\ItemTemplate\ID = it_navulti) And (CoffinDistance > 16.0 Lor Rnd(16.0) < CoffinDistance)
+							If (Not PlayerInReachableRoom(True)) Lor InFacility <> NullFloor
+								If (MilliSec Mod 800) < 200
+									Color(200, 0, 0)
+									TextEx(x, y + NAV_HEIGHT_HALF - (80 * MenuScale), GetLocalString("msg", "nav.error"), True)
+									TextEx(x, y + NAV_HEIGHT_HALF - (60 * MenuScale), GetLocalString("msg", "nav.locunknown"), True)
+								EndIf
+							Else
 								Local xx% = x - SelectedItem\ItemTemplate\ImgWidth
 								Local yy% = y - SelectedItem\ItemTemplate\ImgHeight + (85 * MenuScale)
 								

@@ -1,5 +1,8 @@
 {1.5.4.1}
 
+[Global]
+- Better bumps.
+
 [Bug Fixes]
 - Fixed MAV in Maintenance Tunnels.
 - Fixed MAV after opening the door leading to Command Meeting Room.
