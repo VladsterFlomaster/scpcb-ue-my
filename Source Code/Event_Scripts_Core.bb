@@ -2250,14 +2250,17 @@ Function UpdateEvent_Room2_SL%(e.Events)
 	Local sc.SecurityCams
 	Local Dist#, i%
 	
-	If n_I\Curr049\State <> 66.0
-		If PlayerRoom = e\room
-			If e\EventState = 0.0
-				If e\EventState2 = 0.0 Then e\EventState2 = (-70.0) * 5.0
-				e\EventState = 1.0
-			EndIf
+	
+	If PlayerRoom = e\room
+		If e\EventState = 0.0
+			If e\EventState2 = 0.0 Then e\EventState2 = (-70.0) * 5.0
+			e\EventState = 1.0
 		EndIf
-		
+	EndIf
+	
+	Local Skip% = (n_I\Curr049 <> Null And n_I\Curr049\State = 66.0)
+	
+	If (Not Skip)
 		If e\EventState = 1.0
 			If e\EventState2 < 0.0
 				If e\EventState2 = (-70.0) * 5.0
