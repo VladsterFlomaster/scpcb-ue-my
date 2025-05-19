@@ -1259,7 +1259,9 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 			EndIf
 		Next
 	Next
-	FreeImage(hMap[i]) : hMap[i] = 0
+	For i = ROOM1 To ROOM4
+		FreeImage(hMap[i]) : hMap[i] = 0
+	Next
 	
 	; ~ Place the wall
 	For i = 0 To 1
@@ -1459,7 +1461,9 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 			EndIf
 		Next
 	Next
-	FreeImage(hMap[i]) : hMap[i] = 0
+	For i = ROOM1 To ROOM4
+		FreeImage(hMap[i]) : hMap[i] = 0
+	Next
 	
 	CatchErrors("Uncaught: PlaceMapCreatorForest(" + x + ", " + y + ", " + z + ")")
 End Function
