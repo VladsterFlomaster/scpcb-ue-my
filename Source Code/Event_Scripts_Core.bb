@@ -6625,62 +6625,48 @@ Function UpdateEvent_Cont3_009%(e.Events)
 	EndIf
 End Function
 
-Function UpdateEvent_Cont3_513%(e.Events)
-	If e\room\Dist < 8.0
-		Local it.Items, de.Decals
-		Local i%
-		
-		TFormPoint(-201.0, 55.0, 0.0, e\room\OBJ, 0)
-		e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
-		e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\IsDead = True
-		SetNPCFrame(e\room\NPC[0], 40.0)
-		ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_HARN_TEXTURE)
-		RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 270.0, 0.0)
-		
-		TFormPoint(-190.0, 20.0, -60.0, e\room\OBJ, 0)
-		it.Items = CreateItem("Asav Harn's Badge", it_badge, TFormedX(), TFormedY(), TFormedZ())
-		EntityType(it\Collider, HIT_ITEM)
-		
-		TFormPoint(-271.95, 73.0, 0.0, e\room\OBJ, 0)
-		de.Decals = CreateDecal(DECAL_BLOOD_2, TFormedX(), TFormedY(), TFormedZ(), 0.0, e\room\Angle + 90.0, 0.0, 0.5, 1.0)
-		EntityParent(de\OBJ, e\room\OBJ)
-		
-		Local Angle# = e\room\Angle + 90.0
-		
-		TFormPoint(-256.0, 0.0, 0.0, e\room\OBJ, 0)
-		de.Decals = CreateDecal(Rand(DECAL_BLOOD_DROP_1, DECAL_BLOOD_DROP_2), TFormedX(), 0.005, TFormedZ(), 90.0, Angle, 0.0, 0.45)
-		For i = 0 To 5
-			TFormPoint(-271.95, Rnd(30.0, 170.0), Rnd(-100.0, 100.0), e\room\OBJ, 0)
-			de.Decals = CreateDecal(Rand(DECAL_BULLET_HOLE_1, DECAL_BULLET_HOLE_2), TFormedX(), TFormedY(), TFormedZ(), 0.0, Angle, Rnd(-4.0, 4.0), Rnd(0.028, 0.034), 1.0, 1, 2)
-			EntityParent(de\OBJ, e\room\OBJ)
-		Next
-		RemoveEvent(e)
-	EndIf
-End Function
-
 Function UpdateEvent_Cont3_966%(e.Events)
 	If PlayerRoom = e\room
 		Local i%
 		
-		If Rand(50) = 1
-			If RemoteDoorOn
-				PlaySound_Strict(snd_I\LightOffSFX)
-				me\LightBlink = 4.0
-				For i = 0 To 1
-					If (Not e\room\RoomDoors[i]\Open)
-						e\room\RoomDoors[i]\SoundCHN = PlaySoundEx(snd_I\DoorOpen079, Camera, e\room\RoomDoors[i]\FrameOBJ, 5.0)
-						OpenCloseDoor(e\room\RoomDoors[i])
-					EndIf
-				Next
-			EndIf
-			If e\room\RoomDoors[0]\Open Lor e\room\RoomDoors[1]\Open
-				For i = 0 To 1
-					CreateNPC(NPCType966, EntityX(e\room\Objects[i], True), EntityY(e\room\Objects[i], True), EntityZ(e\room\Objects[i], True))
-				Next
-				
-				RemoveEvent(e)
-			EndIf
-		EndIf
+		Select e\EventState
+			Case 0.0
+				;[Block]
+				If e\room\RoomDoors[0]\Open Lor e\room\RoomDoors[1]\Open
+					Local it.Items, de.Decals
+					
+					For i = 0 To 1
+						CreateNPC(NPCType966, EntityX(e\room\Objects[i], True), EntityY(e\room\Objects[i], True), EntityZ(e\room\Objects[i], True))
+					Next
+					
+					TFormPoint(0.0, 50.0, -303.0, e\room\OBJ, 0)
+					e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
+					e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\IsDead = True
+					SetNPCFrame(e\room\NPC[0], 502.0)
+					ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_HARN_TEXTURE)
+					RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle, 0.0)
+					
+					TFormPoint(0.0, 0.0, -418.0, e\room\OBJ, 0)
+					de.Decals = CreateDecal(DECAL_BLOOD_2, TFormedX(), e\room\y + 0.005, TFormedZ(), 90.0, Rnd(360.0), 0.0, 0.45)
+					EntityParent(de\OBJ, e\room\OBJ)
+					
+					TFormPoint(-68.0, 40.0, -396.0, e\room\OBJ, 0)
+					it.Items = CreateItem("Asav Harn's Badge", it_badge, TFormedX(), TFormedY(), TFormedZ())
+					EntityType(it\Collider, HIT_ITEM)
+					
+					e\EventState = 1.0
+				EndIf
+				;[End Block]
+			Case 1.0
+				;[Block]
+				If e\room\RoomDoors[1]\Open Then e\EventState = 2.0
+				;[End Block]
+			Case 2.0
+				;[Block]
+				AnimateNPC(e\room\NPC[0], 502.0, 494.0, -0.1, False)
+				If e\room\NPC[0]\Frame < 494.1 Then RemoveEvent(e)
+				;[End Block]
+		End Select
 	EndIf
 End Function
 

@@ -2136,8 +2136,6 @@ Function LoadEvents%()
 	
 	CreateEvent(e_cont3_009, r_cont3_009, 0)
 	
-	CreateEvent(e_cont3_513, r_cont3_513, 0)
-	
 	CreateEvent(e_cont3_966, r_cont3_966, 0)
 	
 	CreateEvent(e_cont2_1123, r_cont2_1123, 0)
