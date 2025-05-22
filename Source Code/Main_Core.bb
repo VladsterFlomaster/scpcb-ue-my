@@ -429,6 +429,7 @@ Function UpdateGame%()
 			Update427()
 			Update1025()
 			RefillCup()
+			UpdateProps()
 			
 			me\BlurVolume = Min(CurveValue(0.0, me\BlurVolume, 20.0), 0.95)
 			If me\BlurTimer > 0.0
@@ -571,7 +572,6 @@ Function UpdateGame%()
 			UpdateNVG()
 			UpdateGUI()
 		EndIf
-		UpdateProps()
 		
 		If fps\Factor[0] = 0.0
 			UpdateWorld(0.0)
