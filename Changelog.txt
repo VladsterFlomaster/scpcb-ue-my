@@ -1,8 +1,11 @@
-{1.5.4.1}
+{1.5.5}
 
 [Global]
 - Better bumps.
 - Asav Harn's body has been moved to SCP-966's containment chamber.
+
+[Rooms]
+- Placed some items in «room3_storage» and »room2_closets_2».
 
 [Bug Fixes]
 - Fixed MAV in Maintenance Tunnels.

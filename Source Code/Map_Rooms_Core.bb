@@ -794,6 +794,12 @@ Function FillRoom%(r.Rooms)
 			
 			it.Items = CreateItem("Document SCP-2022", it_paper, r\x + 727.0 * RoomScale, r\y + 103.0 * RoomScale, r\z - 562.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
+			
+			it.Items = CreateItem("Syringe", it_syringe, r\x + 734.0 * RoomScale, r\y + 164.0 * RoomScale, r\z + 470.0 * RoomScale)
+			EntityParent(it\Collider, r\OBJ)
+			
+			it.Items = CreateItem("ReVision Eyedrops", it_eyedrops, r\x + 730.0 * RoomScale, r\y + 164.0 * RoomScale, r\z - 826.0 * RoomScale)
+			EntityParent(it\Collider, r\OBJ)
 			;[End Block]
 		Case r_room2_elevator
 			;[Block]
@@ -1900,6 +1906,10 @@ Function FillRoom%(r.Rooms)
 			
 			it.Items = CreateItem("Night Vision Goggles", it_nvg, r\x + 1248.0 * RoomScale, r\y - 5496.0 * RoomScale, r\z + 981.0 * RoomScale)
 			it\State = Rnd(0.0, 1000.0)
+			EntityParent(it\Collider, r\OBJ)
+			
+			it.Items = CreateItem("Radio Transceiver", it_radio, r\x - 665.0 * RoomScale, r\y + 158.0 * RoomScale, r\z - 737.0 * RoomScale)
+			it\State = Rnd(100.0)
 			EntityParent(it\Collider, r\OBJ)
 			
 			de.Decals = CreateDecal(DECAL_BLOOD_2, r\x + xTemp * RoomScale, r\y - 5632.0 * RoomScale + 0.005, r\z + zTemp * RoomScale, 90.0, Rnd(360.0), 0.0, 0.5)
