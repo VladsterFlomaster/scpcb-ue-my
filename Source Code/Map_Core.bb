@@ -3165,7 +3165,7 @@ Function UpdateDoors%()
 						TextureID = BUTTON_106_TEXTURE
 					ElseIf d\OpenState > 0.0 And d\OpenState < 180.0
 						TextureID = BUTTON_YELLOW_TEXTURE
-					ElseIf d\Locked = 1
+					ElseIf d\Locked = 1 And d\IsElevatorDoor <> 1
 						TextureID = BUTTON_RED_TEXTURE
 					Else
 						TextureID = BUTTON_GREEN_TEXTURE
