@@ -6522,42 +6522,14 @@ End Function
 
 Function UpdateEvent_Cont3_009%(e.Events)
 	Local it.Items
+	Local i%
 	
-	If e\room\Dist < 5.0
+	If e\room\Dist < 6.0
 		If e\EventState = 0.0
 			e\SoundCHN2 = LoopSoundEx(RoomAmbience[5], e\SoundCHN2, Camera, e\room\OBJ)
-		ElseIf e\EventState > 0.34
-			e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
-		EndIf
-	EndIf
-	If PlayerRoom = e\room
-		If e\room\NPC[0] = Null
-			TFormPoint(382.0, -463.0, -263.0, e\room\OBJ, 0)
-			e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
-			e\room\NPC[0]\IsDead = True : e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\State = 66.0 : e\room\NPC[0]\IceTimer = 70.0 * 30.0
-			SetNPCFrame(e\room\NPC[0], 510.0)
-			ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_VICTIM_009_TEXTURE)
-			RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 40.0, 0.0)
-			EntityColor(e\room\NPC[0]\OBJ, 255.0, 100.0, 100.0)
-			EntityShininess(e\room\NPC[0]\OBJ, 1.0)
-		EndIf
-		
-		Local i%
-		
-		If e\EventState = 0.0
-			UpdateRedLight(e\room\Objects[1], 1500, 800)
-			If UpdateLever(e\room\RoomLevers[0]\OBJ)
-				For i = 0 To 2
-					If e\room\RoomDoors[i]\Open Then OpenCloseDoor(e\room\RoomDoors[i])
-					e\room\RoomDoors[i]\Locked = 1
-				Next
-				SetTemplateVelocity(ParticleEffect[19], -0.007, -0.008, -0.001, 0.0012, -0.007, 0.008)
-				SetEmitter(e\room, EntityX(e\room\RoomLevers[0]\OBJ, True), EntityY(e\room\RoomLevers[0]\OBJ, True), EntityZ(e\room\RoomLevers[0]\OBJ, True), 19)
-				PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\RoomLevers[0]\OBJ, 3.0, 0.4)
-				PlaySound_Strict(snd_I\AlarmSFX[2])
-				e\EventState = 1.0
-			EndIf
 		Else
+			e\SoundCHN = LoopSoundEx(snd_I\HissSFX[1], e\SoundCHN, Camera, e\room\OBJ, 5.0, 0.7)
+			
 			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 			
 			If e\EventState > 0.35
@@ -6577,6 +6549,33 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				e\EventState = 0.34
 			EndIf
 			EntityAlpha(e\room\Objects[2], e\EventState)
+		EndIf
+	EndIf
+	If PlayerRoom = e\room
+		If e\room\NPC[0] = Null
+			TFormPoint(382.0, -463.0, -263.0, e\room\OBJ, 0)
+			e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
+			e\room\NPC[0]\IsDead = True : e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\State = 66.0 : e\room\NPC[0]\IceTimer = 70.0 * 30.0
+			SetNPCFrame(e\room\NPC[0], 510.0)
+			ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_VICTIM_009_TEXTURE)
+			RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 40.0, 0.0)
+			EntityColor(e\room\NPC[0]\OBJ, 255.0, 100.0, 100.0)
+			EntityShininess(e\room\NPC[0]\OBJ, 1.0)
+		EndIf
+		
+		If e\EventState = 0.0
+			UpdateRedLight(e\room\Objects[1], 1500, 800)
+			If UpdateLever(e\room\RoomLevers[0]\OBJ)
+				For i = 0 To 2
+					If e\room\RoomDoors[i]\Open Then OpenCloseDoor(e\room\RoomDoors[i])
+					e\room\RoomDoors[i]\Locked = 1
+				Next
+				SetTemplateVelocity(ParticleEffect[19], -0.007, -0.008, -0.001, 0.0012, -0.007, 0.008)
+				SetEmitter(e\room, EntityX(e\room\RoomLevers[0]\OBJ, True), EntityY(e\room\RoomLevers[0]\OBJ, True), EntityZ(e\room\RoomLevers[0]\OBJ, True), 19)
+				PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\RoomLevers[0]\OBJ, 3.0, 0.4)
+				PlaySound_Strict(snd_I\AlarmSFX[2])
+				e\EventState = 1.0
+			EndIf
 		EndIf
 		
 		If e\EventState <> 0.34
@@ -6599,7 +6598,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 		Local IceTriggerY# = e\room\y - 1.6
 		
 		For n.NPCs = Each NPCs
-			If n\IceTimer = 0.0
+			If n\IceTimer = 0.0 And n\CurrentRoom = e\room
 				Select n\NPCType
 					Case NPCType513_1, NPCType372, NPCType106, NPCType173
 						;[Block]
