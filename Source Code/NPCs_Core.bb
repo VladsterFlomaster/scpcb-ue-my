@@ -936,7 +936,7 @@ Function UpdateNPCs%()
 End Function
 
 Function TeleportCloser%(n.NPCs)
-	If (Not PlayerInReachableRoom(True)) Lor n\IceTimer > 50.0 Then Return
+	If (Not PlayerInReachableRoom(True)) Lor n\IceTimer > 30.0 Then Return
 	
 	Local ClosestDist# = 0.0
 	Local ClosestWaypoint.WayPoints
@@ -946,15 +946,17 @@ Function TeleportCloser%(n.NPCs)
 	
 	For w.WayPoints = Each WayPoints
 		If w\door = Null
-			Dist = DistanceSquared(EntityX(w\OBJ, True), EntityX(n\Collider, True), EntityZ(w\OBJ, True), EntityZ(n\Collider, True))
-			If Dist > 1.0 And Dist < 100.0
-				If EntityDistanceSquared(me\Collider, w\OBJ) > Dist2
-					; ~ Teleports to the nearby waypoint that takes it closest to the player
-					Local NewDist# = EntityDistanceSquared(me\Collider, w\OBJ)
-					
-					If NewDist < ClosestDist Lor ClosestWaypoint = Null
-						ClosestDist = NewDist
-						ClosestWaypoint = w
+			If w\room\RoomTemplate\RoomID <> r_cont3_009
+				Dist = DistanceSquared(EntityX(w\OBJ, True), EntityX(n\Collider, True), EntityZ(w\OBJ, True), EntityZ(n\Collider, True))
+				If Dist > 1.0 And Dist < 100.0
+					If EntityDistanceSquared(me\Collider, w\OBJ) > Dist2
+						; ~ Teleports to the nearby waypoint that takes it closest to the player
+						Local NewDist# = EntityDistanceSquared(me\Collider, w\OBJ)
+						
+						If NewDist < ClosestDist Lor ClosestWaypoint = Null
+							ClosestDist = NewDist
+							ClosestWaypoint = w
+						EndIf
 					EndIf
 				EndIf
 			EndIf
