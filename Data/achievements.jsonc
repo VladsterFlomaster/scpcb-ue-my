@@ -194,11 +194,6 @@
 			"image": "AchvMaynard.png",
 			"scp": false
 		},
-		{
-			"id": "o5",
-			"image": "AchvCMR.png",
-			"scp": false
-		},
  		{
 			"id": "omni",
 			"image": "AchvOmni.png",
@@ -404,10 +399,6 @@
 		"omni": {
 			"name": "Unlimited Access",
 			"description": "Acquired an Omni-level Key Сard."
-		},
-		"o5": {
-			"name": "Control Over the Foundation",
-			"description": "Entered O5 Council's Office."
 		},
 		"pocketdimension": {
 			"name": "No Man's Land",
