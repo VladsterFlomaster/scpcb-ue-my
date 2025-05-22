@@ -6540,10 +6540,6 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 40.0, 0.0)
 			EntityColor(e\room\NPC[0]\OBJ, 255.0, 100.0, 100.0)
 			EntityShininess(e\room\NPC[0]\OBJ, 1.0)
-			
-			TFormPoint(405.0, -495.0, -391.0, e\room\OBJ, 0)
-			it.Items = CreateItem("Level 4 Key Card", it_key4, TFormedX(), TFormedY(), TFormedZ())
-			EntityType(it\Collider, HIT_ITEM)
 		EndIf
 		
 		Local i%
@@ -6572,9 +6568,31 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				Next
 				EntityPickMode(e\room\Objects[2], 0)
 				EntityType(e\room\Objects[2], 0)
+				If e\room\Objects[3] <> 0
+					it.Items = CreateItem("Level 4 Key Card", it_key4, EntityX(e\room\Objects[3]), EntityY(e\room\Objects[3]) + 0.015, EntityZ(e\room\Objects[3]))
+					RotateEntity(it\Collider, 0.0, EntityYaw(e\room\Objects[3]), 0.0)
+					EntityType(it\Collider, HIT_ITEM)
+					FreeEntity(e\room\Objects[3]) : e\room\Objects[3] = 0
+				EndIf
 				e\EventState = 0.34
 			EndIf
 			EntityAlpha(e\room\Objects[2], e\EventState)
+		EndIf
+		
+		If e\EventState <> 0.34
+			If e\room\Objects[3] = 0
+				Local itt.ItemTemplates
+				
+				For itt.ItemTemplates = Each ItemTemplates
+					If itt\ID = it_key4
+						e\room\Objects[3] = CopyEntity(itt\OBJ)
+						TFormPoint(405.0, -510.0, -391.0, e\room\OBJ, 0)
+						PositionEntity(e\room\Objects[3], TFormedX(), TFormedY(), TFormedZ())
+						RotateEntity(e\room\Objects[3], 0.0, 45.0, 0.0)
+						Exit
+					EndIf
+				Next
+			EndIf
 		EndIf
 		
 		Local n.NPCs
