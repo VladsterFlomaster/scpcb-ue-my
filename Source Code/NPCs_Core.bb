@@ -6,7 +6,7 @@ Const NPCType008_1% = 0, NPCType008_1_Surgeon% = 1, NPCType035_Tentacle% = 2, NP
 Const NPCType106% = 7, NPCType173% = 8, NPCType372% = 9, NPCType513_1% = 10, NPCType860_2% = 11, NPCType939% = 12
 Const NPCType966% = 13, NPCType1048% = 14, NPCType1048_A% = 15, NPCType1499_1% = 16;, NPCType999% = 17
 
-Const NPCTypeApache% = 17, NPCTypeClerk% = 18, NPCTypeD% = 19, NPCTypeGuard% = 20, NPCTypeMTF% = 21
+Const NPCTypeApache% = 17, NPCTypeClerk% = 18, NPCTypeCockroach% = 19, NPCTypeD% = 20, NPCTypeGuard% = 21, NPCTypeMTF% = 22
 ;[End Block]
 
 Const MaxPathLocations% = 21
@@ -512,6 +512,23 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			MeshW = MeshWidth(n\OBJ) : MeshH = MeshHeight(n\OBJ) : MeshD = MeshDepth(n\OBJ)
 			MeshCullBox(n\OBJ, -MeshW * 1.5, -MeshH * 1.5, -MeshD * 1.5, MeshW * 3.0, MeshH * 3.0, MeshD * 3.0)
 			;[End Block]
+		Case NPCTypeCockroach
+			;[Block]
+			n\NVGName = "Cockroach"
+			n\Speed = IniGetFloat(NPCsFile, "Cockroach", "Speed") / 100.0
+			n\GravityMult = 0.0
+			n\MaxGravity = 0.0
+			n\HP = 1
+			
+			n\Collider = CreatePivot()
+			n\CollRadius = 0.05
+			EntityRadius(n\Collider, n\CollRadius)
+			EntityType(n\Collider, 0)
+			
+			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_COCKROACH_MODEL])
+			n\ModelScale = IniGetFloat(NPCsFile, "Cockroach", "Scale") * Rnd(0.9, 1.1)
+			ScaleEntity(n\OBJ, n\ModelScale, n\ModelScale, n\ModelScale)
+			;[End Block]
 		Case NPCTypeGuard
 			;[Block]
 			n\NVGName = GetLocalString("npc", "human")
@@ -553,7 +570,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 	PositionEntity(n\Collider, x, y, z, True)
 	PositionEntity(n\OBJ, x, y, z, True)
 	
-	If n\NPCType <> NPCType372 And n\NPCType <> NPCType513_1 And n\NPCType <> NPCType966 And n\NPCType <> NPCTypeApache Then n\Shadow = CreateShadow(n\OBJ, n\CollRadius * 1.8, n\CollRadius * 1.8)
+	If n\NPCType <> NPCType372 And n\NPCType <> NPCType513_1 And n\NPCType <> NPCType966 And n\NPCType <> NPCTypeApache And n\NPCType <> NPCTypeCockroach Then n\Shadow = CreateShadow(n\OBJ, n\CollRadius * 1.8, n\CollRadius * 1.8)
 	
 	ResetEntity(n\Collider)
 	
@@ -760,6 +777,10 @@ Function UpdateNPCs%()
 				;[Block]
 				UpdateNPCTypeD_Clerk(n)
 				;[End Block]
+			Case NPCTypeCockroach
+				;[Block]
+				UpdateNPCTypeCockroach(n)
+				;[End Block]
 			Case NPCTypeApache
 				;[Block]
 				UpdateNPCTypeApache(n)
@@ -929,7 +950,14 @@ Function UpdateNPCs%()
 			EndIf
 			UpdateNPCIce(n)
 		EndIf
-		CatchErrors("Uncaught: UpdateNPCs(NPC Name: " + Chr(34) + n\NVGName + Chr(34) + ", ID: " + n\NPCType + ")")
+		If n\NPCType = NPCTypeCockroach Lor n\NPCType = NPCType1048_A Lor n\NPCType = NPCType035_Tentacle
+			If n\IsDead And n\GravityMult = 0.0 Then RemoveNPC(n)
+		EndIf
+		If n <> Null
+			CatchErrors("Uncaught: UpdateNPCs(NPC Name: " + Chr(34) + n\NVGName + Chr(34) + ", ID: " + n\NPCType + ")")
+		Else
+			CatchErrors("Uncaught: UpdateNPCs(Deleted NPC!")
+		EndIf
 	Next
 	
 	UpdateCameraCheck()
@@ -1369,7 +1397,7 @@ End Function
 
 Function ConsoleSpawnNPC%(Name$, NPCState$ = "")
 	Local n.NPCs
-	Local ConsoleMsg$
+	Local ConsoleMsg$, Pvt%
 	Local PlayerPosX#, PlayerPosY#, PlayerPosZ#
 	
 	Select Name 
@@ -1387,8 +1415,7 @@ Function ConsoleSpawnNPC%(Name$, NPCState$ = "")
 			;[End Block]
 		Case "tentacle", "035tentacle", "scp035tentacle", "scp-035tentacle", "scp-035-tentacle", "scp035-tentacle"
 			;[Block]
-			Local Pvt% = CreatePivot()
-			
+			Pvt = CreatePivot()
 			PlayerPosX = EntityX(me\Collider) : PlayerPosY = EntityY(me\Collider) : PlayerPosZ = EntityZ(me\Collider)
 			PositionEntity(Pvt, PlayerPosX, PlayerPosY, PlayerPosZ)
 			TurnEntity(Pvt, 90.0, 0.0, 0.0)
@@ -1496,6 +1523,17 @@ Function ConsoleSpawnNPC%(Name$, NPCState$ = "")
 			;[Block]
 			n.NPCs = CreateNPC(NPCTypeClerk, EntityX(me\Collider), EntityY(me\Collider) + 0.2, EntityZ(me\Collider))
 			ConsoleMsg = Format(GetLocalString("console", "spawn"), GetLocalString("npc", "clerk"))
+			;[End Block]
+		Case "cockroach", "bug"
+			;[Block]
+			Pvt = CreatePivot()
+			PlayerPosX = EntityX(me\Collider) : PlayerPosY = EntityY(me\Collider) : PlayerPosZ = EntityZ(me\Collider)
+			PositionEntity(Pvt, PlayerPosX, PlayerPosY, PlayerPosZ)
+			TurnEntity(Pvt, 90.0, 0.0, 0.0)
+			If EntityPick(Pvt, 10.0) Then PlayerPosX = PickedX() : PlayerPosY = PickedY() + 0.05 : PlayerPosZ = PickedZ()
+			FreeEntity(Pvt) : Pvt = 0
+			n.NPCs = CreateNPC(NPCTypeCockroach, PlayerPosX, PlayerPosY, PlayerPosZ)
+			ConsoleMsg = Format(GetLocalString("console", "spawn"), GetLocalString("npc", "cockroach"))
 			;[End Block]
 		Case "guard"
 			;[Block]

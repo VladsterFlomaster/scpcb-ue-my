@@ -4796,6 +4796,66 @@ Function UpdateNPCTypeD_Clerk%(n.NPCs)
 	RotateEntity(n\OBJ, EntityPitch(n\Collider), EntityYaw(n\Collider) - 180.0, 0.0)
 End Function
 
+Function UpdateNPCTypeCockroach%(n.NPCs)
+	If n\IsDead Then Return
+	
+	Local Dist# = EntityDistanceSquared(n\Collider, me\Collider)
+	
+	Select n\State
+		Case 0.0 ; ~ Idle
+			;[Block]
+			AnimateNPC(n, 1.0, 50.0, 0.3)
+			If Dist < 1.0 And (Not (chs\NoTarget Lor I_268\InvisibilityOn))
+				SetNPCFrame(n, 51.0)
+				n\State2 = Rand(0.0, 1.0)
+				n\State = 1.0
+			EndIf
+			;[End Block]
+		Case 1.0 ; ~ Run
+			;[Block]
+			If Rand(100) < 20 Then TurnEntity(n\Collider, 0.0, Rnd(-8.0, 15.0), 0.0)
+			
+			Select n\State2
+				Case 0.0
+					;[Block]
+					n\Speed = 0.02
+					n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 5.0)
+					MoveEntity(n\Collider, Sin(MilliSec) * 0.015, 0.0, n\CurrSpeed * fps\Factor[0])
+					;[End Block]
+				Case 1.0
+					;[Block]
+					n\Speed = 0.015
+					n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 5.0)
+					MoveEntity(n\Collider, 0.0, 0.0, n\CurrSpeed * fps\Factor[0])
+					;[End Block]
+			End Select
+			
+			AnimateNPC(n, 51.0, 71.0, 0.3)
+			;[End Block]
+	End Select
+	If me\CurrSpeed > 0.0 And Dist < 0.09 Then n\HP = 0
+	
+	If n\HP =< 0
+		Local Pvt% = CreatePivot()
+		
+		PositionEntity(Pvt, EntityX(n\Collider) + Rnd(-0.05, 0.05),  EntityY(n\Collider) - 0.05, EntityZ(n\Collider) + Rnd(-0.05, 0.05))
+		TurnEntity(Pvt, 90.0, 0.0, 0.0)
+		If EntityPick(Pvt, 0.3)
+			Local de.Decals = CreateDecal(Rand(DECAL_BLOOD_DROP_1, DECAL_BLOOD_DROP_2), PickedX(), PickedY() + 0.005, PickedZ(), 90.0, Rnd(360.0), 0.0, Rnd(0.02, 0.03))
+			
+			de\SizeChange = Rnd(0.001, 0.0015) : de\MaxSize = de\Size + Rnd(0.008, 0.009)
+		EndIf
+		FreeEntity(Pvt): Pvt = 0
+		n\IsDead = True
+		Return
+	EndIf
+	
+	PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+	RotateEntity(n\OBJ, EntityPitch(n\Collider), EntityYaw(n\Collider) + 180.0, 0.0)
+	
+	If Dist > 25.0 And n\State = 1.0 Then n\IsDead = True
+End Function
+
 Function UpdateNPCTypeGuard%(n.NPCs)
 	Local PrevFrame# = n\Frame
 	Local wayPointCloseToPlayer.WayPoints, w.WayPoints

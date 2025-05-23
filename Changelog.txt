@@ -4,6 +4,9 @@
 - Better bumps.
 - Asav Harn's body has been moved to SCP-966's containment chamber.
 
+[NPCs]
+- Added cockroach.
+
 [Rooms]
 - Placed some items in «room3_storage» and »room2_closets_2».
 

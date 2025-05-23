@@ -5391,7 +5391,7 @@ Function UpdateGUI%()
 										np\State = 6.0
 									EndIf
 									;[End Block]
-								Case NPCType1048_A
+								Case NPCType1048_A, NPCTypeCockroach
 									;[Block]
 									np\HP = 0
 									;[End Block]
@@ -10697,7 +10697,7 @@ Function UpdateLeave1499%()
 					EndIf
 				Next
 				For n.NPCs = Each NPCs
-					If (Not n\IsDead) And n\NPCType <> NPCType1048
+					If (Not n\IsDead) And n\NPCType <> NPCType1048 And n\NPCType <> NPCTypeCockroach
 						PositionEntity(n\Collider, EntityX(n\Collider, True), EntityY(n\Collider, True) + 0.125, EntityZ(n\Collider, True), True)
 						ResetEntity(n\Collider)
 					EndIf
