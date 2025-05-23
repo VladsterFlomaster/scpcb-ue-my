@@ -6560,7 +6560,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 			
 			If e\EventState > 0.35
-				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.00007), 0.35)
+				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.0001), 0.35)
 			ElseIf e\EventState = 0.35
 				For i = 0 To 2
 					e\room\RoomDoors[i]\Locked = 0
@@ -6605,6 +6605,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			EndIf
 		EndIf
 		
+		
 		If e\EventState <> 0.34
 			If e\room\Objects[3] = 0
 				Local itt.ItemTemplates
@@ -6619,35 +6620,37 @@ Function UpdateEvent_Cont3_009%(e.Events)
 					EndIf
 				Next
 			EndIf
+		Else
+			Local n.NPCs
+			Local IceTriggerY# = e\room\y - 1.6
+			
+			For n.NPCs = Each NPCs
+				If n\IceTimer = 0.0 And n\CurrentRoom = e\room
+					Select n\NPCType
+						Case NPCType513_1, NPCType372, NPCType106, NPCType173
+							;[Block]
+							; ~ Skip
+							;[End Block]
+						Default
+							;[Block]
+							If EntityY(n\Collider, True) < IceTriggerY Then n\IceTimer = 0.001
+							;[End Block]
+					End Select
+				EndIf
+			Next
+			If EntityY(me\Collider, True) < IceTriggerY
+				If e\EventState = 0.34
+					DecalStep = 2
+					UpdateBreathSteam()
+				EndIf
+				If I_009\Timer = 0.0 And wi\HazmatSuit = 0
+					GiveAchievement("009")
+					I_009\Timer = 0.001
+				EndIf
+			EndIf
 		EndIf
 		
-		Local n.NPCs
-		Local IceTriggerY# = e\room\y - 1.6
 		
-		For n.NPCs = Each NPCs
-			If n\IceTimer = 0.0 And n\CurrentRoom = e\room
-				Select n\NPCType
-					Case NPCType513_1, NPCType372, NPCType106, NPCType173
-						;[Block]
-						; ~ Skip
-						;[End Block]
-					Default
-						;[Block]
-						If EntityY(n\Collider, True) < IceTriggerY Then n\IceTimer = 0.001
-						;[End Block]
-				End Select
-			EndIf
-		Next
-		If EntityY(me\Collider, True) < IceTriggerY
-			If e\EventState = 0.34
-				DecalStep = 2
-				UpdateBreathSteam()
-			EndIf
-			If I_009\Timer = 0.0 And wi\HazmatSuit = 0
-				GiveAchievement("009")
-				I_009\Timer = 0.001
-			EndIf
-		EndIf
 	EndIf
 End Function
 
