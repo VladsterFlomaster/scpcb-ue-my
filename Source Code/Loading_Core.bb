@@ -95,7 +95,7 @@ Function RemoveDecalInstances%()
 	Delete(de_I) : de_I = Null
 End Function
 
-Const MaxParticleTextureIDAmount% = 12
+Const MaxParticleTextureIDAmount% = 13
 
 Type ParticleInstance
 	Field ParticleTextureID%[MaxParticleTextureIDAmount]
@@ -126,9 +126,11 @@ Const PARTICLE_WATER_RING% = 9
 Const PARTICLE_LEAF% = 10
 
 Const PARTICLE_CONCRETE% = 11
+
+Const PARTICLE_FLY% = 12
 ;[End Block]
 
-Global ParticleEffect%[30]
+Global ParticleEffect%[31]
 
 Function LoadParticles%()
 	p_I.ParticleInstance = New ParticleInstance
@@ -154,6 +156,8 @@ Function LoadParticles%()
 	p_I\ParticleTextureID[PARTICLE_LEAF] = LoadTexture_Strict("GFX\Particles\leaf.png", 1 + 2, DeleteAllTextures, False)
 	
 	p_I\ParticleTextureID[PARTICLE_CONCRETE] = LoadTexture_Strict("GFX\Particles\concrete.png", 1 + 2, DeleteAllTextures, False)
+	
+	p_I\ParticleTextureID[PARTICLE_FLY] = LoadTexture_Strict("GFX\Particles\fly.png", 1 + 2, DeleteAllTextures, False)
 	
 	; ~ Black smoke in "room2c_gw_lcz"/"room2_6_hcz"/"cont1_035"
 	ParticleEffect[0] = CreateTemplate()
@@ -518,6 +522,16 @@ Function LoadParticles%()
 	SetTemplateSizeVel(ParticleEffect[29], 0.001, 1.7)
 	SetTemplateFixAngles(ParticleEffect[29], 90, 0)
 	SetTemplateAlphaVel(ParticleEffect[29], True)
+	
+	; ~ Fly
+	ParticleEffect[30] = CreateTemplate()
+	SetTemplateEmitterBlend(ParticleEffect[30], 1)
+	SetTemplateEmitterLifeTime(ParticleEffect[30], -1)
+	SetTemplateParticleLifeTime(ParticleEffect[30], 30, 40)
+	SetTemplateTexture(ParticleEffect[30], PARTICLE_FLY)
+	SetTemplateOffset(ParticleEffect[30], -0.1, 0.1, 0.0, 0.3, -0.1, 0.1)
+	SetTemplateVelocity(ParticleEffect[30], -0.01, 0.03, -0.01, 0.01, -0.01, 0.03)
+	SetTemplateSize(ParticleEffect[30], 0.006, 0.006, 0.9, 1.1)
 End Function
 
 Function RemoveParticleInstances%()
