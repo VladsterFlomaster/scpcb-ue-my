@@ -6538,7 +6538,7 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			If (Not EntityHidden(e\room\Objects[1])) Then HideEntity(e\room\Objects[1])
 			
 			If e\EventState > 0.35
-				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.00007), 0.35)
+				e\EventState = Max(e\EventState - (fps\Factor[0] * 0.0001), 0.35)
 			ElseIf e\EventState = 0.35
 				For i = 0 To 2
 					e\room\RoomDoors[i]\Locked = 0
