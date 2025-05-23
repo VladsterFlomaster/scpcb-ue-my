@@ -3700,6 +3700,7 @@ Function UseDoor%(PlaySFX% = True)
 			If SelectedItem = Null
 				If msg\Timer < 70.0 * 5.0 Then CreateMsg(GetLocalString("msg", "dna.denied_1"))
 				PlaySoundEx(snd_I\ScannerSFX[1], Camera, d_I\ClosestButton)
+				SetPlayerModelAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, d_I\ClosestButton)
 				Return
 			Else
 				If ((Temp >= KEY_MISC) Lor (Temp < KEY_HAND_YELLOW)) And (Temp <> KEY_005)
