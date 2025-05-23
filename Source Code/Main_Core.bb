@@ -10697,7 +10697,7 @@ Function UpdateLeave1499%()
 					EndIf
 				Next
 				For n.NPCs = Each NPCs
-					If (Not n\IsDead)
+					If (Not n\IsDead) And n\NPCType <> NPCType1048
 						PositionEntity(n\Collider, EntityX(n\Collider, True), EntityY(n\Collider, True) + 0.125, EntityZ(n\Collider, True), True)
 						ResetEntity(n\Collider)
 					EndIf
