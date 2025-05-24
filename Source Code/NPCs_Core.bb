@@ -948,8 +948,8 @@ Function UpdateNPCs%()
 			Else
 				n\DropSpeed = 0.0
 			EndIf
-			UpdateNPCIce(n)
 		EndIf
+		UpdateNPCIce(n)
 		If n\NPCType = NPCTypeCockroach Lor n\NPCType = NPCType1048_A Lor n\NPCType = NPCType035_Tentacle
 			If n\IsDead And n\GravityMult = 0.0 Then RemoveNPC(n)
 		EndIf
@@ -1830,26 +1830,32 @@ Function ChangePlayerBodyTexture%(ID%)
 End Function
 
 Function UpdateNPCIce%(n.NPCs)
-	If n\IceTimer > 0.0 And n\IceTimer < 70.0 * 30.0
-		n\IceTimer = n\IceTimer + fps\Factor[0]
-		
-		Local Clr# = Max(100.0, 255.0 - (n\IceTimer * 0.1))
-		
-		EntityColor(n\OBJ, 255.0, Clr, Clr)
-		If n\NPCType <> NPCType096
-			If n\IceTimer > 70.0 * 29.9
-				EntityShininess(n\OBJ, 1.0)
-				PlaySoundEx(LoadTempSound("SFX\SCP\009\IceCracking.ogg"), Camera, n\Collider, 5.0, 0.4)
-				SetNPCFrame(n, n\Frame)
-				If ChannelPlaying(n\SoundCHN) Then StopChannel(n\SoundCHN) : n\SoundCHN = 0
-				If n\Sound <> 0 Then FreeSound_Strict(n\Sound) : n\Sound = 0
-				If ChannelPlaying(n\SoundCHN2) Then StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
-				If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2) : n\Sound2 = 0
-				n\State = 66.0
-				n\IsDead = True
-				n\IceTimer = 70.0 * 30.0
+	If n\IceTimer > 0.0
+		If n\IceTimer < 70.0 * 30.0
+			n\IceTimer = n\IceTimer + fps\Factor[0]
+			
+			Local Clr# = Max(100.0, 255.0 - (n\IceTimer * 0.1))
+			
+			EntityColor(n\OBJ, 255.0, Clr, Clr)
+			If n\NPCType <> NPCType096
+				If n\IceTimer > 70.0 * 29.9
+					EntityShininess(n\OBJ, 1.0)
+					PlaySoundEx(LoadTempSound("SFX\SCP\009\IceCracking.ogg"), Camera, n\Collider, 5.0, 0.4)
+					SetNPCFrame(n, n\Frame)
+					If ChannelPlaying(n\SoundCHN) Then StopChannel(n\SoundCHN) : n\SoundCHN = 0
+					If n\Sound <> 0 Then FreeSound_Strict(n\Sound) : n\Sound = 0
+					If ChannelPlaying(n\SoundCHN2) Then StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
+					If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2) : n\Sound2 = 0
+					n\State = 66.0
+					n\IsDead = True
+					n\IceTimer = 70.0 * 30.0
+				EndIf
 			EndIf
 		EndIf
+		If EntityDistanceSquared(me\Collider, n\Collider) < (n\CollRadius * 1.25)
+			If I_009\Timer = 0.0 And wi\HazmatSuit = 0 Then I_009\Timer = 0.001
+		EndIf
+		n\Speed = Max(n\Speed - (fps\Factor[0] * 0.000005), 0.0)
 	EndIf
 End Function
 

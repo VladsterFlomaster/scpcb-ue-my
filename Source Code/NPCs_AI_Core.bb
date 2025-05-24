@@ -664,6 +664,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 										Else
 											PlaySound_Strict(snd_I\DamageSFX[Rand(9, 10)])
 											InjurePlayer(Rnd(0.75, 1.15) * DifficultyDMGMult, 0.0, 100.0, 0.4 * DifficultyDMGMult, 0.175 * DifficultyDMGMult)
+											If n\IceTimer > 0.0 And wi\HazmatSuit = 0 And I_009\Timer = 0.0 Then I_009\Timer = 0.001
 											
 											If me\Injuries > 3.0
 												If PlayerRoom\RoomTemplate\RoomID = r_room2_ez
@@ -1401,6 +1402,7 @@ Function UpdateNPCType049_2%(n.NPCs)
 							If EntityDistanceSquared(n\Collider, me\Collider) < 0.64
 								PlaySound_Strict(snd_I\DamageSFX[Rand(5, 8)])
 								InjurePlayer(Rnd(0.55, 0.85) * DifficultyDMGMult, 0.0, 0.0, 0.3 * DifficultyDMGMult, 0.125 * DifficultyDMGMult)
+								If n\IceTimer > 0.0 And wi\HazmatSuit = 0 And I_009\Timer = 0.0 Then I_009\Timer = 0.001
 								me\CameraShake = 2.5 * (I_1025\FineState[3] = 0.0)
 								
 								If me\Injuries > 3.0
