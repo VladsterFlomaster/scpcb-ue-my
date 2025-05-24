@@ -1,4 +1,4 @@
-{1.5.5}
+{1.5.6}
 
 [Global]
 - Better bumps.
@@ -6,6 +6,20 @@
 
 [NPCs]
 - Added cockroach.
+- Can only be afflicted by SCP-009 when it is liquified.
+
+[Rooms]
+- SCP-009's cooling is faster.
+- Change hand scanner type of »room2c_gw_lcz» to black.
+
+[Bug Fixes]
+- Fixed double achievement of Command room.
+- Fixed Gate B lighting.
+
+{1.5.5}
+
+[Global]
+- Better bumps.
 
 [Rooms]
 - Placed some items in «room3_storage» and »room2_closets_2».
@@ -17,7 +31,6 @@
 - Fixed position of the SCP-012 box.
 - Fixed SCP-035 tentacle's gravity.
 - Fixed SCP-049 still appearing in the elevator/surveillance room after being crystallized.
-- Fixed memory leaks.
 - Fixed S-Nav Navigator working without batteries.
 - Fixed color of the elevator buttons that can be called to player.
 
