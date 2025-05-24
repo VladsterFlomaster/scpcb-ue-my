@@ -31,6 +31,7 @@
 - Fixed position of the SCP-012 box.
 - Fixed SCP-035 tentacle's gravity.
 - Fixed SCP-049 still appearing in the elevator/surveillance room after being crystallized.
+- Fixed memory leaks.
 - Fixed S-Nav Navigator working without batteries.
 - Fixed color of the elevator buttons that can be called to player.
 
