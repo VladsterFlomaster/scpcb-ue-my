@@ -5612,6 +5612,7 @@ Function UpdateGUI%()
 										End Select
 									EndIf
 								EndIf
+								If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 								RemoveItem(SelectedItem)
 							EndIf
 						EndIf
@@ -5860,7 +5861,7 @@ Function UpdateGUI%()
 							me\Stamina = Min(me\Stamina + 25.0, 100.0)
 							
 							CreateMsg(GetLocalString("msg", "syringe_1"))
-							
+							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							RemoveItem(SelectedItem)
 						EndIf
 					EndIf
@@ -5876,7 +5877,7 @@ Function UpdateGUI%()
 							me\Stamina = Min(me\Stamina + 50.0, 100.0)
 							
 							CreateMsg(GetLocalString("msg", "syringe_2"))
-							
+							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							RemoveItem(SelectedItem)
 						EndIf
 					EndIf
@@ -5906,7 +5907,7 @@ Function UpdateGUI%()
 									CreateMsg(GetLocalString("msg", "syringe_5"))
 									;[End Block]
 							End Select
-							
+							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							RemoveItem(SelectedItem)
 						EndIf
 					EndIf
@@ -5920,12 +5921,10 @@ Function UpdateGUI%()
 							me\StaminaEffect = 0.8
 							me\StaminaEffectTimer = Rand(15.0, 30.0)
 							me\Stamina = Min(me\Stamina + 10.0, 100.0)
-							
-							CreateMsg(GetLocalString("msg", "syringe_6"))
-							
 							me\VomitTimer = 70.0
-							
 							I_008\Timer = I_008\Timer + 1.0
+							CreateMsg(GetLocalString("msg", "syringe_6"))
+							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							RemoveItem(SelectedItem)
 						EndIf
 					EndIf
