@@ -5852,70 +5852,82 @@ Function UpdateGUI%()
 				Case it_syringe
 					;[Block]
 					If CanUseItem(True, True)
-						me\HealTimer = Rnd(20.0, 30.0)
-						me\StaminaEffect = 0.7
-						me\StaminaEffectTimer = Rand(40.0, 60.0)
-						me\Stamina = Min(me\Stamina + 25.0, 100.0)
-						
-						CreateMsg(GetLocalString("msg", "syringe_1"))
-						
-						RemoveItem(SelectedItem)
+						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\State3 = 100.0
+							me\HealTimer = Rnd(20.0, 30.0)
+							me\StaminaEffect = 0.7
+							me\StaminaEffectTimer = Rand(40.0, 60.0)
+							me\Stamina = Min(me\Stamina + 25.0, 100.0)
+							
+							CreateMsg(GetLocalString("msg", "syringe_1"))
+							
+							RemoveItem(SelectedItem)
+						EndIf
 					EndIf
 					;[End Block]
 				Case it_finesyringe
 					;[Block]
 					If CanUseItem(True, True)
-						me\HealTimer = Rnd(30.0, 40.0)
-						me\StaminaEffect = 0.5
-						me\StaminaEffectTimer = Rnd(60.0, 80.0)
-						me\Stamina = Min(me\Stamina + 50.0, 100.0)
-						
-						CreateMsg(GetLocalString("msg", "syringe_2"))
-						
-						RemoveItem(SelectedItem)
+						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\State3 = 100.0
+							me\HealTimer = Rnd(30.0, 40.0)
+							me\StaminaEffect = 0.5
+							me\StaminaEffectTimer = Rnd(60.0, 80.0)
+							me\Stamina = Min(me\Stamina + 50.0, 100.0)
+							
+							CreateMsg(GetLocalString("msg", "syringe_2"))
+							
+							RemoveItem(SelectedItem)
+						EndIf
 					EndIf
 					;[End Block]
 				Case it_veryfinesyringe
 					;[Block]
 					If CanUseItem(True, True)
-						Select Rand(3)
-							Case 1
-								;[Block]
-								me\HealTimer = 60.0
-								me\StaminaEffect = 0.1
-								me\StaminaEffectTimer = 120.0
-								me\Stamina = 100.0
-								CreateMsg(GetLocalString("msg", "syringe_3"))
-								;[End Block]
-							Case 2
-								;[Block]
-								chs\SuperMan = True
-								CreateMsg(GetLocalString("msg", "syringe_4"))
-								;[End Block]
-							Case 3
-								;[Block]
-								me\VomitTimer = 30.0
-								CreateMsg(GetLocalString("msg", "syringe_5"))
-								;[End Block]
-						End Select
-						
-						RemoveItem(SelectedItem)
+						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\State3 = 100.0
+							Select Rand(3)
+								Case 1
+									;[Block]
+									me\HealTimer = 60.0
+									me\StaminaEffect = 0.1
+									me\StaminaEffectTimer = 120.0
+									me\Stamina = 100.0
+									CreateMsg(GetLocalString("msg", "syringe_3"))
+									;[End Block]
+								Case 2
+									;[Block]
+									chs\SuperMan = True
+									CreateMsg(GetLocalString("msg", "syringe_4"))
+									;[End Block]
+								Case 3
+									;[Block]
+									me\VomitTimer = 30.0
+									CreateMsg(GetLocalString("msg", "syringe_5"))
+									;[End Block]
+							End Select
+							
+							RemoveItem(SelectedItem)
+						EndIf
 					EndIf
 					;[End Block]
 				Case it_syringeinf
 					;[Block]
 					If CanUseItem(True, True)
-						me\HealTimer = Rnd(10.0, 20.0)
-						me\StaminaEffect = 0.8
-						me\StaminaEffectTimer = Rand(15.0, 30.0)
-						me\Stamina = Min(me\Stamina + 10.0, 100.0)
-						
-						CreateMsg(GetLocalString("msg", "syringe_6"))
-						
-						me\VomitTimer = 70.0
-						
-						I_008\Timer = I_008\Timer + 1.0
-						RemoveItem(SelectedItem)
+						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\State3 = 100.0
+							me\HealTimer = Rnd(10.0, 20.0)
+							me\StaminaEffect = 0.8
+							me\StaminaEffectTimer = Rand(15.0, 30.0)
+							me\Stamina = Min(me\Stamina + 10.0, 100.0)
+							
+							CreateMsg(GetLocalString("msg", "syringe_6"))
+							
+							me\VomitTimer = 70.0
+							
+							I_008\Timer = I_008\Timer + 1.0
+							RemoveItem(SelectedItem)
+						EndIf
 					EndIf
 					;[End Block]
 				Case it_radio, it_18vradio, it_fineradio, it_veryfineradio
@@ -6721,7 +6733,7 @@ Function UpdateGUI%()
 						SelectedItem\State = 0.0
 						If wi\HazmatSuit = 0 Then DropItem(SelectedItem, False)
 						;[End Block]
-					Case it_nvg, it_veryfinenvg, it_finenvg, it_scramble, it_finescramble, it_scp1025, it_fine1025, it_cup
+					Case it_nvg, it_veryfinenvg, it_finenvg, it_scramble, it_finescramble, it_scp1025, it_fine1025, it_cup, it_syringe, it_finesyringe, it_veryfinesyringe, it_syringeinf
 						;[Block]
 						SelectedItem\State3 = 0.0
 						;[End Block]
@@ -7629,6 +7641,17 @@ Function RenderGUI%()
 						y = mo\Viewport_Center_Y + (80 * MenuScale)
 						
 						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
+					EndIf
+					;[End Block]
+				Case it_syringe, it_finesyringe, it_veryfinesyringe, it_syringeinf
+					;[Block]
+					If CanUseItem(True, True)
+						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
+						
+						x = mo\Viewport_Center_X - (Width / 2)
+						y = mo\Viewport_Center_Y + (80 * MenuScale)
+						
+						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State3)
 					EndIf
 					;[End Block]
 				Case it_cup
