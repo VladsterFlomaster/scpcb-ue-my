@@ -4924,13 +4924,8 @@ Function UpdateGUI%()
 						
 						me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 						
-						If SelectedItem\ItemTemplate\ID <> it_gasmask148
-							SelectedItem\State = Min(SelectedItem\State + fps\Factor[0], 100.0)
-						Else
-							SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / 1.6), 100.0)
-						EndIf
-						
-						If SelectedItem\State = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + fps\Factor[0] / (1.0 + 0.6 * (SelectedItem\ItemTemplate\ID = it_gasmask148)) , 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							
 							If wi\GasMask > 0
@@ -4960,7 +4955,7 @@ Function UpdateGUI%()
 										;[End Block]
 								End Select
 							EndIf
-							SelectedItem\State = 0.0
+							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
 						EndIf
 					EndIf
@@ -4976,9 +4971,8 @@ Function UpdateGUI%()
 					
 					me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 					
-					SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / 0.7), 100.0)
-					
-					If SelectedItem\State = 100.0
+					SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.7), 100.0)
+					If SelectedItem\UsageTimer = 100.0
 						If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 						
 						If wi\Headphones > 0
@@ -4987,7 +4981,7 @@ Function UpdateGUI%()
 							CreateMsg(GetLocalString("msg", "headphones.on"))
 						EndIf
 						wi\Headphones = (Not wi\Headphones)
-						SelectedItem\State = 0.0
+						SelectedItem\UsageTimer = 0.0
 						SelectedItem = Null
 					EndIf
 					;[End Block]
@@ -5007,9 +5001,8 @@ Function UpdateGUI%()
 						
 						me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 						
-						SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / 1.5), 100.0)
-						
-						If SelectedItem\State = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 1.5), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							
 							If I_1499\Using > 0
@@ -5064,7 +5057,7 @@ Function UpdateGUI%()
 										;[End Block]
 								End Select
 							EndIf
-							SelectedItem\State = 0.0
+							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
 						EndIf
 					EndIf
@@ -5089,9 +5082,8 @@ Function UpdateGUI%()
 						
 						me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 						
-						SelectedItem\State3 = Min(SelectedItem\State3 + fps\Factor[0], 100.0)
-						
-						If SelectedItem\State3 = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + fps\Factor[0], 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							
 							If wi\NightVision > 0
@@ -5118,7 +5110,7 @@ Function UpdateGUI%()
 								End Select
 								If SelectedItem\State > 0.0 Then PlaySound_Strict(snd_I\NVGSFX[0])
 							EndIf
-							SelectedItem\State3 = 0.0
+							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
 						EndIf
 					EndIf
@@ -5139,9 +5131,8 @@ Function UpdateGUI%()
 						
 						me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 						
-						SelectedItem\State3 = Min(SelectedItem\State3 + fps\Factor[0], 100.0)
-						
-						If SelectedItem\State3 = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + fps\Factor[0], 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							
 							If wi\SCRAMBLE > 0
@@ -5162,7 +5153,7 @@ Function UpdateGUI%()
 										;[End Block]
 								End Select
 							EndIf
-							SelectedItem\State3 = 0.0
+							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
 						EndIf
 					EndIf
@@ -5172,9 +5163,8 @@ Function UpdateGUI%()
 					If (Not PreventItemOverlapping(True, True, True, True, True))
 						me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 						
-						SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / 0.7), 100.0)
-						
-						If SelectedItem\State = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.7), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							
 							If wi\BallisticHelmet
@@ -5184,7 +5174,7 @@ Function UpdateGUI%()
 								CreateMsg(GetLocalString("msg", "helmet.on"))
 								wi\BallisticHelmet = True
 							EndIf
-							SelectedItem\State = 0.0
+							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
 						EndIf
 					EndIf
@@ -5208,9 +5198,8 @@ Function UpdateGUI%()
 						End Select
 						me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 						
-						SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / 0.7), 100.0)
-						
-						If SelectedItem\State = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.7), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							If SelectedItem\ItemTemplate\SoundID <> 66 Then PlaySound_Strict(snd_I\PickSFX[SelectedItem\ItemTemplate\SoundID])
 							
 							If I_268\Using > 0
@@ -5236,7 +5225,7 @@ Function UpdateGUI%()
 								End Select
 								If I_268\Using > 1 Then PlaySound_Strict(LoadTempSound("SFX\SCP\268\InvisibilityOn.ogg"))
 							EndIf
-							SelectedItem\State = 0.0
+							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
 						EndIf
 					EndIf
@@ -5245,9 +5234,8 @@ Function UpdateGUI%()
 					;[Block]
 					me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 					
-					SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / (2.0 + (0.5 * (SelectedItem\ItemTemplate\ID = it_finevest)))), 100.0)
-					
-					If SelectedItem\State = 100.0
+					SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / (2.0 + (0.5 * (SelectedItem\ItemTemplate\ID = it_finevest)))), 100.0)
+					If SelectedItem\UsageTimer = 100.0
 						If wi\BallisticVest > 0
 							CreateMsg(GetLocalString("msg", "vest.off"))
 							ChangePlayerBodyTexture(PLAYER_BODY_NORMAL_TEX)
@@ -5269,7 +5257,7 @@ Function UpdateGUI%()
 									;[End Block]
 							End Select
 						EndIf
-						SelectedItem\State = 0.0
+						SelectedItem\UsageTimer = 0.0
 						SelectedItem = Null
 					EndIf
 					;[End Block]
@@ -5277,9 +5265,8 @@ Function UpdateGUI%()
 					;[Block]
 					me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 					
-					SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / (3.0 + (SelectedItem\ItemTemplate\ID = it_hazmatsuit148))), 100.0)
-					
-					If SelectedItem\State = 100.0
+					SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / (3.0 + (SelectedItem\ItemTemplate\ID = it_hazmatsuit148))), 100.0)
+					If SelectedItem\UsageTimer = 100.0
 						If wi\HazmatSuit > 0
 							CreateMsg(GetLocalString("msg", "suit.off"))
 							ChangePlayerBodyTexture(PLAYER_BODY_NORMAL_TEX)
@@ -5316,7 +5303,7 @@ Function UpdateGUI%()
 							End Select
 							ChangePlayerBodyTexture(PLAYER_BODY_HAZMAT_TEX + (wi\HazmatSuit = 4)) ; ~ NOTICE: Const PLAYER_BODY_HAZMAT_TEX% = 1, Const PLAYER_BODY_HAZMAT_HEAVY_TEX% = 2
 						EndIf
-						SelectedItem\State = 0.0
+						SelectedItem\UsageTimer = 0.0
 						SelectedItem = Null
 					EndIf
 					;[End Block]
@@ -5529,9 +5516,8 @@ Function UpdateGUI%()
 							me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 5.0)
 							If (Not me\Crouch) Then SetCrouch(True)
 							
-							SelectedItem\State = Min(SelectedItem\State + (fps\Factor[0] / (4.0 + (SelectedItem\ItemTemplate\ID = it_firstaid))), 100.0)
-							
-							If SelectedItem\State = 100.0
+							SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / (4.0 + (SelectedItem\ItemTemplate\ID = it_firstaid))), 100.0)
+							If SelectedItem\UsageTimer = 100.0
 								If SelectedItem\ItemTemplate\ID = it_finefirstaid
 									me\Bloodloss = Max(0.0, me\Bloodloss - 50.0)
 									me\Injuries = Max(0.0, me\Injuries - 1.5)
@@ -5726,9 +5712,8 @@ Function UpdateGUI%()
 							If JsonIsNull(JsonGetValue(Drink, "refuse_message"))
 								me\CurrSpeed = CurveValue(0.0, me\CurrSpeed, 10.0)
 								
-								SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.6), 100.0)
-								
-								If SelectedItem\State3 = 100.0
+								SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.6), 100.0)
+								If SelectedItem\UsageTimer = 100.0
 									Temp = JsonGetValue(Drink, "drink_message")
 									If (Not JsonIsNull(Temp)) Then CreateMsg(JsonGetString(Temp))
 									
@@ -5853,8 +5838,8 @@ Function UpdateGUI%()
 				Case it_syringe
 					;[Block]
 					If CanUseItem(True, True)
-						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
-						If SelectedItem\State3 = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							me\HealTimer = Rnd(20.0, 30.0)
 							me\StaminaEffect = 0.7
 							me\StaminaEffectTimer = Rand(40.0, 60.0)
@@ -5869,8 +5854,8 @@ Function UpdateGUI%()
 				Case it_finesyringe
 					;[Block]
 					If CanUseItem(True, True)
-						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
-						If SelectedItem\State3 = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							me\HealTimer = Rnd(30.0, 40.0)
 							me\StaminaEffect = 0.5
 							me\StaminaEffectTimer = Rnd(60.0, 80.0)
@@ -5885,8 +5870,8 @@ Function UpdateGUI%()
 				Case it_veryfinesyringe
 					;[Block]
 					If CanUseItem(True, True)
-						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
-						If SelectedItem\State3 = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							Select Rand(3)
 								Case 1
 									;[Block]
@@ -5915,8 +5900,8 @@ Function UpdateGUI%()
 				Case it_syringeinf
 					;[Block]
 					If CanUseItem(True, True)
-						SelectedItem\State3 = Min(SelectedItem\State3 + (fps\Factor[0] / 0.75), 100.0)
-						If SelectedItem\State3 = 100.0
+						SelectedItem\UsageTimer = Min(SelectedItem\UsageTimer + (fps\Factor[0] / 0.75), 100.0)
+						If SelectedItem\UsageTimer = 100.0
 							me\HealTimer = Rnd(10.0, 20.0)
 							me\StaminaEffect = 0.8
 							me\StaminaEffectTimer = Rand(15.0, 30.0)
@@ -6718,23 +6703,19 @@ Function UpdateGUI%()
 			
 			If (Not (MenuOpen Lor ConsoleOpen)) And (mo\MouseHit2 Lor KeyHit(key\INVENTORY)) Lor me\Terminated Lor me\FallTimer < 0.0 Lor me\Playable < 2 Lor me\Zombie
 				Select SelectedItem\ItemTemplate\ID
-					Case it_firstaid, it_finefirstaid, it_firstaid2, it_cap, it_scp268, it_fine268, it_scp1499, it_fine1499, it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148, it_headphones, it_helmet
+					Case it_firstaid, it_finefirstaid, it_firstaid2, it_cap, it_scp268, it_fine268, it_scp1499, it_fine1499, it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148, it_headphones, it_helmet, it_nvg, it_veryfinenvg, it_finenvg, it_scramble, it_finescramble, it_scp1025, it_fine1025, it_cup, it_syringe, it_finesyringe, it_veryfinesyringe, it_syringeinf
 						;[Block]
-						SelectedItem\State = 0.0
+						SelectedItem\UsageTimer = 0.0
 						;[End Block]
 					Case it_vest, it_finevest
 						;[Block]
-						SelectedItem\State = 0.0
+						SelectedItem\UsageTimer = 0.0
 						If wi\BallisticVest = 0 Then DropItem(SelectedItem, False)
 						;[End Block]
 					Case it_hazmatsuit, it_finehazmatsuit, it_veryfinehazmatsuit, it_hazmatsuit148
 						;[Block]
-						SelectedItem\State = 0.0
+						SelectedItem\UsageTimer = 0.0
 						If wi\HazmatSuit = 0 Then DropItem(SelectedItem, False)
-						;[End Block]
-					Case it_nvg, it_veryfinenvg, it_finenvg, it_scramble, it_finescramble, it_scp1025, it_fine1025, it_cup, it_syringe, it_finesyringe, it_veryfinesyringe, it_syringeinf
-						;[Block]
-						SelectedItem\State3 = 0.0
 						;[End Block]
 					Case it_e_reader, it_e_reader20, it_e_readerulti
 						;[Block]
@@ -7467,202 +7448,29 @@ Function RenderGUI%()
 			Local Width% = 300 * MenuScale, Height% = 20 * MenuScale
 			
 			Select SelectedItem\ItemTemplate\ID
-				Case it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148
+				Case it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148, it_headphones, it_scp1499, it_fine1499, it_helmet, it_cap, it_scp268, it_fine268, it_firstaid, it_finefirstaid, it_firstaid2, it_nvg, it_veryfinenvg, it_finenvg, it_scramble, it_finescramble, it_syringe, it_finesyringe, it_veryfinesyringe, it_syringeinf, it_cup
 					;[Block]
-					If (Not PreventItemOverlapping(True, False, False, True, False, False, True))
-						Select SelectedItem\ItemTemplate\ID
-							Case it_gasmask
-								;[Block]
-								If IsDoubleItem(wi\GasMask, 1) Then Return
-								;[End Block]
-							Case it_finegasmask
-								;[Block]
-								If IsDoubleItem(wi\GasMask, 2) Then Return
-								;[End Block]
-							Case it_veryfinegasmask
-								;[Block]
-								If IsDoubleItem(wi\GasMask, 3) Then Return
-								;[End Block]
-							Case it_gasmask148
-								;[Block]
-								If IsDoubleItem(wi\GasMask, 4) Then Return
-								;[End Block]
-						End Select
-						
+					If SelectedItem\UsageTimer > 0.0
 						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
 						
 						x = mo\Viewport_Center_X - (Width / 2)
 						y = mo\Viewport_Center_Y + (80 * MenuScale)
 						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
+						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\UsageTimer)
 					EndIf
 					;[End Block]
-				Case it_headphones
-					;[Block]
-					Select SelectedItem\ItemTemplate\ID
-						Case it_headphones
-							;[Block]
-							If IsDoubleItem(wi\Headphones, 1) Then Return
-							;[End Block]
-					End Select
-					
-					DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-					
-					x = mo\Viewport_Center_X - (Width / 2)
-					y = mo\Viewport_Center_Y + (80 * MenuScale)
-					
-					RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
-					;[End Block]
-				Case it_scp1499, it_fine1499
-					;[Block]
-					If (Not PreventItemOverlapping(False, False, True, True, False, False, True))
-						Select SelectedItem\ItemTemplate\ID
-							Case it_scp1499
-								;[Block]
-								If IsDoubleItem(I_1499\Using, 1) Then Return
-								;[End Block]
-							Case it_fine1499
-								;[Block]
-								If IsDoubleItem(I_1499\Using, 2) Then Return
-								;[End Block]
-						End Select
-						
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
-					EndIf
-					;[End Block]
-				Case it_nvg, it_veryfinenvg, it_finenvg
-					;[Block]
-					If (Not PreventItemOverlapping(False, True, False, True, False, False, True))
-						Select SelectedItem\ItemTemplate\ID
-							Case it_nvg
-								;[Block]
-								If IsDoubleItem(wi\NightVision, 1) Then Return
-								;[End Block]
-							Case it_veryfinenvg
-								;[Block]
-								If IsDoubleItem(wi\NightVision, 2) Then Return
-								;[End Block]
-							Case it_finenvg
-								;[Block]
-								If IsDoubleItem(wi\NightVision, 3) Then Return
-								;[End Block]
-						End Select
-						
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State3)
-					EndIf
-					;[End Block]
-				Case it_scramble, it_finescramble
-					;[Block]
-					If (Not PreventItemOverlapping(False, False, False, True, True, False, True))
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State3)
-					EndIf
-					;[End Block]
-				Case it_helmet
-					;[Block]
-					If (Not PreventItemOverlapping(True, True, True, True, True))
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
-					EndIf
-					;[End Block]
-				Case it_cap, it_scp268, it_fine268
-					;[Block]
-					If (Not PreventItemOverlapping(True, True, True, False, True, False, True))
-						Select SelectedItem\ItemTemplate\ID
-							Case it_cap
-								;[Block]
-								If IsDoubleItem(I_268\Using, 1) Then Return
-								;[End Block]
-							Case it_scp268
-								;[Block]
-								If IsDoubleItem(I_268\Using, 2) Then Return
-								;[End Block]
-							Case it_fine268
-								;[Block]
-								If IsDoubleItem(I_268\Using, 3) Then Return
-								;[End Block]
-						End Select
-						
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
-					EndIf
-					;[End Block]
-				Case it_vest, it_finevest
+				Case it_vest, it_finevest, it_hazmatsuit, it_finehazmatsuit, it_veryfinehazmatsuit, it_hazmatsuit148
 					;[Block]
 					DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
 					
 					x = mo\Viewport_Center_X - (Width / 2)
 					y = mo\Viewport_Center_Y + (80 * MenuScale)
 					
-					RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
-					;[End Block]
-				Case it_hazmatsuit, it_finehazmatsuit, it_veryfinehazmatsuit, it_hazmatsuit148
-					;[Block]
-					DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-					
-					x = mo\Viewport_Center_X - (Width / 2)
-					y = mo\Viewport_Center_Y + (80 * MenuScale)
-					
-					RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
+					RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\UsageTimer)
 					;[End Block]
 				Case it_key0, it_key1, it_key2, it_key3, it_key4, it_key5, it_key6, it_keyomni, it_scp860, it_fine860, it_hand, it_hand2, it_hand3, it_25ct, it_scp005, it_coarse005, it_crystal005, it_key_white, it_key_yellow, it_lostkey, it_coin, it_mastercard, it_mastercard_golden
 					;[Block]
 					DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-					;[End Block]
-				Case it_firstaid, it_finefirstaid, it_firstaid2
-					;[Block]
-					If (me\Bloodloss <> 0.0 Lor me\Injuries <> 0.0) And wi\HazmatSuit = 0
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State)
-					EndIf
-					;[End Block]
-				Case it_syringe, it_finesyringe, it_veryfinesyringe, it_syringeinf
-					;[Block]
-					If CanUseItem(True, True)
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State3)
-					EndIf
-					;[End Block]
-				Case it_cup
-					;[Block]
-					If CanUseItem(True)
-						DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
-						
-						x = mo\Viewport_Center_X - (Width / 2)
-						y = mo\Viewport_Center_Y + (80 * MenuScale)
-						
-						RenderBar(BlinkMeterIMG, x, y, Width, Height, SelectedItem\State3)
-					EndIf
 					;[End Block]
 				Case it_paper, it_oldpaper, it_scp1025, it_fine1025
 					;[Block]

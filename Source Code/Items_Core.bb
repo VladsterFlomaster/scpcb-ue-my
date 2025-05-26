@@ -413,6 +413,7 @@ Type Items
 	Field R%, G%, B%, Alpha#
 	Field Dist#, Nearby%
 	Field State#, State2#, State3#
+	Field UsageTimer#
 	Field Picked%, Dropped%
 	Field InvImg%
 	Field SecondInv.Items[20]
@@ -901,6 +902,7 @@ Function PickItem%(item.Items, PlayPickUpSound% = True)
 		me\SndVolume = Max(2.0, me\SndVolume)
 		SetPlayerModelAnimation(PLAYER_ANIM_LEFT_PICK_UP + me\Crouch, item\Collider)
 	EndIf
+	
 	CatchErrors("Uncaught: PickItem()")
 End Function
 
