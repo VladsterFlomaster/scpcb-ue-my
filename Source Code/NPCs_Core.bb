@@ -1855,7 +1855,7 @@ Function UpdateNPCIce%(n.NPCs)
 		If EntityDistanceSquared(me\Collider, n\Collider) < (n\CollRadius * 1.25)
 			If I_009\Timer = 0.0 And wi\HazmatSuit = 0 Then I_009\Timer = 0.001
 		EndIf
-		n\Speed = Max(n\Speed - (fps\Factor[0] * 0.000005), 0.0)
+		If n\NPCType <> NPCType096 Then n\Speed = Max(n\Speed - (fps\Factor[0] * 0.000005), 0.0)
 	EndIf
 End Function
 
