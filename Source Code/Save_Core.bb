@@ -2477,6 +2477,10 @@ Function LoadGameQuick%(File$)
 	
 	d_I\AnimButton = 0
 	
+	For i = 0 To MaxHandIcons - 1
+		Delete(HandIcon[i])
+	Next
+	
 	If wi\GasMask = 0 Then HideEntity(t\OverlayID[1])
 	If wi\HazmatSuit = 0 Then HideEntity(t\OverlayID[2])
 	
