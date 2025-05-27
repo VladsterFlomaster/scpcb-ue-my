@@ -3695,7 +3695,7 @@ Function UpdateNVG%()
 					np\NVGZ = EntityZ(np\Collider, True)
 				Next
 				wi\IsNVGBlinking = True
-				If wi\NVGTimer <= -10.0 Then wi\NVGTimer = 600.0
+				If wi\NVGTimer <= -10.0 Then wi\NVGTimer = 450.0
 			EndIf
 			wi\NVGTimer = wi\NVGTimer - fps\Factor[0]
 		EndIf
@@ -3758,7 +3758,7 @@ Function RenderNVG%()
 			Local InstrRefreshHint% = Instr(RefreshHint, "%s")
 			
 			TextEx(mo\Viewport_Center_X, 60 * MenuScale, Trim(Left(RefreshHint, InstrRefreshHint - 1)), True)
-			TextEx(mo\Viewport_Center_X, 100 * MenuScale, Max(FloatToString(wi\NVGTimer / 60.0, 1), 0.0), True)
+			TextEx(mo\Viewport_Center_X, 100 * MenuScale, Max(FloatToString(wi\NVGTimer / 90.0, 1), 0.0), True)
 			TextEx(mo\Viewport_Center_X, 140 * MenuScale, Trim(Right(RefreshHint, Len(RefreshHint) - InstrRefreshHint - 1)), True)
 			
 			For np.NPCs = Each NPCs
