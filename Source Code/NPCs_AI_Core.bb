@@ -3163,7 +3163,7 @@ Function UpdateNPCType860_2%(n.NPCs)
 			EndIf
 			
 			n\LastSeen = Max(0.0, n\LastSeen - fps\Factor[0])
-			Angle = CurveAngle(Find860Angle(n, fr) + (180.0 * (n\LastSeen > 0.0)), EntityYaw(n\Collider) + 90.0, 40.0)
+			Angle = CurveAngle(Find860Angle(n, fr) + (180.0 * (n\LastSeen > 0.0)), EntityYaw(n\Collider) + 90.0, 30.0)
 			RotateEntity(n\Collider, 0.0, Angle - 90.0, 0.0, True)
 			
 			; ~ If close enough to attack or already attacking, play the attack anim
