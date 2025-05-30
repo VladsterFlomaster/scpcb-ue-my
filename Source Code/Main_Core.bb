@@ -7677,7 +7677,7 @@ Function RenderGUI%()
 									Next
 									
 									SetBuffer(BackBuffer())
-									SelectedItem\State2 = 2.0
+									SelectedItem\State2 = 8.0
 								Else
 									SelectedItem\State2 = Max(0.0, SelectedItem\State2 - fps\Factor[0])
 								EndIf
