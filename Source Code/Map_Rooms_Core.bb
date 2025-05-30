@@ -2425,7 +2425,7 @@ Function FillRoom%(r.Rooms)
 			RotateEntity(it\Collider, 0.0, -90.0, 0.0)
 			EntityParent(it\Collider, r\OBJ)
 			
-			sc.SecurityCams = CreateSecurityCam(r, r\x + 1121.0 * RoomScale, r\y + 4191.0 * RoomScale, r\z - 306.0 * RoomScale, 20.0)
+			sc.SecurityCams = CreateSecurityCam(r, r\x + 1121.0 * RoomScale, r\y + 4295.0 * RoomScale, r\z - 306.0 * RoomScale, 20.0)
 			sc\Angle = 90.0 : sc\Turn = 45.0
 			;[End Block]
 		Case r_room2_servers_hcz
