@@ -4752,7 +4752,7 @@ Function UpdateEvent_Room2_2_HCZ_106%(e.Events)
 			RotateEntity(n_I\Curr106\OBJ, 0.0, EntityYaw(n_I\Curr106\Collider), 0.0)
 			
 			If e\EventState > 250.0
-				PlaySoundEx(snd_I\SCP106SFX[3], Camera, n\Collider, 10.0, 1.0, True)
+				PlaySoundEx(snd_I\SCP106SFX[3], Camera, n_I\Curr106\Collider, 10.0, 1.0, True)
 				PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n_I\Curr106\Collider)
 				n_I\Curr106\Idle = 0
 				n_I\Curr106\State = 0.0
