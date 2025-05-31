@@ -3173,7 +3173,7 @@ Function UpdateMoving%()
 		If (Not I_427\Using) And I_427\Timer < 70.0 * 360.0 Then me\Bloodloss = Min(me\Bloodloss + (Min(me\Injuries, 3.5) / 300.0) * fps\Factor[0], 100.0)
 		If Temp2 <= 60.0 And me\Bloodloss > 60.0 Then CreateMsg(GetLocalString("msg", "bloodloss"))
 		If me\Bloodloss > 0.0 And me\VomitTimer >= 0.0
-			If Rnd(200.0) < Min(me\Injuries, 4.0)
+			If wi\HazmatSuit = 0 And Rnd(200.0) < Min(me\Injuries, 4.0)
 				Pvt = CreatePivot()
 				PositionEntity(Pvt, EntityX(me\Collider) + Rnd(-0.05, 0.05), EntityY(me\Collider) - 0.05, EntityZ(me\Collider) + Rnd(-0.05, 0.05))
 				TurnEntity(Pvt, 90.0, 0.0, 0.0)
@@ -10093,7 +10093,7 @@ Function Update427%()
 		For i = 0 To 1
 			I_427\SoundCHN[i] = LoopSoundLocal(I_427\Sound[i], I_427\SoundCHN[i])
 		Next
-		If Rnd(200) < 2.0
+		If wi\HazmatSuit = 0 And Rnd(200.0) < 2.0
 			Pvt = CreatePivot()
 			PositionEntity(Pvt, EntityX(me\Collider) + Rnd(-0.05, 0.05), EntityY(me\Collider) - 0.05, EntityZ(me\Collider) + Rnd(-0.05, 0.05))
 			TurnEntity(Pvt, 90.0, 0.0, 0.0)

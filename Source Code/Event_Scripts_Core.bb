@@ -2943,6 +2943,17 @@ Function UpdateEvent_Cont2_012%(e.Events)
 							
 							If (Not e\room\RoomDoors[0]\Open) Then OpenCloseDoor(e\room\RoomDoors[0])
 							
+							Local n.NPCs
+							Local i%
+							
+							TFormPoint(-784.0, -768.0, 640.0, e\room\OBJ, 0)
+							
+							Local x# = TFormedX(), y# = TFormedY(), z# = TFormedZ()
+							
+							For i = 0 To 1
+								n.NPCs = CreateNPC(NPCTypeCockroach, x, y + 0.05, z)
+								RotateEntity(n\Collider, EntityPitch(n\Collider), Rnd(360.0), EntityRoll(n\Collider))
+							Next
 							e\EventState = 1.0
 						EndIf
 					EndIf
@@ -6667,13 +6678,13 @@ Function UpdateEvent_Cont3_966%(e.Events)
 					Next
 					
 					TFormPoint(0.0, 50.0, -297.0, e\room\OBJ, 0)
-					x = TFormedX() : y = TFormedY() : z = TFormedZ()
-					e\room\NPC[0] = CreateNPC(NPCTypeD, x, y, z)
+					e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
 					e\room\NPC[0]\State3 = -1.0 : e\room\NPC[0]\IsDead = True
 					SetNPCFrame(e\room\NPC[0], 502.0)
 					ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_HARN_TEXTURE)
 					RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle, 0.0)
-					SetEmitter(e\room, x, y, z, 30)
+					TFormPoint(0.0, 50.0, -337.0, e\room\OBJ, 0)
+					SetEmitter(e\room, TFormedX(), TFormedY(), TFormedZ(), 30)
 					
 					TFormPoint(0.0, 0.0, -418.0, e\room\OBJ, 0)
 					de.Decals = CreateDecal(DECAL_BLOOD_2, TFormedX(), e\room\y + 0.005, TFormedZ(), 90.0, e\room\Angle + 90.0, 0.0, 0.4)

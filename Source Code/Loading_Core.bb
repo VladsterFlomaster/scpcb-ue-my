@@ -523,15 +523,15 @@ Function LoadParticles%()
 	SetTemplateFixAngles(ParticleEffect[29], 90, 0)
 	SetTemplateAlphaVel(ParticleEffect[29], True)
 	
-	; ~ Fly
+	; ~ Flies
 	ParticleEffect[30] = CreateTemplate()
 	SetTemplateEmitterBlend(ParticleEffect[30], 1)
 	SetTemplateEmitterLifeTime(ParticleEffect[30], -1)
 	SetTemplateParticleLifeTime(ParticleEffect[30], 30, 40)
 	SetTemplateTexture(ParticleEffect[30], PARTICLE_FLY)
 	SetTemplateOffset(ParticleEffect[30], -0.1, 0.1, 0.0, 0.3, -0.1, 0.1)
-	SetTemplateVelocity(ParticleEffect[30], -0.01, 0.03, -0.01, 0.01, -0.01, 0.03)
-	SetTemplateSize(ParticleEffect[30], 0.006, 0.006, 0.9, 1.1)
+	SetTemplateVelocity(ParticleEffect[30], -0.01, 0.01, -0.01, 0.01, -0.01, 0.01)
+	SetTemplateSize(ParticleEffect[30], 0.008, 0.008, 0.9, 1.1)
 End Function
 
 Function RemoveParticleInstances%()
