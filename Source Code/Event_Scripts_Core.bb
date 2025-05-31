@@ -2323,10 +2323,9 @@ Function UpdateEvent_Room2_SL%(e.Events)
 						ResetEntity(n_I\Curr049\Collider)
 					EndIf
 				EndIf
+				e\room\NPC[0] = n_I\Curr049
 				PointEntity(e\room\NPC[0]\Collider, e\room\OBJ)
 				MoveEntity(e\room\NPC[0]\Collider, 0.0, 0.0, -1.0)
-				
-				e\room\NPC[0] = n_I\Curr049
 				e\room\NPC[0]\HideFromNVG = False
 				e\room\NPC[0]\EnemyX = EntityX(me\Collider)
 				e\room\NPC[0]\EnemyZ = EntityZ(me\Collider)
@@ -2445,7 +2444,7 @@ Function UpdateEvent_Room2_SL%(e.Events)
 				Else
 					; ~ Still playing the Music for SCP-049 (in the real, SCP-049's State will be set to 2, causing it to stop playing the chasing track)
 					If PlayerRoom = e\room Then ShouldPlay = 19
-					If e\room\NPC[0]\PathStatus <> PATH_STATUS_FOUND
+					If e\room\NPC[0]\CurrentRoom <> PlayerRoom Lor EntityY(e\room\NPC[0]\Collider) < 0.0
 						e\room\NPC[0]\Idle = 70.0 * 60.0 ; ~ Making SCP-049 idle for one minute (twice as fast for AggressiveNPCs = True)
 						PositionEntity(e\room\NPC[0]\Collider, 0.0, -500.0, 0.0)
 						ResetEntity(e\room\NPC[0]\Collider)
@@ -10163,4 +10162,4 @@ Function UpdateEvent_Trick_Item%(e.Events)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D_TSS
+;~C#Blitz3D TSS
