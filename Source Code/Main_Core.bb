@@ -9579,7 +9579,7 @@ Function Update009%()
 		EndIf
 		
 		If EntityHidden(t\OverlayID[10]) Then ShowEntity(t\OverlayID[10])
-		EntityAlpha(t\OverlayID[10], Min(0.1, (I_009\Timer - 91.0) / 10.0))
+		EntityAlpha(t\OverlayID[10], Clamp((I_009\Timer - 91.0) / 10.0, 0.0, 0.5))
 		
 		Local Clr# = Max(100.0, 255.0 - I_009\Timer * 2.0)
 		

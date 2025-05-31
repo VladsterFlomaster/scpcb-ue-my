@@ -2312,7 +2312,6 @@ Function UpdateEvent_Room2_SL%(e.Events)
 					Else
 						n_I\Curr049 = CreateNPC(NPCType049, EntityX(e\room\AdjDoor[Adj2]\FrameOBJ), EntityY(e\room\Objects[7], True), EntityZ(e\room\AdjDoor[Adj2]\FrameOBJ))
 					EndIf
-					e\room\NPC[0] = n_I\Curr049
 					GiveAchievement("049")
 				Else
 					If n_I\Curr049\State <> 66.0
@@ -2322,7 +2321,6 @@ Function UpdateEvent_Room2_SL%(e.Events)
 							PositionEntity(n_I\Curr049\Collider, EntityX(e\room\AdjDoor[Adj2]\FrameOBJ), EntityY(e\room\Objects[7], True), EntityZ(e\room\AdjDoor[Adj2]\FrameOBJ), True)
 						EndIf
 						ResetEntity(n_I\Curr049\Collider)
-						e\room\NPC[0] = n_I\Curr049
 					EndIf
 				EndIf
 				PointEntity(e\room\NPC[0]\Collider, e\room\OBJ)
@@ -6651,8 +6649,6 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				EndIf
 			EndIf
 		EndIf
-		
-		
 	EndIf
 End Function
 
@@ -10167,4 +10163,4 @@ Function UpdateEvent_Trick_Item%(e.Events)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS
