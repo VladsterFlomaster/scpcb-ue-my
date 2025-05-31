@@ -4859,6 +4859,17 @@ Function UpdateNPCTypeCockroach%(n.NPCs)
 End Function
 
 Function UpdateNPCTypeGuard%(n.NPCs)
+	If n\State = 66.0
+		If n\OBJ2 <> 0
+			PositionEntity(n\OBJ2, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+			RotateEntity(n\OBJ2, 0.0, EntityYaw(n\Collider), 0.0)
+		Else
+			PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+			RotateEntity(n\OBJ, 0.0, EntityYaw(n\Collider) + 180.0, 0.0)
+		EndIf
+		Return
+	EndIf
+	
 	Local PrevFrame# = n\Frame
 	Local wayPointCloseToPlayer.WayPoints, w.WayPoints
 	Local Dist#, Pvt%
