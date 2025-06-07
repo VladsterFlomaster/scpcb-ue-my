@@ -2584,6 +2584,8 @@ Function LoadEntities%()
 	
 	LoadData()
 	
+	LoadMissingTexture() ; ~ Create this texture before loading a mesh or texture
+	
 	InitSubtitlesAssets()
 	
 	RenderLoading(3, GetLocalString("loading", "player"))
@@ -2836,8 +2838,6 @@ Function LoadEntities%()
 	t\ImageID[7] = CreateImage(opt\GraphicWidth, opt\GraphicHeight)
 	
 	RenderLoading(10, GetLocalString("loading", "textures"))
-	
-	LoadMissingTexture()
 	
 	AmbientLightRoomTex = CreateTextureUsingCacheSystem(1, 1, 1 + 256)
 	TextureBlend(AmbientLightRoomTex, 5 - (3 * opt\NewAtmosphere))

@@ -33,8 +33,15 @@ Function LoadTextureCheckingIfInCache%(TexName$, TexFlags% = 1, DeleteType% = De
 	tic\TexName = StrippedName
 	tic\TexDeleteType = DeleteType
 	If FileType(lang\LanguagePath + CurrPath) = 1 Then CurrPath = lang\LanguagePath + CurrPath
-	If tic\Tex = 0 Then tic\Tex = LoadTexture(CurrPath, TexFlags)
-	If tic\Tex <> 0
+	tic\Tex = LoadTexture(CurrPath, TexFlags)
+	If tic\Tex = 0
+		tic\Tex = CreateTexture(1, 1, 1 + 256)
+		TextureBlend(tic\Tex, 3)
+		SetBuffer(TextureBuffer(tic\Tex))
+		ClsColor(255, 0, 255)
+		Cls()
+		SetBuffer(BackBuffer())
+	Else
 		If Scale <> 1.0 Then tic\Tex = RescaleTexture(tic\Tex, Scale, Scale, TexFlags)
 		If opt\DisplayMode = 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
 	EndIf
@@ -62,8 +69,17 @@ Function LoadAnimTextureCheckingIfInCache%(TexName$, TexFlags% = 1, Width%, Heig
 	tic\TexName = StrippedName
 	tic\TexDeleteType = DeleteType
 	If FileType(lang\LanguagePath + CurrPath) = 1 Then CurrPath = lang\LanguagePath + CurrPath
-	If tic\Tex = 0 Then tic\Tex = LoadAnimTexture(CurrPath, TexFlags, Width, Height, FirstFrame, Count)
-	If opt\DisplayMode = 0 And tic\Tex <> 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
+	tic\Tex = LoadAnimTexture(CurrPath, TexFlags, Width, Height, FirstFrame, Count)
+	If tic\Tex = 0
+		tic\Tex = CreateTexture(1, 1, 1 + 256)
+		TextureBlend(tic\Tex, 3)
+		SetBuffer(TextureBuffer(tic\Tex))
+		ClsColor(255, 0, 255)
+		Cls()
+		SetBuffer(BackBuffer())
+	Else
+		If opt\DisplayMode = 0 And tic\Tex <> 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
+	EndIf
 	Return(tic\Tex)
 End Function
 
@@ -133,7 +149,7 @@ Function LoadMissingTexture%()
 	MissingTexture = CreateTexture(1, 1, 1 + 256)
 	TextureBlend(MissingTexture, 3)
 	SetBuffer(TextureBuffer(MissingTexture))
-	ClsColor(0, 0, 0)
+	ClsColor(255, 0, 255)
 	Cls()
 	SetBuffer(BackBuffer())
 End Function
