@@ -580,7 +580,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 			Select n\State 
 				Case 0.0 ; ~ Spawns
 					;[Block]
-					If n\Frame = 282.0
+					If n\Frame = 283.0
 						If Dist < 9.0
 							Local Pvt% = CreatePivot()
 							
@@ -595,7 +595,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 							FreeEntity(Pvt) : Pvt = 0
 							
 							PlaySoundEx(LoadTempSound("SFX\SCP\035_Tentacle\TentacleSpawn.ogg"), Camera, n\Collider, 5.0)
-							SetNPCFrame(n, 283.0)
+							SetNPCFrame(n, 284.0)
 						EndIf
 					Else
 						me\HeartBeatVolume = Max(CurveValue(1.0, me\HeartBeatVolume, 50.0), me\HeartBeatVolume)
@@ -604,7 +604,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 						PointEntity(n\OBJ, me\Collider)
 						RotateEntity(n\Collider, 0.0, CurveAngle(EntityYaw(n\OBJ), EntityYaw(n\Collider), 25.0), 0.0)
 						
-						AnimateNPC(n, 283.0, 389.0, 0.3, False)
+						AnimateNPC(n, 284.0, 389.0, 0.3, False)
 						
 						If n\Frame > 388.9 Then n\State = 1.0
 					EndIf
@@ -717,7 +717,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 			If n\State <> 0.0 Then n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_035_TENTACLE_IDLE], n\SoundCHN, Camera, n\Collider)
 		Else
 			If n\State <> 0.0
-				SetNPCFrame(n, 282.0)
+				SetNPCFrame(n, 283.0)
 				n\State = 0.0
 			EndIf
 		EndIf
