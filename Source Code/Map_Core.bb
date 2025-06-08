@@ -1240,7 +1240,6 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 							iX = 0.0 : iZ = 0.0
 						EndIf
 						it.Items = CreateItem("Log #" + Int(tYFloor + 1), it_paper, iX, 0.2, iZ)
-						EntityType(it\Collider, HIT_ITEM)
 						EntityParent(it\Collider, Tile_Entity)
 					EndIf
 					
@@ -1422,7 +1421,6 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 							iX = 0.0 : iZ = 0.0
 						EndIf
 						it.Items = CreateItem("Log #" + Int(tYFloor + 1), it_paper, iX, 0.2, iZ)
-						EntityType(it\Collider, HIT_ITEM)
 						EntityParent(it\Collider, Tile_Entity)
 					EndIf
 					
@@ -2348,10 +2346,8 @@ Function PlaceMapCreatorMT%(r.Rooms)
 						EntityParent(p\OBJ, Tile_Entity)
 						
 						it.Items = CreateItem("SCP-500-01", it_scp500pill, r\x + (x * 2.0) + (CosValue * (-208.0) * RoomScale) - (SinValue * 1226.0 * RoomScale), r\y + MTGridY + (110.0 * RoomScale), r\z + (y * 2.0) + (SinValue * (-208.0) * RoomScale) + (CosValue * 1226.0 * RoomScale))
-						EntityType(it\Collider, HIT_ITEM)
 						
 						it.Items = CreateItem("Night Vision Goggles", it_nvg, r\x + (x * 2.0) - (SinValue * 504.0 * RoomScale) + (CosValue * 16.0 * RoomScale), r\y + MTGridY + (90.0 * RoomScale), r\z + (y * 2.0) + (CosValue * 504.0 * RoomScale) + (SinValue * 16.0 * RoomScale))
-						EntityType(it\Collider, HIT_ITEM)
 						;[End Block]
 				End Select
 				

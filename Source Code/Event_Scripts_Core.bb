@@ -2146,13 +2146,11 @@ Function UpdateEvent_Room2_Closets%(e.Events)
 			ElseIf e\EventState > 70.0 * 9.0 And e\EventState - fps\Factor[0] <= 70.0 * 9.0
 				TFormPoint(-1065.0, -380.0, 50.0, e\room\OBJ, 0)
 				it.Items = CreateItem("Wallet", it_wallet, TFormedX(), TFormedY(), TFormedZ())
-				EntityType(it\Collider, HIT_ITEM)
 				For i = 0 To 1
 					it2.Items = CreateItem("Quarter", it_25ct, 0.0, 0.0, 0.0)
 					it2\Picked = True : it2\Dropped = -1
 					it\SecondInv[i] = it2
 					HideEntity(it2\Collider)
-					EntityType(it2\Collider, HIT_ITEM)
 				Next
 				RemoveEvent(e)
 			EndIf
@@ -2704,7 +2702,6 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					If KEY2_SPAWNRATE = 5
 						TFormPoint(-354.0,  220.0, 516.0, e\room\OBJ, 0)
 						it.Items = CreateItem("White Key", it_key_white, TFormedX(), TFormedY(), TFormedZ())
-						EntityType(it\Collider, HIT_ITEM)
 					EndIf
 					;[End Block]
 				Case 2.0
@@ -2738,7 +2735,6 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					Next
 					If k
 						it.Items = CreateItem("Document SCP-" + GetRandDocument(), it_paper, 0.0, 0.0, 0.0)
-						EntityType(it\Collider, HIT_ITEM)
 						PickItem(it, False)
 					EndIf
 					;[End Block]
@@ -2746,7 +2742,6 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					;[Block]
 					TFormPoint(-344.0, 176.0, 272.0, e\room\OBJ, 0)
 					it.Items = CreateItem("Strange Note", it_paper, TFormedX(), TFormedY(), TFormedZ())
-					EntityType(it\Collider, HIT_ITEM)
 					;[End Block]
 				Case 25.0
 					;[Block]
@@ -2769,7 +2764,6 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					Next
 					If k
 						it.Items = CreateItem("Strange Note", it_paper, 0.0, 0.0, 0.0)
-						EntityType(it\Collider, HIT_ITEM)
 						PickItem(it, False)
 					EndIf
 					;[End Block]
@@ -2844,7 +2838,6 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 								it2\InvImg = it\InvImg
 							EndIf
 							RotateEntity(it2\Collider, EntityPitch(it\Collider), EntityYaw(it\Collider), 0.0)
-							EntityType(it2\Collider, HIT_ITEM)
 						Next
 					ElseIf it\Dropped = -1
 						For it2.Items = Each Items
@@ -3563,7 +3556,6 @@ Function UpdateEvent_Cont2C_066_1162_ARC%(e.Events)
 					RemoveItem(Inventory(e\EventState2))
 					
 					it.Items = CreateItem(itt\Name, itt\ID, EntityX(pp, True), EntityY(pp, True), EntityZ(pp, True))
-					EntityType(it\Collider, HIT_ITEM)
 					
 					PlaySound_Strict(LoadTempSound("SFX\SCP\1162_ARC\Exchange" + Rand(0, 4) + ".ogg"))
 					e\EventState3 = 0.0
@@ -3586,7 +3578,6 @@ Function UpdateEvent_Cont2C_066_1162_ARC%(e.Events)
 			For itt.ItemTemplates = Each ItemTemplates
 				If IsItemGoodFor1162ARC(itt) And Rand(6) = 1
 					it.Items = CreateItem(itt\Name, itt\ID, EntityX(pp, True), EntityY(pp, True), EntityZ(pp, True))
-					EntityType(it\Collider, HIT_ITEM)
 					
 					GiveAchievement("1162arc")
 					mo\MouseHit1 = False
@@ -3650,7 +3641,6 @@ Function UpdateEvent_Cont2C_066_1162_ARC%(e.Events)
 					it.Items = CreateItem("Old Badge", it_oldbadge, EntityX(pp, True), EntityY(pp, True), EntityZ(pp, True))
 					;[End Block]
 			End Select
-			EntityType(it\Collider, HIT_ITEM)
 			
 			GiveAchievement("1162arc")
 			mo\MouseHit1 = False
@@ -4236,7 +4226,6 @@ Function UpdateEvent_Cont1_079%(e.Events)
 				
 				TFormPoint(-897.0, -10534.0, 783.0, e\room\OBJ, 0)
 				it.Items = CreateItem("Document SCP-079", it_paper, TFormedX(), TFormedY(), TFormedZ())
-				EntityType(it\Collider, HIT_ITEM)
 				
 				e\EventState = 1.0
 			EndIf
@@ -4586,10 +4575,8 @@ Function UpdateEvent_Cont1_895%(e.Events)
 						EntityParent(de\OBJ, e\room\OBJ)
 						
 						it.Items = CreateItem("Unknown Note", it_paper, e\room\x, e\room\y - 1516.0 * RoomScale, e\room\z)
-						EntityType(it\Collider, HIT_ITEM)
 						
 						it.Items = CreateItem("Bloody Level 3 Key Card", it_key3, e\room\x, e\room\y - 1504.0 * RoomScale, e\room\z)
-						EntityType(it\Collider, HIT_ITEM)
 						
 						LoadNPCSound(e\room\NPC[0], "SFX\Room\895Chamber\GuardRadio.ogg")
 					ElseIf e\room\NPC[0]\Frame > 285.9
@@ -5189,10 +5176,8 @@ Function UpdateEvent_Room2_MT%(e.Events)
 							EntityParent(p\OBJ, TempInt)
 							
 							it.Items = CreateItem("SCP-500-01", it_scp500pill, e\room\x + (iX * 2.0) + (CosValue * (-208.0) * RoomScale) - (SinValue * 1226.0 * RoomScale), e\room\y + MTGridY + (110.0 * RoomScale), e\room\z + (iY * 2.0) + (SinValue * (-208.0) * RoomScale) + (CosValue * 1226.0 * RoomScale))
-							EntityType(it\Collider, HIT_ITEM)
 							
 							it.Items = CreateItem("Night Vision Goggles", it_nvg, e\room\x + (iX * 2.0) - (SinValue * 504.0 * RoomScale) + (CosValue * 16.0 * RoomScale), e\room\y + MTGridY + (90.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 504.0 * RoomScale) + (SinValue * 16.0 * RoomScale))
-							EntityType(it\Collider, HIT_ITEM)
 						ElseIf e\room\mt\Grid[iX + (iY * MTGridSize)] = MT_FIRST_ELEVATOR Lor e\room\mt\Grid[iX + (iY * MTGridSize)] = MT_SECOND_ELEVATOR
 							AddLight(e\room, e\room\x + (iX * 2.0) + (CosValue * 560.0 * RoomScale), e\room\y + MTGridY + (469.0 * RoomScale), e\room\z + (iY * 2.0) + (SinValue * 560.0 * RoomScale), 2, 0.25, 255, 200, 200)
 							Scale = 400.0 * RoomScale
@@ -5885,7 +5870,6 @@ Function UpdateEvent_Room2_Servers_HCZ%(e.Events)
 				ShowEntity(e\room\Objects[0])
 				
 				it.Items = CreateItem("Bloody Level 3 Key Card", it_key3, EntityX(e\room\NPC[0]\Collider), EntityY(e\room\NPC[0]\Collider) + 0.1, EntityZ(e\room\NPC[0]\Collider))
-				EntityType(it\Collider, HIT_ITEM)
 				
 				RemoveNPC(e\room\NPC[0]) : e\room\NPC[0] = Null
 				
@@ -6201,7 +6185,6 @@ Function UpdateEvent_Cont2_049%(e.Events)
 					TFormPoint(-2720.0, -3516.0, -1824.0, e\room\OBJ, 0)
 					it.Items = CreateItem("Research Sector-02 Scheme", it_paper, TFormedX(), TFormedY(), TFormedZ())
 				EndIf
-				EntityType(it\Collider, HIT_ITEM)
 				
 				e\EventState = 1.0
 			ElseIf e\EventState > 0.0
@@ -6403,12 +6386,10 @@ Function UpdateEvent_Cont2_409%(e.Events)
 				Else
 					it.Items = CreateItem("Level 5 Key Card", it_key5, TFormedX(), TFormedY(), TFormedZ())
 				EndIf
-				EntityType(it\Collider, HIT_ITEM)
 				
 				TFormPoint(-4105.0, -4336.0, 2207.0, e\room\OBJ, 0)
 				it.Items = CreateItem("Document SCP-409", it_paper, TFormedX(), TFormedY(), TFormedZ())
 				RotateEntity(it\Collider, 0.0, 0.0, 0.0)
-				EntityType(it\Collider, HIT_ITEM)
 				
 				e\EventState = 1.0
 			Else
@@ -6500,7 +6481,6 @@ Function UpdateEvent_Room3_HCZ_1048%(e.Events)
 				If InteractObject(e\room\NPC[0]\OBJ, 1.5)
 					If ItemAmount < MaxItemAmount
 						SelectedItem = CreateItem("Drawing", it_paper, 0.0, 0.0, 0.0)
-						EntityType(SelectedItem\Collider, HIT_ITEM)
 						PickItem(SelectedItem)
 						
 						RemoveNPC(e\room\NPC[0])
@@ -6580,7 +6560,6 @@ Function UpdateEvent_Cont3_009%(e.Events)
 				If e\room\Objects[3] <> 0
 					it.Items = CreateItem("Level 4 Key Card", it_key4, EntityX(e\room\Objects[3]), EntityY(e\room\Objects[3]) + 0.015, EntityZ(e\room\Objects[3]))
 					RotateEntity(it\Collider, 0.0, EntityYaw(e\room\Objects[3]), 0.0)
-					EntityType(it\Collider, HIT_ITEM)
 					FreeEntity(e\room\Objects[3]) : e\room\Objects[3] = 0
 				EndIf
 				e\EventState = 0.34
@@ -6692,7 +6671,6 @@ Function UpdateEvent_Cont3_966%(e.Events)
 					
 					TFormPoint(-68.0, 40.0, -396.0, e\room\OBJ, 0)
 					it.Items = CreateItem("Asav Harn's Badge", it_badge, TFormedX(), TFormedY(), TFormedZ())
-					EntityType(it\Collider, HIT_ITEM)
 					
 					e\EventState = 1.0
 				EndIf
@@ -7749,7 +7727,6 @@ Function UpdateEvent_Toilets_789_J%(e.Events)
 			If e\room\RoomTemplate\RoomID = r_room2_6_ez
 				TFormPoint(502.0, 128.0, 83.0, e\room\OBJ, 0)
 				it.Items = CreateItem("Document SCP-789-J", it_paper, TFormedX(), TFormedY(), TFormedZ())
-				EntityType(it\Collider, HIT_ITEM)
 			EndIf
 			
 			e\EventState = 1.0
@@ -7891,7 +7868,6 @@ Function UpdateEvent_Room2_Cafeteria%(e.Events)
 				GiveAchievement("458")
 				CreateMsg(GetLocalString("msg", "458"))
 				it.Items = CreateItem("Pizza Slice", it_pizza, 0.0, 0.0, 0.0)
-				EntityType(it\Collider, HIT_ITEM)
 				PickItem(it)
 			Else
 				CreateMsg(GetLocalString("msg", "cantcarry"))

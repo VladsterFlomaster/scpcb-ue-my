@@ -368,11 +368,11 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 					If n\NPCType = n2\NPCType Then i = i + 1
 				EndIf
 			Next
-			n\CollRadius = 0.17
 			n\NVGName = "SCP-966-" + i
 			n\Speed = IniGetFloat(NPCsFile, "SCP-966", "Speed") / 100.0
 			
 			n\Collider = CreatePivot()
+			n\CollRadius = 0.17
 			EntityRadius(n\Collider, n\CollRadius)
 			EntityType(n\Collider, HIT_PLAYER)
 			
@@ -1860,4 +1860,4 @@ Function UpdateNPCIce%(n.NPCs)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS

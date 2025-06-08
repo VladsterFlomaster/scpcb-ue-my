@@ -3167,6 +3167,10 @@ Function InitNewGame%()
 	
 	RenderLoading(55, GetLocalString("loading", "rooms"))
 	
+	For it.Items = Each Items
+		EntityType(it\Collider, 0)
+	Next
+	
 	If SelectedCustomMap = Null
 		CreateMap()
 	Else
@@ -3245,7 +3249,6 @@ Function InitNewGame%()
 			PositionEntity(me\Collider, TFormedX(), TFormedY(), TFormedZ())
 			PlayerRoom = r
 			it.Items = CreateItem("Class D Orientation Leaflet", it_paper, 0.0, 0.0, 0.0)
-			EntityType(it\Collider, HIT_ITEM)
 			PickItem(it, False)
 		ElseIf r\RoomTemplate\RoomID = r_cont1_173_intro And opt\IntroEnabled
 			InitializeIntroMovie = True

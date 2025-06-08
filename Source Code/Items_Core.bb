@@ -460,6 +460,7 @@ Function CreateItem.Items(Name$, ID%, x#, y#, z#, R% = 0, G% = 0, B% = 0, Alpha#
 	ResetEntity(i\Collider)
 	PositionEntity(i\Collider, x, y, z, True)
 	RotateEntity(i\Collider, 0.0, Rnd(360.0), 0.0)
+	EntityType(i\Collider, HIT_ITEM)
 	
 	i\Dist = EntityDistanceSquared(me\Collider, i\Collider)
 	i\DropSpeed = 0.0
@@ -1887,20 +1888,11 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[Block]
 					it2.Items = CreateItem("Quarter", it_25ct, x, y, z)
 					
-					If Rand(2) = 1
-						it3.Items = CreateItem("Quarter", it_25ct, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(2) = 1 Then it3.Items = CreateItem("Quarter", it_25ct, x, y, z)
 					
-					If Rand(3) = 1
-						it3.Items = CreateItem("Quarter", it_25ct, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(3) = 1 Then it3.Items = CreateItem("Quarter", it_25ct, x, y, z)
 					
-					If Rand(4) = 1
-						it3.Items = CreateItem("Quarter", it_25ct, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(4) = 1 Then it3.Items = CreateItem("Quarter", it_25ct, x, y, z)
 					;[End Block]
 				Case ONETOONE
 					;[Block]
@@ -1978,15 +1970,14 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 						it2.Items = CreateItem("Level 5 Key Card", it_key5, x, y, z)
 						
 						it3.Items = CreateItem("White Severed Hand", it_hand, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
+						
 						it3.Items = CreateItem("Black Severed Hand", it_hand2, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
+						
 						it3.Items = CreateItem("Yellow Severed Hand", it_hand3, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
+						
 						it3.Items = CreateItem("White Key", it_key_white, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
+						
 						it3.Items = CreateItem("Yellow Key", it_key_yellow, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
 					Else
 						it2.Items = CreateItem("SCP-005", it_scp005, x, y, z)
 					EndIf
@@ -2472,20 +2463,11 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[Block]
 					it2.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
 					
-					If Rand(2) = 1
-						it3.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(2) = 1 Then it3.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
 					
-					If Rand(3) = 1
-						it3.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(3) = 1 Then it3.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
 					
-					If Rand(4) = 1
-						it3.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(4) = 1 Then it3.Items = CreateItem("SCP-500-01", it_scp500pill, x, y, z)
 					;[End Block]
 				Case FINE
 					;[Block]
@@ -2501,20 +2483,11 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 						If Rand(2) = 1
 							it2.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 							
-							If Rand(2) = 1
-								it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-								EntityType(it3\Collider, HIT_ITEM)
-							EndIf
+							If Rand(2) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 							
-							If Rand(3) = 1
-								it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-								EntityType(it3\Collider, HIT_ITEM)
-							EndIf
+							If Rand(3) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 							
-							If Rand(4) = 1
-								it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-								EntityType(it3\Collider, HIT_ITEM)
-							EndIf
+							If Rand(4) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						Else
 							it2.Items = CreateItem("SCP-2022", it_scp2022, x, y, z)
 							it2\State = Rand(6)
@@ -2531,20 +2504,11 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					Else
 						it2.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(2) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(2) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(3) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(3) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(4) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(4) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 					EndIf
 					;[End Block]
 			End Select
@@ -2560,40 +2524,22 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					;[Block]
 					it2.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
 					
-					If Rand(2) = 1
-						it3.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(2) = 1 Then it3.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
 					
-					If Rand(3) = 1
-						it3.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(3) = 1 Then it3.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
 					
-					If Rand(4) = 1
-						it3.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
-						EntityType(it3\Collider, HIT_ITEM)
-					EndIf
+					If Rand(4) = 1 Then it3.Items = CreateItem("SCP-2022-01", it_scp2022pill, x, y, z)
 					;[End Block]
 				Case FINE
 					;[Block]
 					If Rand(2) = 1
 						it2.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(2) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(2) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(3) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(3) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(4) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(4) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 					Else
 						it2.Items = CreateItem("SCP-500", it_scp500, x, y, z)
 						j = Rand(9)
@@ -2621,20 +2567,11 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 					Else
 						it2.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(2) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(2) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(3) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(3) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 						
-						If Rand(4) = 1
-							it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
-							EntityType(it3\Collider, HIT_ITEM)
-						EndIf
+						If Rand(4) = 1 Then it3.Items = CreateItem("Upgraded Pill", it_scp500pilldeath, x, y, z)
 					EndIf
 					;[End Block]
 			End Select
@@ -2899,8 +2836,6 @@ Function Use914%(item.Items, Setting%, x#, y#, z#)
 		PositionEntity(item\Collider, x, y, z)
 		ResetEntity(item\Collider)
 	EndIf
-	
-	If it2 <> Null Then EntityType(it2\Collider, HIT_ITEM)
 End Function
 
 ; ~ Made a function for SCP-1123 so we don't have to use duplicate code (since picking it up and using it does the same thing)

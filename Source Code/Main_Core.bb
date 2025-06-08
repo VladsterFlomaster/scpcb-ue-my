@@ -1545,7 +1545,6 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			For itt.ItemTemplates = Each ItemTemplates
 				If Lower(itt\Name) = StrTemp Lor Lower(itt\DisplayName) = StrTemp Lor Str(itt\ID) = StrTemp
 					it.Items = CreateItem(itt\Name, itt\ID, EntityX(me\Collider), EntityY(Camera, True), EntityZ(me\Collider))
-					EntityType(it\Collider, HIT_ITEM)
 					CreateConsoleMsg(Format(GetLocalString("console", "si.success"), itt\DisplayName))
 					Temp = True
 					Exit
@@ -1583,7 +1582,6 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 				it.Items = CreateItem("Cup", it_cup, EntityX(me\Collider), EntityY(Camera, True), EntityZ(me\Collider), JsonGetInt(JsonGetArrayValue(DrinkColor, 0)), JsonGetInt(JsonGetArrayValue(DrinkColor, 1)), JsonGetInt(JsonGetArrayValue(DrinkColor, 2)), Alpha)
 				it\Name = StrTemp
 				it\DisplayName = Format(GetLocalString("items", "cupof"), StrTemp)
-				EntityType(it\Collider, HIT_ITEM)
 				CreateConsoleMsg(Format(GetLocalString("console", "si.success"), it\DisplayName))
 				Temp = True
 			EndIf
@@ -1858,7 +1856,6 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					Temp = it_joint
 				EndIf
 				it.Items = CreateItem(StrTemp, Temp, EntityX(me\Collider, True) + Cos((360.0 / 20.0) * i) * Rnd(0.3, 0.5), EntityY(Camera, True), EntityZ(me\Collider, True) + Sin((360.0 / 20.0) * i) * Rnd(0.3, 0.5))
-				EntityType(it\Collider, HIT_ITEM)
 			Next
 			PlaySound_Strict(LoadTempSound("SFX\Music\Using420J.ogg"))
 			;[End Block]
@@ -2093,7 +2090,6 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 					Temp = it_coin
 				EndIf
 				it.Items = CreateItem(StrTemp, Temp, EntityX(me\Collider, True) + Cos((360.0 / 20.0) * i) * Rnd(0.3, 0.5), EntityY(Camera, True), EntityZ(me\Collider, True) + Sin((360.0 / 20.0) * i) * Rnd(0.3, 0.5))
-				EntityType(it\Collider, HIT_ITEM)
 			Next
 			;[End Block]
 		Case "doorcontrol"
@@ -2807,7 +2803,6 @@ Function RefillCup%()
 				EmptyCup.Items = CreateItem("Cup", it_cup, 0.0, 0.0, 0.0, 200, 200, 200, 0.2)
 				EmptyCup\Name = "WATER"
 				EmptyCup\DisplayName = Format(GetLocalString("items", "cupof"), GetLocalString("misc", "water"))
-				EntityType(EmptyCup\Collider, HIT_ITEM)
 				PickItem(EmptyCup)
 				PlaySound_Strict(LoadTempSound("SFX\SCP\294\Dispense1.ogg"))
 				CreateMsg(GetLocalString("msg", "refill"))
@@ -5865,8 +5860,6 @@ Function UpdateGUI%()
 											Exit
 										EndIf
 									Next
-									EntityType(it\Collider, HIT_ITEM)
-									
 									RemoveItem(SelectedItem)
 								EndIf
 							Else
@@ -6588,7 +6581,6 @@ Function UpdateGUI%()
 					If SelectedItem\State > 0.0
 						If ItemAmount < MaxItemAmount
 							it.Items = CreateItem("SCP-2022-01", it_scp2022pill, 0.0, 0.0, 0.0)
-							EntityType(it\Collider, HIT_ITEM)
 							PickItem(it, False)
 							SelectedItem\State = SelectedItem\State - 1.0
 							CreateMsg(GetLocalString("msg", "2022.take"))
@@ -10322,7 +10314,6 @@ Function Update294%()
 								If Inventory(i) = Null
 									Inventory(i) = CreateItem("Mastercard", CardID, 0.0, 0.0, 0.0)
 									Inventory(i)\State = me\CurrFunds
-									EntityType(Inventory(i)\Collider, HIT_ITEM)
 									PickItem(Inventory(i), False)
 									Exit
 								EndIf
@@ -10330,7 +10321,6 @@ Function Update294%()
 						Else
 							it.Items = CreateItem("Mastercard", CardID, EntityX(me\Collider), EntityY(me\Collider) + 0.3, EntityZ(me\Collider))
 							it\ItemTemplate\Found = True : it\State = me\CurrFunds
-							EntityType(it\Collider, HIT_ITEM)
 							CreateMsg(GetLocalString("msg", "cantcarry"))
 						EndIf
 					EndIf
@@ -10355,7 +10345,6 @@ Function Update294%()
 					it.Items = CreateItem("Cup", it_cup, EntityX(PlayerRoom\Objects[2], True), EntityY(PlayerRoom\Objects[2], True), EntityZ(PlayerRoom\Objects[2], True), JsonGetInt(JsonGetArrayValue(DrinkColor, 0)), JsonGetInt(JsonGetArrayValue(DrinkColor, 1)), JsonGetInt(JsonGetArrayValue(DrinkColor, 2)), Alpha)
 					it\Name = I_294\ToInput
 					it\DisplayName = Format(GetLocalString("items", "cupof"), I_294\ToInput)
-					EntityType(it\Collider, HIT_ITEM)
 				Else
 					; ~ Out of range
 					I_294\ToInput = GetLocalString("misc", "ofr")
