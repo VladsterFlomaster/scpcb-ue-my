@@ -23,7 +23,8 @@ Function FillRoom%(r.Rooms)
 			sc.SecurityCams = CreateSecurityCam(r, r\x - 256.0 * RoomScale, r\y + 384.0 * RoomScale, r\z + 640.0 * RoomScale, 20.0, True, r\x - 427.0 * RoomScale, r\y + 236.0 * RoomScale, r\z - 574.4 * RoomScale, 0.0, 0.0, 0.0)
 			ShowEntity(sc\BaseOBJ)
 			ShowEntity(sc\CameraOBJ)
-			sc\Angle = 180.0 : sc\Turn = 45.0 : If Rand(3) = 1 Then sc\PlayerState = Rand(700.0)
+			sc\Angle = 180.0 : sc\Turn = 45.0
+			If Rand(3) = 1 Then sc\PlayerState = Rand(700.0)
 			
 			; ~ Clock
 			r\Objects[0] = LoadMesh_Strict("GFX\Map\Props\watches.b3d")

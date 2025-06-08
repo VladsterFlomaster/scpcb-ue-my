@@ -3654,7 +3654,6 @@ Function UpdateNVG%()
 	Local i%
 	
 	wi\IsNVGBlinking = False
-	wi\NVGPower = 0
 	
 	If (wi\NightVision > 0 Lor wi\SCRAMBLE > 0) And wi\NightVision <> 3
 		For i = 0 To MaxItemAmount - 1
@@ -3676,7 +3675,10 @@ Function UpdateNVG%()
 			EndIf
 			wi\IsNVGBlinking = True
 		EndIf
+	Else
+		wi\NVGPower = 0
 	EndIf
+	CreateMsg(wi\NVGPower)
 	
 	If wi\NVGPower > 0
 		If wi\SCRAMBLE = 2

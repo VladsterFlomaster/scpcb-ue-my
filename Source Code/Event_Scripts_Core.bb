@@ -4592,19 +4592,7 @@ Function UpdateEvent_Cont1_895%(e.Events)
 		EndIf
 		
 		If wi\NightVision > 0 Lor wi\SCRAMBLE > 0
-			Local HasBatteryFor895% = False
-			
-			For i = 0 To MaxItemAmount - 1
-				If Inventory(i) <> Null
-					If (wi\NightVision > 0 And (Inventory(i)\ItemTemplate\ID = it_nvg Lor Inventory(i)\ItemTemplate\ID = it_veryfinenvg Lor Inventory(i)\ItemTemplate\ID = it_finenvg)) Lor ((wi\SCRAMBLE = 1 And Inventory(i)\ItemTemplate\ID = it_scramble) Lor (wi\SCRAMBLE = 2 And Inventory(i)\ItemTemplate\ID = it_finescramble))
-						If Inventory(i)\State > 0.0 Lor (wi\NightVision = 3 And Inventory(i)\ItemTemplate\ID = it_finenvg)
-							HasBatteryFor895 = True
-							Exit
-						EndIf
-					EndIf
-				EndIf
-			Next
-			If CoffinDistance < 4.0 And HasBatteryFor895 And I_714\Using <> 2
+			If CoffinDistance < 4.0 And wi\NVGPower > 0 And I_714\Using <> 2
 				TurnEntity(me\Collider, 0.0, AngleDist(PointDirection(EntityX(me\Collider, True), EntityZ(me\Collider, True), EntityX(e\room\Objects[0], True), EntityZ(e\room\Objects[0], True)) + 90.0 + Sin(WrapAngle(e\EventState3 / 10.0)), EntityYaw(me\Collider)) / 4.0, 0.0, True)
 				CameraPitch = (CameraPitch * 0.8) + (((-60.0) * Clamp((2.0 - Distance(EntityX(me\Collider, True), EntityX(e\room\Objects[0], True), EntityZ(me\Collider, True), EntityZ(e\room\Objects[0], True))) / 2.0, 0.0, 1.0)) * 0.2)
 				

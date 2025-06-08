@@ -4744,21 +4744,7 @@ Function UpdateScreens%()
 								EndIf
 							EndIf
 						Else
-							Local HasBatteryForScramble% = False
-							Local i%
-							
-							For i = 0 To MaxItemAmount - 1
-								If Inventory(i) <> Null
-									If (wi\SCRAMBLE = 1 And Inventory(i)\ItemTemplate\ID = it_scramble) Lor (wi\SCRAMBLE = 2 And Inventory(i)\ItemTemplate\ID = it_finescramble)
-										If Inventory(i)\State > 0.0
-											Inventory(i)\State = Max(0.0, Inventory(i)\State - (fps\Factor[0] * (0.04 / wi\SCRAMBLE)))
-											HasBatteryForScramble = True
-											Exit
-										EndIf
-									EndIf
-								EndIf
-							Next
-							If HasBatteryForScramble
+							If wi\NVGPower > 0
 								SCRAMBLECHN = LoopSoundLocal(snd_I\SCRAMBLESFX, SCRAMBLECHN)
 								If EntityHidden(wi\SCRAMBLESpriteScreen) Then ShowEntity(wi\SCRAMBLESpriteScreen)
 								ScaleSprite(wi\SCRAMBLESpriteScreen, Rnd(0.04, 0.05), Rnd(0.05, 0.06))
