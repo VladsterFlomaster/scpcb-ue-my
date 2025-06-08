@@ -6582,7 +6582,6 @@ Function UpdateEvent_Cont3_009%(e.Events)
 			EndIf
 		EndIf
 		
-		
 		If e\EventState <> 0.34
 			If e\room\Objects[3] = 0
 				Local itt.ItemTemplates
@@ -6597,7 +6596,9 @@ Function UpdateEvent_Cont3_009%(e.Events)
 					EndIf
 				Next
 			EndIf
-		Else
+		ElseIf e\EventState = 0.34
+			UpdateBreathSteam()
+			
 			Local n.NPCs
 			Local IceTriggerY# = e\room\y - 1.6
 			
@@ -6615,11 +6616,9 @@ Function UpdateEvent_Cont3_009%(e.Events)
 					End Select
 				EndIf
 			Next
+			
 			If EntityY(me\Collider, True) < IceTriggerY
-				If e\EventState = 0.34
-					DecalStep = 2
-					UpdateBreathSteam()
-				EndIf
+				DecalStep = 2
 				If I_009\Timer = 0.0 And wi\HazmatSuit = 0
 					GiveAchievement("009")
 					I_009\Timer = 0.001
