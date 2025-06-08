@@ -3678,7 +3678,6 @@ Function UpdateNVG%()
 	Else
 		wi\NVGPower = 0
 	EndIf
-	CreateMsg(wi\NVGPower)
 	
 	If wi\NVGPower > 0
 		If wi\SCRAMBLE = 2
