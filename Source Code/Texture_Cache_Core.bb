@@ -150,7 +150,7 @@ Function LoadMissingTexture%()
 	MissingTexture = CreateTexture(1, 1, 1 + 256)
 	TextureBlend(MissingTexture, 3)
 	SetBuffer(TextureBuffer(MissingTexture))
-	ClsColor(255, 0, 255)
+	ClsColor(0, 0, 0)
 	Cls()
 	SetBuffer(BackBuffer())
 End Function
