@@ -1157,6 +1157,7 @@ Function UpdateNPCType049%(n.NPCs)
 			Case 5.0 ; ~ Hit by tesla gate
 				;[Block]
 				If n\Frame < 1120.0
+					StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
 					SetNPCFrame(n, 1121.0)
 				Else
 					If n\Frame < 1138.0 Then MoveEntity(n\Collider, 0.0, 0.0, 0.02)
@@ -1168,6 +1169,7 @@ Function UpdateNPCType049%(n.NPCs)
 			Case 6.0 ; ~ Stunned by Fine SCP-513
 				;[Block]
 				If n\Frame < 1120.0
+					StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
 					SetNPCFrame(n, 1121.0)
 				Else
 					AnimateNPC(n, 1121.0, 1224.0, 0.4, False)
