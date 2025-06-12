@@ -2886,7 +2886,7 @@ Function RowText%(Txt$, x%, y%, W%, H%, Align% = False, Leading# = 1.0)
 	While Len(Txt) > 0
 		Local Space% = Instr(Txt, SplitSpace)
 		
-		If Space = 0 Then Space = Len(Txt)
+		If Space = 0 Then Space = Min(W * Len(Txt) / Max(StringWidth(Txt), 1), Len(Txt))
 		
 		Local Temp$ = Left(Txt, Space)
 		Local Trimmed$ = Trim(Temp) ; ~ We might ignore a final space 
@@ -2936,7 +2936,7 @@ Function GetLineAmount%(Txt$, W%, H%, Leading# = 1.0)
 	While Len(Txt) > 0
 		Local Space% = Instr(Txt, SplitSpace)
 		
-		If Space = 0 Then Space = Len(Txt)
+		If Space = 0 Then Space = Min(W * Len(Txt) / Max(StringWidth(Txt), 1), Len(Txt))
 		
 		Local Temp$ = Left(Txt, Space)
 		Local Trimmed$ = Trim(Temp) ; ~ We might ignore a final space
