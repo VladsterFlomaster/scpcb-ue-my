@@ -32,7 +32,6 @@ Function LoadTextureCheckingIfInCache%(TexName$, TexFlags% = 1, DeleteType% = De
 	tic.TextureInCache = New TextureInCache
 	tic\TexName = StrippedName
 	tic\TexDeleteType = DeleteType
-	DebugLog(TexName)
 	If FileType(lang\LanguagePath + CurrPath) = 1 Then CurrPath = lang\LanguagePath + CurrPath
 	tic\Tex = LoadTexture(CurrPath, TexFlags)
 	If tic\Tex = 0

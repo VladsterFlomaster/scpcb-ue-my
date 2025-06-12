@@ -3754,6 +3754,7 @@ Function NullGame%(PlayButtonSFX% = True)
 	Mesh_MaxX = 0.0 : Mesh_MaxY = 0.0 : Mesh_MaxZ = 0.0
 	Mesh_MagX = 0.0 : Mesh_MagY = 0.0 : Mesh_MagZ = 0.0
 	
+	InitializeIntroMovie = False
 	For i = 0 To 24
 		CommotionState[i] = False
 	Next
