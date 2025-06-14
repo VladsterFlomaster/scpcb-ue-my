@@ -9973,7 +9973,7 @@ Function UpdateEvent_Tesla%(e.Events)
 								EntityColor(n\OBJ, 40.0, 40.0, 40.0)
 								If n\NPCType = NPCType173 Then EntityColor(n\OBJ2, 40.0, 40.0, 40.0)
 							EndIf
-							If opt\ParticleAmount > 0
+							If opt\ParticleAmount > 0 And n\NPCType <> NPCType1048_A And n\NPCType <> NPCTypeCockroach
 								emit.Emitter = SetEmitter(Null, EntityX(n\OBJ, True), EntityY(n\OBJ, True), EntityZ(n\OBJ, True), 14)
 								EntityParent(emit\Owner, n\OBJ)
 							EndIf
