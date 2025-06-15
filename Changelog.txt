@@ -2,10 +2,15 @@
 
 [Global]
 - Add new particles.
+- HUD shakes when sanity is low.
 
 [NPCs]
 - Added cockroach.
 - Can only be afflicted by SCP-009 when it is liquified.
+- NPCs affected  by SCP-009 can infect the player with it.
+
+[Items]
+- Added usage timer for eyedrops and syringes.
 
 [Rooms]
 - SCP-009's cooling is faster.
@@ -34,6 +39,8 @@
 - Fixed memory leaks.
 - Fixed S-Nav Navigator working without batteries.
 - Fixed color of the elevator buttons that can be called to player.
+- Fixed SCP-049's audio continuing after being hit by tesla gate.
+- Fix breath steam.
 
 [Known issues]
 - Rooms can overlap and block the way.
