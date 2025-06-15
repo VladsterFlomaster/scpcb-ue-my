@@ -1160,6 +1160,15 @@ Function FillRoom%(r.Rooms)
 				r\Objects[4] = CreatePivot()
 				PositionEntity(r\Objects[4], r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 211.0 * RoomScale)
 				EntityParent(r\Objects[4], r\OBJ)
+				
+				de.Decals = CreateDecal(DECAL_FOAM, r\x - 512.0 * RoomScale, r\y + 0.005, r\z + 164.0 * RoomScale, 90.0, Rnd(360.0), 0.0, Rnd(0.3, 0.4), 0.8)
+				EntityParent(de\OBJ, r\OBJ)
+				
+				de.Decals = CreateDecal(DECAL_FOAM, r\x - 396.0 * RoomScale, r\y + 179.0 * RoomScale, r\z + 197.0 * RoomScale, 0.0, 270.0, 0.0, 0.17, 0.8)
+				EntityParent(de\OBJ, r\OBJ)
+				
+				de.Decals = CreateDecal(DECAL_FOAM, r\x - 352.5 * RoomScale, r\y + 171.0 * RoomScale, r\z + 232.0 * RoomScale, 0.0, 270.0, 0.0, Rnd(0.5, 0.6), 0.8)
+				EntityParent(de\OBJ, r\OBJ)
 			EndIf
 			
 			r\RoomLevers.Levers[1] = CreateLever(r, r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 132.0 * RoomScale, -90.0, True)
@@ -1181,7 +1190,7 @@ Function FillRoom%(r.Rooms)
 			
 			For r2.Rooms = Each Rooms
 				If r2 <> r
-					If r2\RoomTemplate\RoomID = r_room2_tesla_lcz Lor r2\RoomTemplate\RoomID = r_room2_tesla_hcz Lor r2\RoomTemplate\RoomID = r_room2_tesla_ez
+					If r2\RoomTemplate\RoomID = r_room2_tesla_lcz Lor r2\RoomTemplate\RoomID = r_room2_tesla_hcz Lor r2\RoomTemplate\RoomID = r_room2_tesla_2_hcz Lor r2\RoomTemplate\RoomID = r_room2_tesla_ez
 						r\Objects[2] = CopyEntity(r2\Objects[2]) ; ~ Don't load the mesh again
 						Exit
 					EndIf
