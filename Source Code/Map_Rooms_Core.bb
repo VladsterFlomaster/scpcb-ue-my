@@ -2356,6 +2356,33 @@ Function FillRoom%(r.Rooms)
 			RotateEntity(r\Objects[0], 0.0, -90.0, 0.0)
 			PositionEntity(r\Objects[0], r\x + 374.0 * RoomScale, r\y, r\z - 830.0 * RoomScale)
 			EntityParent(r\Objects[0], r\OBJ)
+			
+			If Rand(3) = 1
+				Select Rand(4)
+					Case 1
+						;[Block]
+						xTemp = 862.0
+						zTemp = 885.0
+						;[End Block]
+					Case 2
+						;[Block]
+						xTemp = 862.0
+						zTemp = 701.0
+						;[End Block]
+					Case 3
+						;[Block]
+						xTemp = 862.0
+						zTemp = -697.0
+						;[End Block]
+					Case 4
+						;[Block]
+						xTemp = 862.0
+						zTemp = -880.0
+						;[End Block]
+				End Select
+				emit.Emitter = SetEmitter(r, r\x + xTemp * RoomScale, r\y + 141.0 * RoomScale, r\z + zTemp * RoomScale, 17)
+				emit\State = 3
+			EndIf
 			;[End Block]
 		Case r_room2_mt
 			;[Block]
