@@ -87,9 +87,9 @@ Const e_brownout% = 67
 Const e_checkpoint% = 68
 Const e_door_closing% = 69
 Const e_gateway% = 70
-Const e_tesla% = 71
-Const e_trick% = 72, e_trick_item% = 73
-Const e_dimension_106% = 74, e_dimension_1499% = 75
+Const e_tesla% = 71, e_broken_tesla% = 72
+Const e_trick% = 73, e_trick_item% = 74
+Const e_dimension_106% = 75, e_dimension_1499% = 76
 ;[End Block]
 
 ; ~ For Map Creator
@@ -386,6 +386,10 @@ Function FindEventID%(EventName$)
 		Case "tesla"
 			;[Block]
 			Return(e_tesla)
+			;[End Block]
+		Case "broken_tesla"
+			;[Block]
+			Return(e_broken_tesla)
 			;[End Block]
 		Case "trick"
 			;[Block]
@@ -939,6 +943,10 @@ Function UpdateEvents%()
 			Case e_tesla
 				;[Block]
 				UpdateEvent_Tesla(e)
+				;[End Block]
+			Case e_broken_tesla
+				;[Block]
+				UpdateEvent_Broken_Tesla(e)
 				;[End Block]
 			Case e_trick
 				;[Block]

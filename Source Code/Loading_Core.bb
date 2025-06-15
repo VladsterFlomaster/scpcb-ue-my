@@ -95,7 +95,7 @@ Function RemoveDecalInstances%()
 	Delete(de_I) : de_I = Null
 End Function
 
-Const MaxParticleTextureIDAmount% = 13
+Const MaxParticleTextureIDAmount% = 14
 
 Type ParticleInstance
 	Field ParticleTextureID%[MaxParticleTextureIDAmount]
@@ -128,9 +128,11 @@ Const PARTICLE_LEAF% = 10
 Const PARTICLE_CONCRETE% = 11
 
 Const PARTICLE_FLY% = 12
+
+Const PARTICLE_FIRE% = 13
 ;[End Block]
 
-Global ParticleEffect%[31]
+Global ParticleEffect%[32]
 
 Function LoadParticles%()
 	p_I.ParticleInstance = New ParticleInstance
@@ -158,6 +160,8 @@ Function LoadParticles%()
 	p_I\ParticleTextureID[PARTICLE_CONCRETE] = LoadTexture_Strict("GFX\Particles\concrete.png", 1 + 2, DeleteAllTextures, False)
 	
 	p_I\ParticleTextureID[PARTICLE_FLY] = LoadTexture_Strict("GFX\Particles\fly.png", 1 + 2, DeleteAllTextures, False)
+	
+	p_I\ParticleTextureID[PARTICLE_FIRE] = LoadTexture_Strict("GFX\Particles\fire.png", 1 + 2, DeleteAllTextures, False)
 	
 	; ~ Black smoke in "room2c_gw_lcz"/"room2_6_hcz"/"cont1_035"
 	ParticleEffect[0] = CreateTemplate()
@@ -532,6 +536,19 @@ Function LoadParticles%()
 	SetTemplateOffset(ParticleEffect[30], -0.1, 0.1, 0.0, 0.3, -0.1, 0.1)
 	SetTemplateVelocity(ParticleEffect[30], -0.01, 0.01, -0.01, 0.01, -0.01, 0.01)
 	SetTemplateSize(ParticleEffect[30], 0.008, 0.008, 0.9, 1.1)
+	
+	; ~ Fire
+	ParticleEffect[31] = CreateTemplate()
+	SetTemplateEmitterBlend(ParticleEffect[31], 3)
+	SetTemplateEmitterLifeTime(ParticleEffect[31], -1)
+	SetTemplateInterval(ParticleEffect[31], 3)
+	SetTemplateParticleLifeTime(ParticleEffect[31], 40, 45)
+	SetTemplateTexture(ParticleEffect[31], PARTICLE_FIRE)
+	SetTemplateOffset(ParticleEffect[31], -0.01, 0.01, -0.01, 0.01, -0.01, 0.01)
+	SetTemplateVelocity(ParticleEffect[31], -0.005, 0.005, -0.005, 0.02, -0.005, 0.005)
+	SetTemplateAlphaVel(ParticleEffect[31], True)
+	SetTemplateSize(ParticleEffect[31], 0.04, 0.04, 0.5, 1.0)
+	SetTemplateSizeVel(ParticleEffect[31], 0.01, 1.01)
 End Function
 
 Function RemoveParticleInstances%()
@@ -1602,6 +1619,7 @@ Type SoundInstance
 	Field SparkShortSFX%
 	Field SinkHoleSFX%
 	Field WatchesSFX%
+	Field FireSFX%
 End Type
 
 Global snd_I.SoundInstance
@@ -1844,6 +1862,8 @@ Function LoadSounds%()
 	snd_I\WatchesSFX = LoadSound_Strict("SFX\Room\Watches.ogg")
 	
 	I_1123\Sound = LoadSound_Strict("SFX\SCP\1123\Ambient.ogg")
+	
+	snd_I\FireSFX = LoadSound_Strict("SFX\Room\Fire.ogg")
 End Function
 
 Function RemoveSoundInstances%()
@@ -1990,6 +2010,8 @@ Function RemoveSoundInstances%()
 	snd_I\SinkHoleSFX = 0
 	
 	snd_I\WatchesSFX = 0
+	
+	snd_I\FireSFX = 0
 	
 	Delete(snd_I) : snd_I = Null
 End Function
@@ -2159,6 +2181,7 @@ Function LoadEvents%()
 	
 	CreateEvent(e_tesla, r_room2_tesla_lcz, 0, 1.0)
 	CreateEvent(e_tesla, r_room2_tesla_hcz, 0, 1.0)
+	CreateEvent(e_broken_tesla, r_room2_tesla_2_hcz, 0, 1.0)
 	CreateEvent(e_tesla, r_room2_tesla_ez, 0, 1.0)
 	
 	CreateEvent(e_room4_2_hcz_d, r_room4_2_hcz, 0)

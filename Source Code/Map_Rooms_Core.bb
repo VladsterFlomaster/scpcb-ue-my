@@ -1136,18 +1136,33 @@ Function FillRoom%(r.Rooms)
 			it.Items = CreateItem("Level 0 Key Card", it_key0, r\x - 672.0 * RoomScale, r\y + 240.0 * RoomScale, r\z + 224.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			;[End Block]
-		Case r_room2_tesla_lcz, r_room2_tesla_hcz, r_room2_tesla_ez
+		Case r_room2_tesla_lcz, r_room2_tesla_hcz, r_room2_tesla_2_hcz, r_room2_tesla_ez
 			;[Block]
 			; ~ Tesla gate control door
-			d.Doors = CreateDoor(r, r\x - 288.0 * RoomScale, r\y, r\z + 576.0 * RoomScale, 90.0, False, DEFAULT_DOOR, KEY_CARD_4)
+			d.Doors = CreateDoor(r, r\x - 288.0 * RoomScale, r\y, r\z + 576.0 * RoomScale, 90.0, r\RoomTemplate\RoomID = r_room2_tesla_2_hcz, DEFAULT_DOOR, KEY_CARD_4)
 			r\RoomDoors.Doors[0] = d
 			
-			r\RoomLevers.Levers[0] = CreateLever(r, r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 212.0 * RoomScale, -90.0, True)
+			If r\RoomTemplate\RoomID <> r_room2_tesla_2_hcz
+				r\RoomLevers.Levers[0] = CreateLever(r, r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 212.0 * RoomScale, -90.0, True)
+				
+				sc.SecurityCams = CreateSecurityCam(r, r\x, r\y + 704.0 * RoomScale, r\z - 953.0 * RoomScale, 30.0, True, r\x - 390.0 * RoomScale, r\y + 204.0 * RoomScale, r\z + 34.0 * RoomScale, 0.0, -90.0, 0.0)
+				sc\Turn = 0.0
+				If Rand(2) = 1 Then sc\PlayerState = Rand(700.0)
+			Else
+				r\RoomDoors[0]\MTFClose = False
+				
+				sc.SecurityCams = CreateSecurityCam(r, r\x, r\y + 704.0 * RoomScale, r\z - 953.0 * RoomScale, 30.0)
+				sc\Turn = 0.0
+				
+				emit.Emitter = SetEmitter(r, r\x - 394.0 * RoomScale, r\y + 197.0 * RoomScale, r\z + 211.0 * RoomScale, 31)
+				emit\State = 4
+				
+				r\Objects[4] = CreatePivot()
+				PositionEntity(r\Objects[4], r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 211.0 * RoomScale)
+				EntityParent(r\Objects[4], r\OBJ)
+			EndIf
 			
 			r\RoomLevers.Levers[1] = CreateLever(r, r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 132.0 * RoomScale, -90.0, True)
-			
-			sc.SecurityCams = CreateSecurityCam(r, r\x, r\y + 704.0 * RoomScale, r\z - 953.0 * RoomScale, 30.0, True, r\x - 390.0 * RoomScale, r\y + 204.0 * RoomScale, r\z + 34.0 * RoomScale, 0.0, -90.0, 0.0)
-			sc\Turn = 0.0 : If Rand(2) = 1 Then sc\PlayerState = Rand(700.0)
 			
 			r\Objects[0] = CreateSprite()
 			r\ScriptedObject[0] = True

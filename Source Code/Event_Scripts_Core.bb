@@ -10041,6 +10041,172 @@ Function UpdateEvent_Tesla%(e.Events)
 	EndIf
 End Function
 
+Function UpdateEvent_Broken_Tesla%(e.Events)
+	If e\room\Dist < 16.0
+		Local n.NPCs, e2.Events
+		Local i%, x1#, y1#, z1#, x2#, y2#, z2#
+		
+		If PlayerRoom = e\room
+			UpdateLever(e\room\RoomLevers[1]\OBJ)
+			
+			e\SoundCHN = LoopSoundEx(snd_I\AlarmSFX[1], e\SoundCHN, Camera, e\room\Objects[4], 3.0)
+			
+			If EntityDistanceSquared(me\Collider, e\room\Objects[0]) < 9.0
+				If Rand(50) = 1
+					SetTemplateVelocity(ParticleEffect[19], -0.007, -0.008, -0.001, 0.0012, -0.007, 0.008)
+					SetEmitter(e\room, EntityX(e\room\Objects[4], True), EntityY(e\room\Objects[4], True), EntityZ(e\room\Objects[4], True), 19)
+					PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\Objects[4], 3.0, 0.4)
+				EndIf
+			EndIf
+		EndIf
+		
+		Select e\EventState
+			Case 0.0 ; ~ Idle state
+				;[Block]
+				HideEntity(e\room\Objects[0])
+				e\EventState2 = 0.0
+				x2 = EntityX(e\room\OBJ, True) : z2 = EntityZ(e\room\OBJ, True) : y2 = EntityY(e\room\OBJ, True)
+				For n.NPCs = Each NPCs
+					If (Not n\IsDead)
+						x1 = EntityX(n\Collider, True) : z1 = EntityZ(n\Collider, True) : y1 = EntityY(n\Collider, True)
+						If n\NPCType = NPCTypeMTF And e\room\NPC[1] = Null
+							If IsEqual(x1, x2, 2.0) And IsEqual(z1, z2, 2.0) And IsEqual(y1, y2, 1.3)
+								n\PrevState = 1
+								n\PathTimer = 0.0
+								n\PathStatus = PATH_STATUS_NO_SEARCH
+								n\State3 = 70.0 * 10.0
+								
+								n\State = MTF_DISABLING_TESLA
+								e\room\NPC[1] = n
+							EndIf
+						EndIf
+					EndIf
+				Next
+				If e\room\NPC[1] <> Null
+					If e\room\NPC[1]\State3 <= 0.0
+						StopChannel(e\SoundCHN) : e\SoundCHN = 0
+						PlayAnnouncement("SFX\Character\MTF\AnnouncTeslaDisabled" + Rand(0, 2) + ".ogg")
+						e\room\NPC[1] = Null
+					EndIf
+				EndIf
+				If ChannelPlaying(e\SoundCHN) Then StopChannel(e\SoundCHN) : e\SoundCHN = 0
+				e\SoundCHN = PlaySoundEx(snd_I\TeslaActivateSFX, Camera, e\room\Objects[0], 4.0, 0.5)
+				If Rand(4) = 1
+					e\EventState2 = -70.0 * 5.0
+					e\EventState = 3.0
+				Else
+					e\EventState = 1.0
+				EndIf
+				;[End Block]
+			Case 1.0 ; ~ Charge state
+				;[Block]
+				UpdateRedLight(e\room\Objects[1], 100, 50)
+				e\EventState2 = e\EventState2 + fps\Factor[0]
+				If e\EventState2 >= 35.0
+					StopChannel(e\SoundCHN2) : e\SoundCHN2 = 0
+					e\SoundCHN2 = PlaySoundEx(snd_I\TeslaShockSFX, Camera, e\room\Objects[0])
+					e\EventState = 2.0
+				EndIf
+				;[End Block]
+			Case 2.0 ; ~ Zap state
+				;[Block]
+				Local emit.Emitter
+				
+				x2 = EntityX(e\room\OBJ, True) : z2 = EntityZ(e\room\OBJ, True) : y2 = EntityY(e\room\OBJ, True)
+				If IsEqual(EntityX(me\Collider, True), x2, 0.75) And IsEqual(EntityZ(me\Collider, True), z2, 0.75) And IsEqual(EntityY(me\Collider, True), y2, 1.3)
+					If (Not me\Terminated)
+						If opt\ParticleAmount > 0
+							emit.Emitter = SetEmitter(Null, EntityX(me\Collider, True), EntityY(me\Collider, True), EntityZ(me\Collider, True), 14)
+							EntityParent(emit\Owner, me\Collider)
+						EndIf
+						me\LightFlash = 0.4
+						me\CameraShake = 1.0
+						msg\DeathMsg = Format(GetLocalString("death", "tesla"), SubjectName)
+						Kill()
+					EndIf
+				EndIf
+				For n.NPCs = Each NPCs
+					If n\NPCType <> NPCType513_1 And (Not n\IsDead)
+						If n\NPCType = NPCTypeClerk
+							e\room\RoomDoors[0]\Locked = 0
+							n\State3 = 1.0
+						EndIf
+						If IsEqual(EntityX(n\Collider, True), x2, 0.6) And IsEqual(EntityZ(n\Collider, True), z2, 0.6) And IsEqual(EntityY(n\Collider, True), y2, 1.3)
+							n\CurrSpeed = 0.0
+							n\HP = 0
+							If n\NPCType <> NPCType106
+								n\TeslaHit = True
+								EntityColor(n\OBJ, 40.0, 40.0, 40.0)
+								If n\NPCType = NPCType173 Then EntityColor(n\OBJ2, 40.0, 40.0, 40.0)
+							EndIf
+							If opt\ParticleAmount > 0 And n\NPCType <> NPCType1048_A And n\NPCType <> NPCTypeCockroach
+								emit.Emitter = SetEmitter(Null, EntityX(n\OBJ, True), EntityY(n\OBJ, True), EntityZ(n\OBJ, True), 14)
+								EntityParent(emit\Owner, n\OBJ)
+							EndIf
+							Select n\NPCType
+								Case NPCType106
+									;[Block]
+									GiveAchievement("tesla")
+									n\State = 4.0
+									;[End Block]
+								Case NPCType049
+									;[Block]
+									If n\State <> 3.0 Then n\State = 5.0
+									;[End Block]
+								Case NPCType966
+									;[Block]
+									ShowEntity(n\OBJ)
+									;[End Block]
+;								Case NPCType999
+;									;[Block]
+;									n\EnemyX = 0.0
+;									n\EnemyY = 0.0
+;									n\EnemyZ = 0.0
+;									n\State = 4.0
+;									;[End Block]
+							End Select
+							If e\room\Dist < 6.0 And (EntityInView(n\Collider, Camera) And EntityVisible(me\Collider, n\Collider)) Then me\LightFlash = 0.3
+						EndIf
+					EndIf
+				Next
+				If Rand(5) < 5
+					PositionTexture(t\OverlayTextureID[3], 0.0, Rnd(0.0, 1.0))
+					If EntityHidden(e\room\Objects[0]) Then ShowEntity(e\room\Objects[0])
+					If e\room\Dist < 6.0 Then LightVolume = TempLightVolume * Rnd(1.0, 2.0)
+				EndIf
+				e\EventState2 = e\EventState2 - (fps\Factor[0] * 1.5)
+				If e\EventState2 <= 0.0
+					StopChannel(e\SoundCHN) : e\SoundCHN = 0
+					e\SoundCHN = PlaySoundEx(snd_I\TeslaPowerUpSFX, Camera, e\room\Objects[0], 4.0, 0.5)
+					e\EventState = 3.0
+					e\EventState2 = -70.0 * 5.0
+				EndIf
+				;[End Block]
+			Case 3.0 ; ~ Recharge state
+				;[Block]
+				e\EventState2 = e\EventState2 + fps\Factor[0]
+				For i = 0 To 1
+					If (Not EntityHidden(e\room\Objects[i])) Then HideEntity(e\room\Objects[i])
+				Next
+				If e\EventState2 >= 0.0 Then e\EventState = 0.0
+				;[End Block]
+		End Select
+		If EntityPitch(e\room\RoomLevers[1]\OBJ) < 0.0
+			e\EventState4 = Min(e\EventState4 + fps\Factor[0], 0.0)
+		Else
+			e\EventState4 = Max(e\EventState4 - fps\Factor[0], -196.0)
+		EndIf
+		If e\EventState4 < 0.0 And e\EventState4 > -196.0
+			e\BlindsCHN = LoopSoundEx(snd_I\BlindsSFX, e\BlindsCHN, Camera, e\room\Objects[3], 2.0)
+		Else
+			StopChannel(e\BlindsCHN) : e\BlindsCHN = 0
+		EndIf
+		
+		PositionEntity(e\room\Objects[2], 0.0, e\EventState4, 0.0)
+		UpdateSoundOrigin(e\BlindsCHN, Camera, e\room\Objects[3])
+	EndIf
+End Function
+
 Function UpdateEvent_Trick%(e.Events)
 	If PlayerRoom = e\room
 		If e\room\Dist < 2.0
