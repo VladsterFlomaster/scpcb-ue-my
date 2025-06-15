@@ -10087,6 +10087,9 @@ Function UpdateEvent_Broken_Tesla%(e.Events)
 						StopChannel(e\SoundCHN) : e\SoundCHN = 0
 						PlayAnnouncement("SFX\Character\MTF\AnnouncTeslaDisabled" + Rand(0, 2) + ".ogg")
 						e\room\NPC[1] = Null
+						e\EventState2 = -70.0 * 90.0
+						e\EventState = 3.0
+						Return
 					EndIf
 				EndIf
 				If ChannelPlaying(e\SoundCHN) Then StopChannel(e\SoundCHN) : e\SoundCHN = 0
