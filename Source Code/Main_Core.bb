@@ -6806,7 +6806,7 @@ End Function
 Function RenderHUD%()
 	If me\Terminated Lor me\FallTimer < 0.0 Lor me\Playable < 2 Then Return
 	
-	Local x% = 80 * MenuScale, y% = opt\GraphicHeight - (15 * MenuScale)
+	Local x% = (80 + ((me\Sanity < -200.0) * Rand(-2, 2))) * MenuScale, y% = opt\GraphicHeight - ((15 + ((me\Sanity < -200.0) * Rand(-2, 2))) * MenuScale)
 	Local Width% = 200 * MenuScale, Height% = 20 * MenuScale
 	Local WalkIconID%, BlinkIconID%
 	Local i%
