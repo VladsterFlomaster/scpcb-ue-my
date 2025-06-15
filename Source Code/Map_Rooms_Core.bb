@@ -3165,17 +3165,12 @@ Function FillRoom%(r.Rooms)
 			d.Doors = CreateDoor(r, r\x + 682.0 * RoomScale, r\y, r\z + 544.0 * RoomScale, 90.0, False, OFFICE_DOOR)
 			d\Locked = 1 : d\DisableWaypoint = True d\MTFClose = False
 			
-			d.Doors = CreateDoor(r, r\x + 1612.0 * RoomScale, r\y, r\z + 488.0 * RoomScale, 270.0, False, ELEVATOR_DOOR)
+			d.Doors = CreateDoor(r, r\x + 1612.0 * RoomScale, r\y, r\z + 388.0 * RoomScale, 270.0, False, ELEVATOR_DOOR)
 			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
 			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
 			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
 			
-			d.Doors = CreateDoor(r, r\x + 1612.0 * RoomScale, r\y, r\z, 270.0, False, ELEVATOR_DOOR)
-			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
-			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
-			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
-			
-			d.Doors = CreateDoor(r, r\x + 1612.0 * RoomScale, r\y, r\z - 488.0 * RoomScale, 270.0, False, ELEVATOR_DOOR)
+			d.Doors = CreateDoor(r, r\x + 1612.0 * RoomScale, r\y, r\z - 388.0 * RoomScale, 270.0, False, ELEVATOR_DOOR)
 			d\Locked = 1 : d\DisableWaypoint = True : d\MTFClose = False
 			FreeEntity(d\Buttons[1]) : d\Buttons[1] = 0
 			FreeEntity(d\ElevatorPanel[0]) : d\ElevatorPanel[0] = 0
