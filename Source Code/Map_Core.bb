@@ -3660,7 +3660,7 @@ Function UseDoor%(PlaySFX% = True)
 							EndIf
 						Else
 							If Temp = KEY_005
-								If SelectedItem <> Null And SelectedItem\ItemTemplate\ID = it_coarse005 Then BreakTheDoor = True
+								If SelectedItem\ItemTemplate\ID = it_coarse005 Then BreakTheDoor = True
 								CreateMsg(GetLocalString("msg", "key.005"))
 							Else
 								If Temp < d_I\ClosestDoor\KeyCard
@@ -3713,7 +3713,7 @@ Function UseDoor%(PlaySFX% = True)
 						Else
 							If Temp = KEY_005
 								CreateMsg(GetLocalString("msg", "dna.granted.005"))
-								If SelectedItem <> Null And SelectedItem\ItemTemplate\ID = it_coarse005 Then BreakTheDoor = True
+								If SelectedItem\ItemTemplate\ID = it_coarse005 Then BreakTheDoor = True
 							Else
 								CreateMsg(GetLocalString("msg", "dna.granted"))
 							EndIf
