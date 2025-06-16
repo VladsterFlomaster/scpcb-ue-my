@@ -630,8 +630,10 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 							End Select
 						Next
 						If Dist < 3.24 And (Not (chs\NoTarget Lor I_268\InvisibilityOn))
-							n\State = 2.0
-							Return
+							If EntityVisible(n\Collider, me\Collider)
+								n\State = 2.0
+								Return
+							EndIf
 						EndIf
 						n\TargetUpdateTimer = 35.0
 					Else
@@ -685,7 +687,7 @@ Function UpdateNPCType035_Tentacle%(n.NPCs)
 							Else
 								If EntityDistanceSquared(n\Collider, n\Target\Collider) < 3.24
 									If Abs(DeltaYaw(n\Collider, n\Target\Collider)) < 20.0
-										PlaySound_Strict(snd_I\DamageSFX[Rand(9, 10)])
+										PlaySoundEx(snd_I\DamageSFX[Rand(9, 10)], Camera, n\Collider)
 										If n\Target\HP > 0
 											n\Target\HP = Max(n\Target\HP - Rnd(40.0, 80.0), 0.0)
 										Else
