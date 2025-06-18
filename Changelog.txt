@@ -1,24 +1,49 @@
 {1.5.6}
 
 [Global]
-- Add new particles.
+- Added new particles.
+
 - HUD shakes when sanity is low.
+- Blood decals won't appear when bleeding if player is wearing a hazmat suit.
+
+- Remove dplayx library.
+- Optimized the game...
 
 [NPCs]
 - Added cockroach.
+
 - Can only be afflicted by SCP-009 when it is liquified.
-- NPCs affected  by SCP-009 can infect the player with it.
+- NPCs affected by SCP-009 can infect the player with it.
+- Improved texture of femur breaker victim.
 
 [Items]
 - Added usage timer for eyedrops and syringes.
 
 [Rooms]
+- Added new tesla gate variation.
+- Added some sounds for «room2_2_hcz_106» event.
+
 - SCP-009's cooling is faster.
-- Change hand scanner type of »room2c_gw_lcz» to black.
+- Changed hand scanner type of »room2c_gw_lcz» to black.
+
+- Design improvements for some rooms...
 
 [Bug Fixes]
+- Fixed SCP-1048's gravity.
+- Fixed some player's animations.
 - Fixed double achievement of Command room.
 - Fixed Gate B lighting.
+- Fixed memory leaks.
+- Fixed guard's interaction with SCP-009.
+- Fixed soft lock when SCP-049 leaves the surveillance room.
+
+- Reduced the probability of «Failed to Load Texture» error. If the texture cannot load, it will be replaced with a black empty texture.
+
+[Known issues]
+- Rooms can overlap and block the way.
+- Tabbing out of the game and tabbing back in freezes the game view/turning off monitor freezes the game.
+- Battery issues caused by having multiple night vision devices.
+- Corrosive door textures not saving correctly.
 
 {1.5.5}
 
