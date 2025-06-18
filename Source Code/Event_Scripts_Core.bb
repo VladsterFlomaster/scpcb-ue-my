@@ -454,29 +454,33 @@ Function UpdateEvent_Cont1_173%(e.Events)
 			EndIf
 		EndIf
 		
-		If e\EventState < 2000.0 Then e\SoundCHN = LoopSoundEx(RoomAmbience[5], e\SoundCHN, Camera, e\room\OBJ, 100.0)
+		Local Reachable% = PlayerInReachableRoom(True)
+		
+		If e\EventState < 2000.0 And Reachable Then e\SoundCHN = LoopSoundEx(RoomAmbience[5], e\SoundCHN, Camera, e\room\OBJ, 100.0)
 		If e\EventState3 < 11.0
 			If (Not ChannelPlaying(e\SoundCHN2))
 				e\EventState3 = e\EventState3 + 1.0
 				
-				LoadEventSound(e, "SFX\Alarm\Alarm1_" + Int(e\EventState3) + ".ogg", 1)
-				e\SoundCHN2 = PlaySound_Strict(e\Sound2, (e\EventState3 = 1.0))
+				If Reachable
+					LoadEventSound(e, "SFX\Alarm\Alarm1_" + Int(e\EventState3) + ".ogg", 1)
+					e\SoundCHN2 = PlaySound_Strict(e\Sound2, (e\EventState3 = 1.0))
+				EndIf
 			Else
-				If Int(e\EventState3) = 8.0 Then me\BigCameraShake = 1.0
+				If Int(e\EventState3) = 8.0 And Reachable Then me\BigCameraShake = 1.0
 			EndIf
 		EndIf
 		If (e\EventState Mod 600.0 > 300.0) And ((e\EventState + fps\Factor[0]) Mod 600.0 < 300.0)
 			i = Floor((e\EventState - 5000.0) / 600.0) + 1.0
 			
 			If i = 0
-				PlaySound_Strict(LoadTempSound("SFX\Room\Intro\IA\Scripted\Scripted5.ogg"))
+				If Reachable Then PlaySound_Strict(LoadTempSound("SFX\Room\Intro\IA\Scripted\Scripted5.ogg"))
 				CreateHintMsg(Format(GetLocalString("msg", "crouch"), key\Name[key\CROUCH]), 6.0, True)
 			ElseIf i = 2
 				CreateHintMsg(GetLocalString("msg", "item.combine.swap"), 6.0, True)
 			ElseIf i = 3
 				CreateHintMsg(GetLocalString("msg", "right.click"), 6.0, True)
 			EndIf
-			If i > 0 And i < 26
+			If Reachable And (i > 0 And i < 26)
 				If (Not CommotionState[i]) ; ~ Prevents the same commotion file from playing more then once
 					PlaySound_Strict(LoadTempSound("SFX\Room\Intro\Commotion\Commotion" + (i - 1) + ".ogg"))
 					CommotionState[i] = True

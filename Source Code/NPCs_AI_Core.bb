@@ -4831,7 +4831,7 @@ Function UpdateNPCTypeCockroach%(n.NPCs)
 	If n\HP =< 0
 		Local Pvt% = CreatePivot()
 		
-		PositionEntity(Pvt, EntityX(n\Collider) + Rnd(-0.05, 0.05),  EntityY(n\Collider) - 0.05, EntityZ(n\Collider) + Rnd(-0.05, 0.05))
+		PositionEntity(Pvt, EntityX(n\Collider) + Rnd(-0.05, 0.05), EntityY(n\Collider) - 0.05, EntityZ(n\Collider) + Rnd(-0.05, 0.05))
 		TurnEntity(Pvt, 90.0, 0.0, 0.0)
 		If EntityPick(Pvt, 0.3)
 			Local de.Decals = CreateDecal(Rand(DECAL_BLOOD_DROP_1, DECAL_BLOOD_DROP_2), PickedX(), PickedY() + 0.005, PickedZ(), 90.0, Rnd(360.0), 0.0, Rnd(0.02, 0.03))
@@ -6842,4 +6842,4 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS

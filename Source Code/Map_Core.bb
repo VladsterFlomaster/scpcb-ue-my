@@ -3752,12 +3752,12 @@ Function UseDoor%(PlaySFX% = True)
 						CreateMsg(GetLocalString("msg", "keypad.nothappend"))
 					EndIf
 				EndIf
+				If SelectedItem\ItemTemplate\ID = it_coarse005 Then BreakTheDoor = True
 				SelectedItem = Null
 				
 				If (d_I\ClosestDoor\Locked = 0) And (d_I\ClosestDoor\Code <> CODE_LOCKED) And (Temp = KEY_005)
 					PlaySoundEx(snd_I\ScannerSFX[0], Camera, d_I\ClosestButton)
 					SetPlayerModelAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, d_I\ClosestButton)
-					If SelectedItem <> Null And SelectedItem\ItemTemplate\ID = it_coarse005 Then BreakTheDoor = True
 				Else
 					PlaySoundEx(snd_I\ScannerSFX[1], Camera, d_I\ClosestButton)
 					SetPlayerModelAnimation(PLAYER_ANIM_LEFT_INTERACT + me\Crouch, d_I\ClosestButton)
@@ -6604,4 +6604,4 @@ Function RemoveChunkPart%(chp.ChunkPart)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS
