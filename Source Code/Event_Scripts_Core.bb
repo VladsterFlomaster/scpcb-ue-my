@@ -10051,11 +10051,19 @@ Function UpdateEvent_Broken_Tesla%(e.Events)
 			
 			e\SoundCHN = LoopSoundEx(snd_I\AlarmSFX[1], e\SoundCHN, Camera, e\room\Objects[4], 3.0)
 			
-			If EntityDistanceSquared(me\Collider, e\room\Objects[0]) < 9.0
+			If EntityDistanceSquared(me\Collider, e\room\Objects[4]) < 9.0
 				If Rand(50) = 1
 					SetTemplateVelocity(ParticleEffect[19], -0.007, -0.008, -0.001, 0.0012, -0.007, 0.008)
 					SetEmitter(e\room, EntityX(e\room\Objects[4], True), EntityY(e\room\Objects[4], True), EntityZ(e\room\Objects[4], True), 19)
 					PlaySoundEx(snd_I\SparkShortSFX, Camera, e\room\Objects[4], 3.0, 0.4)
+				EndIf
+			EndIf
+			If EntityDistanceSquared(me\Collider, e\room\Objects[5]) < 0.16
+				If Rand(75 + ((wi\HazmatSuit > 0) * 230)) = 1
+					If me\Injuries < 1.5 And (Not chs\GodMode)
+						PlaySound_Strict(LoadTempSound("SFX\SCP\294\Burn.ogg"))
+						InjurePlayer(1.5)
+					EndIf
 				EndIf
 			EndIf
 		EndIf

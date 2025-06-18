@@ -1161,6 +1161,10 @@ Function FillRoom%(r.Rooms)
 				PositionEntity(r\Objects[4], r\x - 367.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 211.0 * RoomScale)
 				EntityParent(r\Objects[4], r\OBJ)
 				
+				r\Objects[5] = CreatePivot()
+				PositionEntity(r\Objects[5], r\x - 400.0 * RoomScale, r\y + 142.0 * RoomScale, r\z + 201.0 * RoomScale)
+				EntityParent(r\Objects[5], r\OBJ)
+				
 				de.Decals = CreateDecal(DECAL_FOAM, r\x - 512.0 * RoomScale, r\y + 0.005, r\z + 164.0 * RoomScale, 90.0, Rnd(360.0), 0.0, Rnd(0.3, 0.4), 0.8)
 				EntityParent(de\OBJ, r\OBJ)
 				
