@@ -820,21 +820,9 @@ Function UpdateNPCs%()
 							FreeEntity(Pvt) : Pvt = 0
 							PlaySoundEx(LoadTempSound("SFX\Room\PocketDimension\Impact.ogg"), Camera, n\Collider, 4.0, 0.8)
 							
-							HideEntity(n\Collider)
-							HideEntity(n\OBJ)
 							RemoveSound = True
 							n\GravityMult = 0.0
 						EndIf
-						;[End Block]
-					Case NPCType1048_A
-						;[Block]
-						HideEntity(n\Collider)
-						HideEntity(n\OBJ)
-						
-						RemoveSound = True
-						
-						n\HideFromNVG = True
-						n\GravityMult = 0.0
 						;[End Block]
 					Case NPCTypeGuard
 						;[Block]
@@ -878,7 +866,6 @@ Function UpdateNPCs%()
 								; ~ Remove the pivot for optimization. Do not allow the player pick up this weapon again. Can be restored by reloading the game, it's normal
 								HandEntity = 0
 								FreeEntity(n\OBJ3) : n\OBJ3 = 0
-								;Exit
 							EndIf
 						EndIf
 					EndIf
@@ -1860,4 +1847,4 @@ Function UpdateNPCIce%(n.NPCs)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D_TSS
+;~C#Blitz3D TSS
