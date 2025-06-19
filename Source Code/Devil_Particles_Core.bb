@@ -403,7 +403,10 @@ Function UpdateParticles_Devil()
 			Local Del% = True
 			
 			For p.Particle = Each Particle
-				If p\emitter = emit Then Del = False
+				If p\emitter = emit
+					Del = False
+					Exit
+				EndIf
 			Next
 			If Del
 				FreeEntity(emit\Ent) : emit\Ent = 0
