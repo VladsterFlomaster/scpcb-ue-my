@@ -129,8 +129,8 @@ Function UpdateEvent_Cont1_005%(e.Events)
 	Local de.Decals, n.NPCs
 	
 	If I_005\ChanceToSpawn = 1
-		If (Not n_I\Curr106\Contained)
-			If PlayerRoom = e\room
+		If PlayerRoom = e\room
+			If (Not n_I\Curr106\Contained)
 				If e\EventState = 0.0
 					If e\room\Objects[0] = 0
 						TFormPoint(0.0, 0.0, 238.0, e\room\OBJ, 0)
@@ -191,10 +191,10 @@ Function UpdateEvent_Cont1_005%(e.Events)
 					EndIf
 				EndIf
 			Else
-				e\EventState2 = 0.0
+				RemoveEvent(e)
 			EndIf
 		Else
-			RemoveEvent(e)
+			e\EventState2 = 0.0
 		EndIf
 	Else
 		If e\room\Dist < 7.0
