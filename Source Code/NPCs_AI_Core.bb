@@ -2351,7 +2351,7 @@ Function UpdateNPCType106%(n.NPCs)
 									PlaySoundEx(snd_I\SCP106SFX[3], Camera, n\Collider, 10.0, 1.0, True)
 									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
 									n\PathTimer = 0.0
-									n\Reload = (70.0 * 10.0) / (SelectedDifficulty\OtherFactors + 1.0)
+									n\Reload = (70.0 * 8.0) / (SelectedDifficulty\OtherFactors + 1.0)
 								EndIf
 							EndIf
 						EndIf
