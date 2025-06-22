@@ -1,3 +1,15 @@
+{v1.6}
+
+[Global]
+- Added SCP-999.
+
+[Items]
+- Added documents: Risk classification, disruption classification, warning labels #1, #2, and #3, containment zones, and updated the security clearance levels.
+- 
+
+[Rooms]
+- Improved labels for SCPs.
+
 {1.5.6}
 
 [Global]
