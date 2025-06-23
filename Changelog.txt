@@ -36,6 +36,7 @@
 - Fixed memory leaks.
 - Fixed guard's interaction with SCP-009.
 - Fixed soft lock when SCP-049 leaves the surveillance room.
+- Fixed seed name not displaying in the debug window.
 
 - Reduced the probability of «Failed to Load Texture» error. If the texture cannot load, it will be replaced with a black empty texture.
 

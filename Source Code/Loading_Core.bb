@@ -2529,19 +2529,6 @@ Function LoadData%()
 	igm.InGameMenu = New InGameMenu
 	
 	t.Textures = New Textures
-	
-	If SelectedCustomMap = Null
-		TempStr = Format(GetLocalString("menu", "new.seed2"), RandomSeed)
-	Else
-		Local Name$ = ConvertToUTF8(SelectedCustomMap\Name)
-		
-		If Len(Name) > 15
-			TempStr = Format(GetLocalString("menu", "new.map"), Left(Name, 14) + "..")
-		Else
-			TempStr = Format(GetLocalString("menu", "new.map"), Name)
-		EndIf
-	EndIf
-	SetErrorMsg(8, TempStr)
 End Function
 
 Global Camera%
@@ -3486,7 +3473,7 @@ Function InitLoadGame%()
 End Function
 
 Function InitOtherStuff%()
-	Local sv.Save, cm.CustomMaps
+	Local TempStr$
 	
 	me\Playable = 2 : me\SelectedEnding = -1
 	
@@ -3497,6 +3484,19 @@ Function InitOtherStuff%()
 	
 	as\Timer = 70.0 * 70.0
 	If SelectedDifficulty\SaveType <> SAVE_ANYWHERE Then opt\AutoSaveEnabled = False
+	
+	If SelectedCustomMap = Null
+		TempStr = Format(GetLocalString("menu", "new.seed2"), RandomSeed)
+	Else
+		Local Name$ = ConvertToUTF8(SelectedCustomMap\Name)
+		
+		If Len(Name) > 15
+			TempStr = Format(GetLocalString("menu", "new.map"), Left(Name, 14) + "..")
+		Else
+			TempStr = Format(GetLocalString("menu", "new.map"), Name)
+		EndIf
+	EndIf
+	SetErrorMsg(8, TempStr)
 End Function
 
 Function NullGame%(PlayButtonSFX% = True)
