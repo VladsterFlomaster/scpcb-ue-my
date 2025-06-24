@@ -5118,7 +5118,7 @@ Function UpdateGUI%()
 								CreateMsg(GetLocalString("msg", "nvg.off"))
 								fog\FarDist = 6.0
 								wi\NightVision = 0
-								If SelectedItem\State > 0.0 Then PlaySound_Strict(snd_I\NVGSFX[1])
+								If SelectedItem\State > 0.0 Then PlaySound_Strict(LoadTempSound("SFX\Interact\NVGOff.ogg"))
 							Else
 								CreateMsg(GetLocalString("msg", "nvg.on"))
 								fog\FarDist = 15.0
@@ -5136,7 +5136,7 @@ Function UpdateGUI%()
 										wi\NightVision = 3
 										;[End Block]
 								End Select
-								If SelectedItem\State > 0.0 Then PlaySound_Strict(snd_I\NVGSFX[0])
+								If SelectedItem\State > 0.0 Then PlaySound_Strict(LoadTempSound("SFX\Interact\NVGOn.ogg"))
 							EndIf
 							SelectedItem\UsageTimer = 0.0
 							SelectedItem = Null
@@ -8366,6 +8366,9 @@ Function UpdateMenu%()
 							RenderLoading(0, GetLocalString("loading", "files"))
 							
 							If t\OverlayID[MaxOverlayIDAmount - 1] <> 0 Then FreeEntity(t\OverlayID[MaxOverlayIDAmount - 1]) : t\OverlayID[MaxOverlayIDAmount - 1] = 0
+							For i = 0 To MaxNPCSounds - 1
+								If NPCSound[i] <> 0 Then FreeSound_Strict(NPCSound[i]) : NPCSound[i] = 0
+							Next
 							KillSounds()
 							LoadGameQuick(CurrSave\Name)
 							
@@ -8438,6 +8441,9 @@ Function UpdateMenu%()
 							RenderLoading(0, GetLocalString("loading", "files"))
 							
 							If t\OverlayID[MaxOverlayIDAmount - 1] <> 0 Then FreeEntity(t\OverlayID[MaxOverlayIDAmount - 1]) : t\OverlayID[MaxOverlayIDAmount - 1] = 0
+							For i = 0 To MaxNPCSounds - 1
+								If NPCSound[i] <> 0 Then FreeSound_Strict(NPCSound[i]) : NPCSound[i] = 0
+							Next
 							KillSounds()
 							LoadGameQuick(CurrSave\Name)
 							

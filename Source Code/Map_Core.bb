@@ -3146,7 +3146,7 @@ Function UpdateDoors%()
 				EndIf
 				If EntityDistanceSquared(me\Collider, d\FrameOBJ) < 0.1225 And d\OpenState > 6.0 And d\OpenState < 48.0 And (Not d\Open)
 					If (Not me\Terminated) And (Not chs\GodMode)
-						PlaySound_Strict(snd_I\Death914SFX)
+						PlaySound_Strict(LoadTempSound("SFX\SCP\914\PlayerDeath.ogg"))
 						msg\DeathMsg = Format(GetLocalString("death", "door"), SubjectName)
 						Kill(True)
 					EndIf
@@ -6604,4 +6604,4 @@ Function RemoveChunkPart%(chp.ChunkPart)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D_TSS
+;~C#Blitz3D TSS

@@ -1582,14 +1582,12 @@ Type SoundInstance
 	Field GunshotSFX%[2]
 	Field BulletMissSFX%, BulletHitSFX%
 	Field TeslaIdleSFX%, TeslaActivateSFX%, TeslaPowerUpSFX%, TeslaShockSFX%
-	Field MagnetUpSFX%, MagnetDownSFX%
 	Field FemurBreakerSFX%
 	Field CrouchSFX%
 	Field DecaySFX%[5]
 	Field BurstSFX%
 	Field HissSFX%[2]
 	Field RustleSFX%[6]
-	Field Use914SFX%, Death914SFX%
 	Field DripSFX%[4]
 	Field KnobSFX%[2]
 	Field LeverSFX%
@@ -1600,7 +1598,6 @@ Type SoundInstance
 	Field RadioStatic895%
 	Field RadioBuzz%
 	Field SCRAMBLESFX%
-	Field NVGSFX%[2]
 	Field LowBatterySFX%[2]
 	Field ElevatorBeepSFX%, ElevatorMoveSFX%
 	Field PickSFX%[4]
@@ -1616,9 +1613,7 @@ Type SoundInstance
 	Field VomitSFX%
 	Field BreathGasRelaxedSFX%
 	Field Step2SFX%[13]
-	Field VehicleSFX%[2]
 	Field MachineSFX%
-	Field ApacheSFX%
 	Field BlindsSFX%
 	Field SparkShortSFX%
 	Field SinkHoleSFX%
@@ -1678,8 +1673,11 @@ Const SOUND_NPC_035_TENTACLE_IDLE% = 4
 Const SOUND_NPC_049_BREATH% = 5
 Const SOUND_NPC_049_2_BREATH% = 6
 Const SOUND_NPC_049_2_RESTING% = 7
+Const SOUND_NPC_VEHICLE_IDLE% = 8
+Const SOUND_NPC_VEHICLE_MOVING% = 9
+Const SOUND_NPC_APACHE_PROPELLER% = 10
 ;[End Block]
-Const MaxNPCSounds% = 8
+Const MaxNPCSounds% = 11
 Global NPCSound%[MaxNPCSounds]
 
 Function LoadSounds%()
@@ -1803,13 +1801,8 @@ Function LoadSounds%()
 	snd_I\TeslaPowerUpSFX = LoadSound_Strict("SFX\Room\Tesla\PowerUp.ogg")
 	snd_I\TeslaShockSFX = LoadSound_Strict("SFX\Room\Tesla\Shock.ogg")
 	
-	snd_I\MagnetUpSFX = LoadSound_Strict("SFX\Room\106Chamber\MagnetUp.ogg") 
-	snd_I\MagnetDownSFX = LoadSound_Strict("SFX\Room\106Chamber\MagnetDown.ogg")
-	
 	snd_I\BurstSFX = LoadSound_Strict("SFX\Room\TunnelBurst.ogg")
 	
-	snd_I\Death914SFX = LoadSound_Strict("SFX\SCP\914\PlayerDeath.ogg") 
-	snd_I\Use914SFX = LoadSound_Strict("SFX\SCP\914\PlayerUse.ogg")
 	snd_I\MachineSFX = LoadSound_Strict("SFX\SCP\914\Refining.ogg")
 	
 	snd_I\LeverSFX = LoadSound_Strict("SFX\Interact\LeverFlip.ogg") 
@@ -1843,11 +1836,6 @@ Function LoadSounds%()
 	
 	snd_I\HeartBeatSFX = LoadSound_Strict("SFX\Character\D9341\HeartBeat.ogg")
 	
-	snd_I\ApacheSFX = LoadSound_Strict("SFX\Character\Apache\Propeller.ogg")
-	
-	snd_I\VehicleSFX[0] = LoadSound_Strict("SFX\Character\Vehicle\Idle.ogg")
-	snd_I\VehicleSFX[1] = LoadSound_Strict("SFX\Character\Vehicle\Move.ogg")
-	
 	snd_I\MissSFX = LoadSound_Strict("SFX\Character\Miss.ogg")
 	
 	snd_I\BreathGasRelaxedSFX = LoadSound_Strict("SFX\Character\D9341\BreathGasRelaxed.ogg")
@@ -1855,9 +1843,6 @@ Function LoadSounds%()
 	snd_I\CrouchSFX = LoadSound_Strict("SFX\Character\D9341\Crouch.ogg")
 	
 	snd_I\SCRAMBLESFX = LoadSound_Strict("SFX\Interact\SCRAMBLE.ogg")
-	
-	snd_I\NVGSFX[0] = LoadSound_Strict("SFX\Interact\NVGOn.ogg")
-	snd_I\NVGSFX[1] = LoadSound_Strict("SFX\Interact\NVGOff.ogg")
 	
 	snd_I\BlindsSFX = LoadSound_Strict("SFX\Room\Blinds.ogg")
 	
@@ -1876,8 +1861,6 @@ Function RemoveSoundInstances%()
 	For i = 0 To 13
 		If i < 2
 			RadioSFX(0, i) = 0
-			snd_I\VehicleSFX[i] = 0
-			snd_I\NVGSFX[i] = 0
 			snd_I\LowBatterySFX[i] = 0
 			snd_I\KnobSFX[i] = 0
 			snd_I\GunshotSFX[i] = 0
@@ -1970,13 +1953,8 @@ Function RemoveSoundInstances%()
 	snd_I\TeslaPowerUpSFX = 0
 	snd_I\TeslaShockSFX = 0
 	
-	snd_I\MagnetUpSFX = 0
-	snd_I\MagnetDownSFX = 0
-	
 	snd_I\BurstSFX = 0
 	
-	snd_I\Death914SFX = 0
-	snd_I\Use914SFX = 0
 	snd_I\MachineSFX = 0
 	
 	snd_I\LeverSFX = 0
@@ -1992,8 +1970,6 @@ Function RemoveSoundInstances%()
 	snd_I\ElevatorMoveSFX = 0
 	
 	snd_I\HeartBeatSFX = 0
-	
-	snd_I\ApacheSFX = 0
 	
 	snd_I\MissSFX = 0
 	

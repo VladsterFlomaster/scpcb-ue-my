@@ -1029,7 +1029,11 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 						If e\room\NPC[11]\State = 15.0
 							If DistanceSquared(EntityX(me\Collider), e\room\x - 6688.0 * RoomScale, EntityZ(me\Collider), e\room\z - 1252.0 * RoomScale) < 6.25 Then e\room\NPC[11]\State = 16.0
 						Else
-							If EntityX(e\room\NPC[11]\Collider) > e\room\x - 2000.0 * RoomScale Then RemoveNPC(e\room\NPC[11])
+							If EntityX(e\room\NPC[11]\Collider) > e\room\x - 2000.0 * RoomScale
+								RemoveNPC(e\room\NPC[11])
+								FreeSound_Strict(NPCSound[SOUND_NPC_VEHICLE_IDLE]) : NPCSound[SOUND_NPC_VEHICLE_IDLE] = 0
+								FreeSound_Strict(NPCSound[SOUND_NPC_VEHICLE_MOVING]) : NPCSound[SOUND_NPC_VEHICLE_MOVING] = 0
+							EndIf
 						EndIf
 					EndIf
 					AnimateNPC(e\room\NPC[12], 357.0, 381.0, 0.05)
@@ -1952,7 +1956,7 @@ Function UpdateEvent_Cont1_914%(e.Events)
 			
 			If IsPlayerInside
 				If Setting = ROUGH Lor Setting = COARSE
-					If e\EventState > 70.0 * 2.6 And e\EventState - fps\Factor[1] < 70.0 * 2.6 Then PlaySound_Strict(snd_I\Death914SFX)
+					If e\EventState > 70.0 * 2.6 And e\EventState - fps\Factor[1] < 70.0 * 2.6 Then PlaySound_Strict(LoadTempSound("SFX\SCP\914\PlayerDeath.ogg"))
 				EndIf
 				
 				If e\EventState > 70.0 * 3.0
@@ -1965,7 +1969,7 @@ Function UpdateEvent_Cont1_914%(e.Events)
 							;[End Block]
 						Case COARSE, ONETOONE, FINE, VERYFINE
 							;[Block]
-							If e\EventState - fps\Factor[1] < 70.0 * 3.0 Then PlaySound_Strict(snd_I\Use914SFX)
+							If e\EventState - fps\Factor[1] < 70.0 * 3.0 Then PlaySound_Strict(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
 							;[End Block]
 					End Select
 					me\BlinkTimer = -10.0
@@ -4332,9 +4336,9 @@ Function UpdateEvent_Cont1_106%(e.Events)
 				
 				If e\EventState2 <> Temp
 					If e\EventState2 = 0.0
-						PlaySound_Strict(snd_I\MagnetDownSFX)
+						PlaySound_Strict(LoadTempSound("SFX\Room\106Chamber\MagnetDown.ogg"))
 					Else
-						PlaySound_Strict(snd_I\MagnetUpSFX)
+						PlaySound_Strict(LoadTempSound("SFX\Room\106Chamber\MagnetUp.ogg"))
 					EndIf
 				EndIf
 				

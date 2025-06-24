@@ -488,6 +488,8 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			Next
 			Temp = 0.7
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
+			
+			If NPCSound[SOUND_NPC_APACHE_PROPELLER] = 0 Then NPCSound[SOUND_NPC_APACHE_PROPELLER] = LoadSound_Strict("SFX\Character\Apache\Propeller.ogg")
 			;[End Block]
 		Case NPCTypeD, NPCTypeClerk
 			;[Block]
@@ -591,6 +593,9 @@ Function CreateNPCAsset%(n.NPCs)
 	Select n\NPCType
 		Case NPCTypeGuard
 			;[Block]
+			If NPCSound[SOUND_NPC_VEHICLE_IDLE] = 0 Then NPCSound[SOUND_NPC_VEHICLE_IDLE] = LoadSound_Strict("SFX\Character\Vehicle\Idle.ogg")
+			If NPCSound[SOUND_NPC_VEHICLE_MOVING] = 0 Then NPCSound[SOUND_NPC_VEHICLE_MOVING] = LoadSound_Strict("SFX\Character\Vehicle\Move.ogg")
+			
 			PrevYaw = EntityYaw(n\OBJ)
 			PrevX = EntityX(n\OBJ)
 			PrevY = EntityY(n\OBJ)
@@ -1333,7 +1338,7 @@ Function MoveToPocketDimension%()
 			me\BlurTimer = 1750.0
 			HideEntity(me\Head)
 			ShowEntity(me\Collider)
-			PlaySound_Strict(snd_I\Use914SFX)
+			PlaySound_Strict(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
 			PlaySound_Strict(snd_I\SCP106SFX[5])
 			n_I\Curr106\Idle = 0
 			
