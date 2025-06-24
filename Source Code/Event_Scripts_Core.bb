@@ -1031,8 +1031,9 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 						Else
 							If EntityX(e\room\NPC[11]\Collider) > e\room\x - 2000.0 * RoomScale
 								RemoveNPC(e\room\NPC[11])
-								FreeSound_Strict(NPCSound[SOUND_NPC_VEHICLE_IDLE]) : NPCSound[SOUND_NPC_VEHICLE_IDLE] = 0
-								FreeSound_Strict(NPCSound[SOUND_NPC_VEHICLE_MOVING]) : NPCSound[SOUND_NPC_VEHICLE_MOVING] = 0
+								For i = SOUND_NPC_VEHICLE_IDLE To SOUND_NPC_VEHICLE_IDLE
+									If NPCSound[i] <> 0 Then FreeSound_Strict(NPCSound[i]) : NPCSound[i] = 0
+								Next
 							EndIf
 						EndIf
 					EndIf
@@ -4744,7 +4745,7 @@ Function UpdateEvent_Room2_2_HCZ_106%(e.Events)
 			
 			If e\EventState > 250.0
 				PlaySoundEx(snd_I\SCP106SFX[3], Camera, n_I\Curr106\Collider, 10.0, 1.0, True)
-				PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n_I\Curr106\Collider)
+				PlaySoundEx(snd_I\SCP106SFX[Rand(5, 7)], Camera, n_I\Curr106\Collider)
 				n_I\Curr106\Idle = 0
 				n_I\Curr106\State = 0.0
 				n_I\Curr106\State2 = Rnd(22000.0, 27000.0)
@@ -7384,7 +7385,12 @@ Function UpdateEvent_Gate_B%(e.Events)
 			
 			If e\room\NPC[6] <> Null
 				If EntityX(me\Collider, True) > e\room\x - 250.0 * RoomScale Then e\room\NPC[6]\State = 16.0
-				If EntityX(e\room\NPC[6]\Collider, True) < e\room\x + 2000.0 * RoomScale Then RemoveNPC(e\room\NPC[6])
+				If EntityX(e\room\NPC[6]\Collider, True) < e\room\x + 2000.0 * RoomScale
+					RemoveNPC(e\room\NPC[6])
+					For i = SOUND_NPC_VEHICLE_IDLE To SOUND_NPC_VEHICLE_IDLE
+						If NPCSound[i] <> 0 Then FreeSound_Strict(NPCSound[i]) : NPCSound[i] = 0
+					Next
+				EndIf
 			EndIf
 			If e\EventState < 2.0 And me\SelectedEnding = -1 
 				If e\room\NPC[0]\State = 2.0

@@ -1601,7 +1601,7 @@ Type SoundInstance
 	Field LowBatterySFX%[2]
 	Field ElevatorBeepSFX%, ElevatorMoveSFX%
 	Field PickSFX%[4]
-	Field SCP106SFX%[9]
+	Field SCP106SFX%[8]
 	Field SCP173SFX%[3]
 	Field HorrorSFX%[14]
 	Field MissSFX%
@@ -1733,7 +1733,7 @@ Function LoadSounds%()
 			CoughSFX(1, i) = LoadSound_Strict("SFX\Character\D9341\Cough" + i + "Gas.ogg")
 			
 			snd_I\SCP106SFX[i] = LoadSound_Strict("SFX\SCP\106\Corrosion" + i + ".ogg")
-			snd_I\SCP106SFX[i + 6] = LoadSound_Strict("SFX\SCP\106\WallDecay" + i + ".ogg")
+			snd_I\SCP106SFX[i + 5] = LoadSound_Strict("SFX\SCP\106\WallDecay" + i + ".ogg")
 			
 			snd_I\SCP173SFX[i] = LoadSound_Strict("SFX\SCP\173\Rattle" + i + ".ogg")
 			
@@ -1832,7 +1832,6 @@ Function LoadSounds%()
 	
 	snd_I\SCP106SFX[3] = LoadSound_Strict("SFX\SCP\106\Laugh.ogg")
 	snd_I\SCP106SFX[4] = LoadSound_Strict("SFX\SCP\106\Breathing.ogg")
-	snd_I\SCP106SFX[5] = LoadSound_Strict("SFX\Room\PocketDimension\Enter.ogg")
 	
 	snd_I\HeartBeatSFX = LoadSound_Strict("SFX\Character\D9341\HeartBeat.ogg")
 	
@@ -1916,11 +1915,13 @@ Function RemoveSoundInstances%()
 				StepSFX(4, 0, i) = 0
 			EndIf
 			If i < 2 Then StepSFX(5, 0, i) = 0
-			NPCSound[i] = 0
+			snd_I\SCP106SFX[i] = 0
 		EndIf
 		If i < 9
 			RadioSFX(1, i) = 0
-			snd_I\SCP106SFX[i] = 0
+		EndIf
+		If i < 11
+			NPCSound[i] = 0
 		EndIf
 		If i < 12
 			RoomAmbience[i] = 0

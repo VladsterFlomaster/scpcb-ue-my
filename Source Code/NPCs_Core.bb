@@ -1339,7 +1339,7 @@ Function MoveToPocketDimension%()
 			HideEntity(me\Head)
 			ShowEntity(me\Collider)
 			PlaySound_Strict(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
-			PlaySound_Strict(snd_I\SCP106SFX[5])
+			PlaySound_Strict(LoadTempSound("SFX\Room\PocketDimension\Enter.ogg"))
 			n_I\Curr106\Idle = 0
 			
 			TeleportEntity(me\Collider, EntityX(r\OBJ), EntityY(r\OBJ) + 0.5, EntityZ(r\OBJ))

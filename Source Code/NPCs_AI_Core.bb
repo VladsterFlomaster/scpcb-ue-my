@@ -2259,7 +2259,7 @@ Function UpdateNPCType106%(n.NPCs)
 						For d.Doors = Each Doors
 							If (Not d\IsAffected) And d\DoorType <> SCP_914_DOOR And (Not d\HasOneSide) And (Not d\Open)
 								If EntityDistanceSquared(n\Collider, d\FrameOBJ) < 0.25 And (d\room <> Null And d\room\RoomTemplate\RoomID <> r_dimension_106)
-									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
+									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(5, 7)], Camera, n\Collider)
 									AffectDecayDoor(d)
 									Exit
 								EndIf
@@ -2349,7 +2349,7 @@ Function UpdateNPCType106%(n.NPCs)
 									RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider), 0.0)
 									MoveEntity(n\Collider, 0.0, 0.0, -2.0)
 									PlaySoundEx(snd_I\SCP106SFX[3], Camera, n\Collider, 10.0, 1.0, True)
-									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(6, 8)], Camera, n\Collider)
+									n\SoundCHN2 = PlaySoundEx(snd_I\SCP106SFX[Rand(5, 7)], Camera, n\Collider)
 									n\PathTimer = 0.0
 									n\Reload = (70.0 * 8.0) / (SelectedDifficulty\OtherFactors + 1.0)
 								EndIf
