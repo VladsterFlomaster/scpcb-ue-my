@@ -2342,7 +2342,7 @@ Function PlaceMapCreatorMT%(r.Rooms)
 						;[End Block]
 					Case 7
 						;[Block]
-						AddLight(r, r\x + (x * 2.0) - (SinValue * 521.0 * RoomScale) + (CosValue * 16.0 * RoomScale), r\y + MTGridY + (396.0 * RoomScale), r\z + (y * 2.0) + (CosValue * 521.0 * RoomScale) + (SinValue * 16.0 * RoomScale), 2, 0.425, 255, 200, 200)
+						AddLight(r, r\x + (x * 2.0) - (SinValue * 536.0 * RoomScale), r\y + MTGridY + (396.0 * RoomScale), r\z + (y * 2.0) + (CosValue * 536.0 * RoomScale), 2, 0.425, 255, 200, 200)
 						Scale = 3.0 * RoomScale
 						p.Props = CreateProp(Null, "tank2.b3d", r\x + (x * 2.0) - (SinValue * 369.0 * RoomScale) + (CosValue * 320.0 * RoomScale), r\y + MTGridY - (144.0 * RoomScale), r\z + (y * 2.0) + (CosValue * 369.0 * RoomScale) + (SinValue * 320.0 * RoomScale), 0.0, 0.0, 0.0, Scale, Scale, Scale, True, 0, "")
 						EntityParent(p\OBJ, Tile_Entity)

@@ -5165,7 +5165,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						CosValue = Cos(Angle)
 						
 						If e\room\mt\Grid[iX + (iY * MTGridSize)] = MT_GENERATOR
-							AddLight(e\room, e\room\x + (iX * 2.0) - (SinValue * 521.0 * RoomScale) + (CosValue * 16.0 * RoomScale), e\room\y + MTGridY + (400.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 521.0 * RoomScale) + (SinValue * 16.0 * RoomScale), 2, 0.425, 255, 200, 200)
+							AddLight(e\room, e\room\x + (iX * 2.0) - (SinValue * 536.0 * RoomScale), e\room\y + MTGridY + (400.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 536.0 * RoomScale), 2, 0.425, 255, 200, 200)
 							Scale = 3.0 * RoomScale
 							p.Props = CreateProp(Null, "tank2.b3d", e\room\x + (iX * 2.0) - (SinValue * 369.0 * RoomScale) + (CosValue * 320.0 * RoomScale), e\room\y + MTGridY - (144.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 369.0 * RoomScale) + (SinValue * 320.0 * RoomScale), 0.0, Angle + 180.0, 0.0, Scale, Scale, Scale, True, 0, "")
 							EntityParent(p\OBJ, TempInt)
@@ -5396,7 +5396,7 @@ Function UpdateEvent_Room2_MT%(e.Events)
 						CosValue = Cos(Angle)
 						
 						If e\room\mt\Grid[iX + (iY * MTGridSize)] = MT_GENERATOR
-							AddLight(e\room, e\room\x + (iX * 2.0) - (SinValue * 521.0 * RoomScale) + (CosValue * 16.0 * RoomScale), e\room\y + MTGridY + (400.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 521.0 * RoomScale) + (SinValue * 16.0 * RoomScale), 2, 0.425, 255, 200, 200)
+							AddLight(e\room, e\room\x + (iX * 2.0) - (SinValue * 536.0 * RoomScale), e\room\y + MTGridY + (400.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 536.0 * RoomScale), 2, 0.425, 255, 200, 200)
 							Scale = 3.0 * RoomScale
 							p.Props = CreateProp(Null, "tank2.b3d", e\room\x + (iX * 2.0) - (SinValue * 369.0 * RoomScale) + (CosValue * 320.0 * RoomScale), e\room\y + MTGridY - (144.0 * RoomScale), e\room\z + (iY * 2.0) + (CosValue * 369.0 * RoomScale) + (SinValue * 320.0 * RoomScale), 0.0, Angle + 180.0, 0.0, Scale, Scale, Scale, True, 0, "")
 							EntityParent(p\OBJ, TempInt)
