@@ -7525,9 +7525,13 @@ Function RenderGUI%()
 					;[Block]
 					DrawBlock(SelectedItem\ItemTemplate\InvImg, mo\Viewport_Center_X - InvImgSize, mo\Viewport_Center_Y - InvImgSize)
 					;[End Block]
-				Case it_paper, it_oldpaper, it_scp1025, it_fine1025, it_oldbadge, it_ticket, it_badge
+				Case it_paper, it_oldpaper, it_scp1025, it_fine1025, it_badge
 					;[Block]
 					If SelectedItem\ItemTemplate\Img <> 0 And me\BlinkTimer > -6.0 Then DrawBlock(SelectedItem\ItemTemplate\Img, mo\Viewport_Center_X - SelectedItem\ItemTemplate\ImgWidth, mo\Viewport_Center_Y - SelectedItem\ItemTemplate\ImgHeight)
+					;[End Block]
+				Case it_ticket, it_oldbadge
+					;[Block]
+					If SelectedItem\ItemTemplate\Img <> 0 And me\BlinkTimer > -6.0 Then DrawImage(SelectedItem\ItemTemplate\Img, mo\Viewport_Center_X - SelectedItem\ItemTemplate\ImgWidth, mo\Viewport_Center_Y - SelectedItem\ItemTemplate\ImgHeight)
 					;[End Block]
 				Case it_radio, it_18vradio, it_fineradio, it_veryfineradio
 					;[Block]
