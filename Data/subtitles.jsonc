@@ -105,7 +105,7 @@
 	],
 	"SFX\\Room\\Intro\\Guard\\Ulgrin\\ExitCell.ogg": [
 		{
-			"text": "Hey, they got some work for ya. Do me a favor, and step outta your cell.",
+			"text": "Hey, they've got some work for ya. Do me a favor, and step outta your cell.",
 			"delay": 1.37,
 			"color": "guard",
 			"length": 4.14
