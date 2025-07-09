@@ -5618,8 +5618,10 @@ Function UpdateEvent_Room2_MT%(e.Events)
 		
 		me\InsideElevator = (IsInsideElevator(x1, y1, z1, e\room\Objects[2]) Lor IsInsideElevator(x1, y1, z1, e\room\Objects[3]) Lor IsInsideElevator(x1, y1, z1, e\room\Objects[4]) Lor IsInsideElevator(x1, y1, z1, e\room\Objects[5]))
 		ToElevatorFloor = UpperFloor
-		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[2], e\room\Objects[3], e, False, e\EventState = 1.0 And n_I\Curr106\State > 1.0)
-		e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3], e\room\Objects[4], e\room\Objects[5], e, False, e\EventState = 1.0 And n_I\Curr106\State > 1.0)
+		
+		Scale = (e\EventState = 1.0 And n_I\Curr106\State > 1.0)
+		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[2], e\room\Objects[3], e, False, Scale)
+		e\EventState3 = UpdateElevators(e\EventState3, e\room\RoomDoors[2], e\room\RoomDoors[3], e\room\Objects[4], e\room\Objects[5], e, False, Scale)
 	Else
 		If e\room\mt <> Null
 			If e\room\mt\Meshes[0] <> 0
