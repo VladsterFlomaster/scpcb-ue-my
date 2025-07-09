@@ -581,7 +581,7 @@ Repeat
 	EndIf
 	
 	Flip(opt\VSync)
-Until (Not api_FindWindow("BlitzMax_Window_Class", "SCP-CB Ultimate Edition Reborn Map Creator"))
+Until (Not api_FindWindow("BlitzMax_Window_Class", GetLocalString("mc", "title")))
 End()
 ;[End Block]
 

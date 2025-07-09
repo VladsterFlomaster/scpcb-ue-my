@@ -33,7 +33,15 @@ Function LoadTextureCheckingIfInCache%(TexName$, TexFlags% = 1, DeleteType% = De
 	tic\TexName = StrippedName
 	tic\TexDeleteType = DeleteType
 	If FileType(LanguagePath + CurrPath) = 1 Then CurrPath = LanguagePath + CurrPath
-	If tic\Tex = 0 Then tic\Tex = LoadTexture(CurrPath, TexFlags)
+	tic\Tex = LoadTexture(CurrPath, TexFlags)
+	If tic\Tex = 0
+		tic\Tex = CreateTexture(1, 1, 1 + 256)
+		TextureBlend(tic\Tex, 3)
+		SetBuffer(TextureBuffer(tic\Tex))
+		ClsColor(255, 0, 255)
+		Cls()
+		SetBuffer(BackBuffer())
+	EndIf
 	Return(tic\Tex)
 End Function
 
@@ -41,7 +49,7 @@ Function DeleteTextureEntriesFromCache%(DeleteType%)
 	Local tic.TextureInCache
 	
 	For tic.TextureInCache = Each TextureInCache
-		If tic\TexDeleteType =< DeleteType
+		If tic\TexDeleteType <= DeleteType
 			If tic\Tex <> 0 Then FreeTexture(tic\Tex) : tic\Tex = 0
 			Delete(tic)
 		EndIf
@@ -107,11 +115,12 @@ End Function
 
 Function CheckForTexture%(Tex%, TexFlags% = 1)
 	Local Name$ = ""
+	Local TexName$ = TextureName(Tex)
 	
-	If FileType(TextureName(Tex)) = 1 ; ~ Check if texture is existing in original path
-		Name = TextureName(Tex)
-	ElseIf FileType(MapTexturesFolder + StripPath(TextureName(Tex))) = 1 ; ~ If not, check the MapTexturesFolder
-		Name = MapTexturesFolder + StripPath(TextureName(Tex))
+	If FileType(TexName) = 1 ; ~ Check if texture is existing in original path
+		Name = TexName
+	ElseIf FileType(MapTexturesFolder + StripPath(TexName)) = 1 ; ~ If not, check the MapTexturesFolder
+		Name = MapTexturesFolder + StripPath(TexName)
 	EndIf
 	
 	Local Texture% = LoadTextureCheckingIfInCache(Name, TexFlags)

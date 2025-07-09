@@ -8,7 +8,6 @@
 Local InitErrorStr$ = ""
 
 If FileSize("FMod.dll") = 0 Then InitErrorStr = InitErrorStr + "FMod.dll" + Chr(13) + Chr(10)
-If FileSize("dplayx.dll") = 0 Then InitErrorStr = InitErrorStr + "dplayx.dll" + Chr(13) + Chr(10)
 If FileSize("BlitzEncode.dll") = 0 Then InitErrorStr = InitErrorStr + "BlitzEncode.dll" + Chr(13) + Chr(10)
 If FileSize("IniController.dll") = 0 Then InitErrorStr = InitErrorStr + "IniController.dll" + Chr(13) + Chr(10)
 

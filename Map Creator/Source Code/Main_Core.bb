@@ -43,7 +43,7 @@ End Function
 
 ; ~ Create a window to put the toolbar in
 ; ~ Do not localize this because 3-D Viewer may can't find Map Creator
-Local WinHandle% = CreateWindow("SCP-CB Ultimate Edition Reborn Map Creator", mo\Viewport_Center_X - ResWidth / 2, mo\Viewport_Center_Y - ResHeight / 2, ResWidth, ResHeight, 0, 13) 
+Local WinHandle% = CreateWindow(GetLocalString("mc", "title"), mo\Viewport_Center_X - ResWidth / 2, mo\Viewport_Center_Y - ResHeight / 2, ResWidth, ResHeight, 0, 13) 
 
 Global MainHwnd% = api_GetActiveWindow() ; ~ User32.dll
 
