@@ -1231,6 +1231,7 @@ Function UpdateEvent_Cont1_173_Intro%(e.Events)
 							e\SoundCHN = PlaySound_Strict(e\Sound, True)
 						ElseIf e\EventState3 >= 10440.0 And e\EventState3 - fps\Factor[0] < 10440.0
 							OpenCloseDoor(e\room\RoomDoors[1])
+							PlaySoundEx(snd_I\DoorOpen079, Camera, e\room\RoomDoors[1]\FrameOBJ, 7.0)
 						ElseIf e\EventState3 >= 10740.0 And e\EventState3 - fps\Factor[0] < 10740.0
 							LoadEventSound(e, "SFX\Room\Intro\Scientist\Franklin\Problem.ogg")
 							e\SoundCHN = PlaySound_Strict(e\Sound, True)
