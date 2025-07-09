@@ -5650,9 +5650,7 @@ Function UpdateEvent_Room2_Nuke%(e.Events)
 	If PlayerRoom = e\room
 		Local i%, x1#, y1#, z1#
 		
-		If EntityY(me\Collider, True) > 6.0
-			InFacility = LowerFloor
-			
+		If EntityY(me\Collider, True) < -5508.0 * RoomScale
 			e\EventState = UpdateLever(e\room\RoomLevers[0]\OBJ)
 			UpdateLever(e\room\RoomLevers[1]\OBJ)
 			
@@ -5701,7 +5699,7 @@ Function UpdateEvent_Room2_Nuke%(e.Events)
 								z1 = -346.0
 								;[End Block]
 						End Select
-						y1 = 3010.0
+						y1 = -6990.0
 						TFormPoint(x1, y1, z1, e\room\OBJ, 0)
 						e\room\RoomEmitters[i] = SetEmitter(e\room, TFormedX(), TFormedY(), TFormedZ(), 10)
 					EndIf
@@ -5714,8 +5712,6 @@ Function UpdateEvent_Room2_Nuke%(e.Events)
 		EndIf
 		x1 = EntityX(me\Collider, True) : y1 = EntityY(me\Collider, True) : z1 = EntityZ(me\Collider, True)
 		me\InsideElevator = (IsInsideElevator(x1, y1, z1, e\room\Objects[0]) Lor IsInsideElevator(x1, y1, z1, e\room\Objects[1]))
-		ToElevatorFloor = LowerFloor
-		
 		e\EventState2 = UpdateElevators(e\EventState2, e\room\RoomDoors[0], e\room\RoomDoors[1], e\room\Objects[0], e\room\Objects[1], e)
 	EndIf
 End Function
