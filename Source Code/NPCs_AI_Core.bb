@@ -4750,10 +4750,6 @@ Function UpdateNPCTypeD_Clerk%(n.NPCs)
 				AnimateNPC(n, 161.0, 190.0, 0.2)
 				;[End Block]
 		End Select
-		If n\HP =< 0 And n\NPCType = NPCTypeClerk
-			SetNPCFrame(n, 41.0)
-			n\IsDead = True ; ~ Only for Clerk because of Tesla Gate event
-		EndIf
 	Else
 		Select n\State3
 			Case -1.0 ; ~ Script

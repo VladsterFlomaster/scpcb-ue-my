@@ -9976,6 +9976,8 @@ Function UpdateEvent_Tesla%(e.Events)
 					If n\NPCType <> NPCType513_1 And (Not n\IsDead)
 						If n\NPCType = NPCTypeClerk
 							e\room\RoomDoors[0]\Locked = 0
+							SetNPCFrame(n, 41.0)
+							n\IsDead = True
 							n\State3 = 1.0
 						EndIf
 						If IsEqual(EntityX(n\Collider, True), x2, 0.6) And IsEqual(EntityZ(n\Collider, True), z2, 0.6) And IsEqual(EntityY(n\Collider, True), y2, 1.3)
