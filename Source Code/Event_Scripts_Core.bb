@@ -8196,9 +8196,10 @@ Function UpdateEvent_Dimension_106%(e.Events)
 			
 			e\EventState = e\EventState + fps\Factor[0]
 			
-			ScaleEntity(e\room\OBJ, RoomScale, RoomScale * (1.0 + Sin(e\EventState / 14.0) * 0.2), RoomScale)
+			SinValue = e\EventState / 14.0
+			ScaleEntity(e\room\OBJ, RoomScale, RoomScale * (1.0 + Sin(SinValue) * 0.2), RoomScale)
 			For i = 9 To 10
-				ScaleEntity(e\room\Objects[i], RoomScale * (1.5 + Abs(Sin(e\EventState / 21.0 + i * 45.0) * 0.1)), RoomScale * (1.0 + Sin(e\EventState / 14.0 + i * 20.0) * 0.1), RoomScale, True)
+				ScaleEntity(e\room\Objects[i], RoomScale * (1.5 + Abs(Sin(e\EventState / 21.0 + i * 45.0) * 0.1)), RoomScale * (1.0 + Sin(SinValue + i * 20.0) * 0.1), RoomScale, True)
 			Next
 		ElseIf SelectedDifficulty\SaveType < SAVE_ON_QUIT
 			If KeyHit(key\SAVE)
@@ -8224,7 +8225,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 			Case PD_StartRoom
 				;[Block]
 				For i = 0 To 7
-					ScaleEntity(e\room\Objects[i], RoomScale * (1.0 + Abs(Sin(e\EventState / 21.0 + i * 45.0) * 0.1)), RoomScale * (1.0 + Sin(e\EventState / 14.0 + i * 20.0) * 0.1), RoomScale, True)
+					ScaleEntity(e\room\Objects[i], RoomScale * (1.0 + Abs(Sin(e\EventState / 21.0 + i * 45.0) * 0.1)), RoomScale * (1.0 + Sin(SinValue + i * 20.0) * 0.1), RoomScale, True)
 				Next
 				
 				If n_I\Curr106\State < 3.0 ; ~ SCP-106 circles around the starting room
