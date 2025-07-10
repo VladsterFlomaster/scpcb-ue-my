@@ -93,9 +93,11 @@ Function UpdateProps%()
 			If p\IsLamp And me\BigCameraShake > 0.0 Then RotateEntity(p\OBJ, ShakeValue, EntityYaw(p\OBJ, True), EntityRoll(p\OBJ, True), True)
 			If p\SecondsArrow <> 0
 				RotateEntity(p\SecondsArrow, 0.0, -SecondsAngle, 0.0)
-				RotateEntity(p\MinutesArrow, 0.0, -MinuteAngle, 0.0)
-				RotateEntity(p\HoursArrow, 0.0, -HourAngle, 0.0)
-				If PlaySnd Then PlaySoundEx(snd_I\WatchesSFX, Camera, p\OBJ, 4.0, 0.6)
+				If PlaySnd
+					RotateEntity(p\MinutesArrow, 0.0, -MinuteAngle, 0.0)
+					RotateEntity(p\HoursArrow, 0.0, -HourAngle, 0.0)
+					PlaySoundEx(snd_I\WatchesSFX, Camera, p\OBJ, 4.0, 0.6)
+				EndIf
 			EndIf
 		EndIf
 	Next
