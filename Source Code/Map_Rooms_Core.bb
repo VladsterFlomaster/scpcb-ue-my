@@ -1364,11 +1364,7 @@ Function FillRoom%(r.Rooms)
 						;[End Block]
 				End Select
 				sc.SecurityCams = CreateSecurityCam(r, r\x + xTemp * RoomScale, r\y + 386.0 * RoomScale, r\z + zTemp * RoomScale, 30.0)
-				If i < 2
-					sc\Angle = 180.0
-				Else
-					sc\Angle = 0.0
-				EndIf
+				sc\Angle = 180.0 * (i < 2)
 				sc\Turn = 30.0
 			Next
 			
@@ -4316,9 +4312,7 @@ Function FillRoom%(r.Rooms)
 				PositionEntity(r\Objects[i - 1], r\x + CosValue, r\y, r\z + SinValue)
 				EntityParent(r\Objects[i - 1], r\OBJ)
 				
-				If i < 6
-					de.Decals = CreateDecal(i + 7, r\x + CosValue * 2.0, r\y + 0.02, r\z + SinValue * 2.0, 90.0, Angle - 90.0, 0.0, 0.5, 1.0, 1, 2)
-				EndIf
+				If i < 6 Then de.Decals = CreateDecal(i + 7, r\x + CosValue * 2.0, r\y + 0.02, r\z + SinValue * 2.0, 90.0, Angle - 90.0, 0.0, 0.5, 1.0, 1, 2)
 			Next
 			FreeEntity(Hallway) : Hallway = 0
 			
