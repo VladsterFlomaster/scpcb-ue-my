@@ -2929,7 +2929,7 @@ Function LoadMap%(File$)
 			EndIf
 		Next
 	Else
-		I_Zone\Transition[0] = 13
+		I_Zone\Transition[0] = 14
 		I_Zone\Transition[1] = 7
 		I_Zone\HasCustomForest = False
 		I_Zone\HasCustomMT = False

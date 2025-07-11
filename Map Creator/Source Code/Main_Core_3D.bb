@@ -69,15 +69,15 @@ LoadMaterials("..\Data\materials.ini")
 
 Const RoomScale# = 8.0 / 2048.0
 
-Const MapGridSize% = 18
+Const MapGridSize% = 21
 
 Type MapGrid
-	Field Grid%[(MapGridSize + 1) ^ 2]
+	Field Grid%[PowTwo(MapGridSize + 1)]
 End Type
 
 Global CurrGrid.MapGrid
 
-Global ZoneTransValue1% = 13, ZoneTransValue2% = 7
+Global ZoneTransValue1% = 14, ZoneTransValue2% = 7
 
 Const MT_GridSize% = 19
 

@@ -155,4 +155,4 @@ Function SaveOptionsINI()
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D
+;~C#BlitzPlus

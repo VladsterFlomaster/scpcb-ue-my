@@ -1,8 +1,8 @@
 Include "Source Code\INI_Core.bb"
 Include "Source Code\Math_Core.bb"
 
-Const ResWidth% = 910
-Const ResHeight% = 660
+Const ResWidth% = 890
+Const ResHeight% = 666
 
 Type Mouse
 	Field Viewport_Center_X%, Viewport_Center_Y%
@@ -108,7 +108,7 @@ Local Clean_Txt% = CreateButton("X", 210, 40, 20, 20, WinHandle) ; ~ Create EXIT
 
 Global ShowGrid% = True
 
-Local Map_2D% = CreateCanvas(300, 25, 551, 551, WinHandle)
+Local Map_2D% = CreateCanvas(300, 25, 546, 546, WinHandle)
 
 Dim MapIcons%(5, 4)
 
@@ -167,22 +167,19 @@ For i = 1 To 2
 	Next
 Next
 
-Const MapGridSize% = 18
-Global MapGridSizeFloat% = Float(MapGridSize + 1)
+Const MapGridSize% = 21
 
 Dim Map.RoomTemplates(MapGridSize, MapGridSize)
 Dim MapAngle%(MapGridSize, MapGridSize)
 Dim MapEvent$(MapGridSize, MapGridSize)
 Dim MapEventProb#(MapGridSize, MapGridSize)
 
-Const ForestGridSize% = 9
-Global ForestGridSizeFloat% = Float(ForestGridSize + 1)
+Const ForestGridSize% = 10
 
 Dim ForestPlace.RoomTemplates(ForestGridSize, ForestGridSize)
 Dim ForestPlaceAngle%(ForestGridSize, ForestGridSize)
 
-Const MT_GridSize% = 18
-Global MT_GridSizeFloat% = Float(MT_GridSize + 1)
+Const MT_GridSize% = 19
 
 Dim MTRoom.RoomTemplates(MT_GridSize, MT_GridSize)
 Dim MTRoomAngle%(MT_GridSize, MT_GridSize)
@@ -319,7 +316,7 @@ Global ZoneTrans2% = CreateTextField(130, 40, 80, 20, Map_Settings)
 
 SetGadgetText(ZoneTrans2, 11)
 
-Global ZoneTransValue1% = 13, ZoneTransValue2% = 7
+Global ZoneTransValue1% = 14, ZoneTransValue2% = 7
 
 Local ResetZoneTrans% = CreateButton(GetLocalString("mc", "reset"), 10, 90, 100, 30, Map_Settings)
 Local ApplyZoneTrans% = CreateButton(GetLocalString("mc", "apply"), 120, 90, 100, 30, Map_Settings)
@@ -484,21 +481,21 @@ Repeat
 	If ShowGrid
 		Cls()
 		
-		Local MapX# = GadgetX(Map_2D)
-		Local MapY# = GadgetY(Map_2D)
-		Local WinHandleX# = GadgetX(WinHandle)
-		Local WinHandleY# = GadgetY(WinHandle)
-		Local Width# = GadgetWidth(Map_2D)
-		Local Height# = GadgetHeight(Map_2D)
-		Local WidthMinus# = Width - 1.0
-		Local HeightMinus# = Height - 1.0
+		Local MapX% = GadgetX(Map_2D)
+		Local MapY% = GadgetY(Map_2D)
+		Local WinHandleX% = GadgetX(WinHandle)
+		Local WinHandleY% = GadgetY(WinHandle)
+		Local Width% = GadgetWidth(Map_2D)
+		Local Height% = GadgetHeight(Map_2D)
 		Local MouseXVal# = MouseX()
 		Local MouseYVal# = MouseY()
 		
 		; ~ Facility grid
 		If CurrMapGrid = 0
-			For x = 0 To MapGridSize
-				For y = 0 To MapGridSize
+			x2 = Width / MapGridSize
+			y2 = Height / MapGridSize
+			For x = 0 To MapGridSize - 1
+				For y = 0 To MapGridSize - 1
 					If y < ZoneTransValue2
 						Color(255, 255, 125)
 					ElseIf y = ZoneTransValue2
@@ -511,21 +508,17 @@ Repeat
 						Color(255, 255, 255)
 					EndIf
 					
-					Rect(Width / MapGridSizeFloat * x, Height / MapGridSizeFloat * y, (Width / MapGridSizeFloat), (Height / MapGridSizeFloat), True)
+					Rect(x2 * x, y2 * y, x2, y2, True)
 					
 					Local PrevSelectedX% = Grid_SelectedX, PrevSelectedY% = Grid_SelectedY
 					
-					If (MouseXVal - MapX) > (Width / MapGridSizeFloat * x + WinHandleX) And (MouseXVal - MapX) < ((Width / MapGridSizeFloat * x) + (Width / MapGridSizeFloat) + WinHandleX)
+					If (MouseXVal - MapX) > (x2 * x + WinHandleX) And (MouseXVal - MapX) < ((x2 * x) + x2 + WinHandleX)
 						Local Offset% = 45
 						
-						If (MouseYVal - MapY) > (Height / MapGridSizeFloat * y + WinHandleY + Offset) And (MouseYVal - MapY) < ((Height / MapGridSizeFloat * y) + (Height / MapGridSizeFloat) + WinHandleY + Offset)
+						If (MouseYVal - MapY) > (y2 * y + WinHandleY + Offset) And (MouseYVal - MapY) < ((y2 * y) + y2 + WinHandleY + Offset)
 							Color(200, 200, 200)
-							Rect(Width / MapGridSizeFloat * x, Height / MapGridSizeFloat * y, (Width / MapGridSizeFloat), (Height / MapGridSizeFloat), True)
-							If Map(x, y) = Null And SelectedGadgetItem(ListBox) > -1
-								x2 = Width / MapGridSizeFloat
-								y2 = Height / MapGridSizeFloat
-								DrawImage(PlusIcon, (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
-							EndIf
+							Rect(x2 * x, y2 * y, x2, x2, True)
+							If Map(x, y) = Null And SelectedGadgetItem(ListBox) > -1 Then DrawImage(PlusIcon, (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 							If MouseHit1
 								If Grid_SelectedX <> x Or Grid_SelectedY <> y
 									Local Item% = SelectedGadgetItem(ListBox)
@@ -657,16 +650,14 @@ Repeat
 					
 					If Grid_SelectedX = x And Grid_SelectedY = y
 						Color(150, 150, 150)
-						Rect(Width / MapGridSizeFloat * x, Height / MapGridSizeFloat * y, (Width / MapGridSizeFloat), (Height / MapGridSizeFloat), True)
+						Rect(x2 * x, y2 * y, x2, y2, True)
 					EndIf
 					
 					If Map(x, y) = Null
 						Color(90, 90, 90)
-						Rect(Width / MapGridSizeFloat * x + 1, Height / MapGridSizeFloat * y + 1, (Width / MapGridSizeFloat) - 1, (Height / MapGridSizeFloat) - 1, False)
+						Rect(x2 * x + 1, y2 * y + 1, x2 - 1, y2 - 1, False)
 					Else
-						x2 = Width / MapGridSizeFloat
-						y2 = Height / MapGridSizeFloat
-						DrawImage(MapIcons(Map(x, y)\Shape, Floor(MapAngle(x, y) / 90)), (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
+						DrawImage(MapIcons(Map(x, y)\Shape, MapAngle(x, y) / 90), (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 						
 						If Grid_SelectedX = x And Grid_SelectedY = y
 							If PrevSelectedX <> Grid_SelectedX Or PrevSelectedY <> Grid_SelectedY
@@ -693,27 +684,27 @@ Repeat
 								Local PrevAngle% = MapAngle(Grid_SelectedX, Grid_SelectedY)
 								
 								; ~ Left
-								If (MouseXVal - MapX) < (Width / MapGridSizeFloat * Grid_SelectedX + WinHandleX)
+								If (MouseXVal - MapX) < (x2 * Grid_SelectedX + WinHandleX)
 									MapAngle(Grid_SelectedX, Grid_SelectedY) = 90
 								EndIf
 								; ~ Right
-								If (MouseXVal - MapX) > ((Width / MapGridSizeFloat * Grid_SelectedX) + (Width / MapGridSizeFloat) + WinHandleX)
+								If (MouseXVal - MapX) > ((x2 * Grid_SelectedX) + x2 + WinHandleX)
 									MapAngle(Grid_SelectedX, Grid_SelectedY) = 270
 								EndIf
 								; ~ Up
 								Offset = 45
-								If (MouseYVal - MapY) < (Height / MapGridSizeFloat * Grid_SelectedY + WinHandleY + Offset)
+								If (MouseYVal - MapY) < (y2 * Grid_SelectedY + WinHandleY + Offset)
 									MapAngle(Grid_SelectedX, Grid_SelectedY) = 180
 								EndIf
 								; ~ Down
-								If (MouseYVal - MapY) > ((Height / MapGridSizeFloat * Grid_SelectedY) + (Height / MapGridSizeFloat) + WinHandleY + Offset)
+								If (MouseYVal - MapY) > ((y2 * Grid_SelectedY) + y2 + WinHandleY + Offset)
 									MapAngle(Grid_SelectedX, Grid_SelectedY) = 0
 								EndIf
 								
-								Local Width2% = Width / MapGridSizeFloat / 2.0
-								Local Height2% = Height / MapGridSizeFloat / 2.0
+								Local Width2% = x2 / 2
+								Local Height2% = y2 / 2
 								
-								DrawImage(Arrows[Floor(MapAngle(Grid_SelectedX, Grid_SelectedY) / 90)], Width / MapGridSizeFloat * Grid_SelectedX + Width2, Height / MapGridSizeFloat * Grid_SelectedY + Height2)
+								DrawImage(Arrows[MapAngle(Grid_SelectedX, Grid_SelectedY) / 90], x2 * Grid_SelectedX + Width2, y2 * Grid_SelectedY + Height2)
 								If PrevAngle <> MapAngle(Grid_SelectedX, Grid_SelectedY)
 									ChangeGridGadget = True
 									If MapEvent(Grid_SelectedX, Grid_SelectedY) <> "" And MapEvent(Grid_SelectedX, Grid_SelectedY) <> None
@@ -728,43 +719,41 @@ Repeat
 				EndIf
 			EndIf
 		ElseIf CurrMapGrid = 1 ; ~ Forest grid
-			For x = 0 To ForestGridSize
-				For y = 0 To ForestGridSize
+			x2 = Width / ForestGridSize
+			y2 = Height / ForestGridSize
+			For x = 0 To ForestGridSize - 1
+				For y = 0 To ForestGridSize - 1
 					Color(125, 255, 255)
 					If x = ForestGridSize Or y = ForestGridSize
-						Rect(WidthMinus / ForestGridSizeFloat * x, HeightMinus / ForestGridSizeFloat * y, (WidthMinus / ForestGridSizeFloat) + 1,(HeightMinus / ForestGridSizeFloat) + 1, True)
+						Rect(x2 * x, y2 * y, x2 + 1, y2 + 1, True)
 					Else
-						Rect(WidthMinus / ForestGridSizeFloat * x, HeightMinus / ForestGridSizeFloat * y, (WidthMinus / ForestGridSizeFloat), (HeightMinus / ForestGridSizeFloat), True)
+						Rect(x2 * x, y2 * y, x2, y2, True)
 					EndIf
 					
 					If ForestPlace(x, y) = Null
 						Color(90, 90, 90)
-						Rect(WidthMinus / ForestGridSizeFloat * x + 1, HeightMinus / ForestGridSizeFloat * y + 1, (WidthMinus / ForestGridSizeFloat) - 1, (HeightMinus / ForestGridSizeFloat) - 1, False)
+						Rect(x2 * x + 1, y2 * y + 1, x2 - 1, y2 - 1, False)
 					EndIf
 				Next
 			Next
 			
-			For x = 0 To ForestGridSize
-				For y = 0 To ForestGridSize
+			For x = 0 To ForestGridSize - 1
+				For y = 0 To ForestGridSize - 1
 					Color(255, 255, 255)
 					If x = ForestGridSize Or y = ForestGridSize
-						Rect(WidthMinus / ForestGridSizeFloat * x, HeightMinus / ForestGridSizeFloat * y, (WidthMinus / ForestGridSizeFloat) + 1, (HeightMinus / ForestGridSizeFloat) + 1, True)
+						Rect(x2 * x, y2 * y, x2 + 1, y2 + 1, True)
 					Else
-						Rect(WidthMinus / ForestGridSizeFloat * x, HeightMinus / ForestGridSizeFloat * y, (WidthMinus / ForestGridSizeFloat), (HeightMinus / ForestGridSizeFloat), True)
+						Rect(x2 * x, y2 * y, x2, y2, True)
 					EndIf
 					
 					PrevSelectedX = Grid_SelectedX
 					PrevSelectedY = Grid_SelectedY
-					If (MouseXVal - MapX) > (WidthMinus / ForestGridSizeFloat * x + WinHandleX) And (MouseXVal - MapX) < ((WidthMinus / ForestGridSizeFloat * x) + (WidthMinus / ForestGridSizeFloat) + WinHandleX)
+					If (MouseXVal - MapX) > (x2 * x + WinHandleX) And (MouseXVal - MapX) < ((x2 * x) + x2 + WinHandleX)
 						Offset = 45
-						If (MouseYVal - MapY) > (HeightMinus / ForestGridSizeFloat * y + WinHandleY + Offset) And (MouseYVal - MapY) < ((HeightMinus / ForestGridSizeFloat * y) + (HeightMinus / ForestGridSizeFloat) + WinHandleY + Offset)
+						If (MouseYVal - MapY) > (y2 * y + WinHandleY + Offset) And (MouseYVal - MapY) < ((y2 * y) + y2 + WinHandleY + Offset)
 							Color(200, 200, 200)
-							Rect(WidthMinus / ForestGridSizeFloat * x, HeightMinus / ForestGridSizeFloat * y, (WidthMinus / Float(ForestGridSizee + 1)), (HeightMinus / ForestGridSizeFloat), True)
-							If ForestPlace(x, y) = Null And SelectedGadgetItem(ListBox) > -1
-								x2 = Width / ForestGridSizeFloat
-								y2 = Height / ForestGridSizeFloat
-								DrawImage(PlusIcon, (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
-							EndIf
+							Rect(x2 * x, y2 * y, x2, y2, True)
+							If ForestPlace(x, y) = Null And SelectedGadgetItem(ListBox) > -1 Then DrawImage(PlusIcon, (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 							If MouseHit1
 								If Grid_SelectedX <> x Or Grid_SelectedY <> y
 									Item = SelectedGadgetItem(ListBox)
@@ -839,19 +828,17 @@ Repeat
 					
 					If Grid_SelectedX = x And Grid_SelectedY = y
 						Color(150, 150, 150)
-						Rect(WidthMinus / ForestGridSizeFloat * x, HeightMinus / ForestGridSizeFloat * y, (WidthMinus / ForestGridSizeFloat), (HeightMinus / ForestGridSizeFloat), True)
+						Rect(x2 * x, y2 * y, x2, y2, True)
 					EndIf
 					
 					If ForestPlace(x, y) = Null
 						Color(90, 90, 90)
-						Rect(WidthMinus / ForestGridSizeFloat * x + 1, HeightMinus / ForestGridSizeFloat * y + 1, (WidthMinus / ForestGridSizeFloat) - 1, (HeightMinus / ForestGridSizeFloat) - 1, False)
+						Rect(x2 * x + 1, y2 * y + 1, x2 - 1, y2 - 1, False)
 					Else
-						x2 = WidthMinus / ForestGridSizeFloat
-						y2 = HeightMinus / ForestGridSizeFloat
 						If ForestPlace(x, y)\Name = "SCP-860-1 door"
-							DrawImage(SpecialIcons(1, Floor(ForestPlaceAngle(x, y) / 90.0)), (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
+							DrawImage(SpecialIcons(1, ForestPlaceAngle(x, y) / 90.0), (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 						Else
-							DrawImage(ForestIcons(ForestPlace(x, y)\Shape, Floor(ForestPlaceAngle(x, y) / 90.0)), (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
+							DrawImage(ForestIcons(ForestPlace(x, y)\Shape, ForestPlaceAngle(x, y) / 90), (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 						EndIf
 						
 						If Grid_SelectedX = x And Grid_SelectedY = y
@@ -870,25 +857,25 @@ Repeat
 						If MouseYVal > (MapY + WinHandleY + Offset) And MouseYVal < ((Height) + MapY + WinHandleY + Offset)
 							PrevAngle = ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY)
 							; ~ Left
-							If (MouseXVal - MapX) < (WidthMinus / ForestGridSizeFloat * Grid_SelectedX + WinHandleX)
+							If (MouseXVal - MapX) < (x2 * Grid_SelectedX + WinHandleX)
 								ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY) = 90.0
 							EndIf
 							; ~ Right
-							If (MouseXVal - MapX) > ((WidthMinus / ForestGridSizeFloat * Grid_SelectedX) + (WidthMinus / ForestGridSizeFloat) + WinHandleX)
+							If (MouseXVal - MapX) > ((x2 * Grid_SelectedX) + x2 + WinHandleX)
 								ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY) = 270.0
 							EndIf
 							; ~ Up
 							Offset = 45
-							If (MouseYVal - MapY) < (HeightMinus / ForestGridSizeFloat * Grid_SelectedY + WinHandleY + Offset)
+							If (MouseYVal - MapY) < (y2 * Grid_SelectedY + WinHandleY + Offset)
 								ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY) = 180.0
 							EndIf
 							; ~ Down
-							If (MouseYVal - MapY) > ((HeightMinus / ForestGridSizeFloat * Grid_SelectedY) + (HeightMinus / ForestGridSizeFloat) + WinHandleY + Offset)
+							If (MouseYVal - MapY) > ((y2 * Grid_SelectedY) + y2 + WinHandleY + Offset)
 								ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY) = 0.0
 							EndIf
-							Width2 = WidthMinus / ForestGridSizeFloat / 2.0
-							Height2 = HeightMinus / ForestGridSizeFloat / 2.0
-							DrawImage(Arrows[Floor(ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY) / 90)], WidthMinus / ForestGridSizeFloat * Grid_SelectedX + Width2, HeightMinus / ForestGridSizeFloat * Grid_SelectedY + Height2)
+							Width2 = x2 / 2
+							Height2 = y2 / 2
+							DrawImage(Arrows[ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY) / 90], x2 * Grid_SelectedX + Width2, y2 * Grid_SelectedY + Height2)
 							If PrevAngle <> ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY)
 								ChangeGridGadget = True
 								GridGadgetText = Format(GetLocalString("mc", "name"), ForestPlace(Grid_SelectedX, Grid_SelectedY)\Name) + Chr(13) + Format(GetLocalString("mc", "angle"), ForestPlaceAngle(Grid_SelectedX, Grid_SelectedY))
@@ -898,23 +885,21 @@ Repeat
 				EndIf
 			EndIf
 		Else ; ~ Maintenance tunnel grid
-			For x = 0 To MT_GridSize
-				For y = 0 To MT_GridSize
+			x2 = Width / MT_GridSize
+			y2 = Height / MT_GridSize
+			For x = 0 To MT_GridSize - 1
+				For y = 0 To MT_GridSize - 1
 					Color(255, 255, 255)
-					Rect(Width / MT_GridSizeFloat * x, Height / MT_GridSizeFloat * y, (Width / MT_GridSizeFloat), (Height / MT_GridSizeFloat), True)
+					Rect(x2 * x, y2 * y, x2, y2, True)
 					
 					PrevSelectedX = Grid_SelectedX
 					PrevSelectedY = Grid_SelectedY
-					If (MouseXVal - MapX) > (Width / MT_GridSizeFloat * x + WinHandleX) And (MouseXVal - MapX) < ((Width / MT_GridSizeFloat * x) + (Width / MT_GridSizeFloat) + WinHandleX)
+					If (MouseXVal - MapX) > (x2 * x + WinHandleX) And (MouseXVal - MapX) < ((x2 * x) + x2 + WinHandleX)
 						Offset = 45
-						If (MouseYVal - MapY) > (Height / MT_GridSizeFloat * y + WinHandleY + Offset) And (MouseYVal - MapY) < ((Height / MT_GridSizeFloat * y) + (Height / MT_GridSizeFloat) + WinHandleY + Offset)
+						If (MouseYVal - MapY) > (y2 * y + WinHandleY + Offset) And (MouseYVal - MapY) < ((y2 * y) + y2 + WinHandleY + Offset)
 							Color(200, 200, 200)
-							Rect(Width / MT_GridSizeFloat * x, Height / MT_GridSizeFloat * y, (Width / MT_GridSizeFloat), (Height / MT_GridSizeFloat), True)
-							If MTRoom(x, y) = Null And SelectedGadgetItem(ListBox) > -1
-								x2 = Width / MT_GridSizeFloat
-								y2 = Height / MT_GridSizeFloat
-								DrawImage(PlusIcon, (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
-							EndIf
+							Rect(x2 * x, y2 * y, x2, y2, True)
+							If MTRoom(x, y) = Null And SelectedGadgetItem(ListBox) > -1 Then DrawImage(PlusIcon, (x2 * x) + (x2 / 2.0), (y2 * y) + (y2 / 2.0))
 							If MouseHit1
 								If Grid_SelectedX <> x Or Grid_SelectedY <> y
 									Item = SelectedGadgetItem(ListBox)
@@ -988,19 +973,17 @@ Repeat
 					
 					If Grid_SelectedX = x And Grid_SelectedY = y
 						Color(150, 150, 150)
-						Rect(Width / MT_GridSizeFloat * x, Height / MT_GridSizeFloat * y, (Width / MT_GridSizeFloat), (Height / MT_GridSizeFloat), True)
+						Rect(x2 * x, y2 * y, x2, y2, True)
 					EndIf
 					
 					If MTRoom(x, y) = Null
 						Color(90, 90, 90)
-						Rect(Width / MT_GridSizeFloat * x + 1, Height / MT_GridSizeFloat * y + 1, (Width / MT_GridSizeFloat) - 1, (Height / MT_GridSizeFloat) - 1, False)
+						Rect(x2 * x + 1, y2 * y + 1, x2 - 1, y2 - 1, False)
 					Else
-						x2 = Width / MT_GridSizeFloat
-						y2 = Height / MT_GridSizeFloat
 						If MTRoom(x, y)\Name = "Maintenance tunnel elevator"
-							DrawImage(SpecialIcons(2, Floor(MTRoomAngle(x, y) / 90.0)), (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
+							DrawImage(SpecialIcons(2, MTRoomAngle(x, y) / 90), (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 						Else
-							DrawImage(MapIcons(MTRoom(x, y)\Shape, Floor(MTRoomAngle(x, y) / 90.0)), (x2 * x) + (x2 / 2.0) + 0.5, (y2 * y) + (y2 / 2.0) + 0.5)
+							DrawImage(MapIcons(MTRoom(x, y)\Shape, MTRoomAngle(x, y) / 90), (x2 * x) + (x2 / 2), (y2 * y) + (y2 / 2))
 						EndIf
 						
 						If Grid_SelectedX = x And Grid_SelectedY = y
@@ -1019,25 +1002,25 @@ Repeat
 						If MouseYVal > (MapY + WinHandleY + Offset) And MouseYVal < ((Height) + MapY + WinHandleY + Offset)
 							PrevAngle = MTRoomAngle(Grid_SelectedX, Grid_SelectedY)
 							; ~ Left
-							If (MouseXVal - MapX) < (Width / MT_GridSizeFloat * Grid_SelectedX + WinHandleX)
+							If (MouseXVal - MapX) < (x2 * Grid_SelectedX + WinHandleX)
 								MTRoomAngle(Grid_SelectedX, Grid_SelectedY) = 90.0
 							EndIf
 							; ~ Right
-							If (MouseXVal - MapX) > ((Width / MT_GridSizeFloat * Grid_SelectedX) + (Width / MT_GridSizeFloat) + WinHandleX)
+							If (MouseXVal - MapX) > ((x2 * Grid_SelectedX) + x2 + WinHandleX)
 								MTRoomAngle(Grid_SelectedX, Grid_SelectedY) = 270.0
 							EndIf
 							; ~ Up
 							Offset = 45
-							If (MouseYVal - MapY) < (Height / MT_GridSizeFloat * Grid_SelectedY + WinHandleY + Offset)
+							If (MouseYVal - MapY) < (y2 * Grid_SelectedY + WinHandleY + Offset)
 								MTRoomAngle(Grid_SelectedX, Grid_SelectedY) = 180.0
 							EndIf
 							; ~ Down
-							If (MouseYVal - MapY) > ((Height / MT_GridSizeFloat * Grid_SelectedY) + (Height / MT_GridSizeFloat) + WinHandleY + Offset)
+							If (MouseYVal - MapY) > ((y2 * Grid_SelectedY) + y2 + WinHandleY + Offset)
 								MTRoomAngle(Grid_SelectedX, Grid_SelectedY) = 0.0
 							EndIf
-							Width2 = Width / MT_GridSizeFloat / 2.0
-							Height2 = Height / MT_GridSizeFloat / 2.0
-							DrawImage(Arrows[Floor(MTRoomAngle(Grid_SelectedX, Grid_SelectedY) / 90)], Width / MT_GridSizeFloat * Grid_SelectedX + Width2, Height / MT_GridSizeFloat * Grid_SelectedY + Height2)
+							Width2 = x2 / 2
+							Height2 = y2 / 2
+							DrawImage(Arrows[MTRoomAngle(Grid_SelectedX, Grid_SelectedY) / 90], x2 * Grid_SelectedX + Width2, y2 * Grid_SelectedY + Height2)
 							If PrevAngle <> MTRoomAngle(Grid_SelectedX, Grid_SelectedY)
 								ChangeGridGadget = True
 								GridGadgetText = Format(GetLocalString("mc", "name"), MTRoom(Grid_SelectedX, Grid_SelectedY)\Name) + Chr(13) + Format(GetLocalString("mc", "angle"), MTRoomAngle(Grid_SelectedX, Grid_SelectedY))
@@ -1266,8 +1249,8 @@ Repeat
 		If EventSource() = ResetZoneTrans
 			SetGadgetText(ZoneTrans1, 5)
 			SetGadgetText(ZoneTrans2, 11)
-			ZoneTransValue1 = (MapGridSize) - Int(TextFieldText(ZoneTrans1))
-			ZoneTransValue2 = (MapGridSize) - Int(TextFieldText(ZoneTrans2))
+			ZoneTransValue1 = MapGridSize - Int(TextFieldText(ZoneTrans1))
+			ZoneTransValue2 = MapGridSize - Int(TextFieldText(ZoneTrans2))
 		EndIf
 		If EventSource() = ZoneTrans1 Then SetGadgetText(ZoneTrans1, Int(TextFieldText(ZoneTrans1)))
 		If EventSource() = ZoneTrans2 Then SetGadgetText(ZoneTrans2, Int(TextFieldText(ZoneTrans2)))
@@ -1648,8 +1631,8 @@ Function EraseMap%()
 		SetGadgetText(Event_Prob_Label, Format(GetLocalString("mc", "event.chance"), (SliderValue(Event_Prob) + 1)))
 	EndIf
 	
-	For x = 0 To MapGridSize
-		For y = 0 To MapGridSize
+	For x = 0 To MapGridSize - 1
+		For y = 0 To MapGridSize - 1
 			Map(x, y) = Null
 			MapAngle(x, y) = 0
 			MapEvent(x, y) = ""
@@ -1657,21 +1640,21 @@ Function EraseMap%()
 		Next
 	Next
 	
-	For x = 0 To ForestGridSize
-		For y = 0 To ForestGridSize
+	For x = 0 To ForestGridSize - 1
+		For y = 0 To ForestGridSize - 1
 			ForestPlace(x, y) = Null
 			ForestPlaceAngle(x, y) = 0
 		Next
 	Next
 	
-	For x = 0 To MT_GridSize
-		For y = 0 To MT_GridSize
+	For x = 0 To MT_GridSize - 1
+		For y = 0 To MT_GridSize - 1
 			MTRoom(x, y) = Null
 			MTRoomAngle(x, y) = 0
 		Next
 	Next
 	
-	ZoneTransValue1 = 13
+	ZoneTransValue1 = 14
 	ZoneTransValue2 = 7
 	SetGadgetText(ZoneTrans1, 5)
 	SetGadgetText(ZoneTrans2, 11)
@@ -1697,8 +1680,8 @@ Function LoadMap%(File$)
 		SetGadgetText(Descr_Text, MapDescription)
 		ZoneTransValue1 = ReadByte(f)
 		ZoneTransValue2 = ReadByte(f)
-		SetGadgetText(ZoneTrans1, (MapGridSize) - ZoneTransValue1)
-		SetGadgetText(ZoneTrans2, (MapGridSize) - ZoneTransValue2)
+		SetGadgetText(ZoneTrans1, MapGridSize - ZoneTransValue1)
+		SetGadgetText(ZoneTrans2, MapGridSize - ZoneTransValue2)
 		
 		Local RoomAmount% = ReadInt(f) ; ~ Amount of rooms
 		Local ForestAmount% = ReadInt(f) ; ~ Amount of forest pieces
@@ -1797,24 +1780,24 @@ Function SaveMap%(File$, StreamTopRgm% = False, Old% = 0)
 		WriteByte(f, ZoneTransValue2)
 		; ~ Facility room amount
 		Temp = 0
-		For x = 0 To MapGridSize
-			For y = 0 To MapGridSize
+		For x = 0 To MapGridSize - 1
+			For y = 0 To MapGridSize - 1
 				If Map(x, y) <> Null Then Temp = Temp + 1
 			Next
 		Next
 		WriteInt(f, Temp)
 		; ~ Forest room amount
 		Temp = 0
-		For x = 0 To ForestGridSize
-			For y = 0 To ForestGridSize
+		For x = 0 To ForestGridSize - 1
+			For y = 0 To ForestGridSize - 1
 				If ForestPlace(x, y) <> Null Then Temp = Temp + 1
 			Next
 		Next
 		WriteInt(f, Temp)
 		; ~ Maintenance Tunnels room amount
 		Temp = 0
-		For x = 0 To MT_GridSize
-			For y = 0 To MT_GridSize
+		For x = 0 To MT_GridSize - 1
+			For y = 0 To MT_GridSize - 1
 				If MTRoom(x, y) <> Null Then Temp = Temp + 1
 			Next
 		Next
@@ -1823,13 +1806,13 @@ Function SaveMap%(File$, StreamTopRgm% = False, Old% = 0)
 	
 	If StreamTopRgm Then WriteInt(f, CurrMapGrid)
 	
-	For x = 0 To MapGridSize
-		For y = 0 To MapGridSize
+	For x = 0 To MapGridSize - 1
+		For y = 0 To MapGridSize - 1
 			If Map(x, y) <> Null
 				WriteByte(f, x)
 				WriteByte(f, y)
 				WriteString(f, Lower(Map(x, y)\Name))
-				WriteByte(f, Floor(MapAngle(x, y) / 90))
+				WriteByte(f, MapAngle(x, y) / 90)
 				If MapEvent(x, y) <> None
 					WriteString(f, MapEvent(x, y))
 				Else
@@ -1843,26 +1826,26 @@ Function SaveMap%(File$, StreamTopRgm% = False, Old% = 0)
 	Next
 	
 	If Old = 0
-		For x = 0 To ForestGridSize
-			For y = 0 To ForestGridSize
+		For x = 0 To ForestGridSize - 1
+			For y = 0 To ForestGridSize - 1
 				If ForestPlace(x, y) <> Null
 					WriteByte(f, x)
 					WriteByte(f, y)
 					WriteString(f, Lower(ForestPlace(x, y)\Name))
-					WriteByte(f, Floor(ForestPlaceAngle(x, y) / 90.0))
+					WriteByte(f, ForestPlaceAngle(x, y) / 90)
 					
 					If StreamTopRgm Then WriteByte(f, (Grid_SelectedX = x And Grid_SelectedY = y))
 				EndIf
 			Next
 		Next
 		
-		For x = 0 To MT_GridSize
-			For y = 0 To MT_GridSize
+		For x = 0 To MT_GridSize - 1
+			For y = 0 To MT_GridSize - 1
 				If MTRoom(x, y) <> Null
 					WriteByte(f, x)
 					WriteByte(f, y)
 					WriteString(f, Lower(MTRoom(x, y)\Name))
-					WriteByte(f, Floor(MTRoomAngle(x, y) / 90.0))
+					WriteByte(f, MTRoomAngle(x, y) / 90)
 					
 					If StreamTopRgm Then WriteByte(f, (Grid_SelectedX = x And Grid_SelectedY = y))
 				EndIf
@@ -1886,4 +1869,4 @@ Function WriteOptions%()
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D
+;~C#BlitzPlus
