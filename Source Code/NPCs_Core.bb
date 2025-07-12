@@ -1330,9 +1330,10 @@ End Function
 Function MoveToPocketDimension%()
 	Local r.Rooms, e.Events
 	
-	n_I\Curr106\Idle = 1 ; ~ Make SCP-106 idle for a while
 	For r.Rooms = Each Rooms
 		If r\RoomTemplate\RoomID = r_dimension_106
+			n_I\Curr106\State2 = Rnd(22000.0, 27000.0)
+			n_I\Curr106\State = 0.0
 			me\BlinkTimer = -10.0 : me\FallTimer = 0.0 : me\DropSpeed = 0.0 : me\Playable = 2
 			me\Injuries = me\Injuries + 0.5
 			me\BlurTimer = 1750.0
@@ -1340,7 +1341,6 @@ Function MoveToPocketDimension%()
 			ShowEntity(me\Collider)
 			PlaySound_Strict(LoadTempSound("SFX\SCP\914\PlayerUse.ogg"))
 			PlaySound_Strict(LoadTempSound("SFX\Room\PocketDimension\Enter.ogg"))
-			n_I\Curr106\Idle = 0
 			
 			TeleportEntity(me\Collider, EntityX(r\OBJ), EntityY(r\OBJ) + 0.5, EntityZ(r\OBJ))
 			TeleportToRoom(r)
