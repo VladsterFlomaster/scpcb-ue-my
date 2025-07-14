@@ -9771,58 +9771,69 @@ Function UpdateEvent_Gateway%(e.Events)
 	; ~ e\EventState4: Checks if airlock is turned on
 	
 	Local BrokenDoor%, i%
+	Local DistMult# = (2.3 * (e\room\RoomTemplate\RoomID = r_room4_gw))
 	
 	BrokenDoor = (e\room\Objects[1] <> 0)
 	
 	If PlayerRoom = e\room
 		e\EventState3 = UpdateLever(e\room\RoomLevers[0]\OBJ)
 		If e\EventState = 0.0
-			If EntityDistanceSquared(e\room\Objects[0], me\Collider) < 0.64 And e\EventState2 = 0.0 And e\EventState3 = 1.0
+			If EntityDistanceSquared(e\room\Objects[0], me\Collider) < (0.64 + DistMult) And e\EventState2 = 0.0 And e\EventState3 = 1.0
 				If BrokenDoor
 					LoadEventSound(e, "SFX\Room\SparkLong.ogg", 1)
 					e\SoundCHN2 = PlaySoundEx(e\Sound2, Camera, e\room\Objects[1], 5.0)
 				EndIf
 				StopChannel(e\SoundCHN) : e\SoundCHN = 0
 				LoadEventSound(e, "SFX\Room\Airlock.ogg")
-				For i = 0 To 1
+				For i = 0 To 1 + (2 * (e\room\RoomTemplate\RoomID = r_room4_gw))
 					e\room\RoomDoors[i]\FastOpen = True
 					OpenCloseDoor(e\room\RoomDoors[i])
 				Next
 				PlaySound_Strict(snd_I\AlarmSFX[2])
 				e\EventState = 0.01
-			ElseIf EntityDistanceSquared(e\room\Objects[0], me\Collider) > 5.29
+			ElseIf EntityDistanceSquared(e\room\Objects[0], me\Collider) > (5.29 + DistMult)
 				e\EventState2 = 0.0
 			EndIf
 		Else
 			If e\EventState < 70.0 * 9.0
 				e\EventState = e\EventState + fps\Factor[0]
-				If e\room\RoomDoors[0]\Locked = 0 Then e\room\RoomDoors[0]\Open = False
-				If e\room\RoomDoors[1]\Locked = 0 Then e\room\RoomDoors[1]\Open = False
-				If e\EventState < 70.0
-					If BrokenDoor
-						If e\room\RoomEmitters[2] = Null Then e\room\RoomEmitters[2] = SetEmitter(e\room, EntityX(e\room\Objects[1], True), EntityY(e\room\Objects[1], True), EntityZ(e\room\Objects[1], True), 16)
-					EndIf
+				For i = 0 To 1 + (2 * (e\room\RoomTemplate\RoomID = r_room4_gw))
+					If e\room\RoomDoors[i]\Locked = 0 Then e\room\RoomDoors[i]\Open = False
+				Next
+				If e\EventState < 70.0 And e\EventState - fps\Factor[0] >= 70.0
+					If BrokenDoor Then SetEmitter(e\room, EntityX(e\room\Objects[1], True), EntityY(e\room\Objects[1], True), EntityZ(e\room\Objects[1], True), 16)
 				ElseIf e\EventState > 70.0 * 3.0 And e\EventState < 70.0 * 7.0
-					If EntityDistanceSquared(e\room\Objects[0], me\Collider) < 4.0
+					If EntityDistanceSquared(e\room\Objects[0], me\Collider) < (4.0 + DistMult)
 						If wi\GasMask = 0 And wi\HazmatSuit = 0 Then me\EyeIrritation = Max(70.0, me\EyeIrritation)
 					EndIf
-					If e\room\RoomEmitters[2] <> Null Then FreeEmitter(e\room\RoomEmitters[2])
-					For i = 0 To 1
+					For i = 0 To 1 + (4 * (e\room\RoomTemplate\RoomID = r_room4_gw))
 						If e\room\RoomEmitters[i] = Null
-							Local Temp% = (e\room\RoomTemplate\RoomID = r_room3_gw)
-							
-							TFormPoint(Temp * (220.0 * i - 110.0) + (Not Temp) * 320.0, 360.0, Temp * 320.0 + (Not Temp) * (220.0 * i - 110.0), e\room\OBJ, 0)
-							
+							Select e\room\RoomTemplate\RoomID
+								Case r_room2_gw
+									;[Block]
+									TFormPoint(320.0, 360.0, 220.0 * i - 110.0, e\room\OBJ, 0)
+									;[End Block]
+								Case r_room3_gw
+									;[Block]
+									TFormPoint(220.0 * i - 110.0, 360.0, 320.0, e\room\OBJ, 0)
+									;[End Block]
+								Case r_room4_gw
+									;[Block]
+									TFormPoint(-266.0 + ((i - (3 * (i > 2))) * 266.0), 476.0, 116.0 - ((i > 2) * 232.0), e\room\OBJ, 0)
+									;[End Block]
+							End Select
 							e\room\RoomEmitters[i] = SetEmitter(e\room, TFormedX(), TFormedY(), TFormedZ(), 2)
 						EndIf
 					Next
 					If (Not ChannelPlaying(e\SoundCHN)) Then e\SoundCHN = PlaySoundEx(e\Sound, Camera, e\room\Objects[0], 5.0)
 				EndIf
 			Else
-				For i = 0 To 1
+				For i = 0 To 1 + (4 * (e\room\RoomTemplate\RoomID = r_room4_gw))
 					If e\room\RoomEmitters[i] <> Null Then FreeEmitter(e\room\RoomEmitters[i])
-					If (Not e\room\RoomDoors[i]\Open) Then OpenCloseDoor(e\room\RoomDoors[i])
-					e\room\RoomDoors[i]\FastOpen = False
+					If i < 4
+						If (Not e\room\RoomDoors[i]\Open) Then OpenCloseDoor(e\room\RoomDoors[i])
+						e\room\RoomDoors[i]\FastOpen = False
+					EndIf
 				Next
 				e\EventState = 0.0
 				e\EventState2 = 1.0

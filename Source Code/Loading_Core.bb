@@ -192,7 +192,7 @@ Function LoadParticles%()
 	SetTemplateSize(ParticleEffect[1], 0.18, 0.2, 0.5, 1.5)
 	SetTemplateSizeVel(ParticleEffect[1], 0.02, 1.01)
 	
-	; ~ White smoke in "room2_gw/room3_gw"
+	; ~ White smoke in "room2_gw/room3_gw/room4_gw"
 	ParticleEffect[2] = CreateTemplate()
 	SetTemplateEmitterBlend(ParticleEffect[2], 1)
 	SetTemplateEmitterLifeTime(ParticleEffect[2], 70.0 * 3.0)
@@ -2170,6 +2170,7 @@ Function LoadEvents%()
 	CreateEvent(e_room2_gw_2, r_room2_gw_2, 0)
 	CreateEvent(e_gateway, r_room2_gw, 0, 1.0)
 	CreateEvent(e_gateway, r_room3_gw, 0, 1.0)
+	CreateEvent(e_gateway, r_room4_gw, 0, 1.0)
 	
 	CreateEvent(e_dimension_1499, r_dimension_1499, 0)
 	

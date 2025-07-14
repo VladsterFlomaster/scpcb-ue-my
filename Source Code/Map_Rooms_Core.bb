@@ -3121,6 +3121,45 @@ Function FillRoom%(r.Rooms)
 			
 			CreateCustomCenter(r, r\x, r\z - 425.0 * RoomScale)
 			;[End Block]
+		Case r_room4_gw
+			;[Block]
+			d.Doors = CreateDoor(r, r\x + 472.0 * RoomScale, r\y, r\z, 90.0, True, ONE_SIDED_DOOR)
+			d\Locked = 1 : d\MTFClose = False
+			For i = 0 To 1
+				FreeEntity(d\Buttons[i]) : d\Buttons[i] = 0
+			Next
+			r\RoomDoors.Doors[0] = d
+			
+			d.Doors = CreateDoor(r, r\x - 472.0 * RoomScale, r\y, r\z, 90.0, True, ONE_SIDED_DOOR)
+			d\Locked = 1 : d\MTFClose = False
+			For i = 0 To 1
+				FreeEntity(d\Buttons[i]) : d\Buttons[i] = 0
+			Next
+			r\RoomDoors.Doors[1] = d
+			
+			d.Doors = CreateDoor(r, r\x, r\y, r\z + 472.0 * RoomScale, 0.0, True, ONE_SIDED_DOOR)
+			d\Locked = 1 : d\MTFClose = False
+			For i = 0 To 1
+				FreeEntity(d\Buttons[i]) : d\Buttons[i] = 0
+			Next
+			r\RoomDoors.Doors[2] = d
+			
+			d.Doors = CreateDoor(r, r\x, r\y, r\z - 472.0 * RoomScale, 0.0, True, ONE_SIDED_DOOR)
+			d\Locked = 1 : d\MTFClose = False
+			For i = 0 To 1
+				FreeEntity(d\Buttons[i]) : d\Buttons[i] = 0
+			Next
+			r\RoomDoors.Doors[3] = d
+			
+			CreateDoor(r, r\x - 748.0 * RoomScale, r\y, r\z - 256.0 * RoomScale, 180.0, False, ONE_SIDED_DOOR, KEY_CARD_2)
+			CreateDoor(r, r\x - 256.0 * RoomScale, r\y, r\z - 748.0 * RoomScale, 270.0, False, ONE_SIDED_DOOR, KEY_CARD_2)
+			
+			r\RoomLevers.Levers[0] = CreateLever(r, r\x - 551.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 965.0 * RoomScale, 180.0, True)
+			
+			r\Objects[0] = CreatePivot()
+			PositionEntity(r\Objects[0], r\x, r\y, r\z)
+			EntityParent(r\Objects[0], r\OBJ)
+			;[End Block]
 		Case r_room2_checkpoint_hcz_ez
 			;[Block]
 			d.Doors = CreateDoor(r, r\x + 200.0 * RoomScale, r\y, r\z, 0.0, False, DEFAULT_DOOR, KEY_CARD_4)
