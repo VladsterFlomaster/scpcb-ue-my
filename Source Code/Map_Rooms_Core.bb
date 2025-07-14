@@ -3151,8 +3151,8 @@ Function FillRoom%(r.Rooms)
 			Next
 			r\RoomDoors.Doors[3] = d
 			
-			CreateDoor(r, r\x - 748.0 * RoomScale, r\y, r\z - 256.0 * RoomScale, 180.0, False, ONE_SIDED_DOOR, KEY_CARD_2)
-			CreateDoor(r, r\x - 256.0 * RoomScale, r\y, r\z - 748.0 * RoomScale, 270.0, False, ONE_SIDED_DOOR, KEY_CARD_2)
+			CreateDoor(r, r\x - 748.0 * RoomScale, r\y, r\z - 256.0 * RoomScale, 180.0, False, ONE_SIDED_DOOR, KEY_CARD_3)
+			CreateDoor(r, r\x - 256.0 * RoomScale, r\y, r\z - 748.0 * RoomScale, 270.0, False, ONE_SIDED_DOOR, KEY_CARD_3)
 			
 			r\RoomLevers.Levers[0] = CreateLever(r, r\x - 551.0 * RoomScale, r\y + 192.0 * RoomScale, r\z - 965.0 * RoomScale, 180.0, True)
 			
@@ -4522,4 +4522,4 @@ Function FillRoom%(r.Rooms)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS
