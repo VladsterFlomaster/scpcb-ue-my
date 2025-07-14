@@ -564,7 +564,7 @@ Function RemoveParticleInstances%()
 	Delete(p_I) : p_I = Null
 End Function
 
-Const MaxDoorModelIDAmount% = 9
+Const MaxDoorModelIDAmount% = 10
 Const MaxDoorFrameModelIDAmount% = 4
 Const MaxButtonModelIDAmount% = 5
 Const MaxButtonTextureIDAmount% = 4
@@ -653,6 +653,10 @@ Function LoadDoors%()
 	d_I\DoorModel[DOOR_FENCE_MODEL] = LoadAnimMesh_Strict("GFX\Map\Props\FenceDoor.b3d")
 	
 	d_I\DoorModel[DOOR_ONE_SIDED_MODEL] = LoadMesh_Strict("GFX\Map\Props\Door02.b3d")
+	
+	For i = 0 To MaxDoorModelIDAmount - 1
+		HideEntity(d_I\DoorModel[i])
+	Next
 	
 	d_I\DoorFrameModelID[DOOR_DEFAULT_FRAME_MODEL] = LoadMesh_Strict("GFX\Map\Props\DoorFrame.b3d")
 	
