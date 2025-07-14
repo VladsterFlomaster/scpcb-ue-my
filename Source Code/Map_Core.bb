@@ -5879,6 +5879,8 @@ Function CreateMap%()
 	SetRoom(1, ROOM3, "cont3_009", 0.2)
 	SetRoom(1, ROOM3, "cont3_513", 0.5)
 	SetRoom(1, ROOM3, "cont3_966", 0.8)
+	
+	SetRoom(1, ROOM4, "room4_gw", 0.3)
 	;[End Block]
 	
 	; ~ [ENTRANCE ZONE]
