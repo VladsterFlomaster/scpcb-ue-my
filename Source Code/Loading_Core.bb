@@ -571,7 +571,7 @@ Const MaxButtonTextureIDAmount% = 4
 Const MaxElevatorPanelTextureIDAmount% = 3
 
 Type DoorInstance
-	Field DoorModelName$[MaxDoorModelIDAmount]
+	Field DoorModel%[MaxDoorModelIDAmount]
 	Field DoorFrameModelID%[MaxDoorFrameModelIDAmount]
 	Field ButtonModelID%[MaxButtonModelIDAmount]
 	Field ButtonTextureID%[MaxButtonTextureIDAmount]
@@ -635,23 +635,24 @@ Function LoadDoors%()
 	
 	d_I.DoorInstance = New DoorInstance
 	
-	d_I\DoorModelName[DOOR_DEFAULT_MODEL] = "Door01"
+	; ~ TODO: Replace by names. Copy the doors from already existing ones in ``CreateDoor`` function. Temporary fix for MT elevator doors disappearing
+	d_I\DoorModel[DOOR_DEFAULT_MODEL] = LoadMesh_Strict("GFX\Map\Props\Door01.b3d")
 	
-	d_I\DoorModelName[DOOR_ELEVATOR_MODEL] = "ElevatorDoor"
+	d_I\DoorModel[DOOR_ELEVATOR_MODEL] = LoadMesh_Strict("GFX\Map\Props\ElevatorDoor.b3d")
 	
-	d_I\DoorModelName[DOOR_HEAVY_MODEL_1] = "HeavyDoor1"
-	d_I\DoorModelName[DOOR_HEAVY_MODEL_2] = "HeavyDoor2"
+	d_I\DoorModel[DOOR_HEAVY_MODEL_1] = LoadMesh_Strict("GFX\Map\Props\HeavyDoor1.b3d")
+	d_I\DoorModel[DOOR_HEAVY_MODEL_2] = LoadMesh_Strict("GFX\Map\Props\HeavyDoor2.b3d")
 	
-	d_I\DoorModelName[DOOR_BIG_MODEL_1] = "contdoorleft"
-	d_I\DoorModelName[DOOR_BIG_MODEL_2] = "contdoorright"
+	d_I\DoorModel[DOOR_BIG_MODEL_1] = LoadMesh_Strict("GFX\Map\Props\contdoorleft.b3d")
+	d_I\DoorModel[DOOR_BIG_MODEL_2] = LoadMesh_Strict("GFX\Map\Props\contdoorright.b3d")
 	
-	d_I\DoorModelName[DOOR_OFFICE_MODEL] = "officedoor"
+	d_I\DoorModel[DOOR_OFFICE_MODEL] = LoadAnimMesh_Strict("GFX\Map\Props\officedoor.b3d")
 	
-	d_I\DoorModelName[DOOR_WOODEN_MODEL] = "DoorWooden"
+	d_I\DoorModel[DOOR_WOODEN_MODEL] = LoadMesh_Strict("GFX\Map\Props\DoorWooden.b3d")
 	
-	d_I\DoorModelName[DOOR_FENCE_MODEL] = "FenceDoor"
+	d_I\DoorModel[DOOR_FENCE_MODEL] = LoadAnimMesh_Strict("GFX\Map\Props\FenceDoor.b3d")
 	
-	d_I\DoorModelName[DOOR_ONE_SIDED_MODEL] = "Door02"
+	d_I\DoorModel[DOOR_ONE_SIDED_MODEL] = LoadMesh_Strict("GFX\Map\Props\Door02.b3d")
 	
 	d_I\DoorFrameModelID[DOOR_DEFAULT_FRAME_MODEL] = LoadMesh_Strict("GFX\Map\Props\DoorFrame.b3d")
 	

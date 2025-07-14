@@ -2839,7 +2839,6 @@ Function CreateDoor.Doors(room.Rooms, x#, y#, z#, Angle#, Open% = False, DoorTyp
 	End Select
 	
 	Local Temp% = (DoorType = BIG_DOOR)
-	Local PropsPath$ = "GFX\Map\Props\"
 	
 	If DoorType <> FENCE_DOOR
 		d\FrameOBJ = CopyEntity(d_I\DoorFrameModelID[FrameModelID])
@@ -2851,19 +2850,7 @@ Function CreateDoor.Doors(room.Rooms, x#, y#, z#, Angle#, Open% = False, DoorTyp
 	EndIf
 	PositionEntity(d\FrameOBJ, x, y, z)
 	
-	For d2.Doors = Each Doors
-		If d2 <> d And d2\DoorType = DoorType
-			d\OBJ = CopyEntity(d2\OBJ)
-			Exit
-		EndIf
-	Next
-	If d\OBJ = 0
-		If DoorType = OFFICE_DOOR Lor DoorType = FENCE_DOOR
-			d\OBJ = LoadAnimMesh_Strict(PropsPath + d_I\DoorModelName[DoorModelID_1] + ".b3d")
-		Else
-			d\OBJ = LoadMesh_Strict(PropsPath + d_I\DoorModelName[DoorModelID_1] + ".b3d")
-		EndIf
-	EndIf
+	d\OBJ = CopyEntity(d_I\DoorModel[DoorModelID_1])
 	ScaleEntity(d\OBJ, DoorScaleX, DoorScaleY, DoorScaleZ)
 	PositionEntity(d\OBJ, x, y, z)
 	RotateEntity(d\OBJ, 0.0, Angle, 0.0)
@@ -2874,13 +2861,7 @@ Function CreateDoor.Doors(room.Rooms, x#, y#, z#, Angle#, Open% = False, DoorTyp
 	d\HasOneSide = (DoorType = OFFICE_DOOR Lor DoorType = WOODEN_DOOR Lor DoorType = FENCE_DOOR)
 	
 	If (Not d\HasOneSide)
-		For d2.Doors = Each Doors
-			If d2 <> d And d2\DoorType = DoorType And d2\OBJ2 <> 0
-				d\OBJ2 = CopyEntity(d2\OBJ2)
-				Exit
-			EndIf
-		Next
-		If d\OBJ2 = 0 Then d\OBJ2 = LoadMesh_Strict(PropsPath + d_I\DoorModelName[DoorModelID_2] + ".b3d")
+		d\OBJ2 = CopyEntity(d_I\DoorModel[DoorModelID_2])
 		ScaleEntity(d\OBJ2, DoorScaleX, DoorScaleY, DoorScaleZ)
 		PositionEntity(d\OBJ2, x, y, z)
 		RotateEntity(d\OBJ2, 0.0, Angle + ((Not Temp) * 180.0), 0.0)
