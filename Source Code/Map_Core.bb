@@ -375,6 +375,63 @@ Function RemoveSoundEmitter%(se.SoundEmitters)
 	Delete(se)
 End Function
 
+Type TempFluLights
+	Field x#, y#, z#
+	Field Yaw#
+	Field SpriteR#, SpriteG#, SpriteB#
+	Field State%
+	Field RoomTemplate.RoomTemplates
+End Type
+
+Type FluLights
+	Field OBJ%
+	Field State%
+	Field FlashSprite%
+	Field room.Rooms
+End Type
+
+Function CreateFluLight.FluLights(room.Rooms, x#, y#, z#, Yaw#, State%, SpriteR#, SpriteG#, SpriteB#)
+	Local flu.FluLights, flu2.FluLights
+	
+	flu.FluLights = New FluLights
+	flu\room = room
+	flu\State = State
+	
+	For flu2.FluLights = Each FluLights
+		If flu2 <> flu
+			EntityParent(flu2\FlashSprite, 0)
+			flu\OBJ = CopyEntity(flu2\OBJ)
+			EntityParent(flu2\FlashSprite, flu2\OBJ)
+			Exit
+		EndIf
+	Next
+	If flu\OBJ = 0 Then flu\OBJ = LoadMesh_Strict("GFX\Map\Props\flu_light.b3d")
+	ScaleEntity(flu\OBJ, RoomScale, RoomScale, RoomScale)
+	PositionEntity(flu\OBJ, x, y, z)
+	RotateEntity(flu\OBJ, 0.0, Yaw, 0.0)
+	EntityTexture(flu\OBJ, misc_I\FluLightTex[State])
+	EntityParent(flu\OBJ, room\OBJ)
+	HideEntity(flu\OBJ)
+	
+	Local Tex% = LoadTexture_Strict("GFX\Particles\flu_light.png", 1 + 2)
+	
+	flu\FlashSprite = CreateSprite()
+	ScaleSprite(flu\FlashSprite, 0.8, 0.8)
+	PositionEntity(flu\FlashSprite, x, y, z)
+	MoveEntity(flu\FlashSprite, 0.0, -0.03, 0.0)
+	SpriteViewMode(flu\FlashSprite, 2)
+	EntityBlend(flu\FlashSprite, 3)
+	EntityFX(flu\OBJ, 1)
+	EntityColor(flu\FlashSprite, SpriteR, SpriteG, SpriteB)
+	RotateEntity(flu\FlashSprite, -90.0, 0.0, 0.0)
+	EntityParent(flu\FlashSprite, flu\OBJ)
+	EntityTexture(flu\FlashSprite, Tex)
+	DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+	HideEntity(flu\FlashSprite)
+	
+	Return(flu)
+End Function
+
 ; ~ TODO: REWRITE THIS. MESH (PROPS, LIGHTS AND ETC) SHOULDN'T BE ATTACHED TO ROOMS ONLY
 Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	CatchErrors("LoadRMesh(" + File + ")")
@@ -631,7 +688,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	
 	Count = ReadInt(f) ; ~ Point entities
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tse.TempSoundEmitters, tp.TempProps
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tse.TempSoundEmitters, tp.TempProps, tflu.TempFluLights
 	Local Range#, lColor$, Intensity#
 	Local R%, G%, B%
 	Local Angles$
@@ -786,6 +843,26 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tp\HasCollision = ReadByte(f)
 					tp\FX = ReadInt(f)
 					tp\Texture = ReadString(f)
+					;[End Block]
+				Case "flu_light"
+					;[Block]
+					tflu.TempFluLights = New TempFluLights
+					tflu\RoomTemplate = rt
+					
+					tflu\x = ReadFloat(f) * RoomScale
+					tflu\y = ReadFloat(f) * RoomScale
+					tflu\z = ReadFloat(f) * RoomScale
+					
+					; ~ Skip model name
+					ReadString(f)
+					
+					tflu\Yaw = ReadFloat(f)
+					
+					tflu\SpriteR = ReadFloat(f)
+					tflu\SpriteG = ReadFloat(f)
+					tflu\SpriteB = ReadFloat(f)
+					
+					tflu\State = Clamp(ReadInt(f), 0, 3)
 					;[End Block]
 			End Select
 		Next
@@ -4927,7 +5004,7 @@ End Function
 
 Function HideRoomsNoColl%(room.Rooms)
 	Local i%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens, flu.FluLights
 	
 	If (Not EntityHidden(room\OBJ))
 		For p.Props = Each Props
@@ -4969,6 +5046,13 @@ Function HideRoomsNoColl%(room.Rooms)
 			If s\room = room Then HideEntity(s\OBJ)
 		Next
 		
+		For flu.FluLights = Each FluLights
+			If flu\room = room
+				HideEntity(flu\OBJ)
+				HideEntity(flu\FlashSprite)
+			EndIf
+		Next
+		
 		For i = 0 To MaxRoomObjects - 1
 			If room\Objects[i] <> 0
 				If (Not room\ScriptedObject[i]) Then HideEntity(room\Objects[i])
@@ -4983,7 +5067,7 @@ End Function
 
 Function ShowRoomsNoColl%(room.Rooms)
 	Local i%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens, flu.FluLights
 	
 	If EntityHidden(room\OBJ)
 		For p.Props = Each Props
@@ -5025,6 +5109,13 @@ Function ShowRoomsNoColl%(room.Rooms)
 			If s\room = room Then ShowEntity(s\OBJ)
 		Next
 		
+		For flu.FluLights = Each FluLights
+			If flu\room = room
+				ShowEntity(flu\OBJ)
+				ShowEntity(flu\FlashSprite)
+			EndIf
+		Next
+		
 		For i = 0 To MaxRoomObjects - 1
 			If room\Objects[i] <> 0
 				If (Not room\ScriptedObject[i]) Then ShowEntity(room\Objects[i])
@@ -5051,7 +5142,7 @@ End Function
 
 Function HideRoomsColl%(room.Rooms)
 	Local i%, j%, k%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens, flu.FluLights
 	
 	If (Not room\HiddenAlpha)
 		For p.Props = Each Props
@@ -5098,6 +5189,7 @@ Function HideRoomsColl%(room.Rooms)
 		Next
 		
 		; ~ Hide it anyway because the player/NPC cannot interact with it
+		;[Block]
 		For lvr.Levers = Each Levers
 			If lvr\room = room
 				HideEntity(lvr\OBJ)
@@ -5105,12 +5197,17 @@ Function HideRoomsColl%(room.Rooms)
 			EndIf
 		Next
 		
-		; ~ Hide it anyway because the player/NPC cannot interact with it
 		For s.Screens = Each Screens
 			If s\room = room Then HideEntity(s\OBJ)
 		Next
 		
-		; ~ Hide it anyway because the player/NPC cannot interact with it
+		For flu.FluLights = Each FluLights
+			If flu\room = room
+				HideEntity(flu\OBJ)
+				HideEntity(flu\FlashSprite)
+			EndIf
+		Next
+		
 		For i = 0 To MaxRoomObjects - 1
 			If room\Objects[i] <> 0
 				If (Not room\ScriptedObject[i]) Then HideEntity(room\Objects[i])
@@ -5118,6 +5215,7 @@ Function HideRoomsColl%(room.Rooms)
 				Exit
 			EndIf
 		Next
+		;[End Block]
 		
 		EntityAlpha(GetChild(room\OBJ, 2), 0.0)
 		room\HiddenAlpha = True
@@ -5126,7 +5224,7 @@ End Function
 
 Function ShowRoomsColl%(room.Rooms)
 	Local i%, j%, k%
-	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens
+	Local p.Props, d.Doors, sc.SecurityCams, lvr.Levers, s.Screens, flu.FluLights
 	
 	If room\HiddenAlpha
 		For p.Props = Each Props
@@ -5166,6 +5264,13 @@ Function ShowRoomsColl%(room.Rooms)
 		
 		For s.Screens = Each Screens
 			If s\room = room Then ShowEntity(s\OBJ)
+		Next
+		
+		For flu.FluLights = Each FluLights
+			If flu\room = room
+				ShowEntity(flu\OBJ)
+				ShowEntity(flu\FlashSprite)
+			EndIf
 		Next
 		
 		For i = 0 To MaxRoomObjects - 1

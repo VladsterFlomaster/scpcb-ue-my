@@ -4481,7 +4481,7 @@ Function FillRoom%(r.Rooms)
 			;[End Block]
 	End Select
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters, tflu.TempFluLights
 	
 	For ts.TempScreens = Each TempScreens
 		If ts\RoomTemplate = r\RoomTemplate Then CreateScreen(r, r\x + ts\x, r\y + ts\y, r\z + ts\z, ts\Pitch, ts\Yaw, ts\Roll, ts\ScaleX, ts\ScaleY, ts\ScaleZ, ts\ImgPath)
@@ -4518,8 +4518,12 @@ Function FillRoom%(r.Rooms)
 		If tse\RoomTemplate = r\RoomTemplate Then CreateSoundEmitter(r, tse\ID, r\x + tse\x, r\y + tse\y, r\z + tse\z, tse\Range)
 	Next
 	
+	For tflu.TempFluLights = Each TempFluLights
+		If tflu\RoomTemplate = r\RoomTemplate Then CreateFluLight(r, r\x + tflu\x, r\y + tflu\y, r\z + tflu\z, tflu\Yaw, tflu\State, tflu\SpriteR, tflu\SpriteG, tflu\SpriteB)
+	Next
+	
 	CatchErrors("Uncaught: FillRoom(Room ID: " + r\RoomTemplate\RoomID + ")")
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D_TSS
+;~C#Blitz3D TSS

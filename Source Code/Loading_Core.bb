@@ -1126,6 +1126,7 @@ Type MiscInstance
 	Field LightSpriteID[MaxLightSpriteIDAmount]
 	Field AdvancedLightSprite%
 	Field SaveScreen%
+	Field FluLightTex%[3]
 End Type
 
 Global misc_I.MiscInstance
@@ -1163,6 +1164,10 @@ Function LoadMisc%()
 		misc_I\LightSpriteID[i] = LoadTexture_Strict("GFX\Particles\light(" + i + ").png", 1, DeleteAllTextures, False)
 	Next
 	misc_I\AdvancedLightSprite = LoadTexture_Strict("GFX\Particles\advanced_light.png", 1, DeleteAllTextures, False)
+	
+	For i = 0 To 2
+		misc_I\FluLightTex[i] = LoadTexture_Strict("GFX\Map\Textures\Flu_Light(" + (i + 1) + ").png", DeleteAllTextures, False)
+	Next
 End Function
 
 Function RemoveMiscInstances%()
@@ -3259,7 +3264,7 @@ Function InitNewGame%()
 		FreeEntity(rt\OBJ) : rt\OBJ = 0
 	Next
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters, tflu.TempFluLights
 	
 	For ts.TempScreens = Each TempScreens
 		Delete(ts)
@@ -3279,6 +3284,10 @@ Function InitNewGame%()
 	
 	For tse.TempSoundEmitters = Each TempSoundEmitters
 		Delete(tse)
+	Next
+	
+	For tflu.TempFluLights = Each TempFluLights
+		Delete(tflu)
 	Next
 	
 	RenderLoading(85, GetLocalString("loading", "events"))
@@ -3370,7 +3379,7 @@ Function InitLoadGame%()
 		FreeEntity(rt\OBJ) : rt\OBJ = 0
 	Next
 	
-	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters
+	Local ts.TempScreens, twp.TempWayPoints, tl.TempLights, tp.TempProps, tse.TempSoundEmitters, tflu.TempFluLights
 	
 	For ts.TempScreens = Each TempScreens
 		Delete(ts)
@@ -3390,6 +3399,10 @@ Function InitLoadGame%()
 	
 	For tse.TempSoundEmitters = Each TempSoundEmitters
 		Delete(tse)
+	Next
+	
+	For tflu.TempFluLights = Each TempFluLights
+		Delete(tflu)
 	Next
 	
 	RenderLoading(85, GetLocalString("loading", "events"))
