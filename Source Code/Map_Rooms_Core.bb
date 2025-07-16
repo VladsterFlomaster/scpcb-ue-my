@@ -120,7 +120,7 @@ Function FillRoom%(r.Rooms)
 			EntityParent(it\Collider, r\OBJ)
 			
 			If I_005\ChanceToSpawn = 1
-				it.Items = CreateItem("SCP-005", it_scp005, r\x, r\y + 240.0 * RoomScale, r\z + 238.0 * RoomScale)
+				it.Items = CreateItem("SCP-005", it_scp005, r\x, r\y + 225.0 * RoomScale, r\z + 238.0 * RoomScale)
 				EntityParent(it\Collider, r\OBJ)
 				
 				AffectDecayDoor(r\RoomDoors[0])
@@ -128,7 +128,7 @@ Function FillRoom%(r.Rooms)
 				de.Decals = CreateDecal(DECAL_CORROSIVE_1, r\x - 362.0 * RoomScale, r\y + 0.005, r\z - 420.0 * RoomScale, 90.0, Rnd(360.0), 0.0)
 				EntityParent(de\OBJ, r\OBJ)
 			ElseIf I_005\ChanceToSpawn = 3
-				it.Items = CreateItem("Note from Maynard", it_paper, r\x, r\y + 240.0 * RoomScale, r\z + 238.0 * RoomScale)
+				it.Items = CreateItem("Note from Maynard", it_paper, r\x, r\y + 225.0 * RoomScale, r\z + 238.0 * RoomScale)
 				EntityParent(it\Collider, r\OBJ)
 			EndIf
 			
