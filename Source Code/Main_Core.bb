@@ -307,6 +307,8 @@ Function UpdateGame%()
 		
 		UpdateStreamSounds()
 		
+		ShouldDisableHUD = (SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled))
+		
 		If (Not (MenuOpen Lor ConsoleOpen Lor me\EndingTimer < 0.0))
 			For i = 0 To 3
 				DrawArrowIcon[i] = False
@@ -2555,6 +2557,8 @@ Function OpenConsoleOnError%(ConsoleMsg$)
 	EndIf
 End Function
 
+Global ShouldDisableHUD% = False
+
 Type Messages
 	Field Txt$
 	Field Timer#
@@ -2570,14 +2574,14 @@ End Type
 Global msg.Messages
 
 Function CreateMsg%(Txt$, Sec# = 6.0)
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	
 	msg\Txt = Txt
 	msg\Timer = 70.0 * Sec
 End Function
 
 Function UpdateMessages%()
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	
 	If msg\Timer > 0.0
 		msg\Timer = msg\Timer - fps\Factor[0]
@@ -2587,7 +2591,7 @@ Function UpdateMessages%()
 End Function
 
 Function RenderMessages%()
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	
 	If msg\Timer > 0.0
 		Local Temp%
@@ -2615,7 +2619,7 @@ Function RenderMessages%()
 End Function
 
 Function CreateHintMsg%(Txt$, Sec# = 6.0, Tutorial% = False)
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	If Tutorial And (Not opt\IntroEnabled) Then Return
 	
 	msg\HintTxt = Txt
@@ -2623,7 +2627,7 @@ Function CreateHintMsg%(Txt$, Sec# = 6.0, Tutorial% = False)
 End Function
 
 Function UpdateHintMessages%()
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	
 	Local Height% = 30 * MenuScale
 	
@@ -2644,7 +2648,7 @@ Function UpdateHintMessages%()
 End Function
 
 Function RenderHintMessages%()
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	
 	Local Width% = StringWidth(msg\HintTxt) + (20 * MenuScale)
 	Local Height% = 30 * MenuScale

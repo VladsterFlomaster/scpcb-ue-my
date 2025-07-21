@@ -163,7 +163,7 @@ Function UpdateAchievementMsg%()
 End Function
 
 Function RenderAchievementMsg%()
-	If SelectedDifficulty\Name = difficulties[APOLLYON]\Name Lor (Not opt\HUDEnabled) Then Return
+	If ShouldDisableHUD Then Return
 	
 	CatchErrors("RenderAchievementMsg")
 	
