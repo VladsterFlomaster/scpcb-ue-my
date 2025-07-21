@@ -6348,7 +6348,9 @@ RenderLoading(60, GetLocalString("loading", "core.sky"))
 
 Include "Source Code\Sky_Core.bb"
 
-Global CHUNKDATA%[4096]
+Const MaxChunkData% = 4096
+
+Global CHUNKDATA%[MaxChunkData]
 Global SCP1499Chunks%, SCP1499ChunksDoc%
 
 Function SetChunkDataValues%()
