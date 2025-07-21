@@ -86,7 +86,7 @@ Function StopMouseMovement%()
 	mo\Mouse_Y_Speed_1 = 0.0
 End Function
 
-Function ResetInput%()
+Function ResetInput%(ResetTime# = 10.0)
 	StopMouseMovement()
 	FlushKeys()
 	FlushMouse()
@@ -99,7 +99,7 @@ Function ResetInput%()
 	MouseHit(2)
 	MouseDown(1)
 	GrabbedEntity = 0
-	Input_ResetTime = 10.0
+	Input_ResetTime = ResetTime
 End Function
 
 ; ~ Viewport
