@@ -563,5 +563,11 @@ Function GetRescaledTexture%(Brush% = False, TexName$, Flags%, TexDeleteType%, W
 	Return(Ret)
 End Function
 
+Function ApplyGraphicOptions%()
+	AntiAlias(opt\AntiAliasing)
+	TextureLodBias(opt\TextureDetailsLevel)
+	TextureAnisotropic(opt\AnisotropicLevel)
+End Function
+
 ;~IDEal Editor Parameters:
 ;~C#Blitz3D TSS

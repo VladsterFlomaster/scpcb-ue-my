@@ -3025,9 +3025,7 @@ Function LoadEntities%()
 	
 	RenderLoading(25, GetLocalString("loading", "graphic"))
 	
-	AntiAlias(opt\AntiAliasing)
-	TextureLodBias(opt\TextureDetailsLevel)
-	TextureAnisotropic(opt\AnisotropicLevel)
+	ApplyGraphicOptions()
 	
 	RenderLoading(30, GetLocalString("loading", "console"))
 	

@@ -992,9 +992,7 @@ Function UpdateMainMenu%()
 							UserTrackCheck = 0
 							UserTrackCheck2 = 0
 							
-							AntiAlias(opt\AntiAliasing)
-							TextureLodBias(opt\TextureDetailsLevel)
-							TextureAnisotropic(opt\AnisotropicLevel)
+							ApplyGraphicOptions()
 							
 							mm\MainMenuTab = MainMenuTab_Default
 							;[End Block]
