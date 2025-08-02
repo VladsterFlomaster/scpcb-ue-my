@@ -5716,7 +5716,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(ItemHUDTexturePath + "page_1025(" + (Int(SelectedItem\State) + 1) + ").png"), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					;[End Block]
 				Case it_fine1025
@@ -5752,7 +5751,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(ItemHUDTexturePath + "page_fine_1025(" + (Int(SelectedItem\State) + 1) + ").png"), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					;[End Block]
 				Case it_book
@@ -6458,7 +6456,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					
 					If SelectedItem\State = 0.0
@@ -6473,7 +6470,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					
 					If SelectedItem\State = 0.0
@@ -6487,7 +6483,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					
 					If SelectedItem\State = 0.0
@@ -6502,7 +6497,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					
 					If SelectedItem\State = 0.0
@@ -6641,7 +6635,6 @@ Function UpdateGUI%()
 						End Select
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						AdaptScreenGamma()
 					EndIf
 					;[End Block]
 				Case it_key0, it_key1, it_key2, it_key3, it_key4, it_key5, it_key6, it_keyomni, it_scp860, it_fine860, it_hand, it_hand2, it_hand3, it_25ct, it_scp005, it_coarse005, it_crystal005, it_key_white, it_key_yellow, it_coin, it_mastercard, it_mastercard_golden
@@ -6729,7 +6722,6 @@ Function UpdateGUI%()
 								End Select
 								SelectedItem\ItemTemplate\Img2Width = ImageWidth(SelectedItem\ItemTemplate\Img2) / 2
 								SelectedItem\ItemTemplate\Img2Height = ImageHeight(SelectedItem\ItemTemplate\Img2) / 2
-								AdaptScreenGamma()
 							EndIf
 						EndIf
 						
@@ -7106,13 +7098,6 @@ Function RenderDebugHUD%()
 			;[End Block]
 	End Select
 	SetFontEx(fo\FontID[Font_Default])
-End Function
-
-Function AdaptScreenGamma%()
-	If opt\ScreenGamma =< 1.0 Then Return
-	
-	opt\PrevScreenGamma = opt\ScreenGamma
-	opt\ScreenGamma = 1.0
 End Function
 
 Function Update3DHandIcon%(HandIconID%, OBJ%)
