@@ -5716,7 +5716,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(ItemHUDTexturePath + "page_1025(" + (Int(SelectedItem\State) + 1) + ").png"), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 						AdaptScreenGamma()
 					EndIf
 					;[End Block]
@@ -5753,7 +5752,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(ItemHUDTexturePath + "page_fine_1025(" + (Int(SelectedItem\State) + 1) + ").png"), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 						AdaptScreenGamma()
 					EndIf
 					;[End Block]
@@ -5987,7 +5985,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img)
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img)
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 						CreateHintMsg(GetLocalString("msg", "radio"), 6.0, True)
 					EndIf
 					
@@ -6306,7 +6303,6 @@ Function UpdateGUI%()
 							FreeImage(SelectedItem\ItemTemplate\Img) : SelectedItem\ItemTemplate\Img = 0
 							SelectedItem\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\radio_off.png"
 							SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
-							MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 							
 							For i = 0 To 6
 								If ChannelPlaying(RadioCHN[i]) Then StopChannel(RadioCHN[i]) : RadioCHN[i] = 0
@@ -6326,7 +6322,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 					EndIf
 					If Temp
 						SelectedItem\State = Max(0.0, SelectedItem\State - fps\Factor[0] * (0.0025 + (0.0025 * (SelectedItem\ItemTemplate\ID = it_nav))))
@@ -6344,7 +6339,6 @@ Function UpdateGUI%()
 								FreeImage(SelectedItem\ItemTemplate\Img) : SelectedItem\ItemTemplate\Img = 0
 								SelectedItem\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\navigator_off.png"
 								SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
-								MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 								SelectedItem\State3 = 1.0
 							EndIf
 							CreateHintMsg(GetLocalString("msg", "bat.combine"), 1.0, True)
@@ -6464,7 +6458,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 						AdaptScreenGamma()
 					EndIf
 					
@@ -6494,7 +6487,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 						AdaptScreenGamma()
 					EndIf
 					
@@ -6666,7 +6658,6 @@ Function UpdateGUI%()
 						SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
 						SelectedItem\ItemTemplate\ImgWidth = ImageWidth(SelectedItem\ItemTemplate\Img) / 2
 						SelectedItem\ItemTemplate\ImgHeight = ImageHeight(SelectedItem\ItemTemplate\Img) / 2
-						MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 						CreateHintMsg(GetLocalString("msg", "e.reader"))
 					EndIf
 					
@@ -6754,7 +6745,6 @@ Function UpdateGUI%()
 							FreeImage(SelectedItem\ItemTemplate\Img) : SelectedItem\ItemTemplate\Img = 0
 							SelectedItem\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\e_reader_off.png"
 							SelectedItem\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(SelectedItem\ItemTemplate\ImgPath), MenuScale, MenuScale)
-							MaskImage(SelectedItem\ItemTemplate\Img, 255, 0, 255)
 							SelectedItem\State3 = 1.0
 						EndIf
 						CreateHintMsg(GetLocalString("msg", "bat.combine"), 1.0, True)
@@ -7658,46 +7648,37 @@ Function RenderGUI%()
 							EndIf
 						Else
 							If (SelectedItem\State > 0.0 Lor SelectedItem\ItemTemplate\ID = it_nav300 Lor SelectedItem\ItemTemplate\ID = it_navulti) And (CoffinDistance > 16.0 Lor Rnd(16.0) < CoffinDistance)
+								Local ColliderX# = EntityX(me\Collider)
+								Local ColliderZ# = EntityZ(me\Collider)
+								Local PlayerX% = Floor(ColliderX / RoomSpacing + 0.5)
+								Local PlayerZ% = Floor(ColliderZ / RoomSpacing + 0.5)
 								Local xx% = x - SelectedItem\ItemTemplate\ImgWidth
 								Local yy% = y - SelectedItem\ItemTemplate\ImgHeight + (85 * MenuScale)
 								
-								If SelectedItem\State2 = 0.0
-									Local ColliderX# = EntityX(me\Collider)
-									Local ColliderZ# = EntityZ(me\Collider)
-									Local PlayerX% = Floor(ColliderX / RoomSpacing + 0.5)
-									Local PlayerZ% = Floor(ColliderZ / RoomSpacing + 0.5)
-									
-									SetBuffer(ImageBuffer(t\ImageID[7]))
-									DrawImage(SelectedItem\ItemTemplate\Img, xx, yy)
-									
-									x = x - (12 * MenuScale) + ((ColliderX - 4.0) Mod RoomSpacing) * (3 * MenuScale)
-									y = y + (12 * MenuScale) - ((ColliderZ - 4.0) Mod RoomSpacing) * (3 * MenuScale)
-									
-									Local FromX% = Max(1, PlayerX - 6), ToX% = Min(MapGridSize - 1, PlayerX + 6)
-									Local FromZ% = Max(1, PlayerZ - 6), ToZ% = Min(MapGridSize - 1, PlayerZ + 6)
-									
-									For x2 = FromX To ToX
-										For z2 = FromZ To ToZ
-											Local Index% = x2 + (z2 * MapGridSize)
+								DrawImage(SelectedItem\ItemTemplate\Img, xx, yy)
+								x = x - (12 * MenuScale) + ((ColliderX - 4.0) Mod RoomSpacing) * (3 * MenuScale)
+								y = y + (12 * MenuScale) - ((ColliderZ - 4.0) Mod RoomSpacing) * (3 * MenuScale)
+								
+								Local FromX% = Max(1, PlayerX - 6), ToX% = Min(MapGridSize - 1, PlayerX + 6)
+								Local FromZ% = Max(1, PlayerZ - 6), ToZ% = Min(MapGridSize - 1, PlayerZ + 6)
+								
+								For x2 = FromX To ToX
+									For z2 = FromZ To ToZ
+										Local Index% = x2 + (z2 * MapGridSize)
+										
+										If CurrMapGrid\Grid[Index] > MapGrid_NoTile And (CurrMapGrid\Found[Index] > MapGrid_NoTile Lor (Not Offline))
+											Local DrawX% = x + (PlayerX - x2) * RectSize, DrawY% = y - (PlayerZ - z2) * RectSize
 											
-											If CurrMapGrid\Grid[Index] > MapGrid_NoTile And (CurrMapGrid\Found[Index] > MapGrid_NoTile Lor (Not Offline))
-												Local DrawX% = x + (PlayerX - x2) * RectSize, DrawY% = y - (PlayerZ - z2) * RectSize
-												
-												Color(30 + (170 * (SelectedItem\ItemTemplate\ID = it_navulti And (CurrMapGrid\Grid[Index] <= MapGrid_NoTile Lor CurrMapGrid\Found[Index] <= MapGrid_NoTile))), 30, 30)
-												If CurrMapGrid\Grid[(x2 + 1) + (z2 * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX - RectSizeHalf, DrawY - RectSizeHalf, 1, RectSize)
-												If CurrMapGrid\Grid[(x2 - 1) + (z2 * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX + RectSizeHalf, DrawY - RectSizeHalf, 1, RectSize)
-												
-												If CurrMapGrid\Grid[x2 + ((z2 - 1) * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX - RectSizeHalf, DrawY - RectSizeHalf, RectSize, 1)
-												If CurrMapGrid\Grid[x2 + ((z2 + 1) * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX - RectSizeHalf, DrawY + RectSizeHalf, RectSize, 1)
-											EndIf
-										Next
+											Color(30 + (170 * (SelectedItem\ItemTemplate\ID = it_navulti And (CurrMapGrid\Grid[Index] <= MapGrid_NoTile Lor CurrMapGrid\Found[Index] <= MapGrid_NoTile))), 30, 30)
+											If CurrMapGrid\Grid[(x2 + 1) + (z2 * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX - RectSizeHalf, DrawY - RectSizeHalf, 1, RectSize)
+											If CurrMapGrid\Grid[(x2 - 1) + (z2 * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX + RectSizeHalf, DrawY - RectSizeHalf, 1, RectSize)
+											
+											If CurrMapGrid\Grid[x2 + ((z2 - 1) * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX - RectSizeHalf, DrawY - RectSizeHalf, RectSize, 1)
+											If CurrMapGrid\Grid[x2 + ((z2 + 1) * MapGridSize)] = MapGrid_NoTile Then Rect(DrawX - RectSizeHalf, DrawY + RectSizeHalf, RectSize, 1)
+										EndIf
 									Next
-									
-									SetBuffer(BackBuffer())
-									SelectedItem\State2 = 8.0
-								Else
-									SelectedItem\State2 = Max(0.0, SelectedItem\State2 - fps\Factor[0])
-								EndIf
+								Next
+								
 								DrawBlockRect(t\ImageID[7], xx + (80 * MenuScale), yy + (70 * MenuScale), xx + (80 * MenuScale), yy + (70 * MenuScale), 270 * MenuScale, 230 * MenuScale)
 								Color(170 * Offline + 30, 30 * Offline, 30 * Offline)
 								Rect(xx + (80 * MenuScale), yy + (70 * MenuScale), 270 * MenuScale, 230 * MenuScale, False)
