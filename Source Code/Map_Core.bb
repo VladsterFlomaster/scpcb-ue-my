@@ -553,7 +553,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 			Temp1i = ReadByte(f)
 			Temp2i = ReadByte(f)
 			Temp3i = ReadByte(f)
-			VertexColor(Surf, Vertex, Temp1i, Temp2i, Temp3i, 1.0)
+			VertexColor(Surf, Vertex, Temp1i, Temp2i, Temp3i, 1.0 - (0.4 * (IsAlpha = 1)))
 		Next
 		
 		Count2 = ReadInt(f) ; ~ Polys
