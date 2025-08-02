@@ -225,7 +225,7 @@ Function CreateItemTemplate.ItemTemplates(DisplayName$, Name$, ID%, OBJPath$, In
 		Next
 		If Texture = 0
 			If Left(TexturePath, ItemHUDTexturePathLen) = ItemHUDTexturePath
-				Texture = GetRescaledTexture(False, TexturePath, TexFlags, DeleteMapTextures, 145, 204)
+				Texture = LoadTexture_Strict(TexturePath, TexFlags, DeleteMapTextures, True, 0.3)
 			Else
 				Texture = LoadTexture_Strict(TexturePath, TexFlags)
 			EndIf

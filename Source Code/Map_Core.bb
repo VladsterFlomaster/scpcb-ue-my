@@ -434,7 +434,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 				If FileType(FilePath + Temp1s) = 1 ; ~ Check if texture is existing in original path
 					If Temp1i < 3
 						If Instr(Lower(Temp1s), "_lm") <> 0
-							Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s, 1 + 256, DeleteMapTextures, GetLightingSize(opt\LightingQuality))
+							Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s, 1, DeleteMapTextures, GetLightingSize(opt\LightingQuality))
 						Else
 							Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s)
 						EndIf
@@ -444,7 +444,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 				ElseIf FileType(MapTexturesFolder + Temp1s) = 1 ; ~ If not, check the MapTexturesFolder
 					If Temp1i < 3
 						If Instr(Lower(Temp1s), "_lm") <> 0
-							Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s, 1 + 256, DeleteMapTextures, GetLightingSize(opt\LightingQuality))
+							Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s, 1, DeleteMapTextures, GetLightingSize(opt\LightingQuality))
 						Else
 							Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s)
 						EndIf
@@ -1066,20 +1066,20 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 	Local GroundTexture% = LoadTexture_Strict("GFX\Map\Textures\forestfloor.png")
 	Local PathTexture% = LoadTexture_Strict("GFX\Map\Textures\forestpath.png")
 	
-	hMap[ROOM1] = LoadImage_Strict("GFX\Map\Forest\forest1h.png")
-	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2] = LoadImage_Strict("GFX\Map\Forest\forest2h.png")
-	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2C] = LoadImage_Strict("GFX\Map\Forest\forest2Ch.png")
-	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM3] = LoadImage_Strict("GFX\Map\Forest\forest3h.png")
-	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM4] = LoadImage_Strict("GFX\Map\Forest\forest4h.png")
-	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
 	For i = ROOM1 To ROOM4
 		fr\TileMesh[i] = LoadTerrain(hMap[i], 0.03, GroundTexture, PathTexture, Mask[i])
@@ -1179,8 +1179,8 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 				If Tile_Type > 0
 					; ~ Place trees and other details
 					; ~ Only placed on spots where the value of the heightmap is above 100
-					SetBuffer(ImageBuffer(hMap[Tile_Type - 1]))
-					Width = ImageWidth(hMap[Tile_Type - 1])
+					SetBuffer(TextureBuffer(hMap[Tile_Type - 1]))
+					Width = TextureWidth(hMap[Tile_Type - 1])
 					Tempf4 = (Tempf3 / Float(Width))
 					For lX = 3 To Width - 2
 						For lY = 3 To Width - 2
@@ -1261,7 +1261,7 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 		Next
 	Next
 	For i = ROOM1 To ROOM4
-		FreeImage(hMap[i]) : hMap[i] = 0
+		DeleteSingleTextureEntryFromCache(hMap[i]) : hMap[i] = 0
 	Next
 	
 	; ~ Place the wall
@@ -1308,20 +1308,20 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 	Local GroundTexture% = LoadTexture_Strict("GFX\Map\Textures\forestfloor.png")
 	Local PathTexture% = LoadTexture_Strict("GFX\Map\Textures\forestpath.png")
 	
-	hMap[ROOM1] = LoadImage_Strict("GFX\Map\Forest\forest1h.png")
-	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2] = LoadImage_Strict("GFX\Map\Forest\forest2h.png")
-	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h.png", 1 + 131072, DeleteMapTextures, False)
+	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2C] = LoadImage_Strict("GFX\Map\Forest\forest2Ch.png")
-	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch.png", 1 + 131072, DeleteMapTextures, False)
+	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM3] = LoadImage_Strict("GFX\Map\Forest\forest3h.png")
-	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM4] = LoadImage_Strict("GFX\Map\Forest\forest4h.png")
-	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
 	For i = ROOM1 To ROOM4
 		fr\TileMesh[i] = LoadTerrain(hMap[i], 0.03, GroundTexture, PathTexture, Mask[i])
@@ -1360,8 +1360,8 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 				If Tile_Type > 0
 					; ~ Place trees and other details
 					; ~ Only placed on spots where the value of the heightmap is above 100
-					SetBuffer(ImageBuffer(hMap[Tile_Type - 1]))
-					Width = ImageWidth(hMap[Tile_Type - 1])
+					SetBuffer(TextureBuffer(hMap[Tile_Type - 1]))
+					Width = TextureWidth(hMap[Tile_Type - 1])
 					Tempf4 = (Tempf3 / Float(Width))
 					For lX = 3 To Width - 2
 						For lY = 3 To Width - 2
@@ -1462,7 +1462,7 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 		Next
 	Next
 	For i = ROOM1 To ROOM4
-		FreeImage(hMap[i]) : hMap[i] = 0
+		DeleteSingleTextureEntryFromCache(hMap[i]) : hMap[i] = 0
 	Next
 	
 	CatchErrors("Uncaught: PlaceMapCreatorForest(" + x + ", " + y + ", " + z + ")")
@@ -4489,6 +4489,8 @@ Function RenderSecurityCams%()
 	
 	Local sc.SecurityCams
 	
+	SetBuffer(TextureBuffer(sc_I\ScreenTex)) ; ~ Set render target to screen tex
+	
 	For sc.SecurityCams = Each SecurityCams
 		Local Close% = (sc\room\Dist < 6.0 Lor PlayerRoom = sc\room)
 		
@@ -4508,7 +4510,6 @@ Function RenderSecurityCams%()
 							Cls()
 							SetBuffer(BufferBack)
 							RenderWorld(RenderTween)
-							CopyRect(0, 0, 512, 512, 0, 0, BufferBack, TextureBuffer(sc_I\ScreenTex))
 							HideEntity(sc\Cam)
 						Else
 							ShowEntity(sc_I\CoffinCam\room\OBJ)
@@ -4517,7 +4518,6 @@ Function RenderSecurityCams%()
 							Cls()
 							SetBuffer(BufferBack)
 							RenderWorld(RenderTween)
-							CopyRect(0, 0, 512, 512, 0, 0, BufferBack, TextureBuffer(sc_I\ScreenTex))
 							HideEntity(sc_I\CoffinCam\Cam)
 							HideEntity(sc_I\CoffinCam\room\OBJ)
 						EndIf
@@ -4535,7 +4535,8 @@ Function RenderSecurityCams%()
 			CatchErrors("Uncaught: RenderSecurityCameras(Screen doesn't exist anymore!)")
 		EndIf
 	Next
-	Cls()
+	
+	SetBuffer(BackBuffer())
 End Function
 
 Function RemoveSecurityCam%(sc.SecurityCams)
@@ -4703,7 +4704,7 @@ Function CreateScreen.Screens(room.Rooms, x#, y#, z#, Pitch#, Yaw#, Roll#, Scale
 	For s2.Screens = Each Screens
 		If s2 <> s And s2\ImgPath = ImgPath Then s\Texture = s2\Texture
 	Next
-	If s\Texture = 0 Then s\Texture = GetRescaledTexture(False, s\ImgPath, 1, DeleteAllTextures, 256, 192)
+	If s\Texture = 0 Then s\Texture = LoadTexture_Strict(s\ImgPath, 1, DeleteAllTextures, True, 0.3)
 	EntityTexture(s\OBJ, s\Texture)
 	
 	Return(s)
@@ -6275,8 +6276,8 @@ Function LoadTerrain%(HeightMap%, yScale# = 0.7, Tex1%, Tex2%, Mask%)
 	If Mask = 0 Then RuntimeErrorEx(Format(GetLocalString("runerr", "mask"), Mask))
 	
 	; ~ Store HeightMap dimensions
-	Local HeightMapWidth% = ImageWidth(HeightMap) - 1
-	Local HeightMapHeight% = ImageHeight(HeightMap) - 1
+	Local HeightMapWidth% = TextureWidth(HeightMap) - 1
+	Local HeightMapHeight% = TextureHeight(HeightMap) - 1
 	Local PosX%, PosY%, VertexIndex%
 	
 	; ~ Scale the textures to the right size
@@ -6315,7 +6316,7 @@ Function LoadTerrain%(HeightMap%, yScale# = 0.7, Tex1%, Tex2%, Mask%)
 	PositionMesh(Mesh, (-HeightMapWidth) / 2.0, 0.0, (-HeightMapHeight) / 2.0)
 	PositionMesh(Mesh2, (-HeightMapWidth) / 2.0, 0.01, (-HeightMapHeight) / 2.0)
 	
-	Local HeightMapBuffer% = ImageBuffer(HeightMap)
+	Local HeightMapBuffer% = TextureBuffer(HeightMap)
 	Local MaskBuffer% = TextureBuffer(Mask)
 	Local MaskWidth% = TextureWidth(Mask)
 	Local MaskHeight% = TextureHeight(Mask)

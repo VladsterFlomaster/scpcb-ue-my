@@ -1,7 +1,4 @@
-Global FresizeImage%, FresizeTexture%, FresizeTexture2%
-Global FresizeCam%
-
-Global ResizeQuad%, ResizeTexture%, ResizeImageCamera%
+Global WhiteTexture%, ResizeTexture%
 
 Global SMALLEST_POWER_TWO#
 Global SMALLEST_POWER_TWO_HALF#
@@ -21,61 +18,15 @@ Function CreateQuad%()
 End Function
 
 Function InitFastResize%()
-	; ~ Create and configure a camera
-	Local Cam% = CreateCamera()
-	
-	CameraProjMode(Cam, 2)
-	CameraZoom(Cam, 0.1)
-	CameraClsMode(Cam, 0, 0)
-	CameraRange(Cam, 0.1, 1.5)
-	MoveEntity(Cam, 0.0, 0.0, -10000.0)
-	
-	FresizeCam = Cam
-	
-	; ~ Create and configure a sprite
-	Local SPR% = CreateMesh(Cam)
-	Local SF% = CreateSurface(SPR)
-	
-	AddVertex(SF, -1.0, 1.0, 0.0, 0.0, 0.0)
-	AddVertex(SF, 1.0, 1.0, 0.0, 1.0, 0.0)
-	AddVertex(SF, -1.0, -1.0, 0.0, 0, 1.0)
-	AddVertex(SF, 1.0, -1.0, 0.0, 1.0, 1.0)
-	AddTriangle(SF, 0, 1, 2)
-	AddTriangle(SF, 3, 2, 1)
-	EntityFX(SPR, 17)
-	ScaleEntity(SPR, SMALLEST_POWER_TWO / GraphicWidthFloat, SMALLEST_POWER_TWO / GraphicHeightFloat, 1.0)
-	PositionEntity(SPR, 0.0, 0.0, 1.0001)
-	EntityOrder(SPR, -100001)
-	EntityBlend(SPR, 1)
-	FresizeImage = SPR
-	
-	; ~ Create texture and associate it with the sprite
-	FresizeTexture = CreateTexture(SMALLEST_POWER_TWO, SMALLEST_POWER_TWO, 1 + 256)
-	FresizeTexture2 = CreateTexture(SMALLEST_POWER_TWO, SMALLEST_POWER_TWO, 1 + 256)
-	TextureBlend(FresizeTexture2, 3)
-	SetBuffer(TextureBuffer(FresizeTexture2))
-	ClsColor(0, 0, 0)
+	WhiteTexture = CreateTexture(1, 1, 1)
+	SetBuffer(TextureBuffer(WhiteTexture))
+	ClsColor(255, 255, 255)
 	Cls()
 	SetBuffer(BackBuffer())
-	EntityTexture(SPR, FresizeTexture, 0, 0)
-	EntityTexture(SPR, FresizeTexture2, 0, 1)
 	
-	; ~ Hide the camera until needed
-	HideEntity(FresizeCam)
+	ResizeTexture = CreateTexture(Max(SMALLEST_POWER_TWO, 2048.0), Max(SMALLEST_POWER_TWO, 2048.0), 1 + 2 + 16384)
 	
-	; ~ Create another texture for image scaling
-	ResizeTexture = CreateTexture(Max(SMALLEST_POWER_TWO, 2048.0), Max(SMALLEST_POWER_TWO, 2048.0), 16 + 32 + 256)
-	
-	ResizeImageCamera = CreateCamera()
-	CameraRange(ResizeImageCamera, 0.1, 1.5)
-	TranslateEntity(ResizeImageCamera, (1.0 / Float(TextureWidth(ResizeTexture))), -(1.0 / Float(TextureHeight(ResizeTexture))), -1.0)
-	
-	ResizeQuad = CreateQuad()
-	EntityTexture(ResizeQuad, ResizeTexture)
-	EntityFX(ResizeQuad, 1)
-	EntityParent(ResizeQuad, ResizeImageCamera)
-	MoveEntity(ResizeImageCamera, 0.0, 0.0, -10000.0)
-	HideEntity(ResizeImageCamera)
+	ClsColor(0, 0, 0)
 End Function
 
 Function Graphics3DEx%(Width%, Height%, Depth% = 32, Mode% = 2)
@@ -90,104 +41,14 @@ Function Graphics3DEx%(Width%, Height%, Depth% = 32, Mode% = 2)
 	InitFastResize()
 End Function
 
-Function ScaleImageEx%(SrcImage%, ScaleX#, ScaleY#, Frames% = 1)
-	; ~ Get the width and height of the source image
-	Local SrcWidth% = ImageWidth(SrcImage)
-	Local SrcHeight% = ImageHeight(SrcImage)
-	
-	; ~ Calculate the width and height of the dest image, or the scale
-	Local DestWidth% = Floor(SrcWidth * ScaleX)
-	Local DestHeight% = Floor(SrcHeight * ScaleY)
-	
-	; ~ If the image does not need to be scaled, just copy the image and exit the function
-	If SrcWidth = DestWidth And SrcHeight = DestHeight Then Return(SrcImage)
-	
-	; ~ Create a scratch image that is as tall as the source image, and as wide as the destination image
-	Local ScratchImage% = CreateImage(DestWidth, SrcHeight, Frames)
-	
-	; ~ Create the destination image
-	Local DestImage% = CreateImage(DestWidth, DestHeight, Frames)
-	
-	Local SrcBuffer%, ScratchBuffer%, DestBuffer%
-	Local X1%, Y1%, X2%, Y2%, Frame%
-	
-	For Frame = 0 To Frames - 1
-		; ~ Get pointers to the image buffers for each frame
-		SrcBuffer = ImageBuffer(SrcImage, Frame)
-		ScratchBuffer = ImageBuffer(ScratchImage, Frame)
-		DestBuffer = ImageBuffer(DestImage, Frame)
-		
-		; ~ Duplicate columns from source image to scratch image
-		For X2 = 0 To DestWidth - 1
-			X1 = Floor(X2 / ScaleX)
-			CopyRect(X1, 0, 1, SrcHeight, X2, 0, SrcBuffer, ScratchBuffer)
-		Next
-		
-		; ~ Duplicate rows from scratch image to destination image
-		For Y2 = 0 To DestHeight - 1
-			Y1 = Floor(Y2 / ScaleY)
-			CopyRect(0, Y1, DestWidth, 1, 0, Y2, ScratchBuffer, DestBuffer)
-		Next
-		If opt\DisplayMode = 0 Then BufferDirty(ImageBuffer(DestImage, Frame))
-	Next
-	
-	; ~ Free the scratch image
-	FreeImage(ScratchImage) : ScratchImage = 0
-	; ~ Free the source image
-	FreeImage(SrcImage) : SrcImage = 0
-	
-	; ~ Return the new image
-	Return(DestImage)
+Function ScaleImageEx%(SrcImage%, ScaleX#, ScaleY#)
+	ScaleImage(SrcImage, ScaleX, ScaleY)
+	Return(SrcImage)
 End Function
 
-Function RenderImage(WidthScale#, HeightScale#)
-	If Camera <> 0 Then HideEntity(Camera)
-	WireFrame(0)
-	ScaleEntity(ResizeQuad, WidthScale, HeightScale, 0.01)
-	ShowEntity(ResizeImageCamera)
-	RenderWorld()
-	HideEntity(ResizeImageCamera)
-	WireFrame(WireFrameState)
-	If Camera <> 0 Then ShowEntity(Camera)
-End Function
-
-Function ResizeImageEx%(SrcImage%, ScaleX#, ScaleY#, Frames% = 1)
-	; ~ Get the width and height of the source image
-	Local SrcWidth# = ImageWidth(SrcImage)
-	Local SrcHeight# = ImageHeight(SrcImage)
-	
-	; ~ Calculate the width and height of the dest image, or the scale
-	Local DestWidth# = SrcWidth * ScaleX
-	Local DestHeight# = SrcHeight * ScaleY
-	
-	; ~ If the image does not need to be scaled, just copy the image and exit the function
-	If SrcWidth = DestWidth And SrcHeight = DestHeight Then Return(SrcImage)
-	
-	; ~ Create the destination image
-	Local DestImage% = CreateImage(DestWidth, DestHeight, Frames)
-	
-	; ~ Get rescale texture size and scale
-	Local RenderTextureSize# = TextureWidth(ResizeTexture)
-	Local RenderTextureSizeHalf# = RenderTextureSize * 0.5
-	Local RenderScale# = RenderTextureSize / GraphicWidthFloat
-	Local BufferBack% = BackBuffer()
-	Local Frame%
-	
-	For Frame = 0 To Frames - 1
-		SetBuffer(TextureBuffer(ResizeTexture))
-		ClsColor(0, 0, 0)
-		Cls()
-		SetBuffer(BufferBack)
-		CopyRect(0, 0, SrcWidth, SrcHeight, RenderTextureSizeHalf - (SrcWidth / 2.0), RenderTextureSizeHalf - (SrcHeight / 2.0), ImageBuffer(SrcImage, Frame), TextureBuffer(ResizeTexture))
-		RenderImage((DestWidth / SrcWidth) * RenderScale, (DestHeight / SrcHeight) * RenderScale)
-		CopyRect((GraphicWidthFloat / 2.0) - (DestWidth / 2.0), (GraphicHeightFloat / 2.0) - (DestHeight / 2.0), DestWidth, DestHeight, 0, 0, BufferBack, ImageBuffer(DestImage, Frame))
-		If opt\DisplayMode = 0 Then BufferDirty(ImageBuffer(DestImage, Frame))
-	Next
-	; ~ Free the source image
-	FreeImage(SrcImage) : SrcImage = 0
-	
-	; ~ Return the new image
-	Return(DestImage)
+Function ResizeImageEx%(SrcImage%, ScaleX#, ScaleY#)
+	ResizeImage(SrcImage, ImageWidth(SrcImage) * ScaleX, ImageHeight(SrcImage) * ScaleY)
+	Return(SrcImage)
 End Function
 
 Function RescaleTexture%(SrcTexture%, ScaleX#, ScaleY#, Flags% = 1)
@@ -208,7 +69,7 @@ Function RescaleTexture%(SrcTexture%, ScaleX#, ScaleY#, Flags% = 1)
 	CopyRect(0, 0, SrcWidth, SrcHeight, 0, 0, TextureBuffer(SrcTexture), ImageBuffer(ScratchImage))
 	
 	; ~ Resize scratch image
-	ResizeImage(ScratchImage, DestWidth, DestHeight)
+	ResizeImageEx(ScratchImage, DestWidth, DestHeight)
 	
 	; ~ Copy rects of the destination texture
 	CopyRect(0, 0, DestWidth, DestHeight, 0, 0, ImageBuffer(ScratchImage), TextureBuffer(DestTexture))
@@ -239,84 +100,58 @@ Function GetLightingSize#(Quality%)
 	End Select
 End Function
 
-Function ScaleRender%(x#, y#, HeightScale# = 1.0, WidthScale# = 1.0)
-	If Camera <> 0 Then HideEntity(Camera)
-	WireFrame(0)
-	ShowEntity(FresizeImage)
-	ScaleEntity(FresizeImage, HeightScale, WidthScale, 1.0)
-	PositionEntity(FresizeImage, x, y, 1.0001)
-	ShowEntity(FresizeCam)
-	RenderWorld()
-	HideEntity(FresizeCam)
-	HideEntity(FresizeImage)
-	WireFrame(WireFrameState)
-	If Camera <> 0 Then ShowEntity(Camera)
-End Function
-
 Function RenderGamma%()
-	; ~ Not by any means a perfect solution
-	; ~ Not even proper gamma correction but it's a nice looking alternative that works in windowed mode
-	Local RenderScale#
-	Local Ratio#
+	Local PrevR% = ColorRed(), PrevG% = ColorGreen(), PrevB% = ColorBlue(), PrevA% = ColorAlpha()
 	
+	; ~ Brightness
 	If opt\ScreenGamma > 1.0
-		RenderScale = 1.0 / GraphicWidthFloat
-		Ratio = SMALLEST_POWER_TWO / GraphicWidthFloat
+		Local Gamma# = (opt\ScreenGamma - 1.0)
 		
-		CopyRect(0, 0, opt\GraphicWidth, opt\GraphicHeight, SMALLEST_POWER_TWO_HALF - mo\Viewport_Center_X, SMALLEST_POWER_TWO_HALF - mo\Viewport_Center_Y, BackBuffer(), TextureBuffer(FresizeTexture))
-		EntityBlend(FresizeImage, 1)
-		ClsColor(0, 0, 0)
-		Cls()
-		ScaleRender(-RenderScale, RenderScale, Ratio, Ratio)
-		EntityFX(FresizeImage, 1 + 32)
-		EntityBlend(FresizeImage, 3)
-		EntityAlpha(FresizeImage, opt\ScreenGamma - 1.0)
-		ScaleRender(-RenderScale, RenderScale, Ratio, Ratio)
-	ElseIf opt\ScreenGamma < 1.0 ; ~ Maybe optimize this if it's too slow, alternatively give players the option to disable gamma
-		RenderScale = 1.0 / GraphicWidthFloat
-		Ratio = SMALLEST_POWER_TWO / GraphicWidthFloat
-		
-		Local Gamma% = 255 * opt\ScreenGamma
-		Local BufferBack% = BackBuffer()
-		Local BufferFresize% = TextureBuffer(FresizeTexture2)
-		
-		CopyRect(0, 0, opt\GraphicWidth, opt\GraphicHeight, SMALLEST_POWER_TWO_HALF - mo\Viewport_Center_X, SMALLEST_POWER_TWO_HALF - mo\Viewport_Center_Y, BufferBack, TextureBuffer(FresizeTexture))
-		EntityBlend(FresizeImage, 1)
-		ClsColor(0, 0, 0)
-		Cls()
-		ScaleRender(-RenderScale, RenderScale, Ratio, Ratio)
-		EntityFX(FresizeImage, 1 + 32)
-		EntityBlend(FresizeImage, 2)
-		EntityAlpha(FresizeImage, 1.0)
-		SetBuffer(BufferFresize)
-		ClsColor(Gamma, Gamma, Gamma)
-		Cls()
-		SetBuffer(BufferBack)
-		ScaleRender(-RenderScale, RenderScale, Ratio, Ratio)
-		SetBuffer(BufferFresize)
-		ClsColor(0, 0, 0)
-		Cls()
-		SetBuffer(BufferBack)
+		Color(28 * Gamma, 28 * Gamma, 28 * Gamma)
+		DrawBuffer(TextureBuffer(WhiteTexture), 0, 0, opt\GraphicWidth, opt\GraphicHeight, 3)
+	ElseIf opt\ScreenGamma < 1.0
+		Color(0, 0, 0, 128 * (1.0 - opt\ScreenGamma))
+		DrawBuffer(TextureBuffer(WhiteTexture), 0, 0, opt\GraphicWidth, opt\GraphicHeight)
 	EndIf
-	EntityFX(FresizeImage, 1)
-	EntityBlend(FresizeImage, 1)
-	EntityAlpha(FresizeImage, 1.0)
+	
+	Color(PrevR, PrevG, PrevB, PrevA)
 End Function
 
 Global CurrTrisAmount%
 
 Function RenderWorldEx%(Tween#)
-	CameraProjMode(ArkBlurCam, 0)
 	CameraProjMode(Camera, 1)
 	CameraViewport(Camera, 0, 0, opt\GraphicWidth, opt\GraphicHeight)
 	If (Not wi\IsNVGBlinking) Then RenderWorld(Tween)
+	CameraProjMode(Camera, 0)
 	
 	CurrTrisAmount = TrisRendered()
 	
-	CameraProjMode(ArkBlurCam, 2)
-	CameraProjMode(Camera, 0)
-	If (Not wi\IsNVGBlinking) Then RenderWorld(Tween)
-	CameraProjMode(ArkBlurCam, 0)
+	Local i%
+	
+	If (Not wi\IsNVGBlinking)
+		Local Buffer%
+		
+		For i = 0 To 10
+			Local Overlay% = t\OverlayID[i]
+			
+			If Overlay <> 0 And (Not EntityHidden(Overlay))
+				Buffer = GetEntityTextureBuffer(Overlay, 0)
+				If Buffer <> 0
+					Color(EntityColorR(Overlay), EntityColorG(Overlay), EntityColorB(Overlay), 255 * GetEntityAlpha(Overlay))
+					DrawBuffer(Buffer, 0, 0, opt\GraphicWidth, opt\GraphicHeight, GetEntityBlend(Overlay))
+				EndIf
+			EndIf
+		Next
+		
+		If ArkBlurImage <> 0 And (Not EntityHidden(ArkBlurImage))
+			Buffer = GetEntityTextureBuffer(ArkBlurImage, 0)
+			If Buffer <> 0
+				Color(EntityColorR(ArkBlurImage), EntityColorG(ArkBlurImage), EntityColorB(ArkBlurImage), 255 * GetEntityAlpha(ArkBlurImage))
+				DrawBufferRect(Buffer, 0, 0, opt\GraphicWidth, opt\GraphicHeight, SMALLEST_POWER_TWO_HALF - mo\Viewport_Center_X, SMALLEST_POWER_TWO_HALF - mo\Viewport_Center_Y, opt\GraphicWidth, opt\GraphicHeight, GetEntityBlend(ArkBlurImage))
+			EndIf
+		EndIf
+	EndIf
 End Function
 
 Global ArkBlurImage%, ArkBlurTexture%
@@ -354,7 +189,7 @@ Function CreateBlurImage%()
 	ArkBlurImage = SPR
 	
 	; ~ Create blur texture
-	ArkBlurTexture = CreateTextureUsingCacheSystem(SMALLEST_POWER_TWO, SMALLEST_POWER_TWO, 1 + 256)
+	ArkBlurTexture = CreateTextureUsingCacheSystem(SMALLEST_POWER_TWO, SMALLEST_POWER_TWO, 1 + 16384)
 	EntityTexture(SPR, ArkBlurTexture)
 End Function
 
@@ -403,7 +238,8 @@ Function PlayMovie%(MoviePath$)
 			SkipMessage = GetLocalString("menu", "anykey")
 		EndIf
 		RenderLoadingText(mo\Viewport_Center_X, opt\GraphicHeight - (35 * MenuScale), SkipMessage, True, True)
-		Flip(True)
+		Delay(20)
+		Flip()
 		
 		Local Close% = False
 		
@@ -458,27 +294,7 @@ Function GetScreenshot%()
 	
 	If FileType("Screenshots\") <> 2 Then CreateDir("Screenshots")
 	
-	Local Bank% = CreateBank(opt\GraphicWidth * opt\GraphicHeight * 3)
-	Local BufferBack% = BackBuffer()
-	
-	LockBuffer(BufferBack)
-	For x = 0 To opt\GraphicWidth - 1
-		For y = 0 To opt\GraphicHeight - 1
-			Local Pixel% = ReadPixelFast(x, y, BufferBack)
-			Local TempY% = (y * (opt\GraphicWidth * 3)) + (x * 3)
-			
-			PokeByte(Bank, TempY, ReadPixelColor(Pixel, 0))
-			PokeByte(Bank, TempY + 1, ReadPixelColor(Pixel, 8))
-			PokeByte(Bank, TempY + 2, ReadPixelColor(Pixel, 16))
-		Next
-	Next
-	UnlockBuffer(BufferBack)
-	
-	Local fiBuffer% = FI_ConvertFromRawBits(Bank, opt\GraphicWidth, opt\GraphicHeight, opt\GraphicWidth * 3, 24, $FF0000, $00FF00, $0000FF, True)
-	
-	FI_Save(13, fiBuffer, "Screenshots\Screenshot" + ScreenshotCount + ".png", 0)
-	FI_Unload(fiBuffer) : fiBuffer = 0
-	FreeBank(Bank) : Bank = 0
+	SaveBuffer(BackBuffer(), "Screenshots\Screenshot" + ScreenshotCount + ".png")
 	If (Not MainMenuOpen) Then CreateHintMsg(GetLocalString("msg", "screenshot"))
 	PlaySound_Strict(LoadTempSound("SFX\General\Screenshot.ogg"))
 	ScreenshotCount = ScreenshotCount + 1
@@ -529,38 +345,6 @@ End Function
 
 Function TextEx%(x%, y%, Txt$, AlignX% = False, AlignY% = False)
 	Text(x, y + TextOffset, Txt, AlignX, AlignY)
-End Function
-
-Function GetRescaledTexture%(Brush% = False, TexName$, Flags%, TexDeleteType%, Width%, Height%)
-	If FileType(lang\LanguagePath + TexName) = 1 Then TexName = lang\LanguagePath + TexName
-	
-	; ~ Load the original image
-	Local ImgType% = FI_GetFIFFromFilename(TexName)
-	Local SrcImg% = FI_Load(ImgType, TexName, Flags)
-	
-	; ~ Rescale the image
-	Local RescaledImg% = FI_Rescale(SrcImg, Width, Height, 0)
-	Local TexPath$ = GetEnv("Temp") + "\" + StripPath(TexName)
-	
-	; ~ Save the rescaled image to a temporary file
-	FI_Save(ImgType, RescaledImg, TexPath, Flags)
-	
-	Local Ret%
-	
-	; ~ Load the rescaled image as a Brush or Texture
-	If Brush
-		Ret = LoadBrush_Strict(TexPath, Flags)
-	Else
-		Ret = LoadTexture_Strict(TexPath, Flags, TexDeleteType)
-	EndIf
-	; ~ Unload the original and rescaled images
-	FI_Unload(SrcImg) : SrcImg = 0
-	FI_Unload(RescaledImg) : RescaledImg = 0
-	
-	; ~ Delete the temporary path
-	DeleteFile(TexPath)
-	
-	Return(Ret)
 End Function
 
 Function ApplyGraphicOptions%()

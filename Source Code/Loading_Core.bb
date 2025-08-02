@@ -823,7 +823,7 @@ Function LoadSecurityCams%()
 		HideEntity(sc_I\CamModelID[i])
 	Next
 	
-	sc_I\ScreenTex = CreateTextureUsingCacheSystem(512, 512, 1 + 256)
+	sc_I\ScreenTex = CreateTextureUsingCacheSystem(512, 512, 1 + 16384)
 End Function
 
 Function RemoveSecurityCamInstances%()
@@ -894,11 +894,7 @@ Function LoadMonitors%()
 	For i = MONITOR_LOCKDOWN_1_OVERLAY To MONITOR_LOCKDOWN_3_OVERLAY
 		mon_I\MonitorOverlayID[i] = LoadTexture_Strict("GFX\Map\Textures\lockdown_screen(" + i + ").png", 1, DeleteAllTextures, False)
 	Next
-	mon_I\MonitorOverlayID[MONITOR_LOCKDOWN_4_OVERLAY] = CreateTextureUsingCacheSystem(1, 1, 1 + 256)
-	SetBuffer(TextureBuffer(mon_I\MonitorOverlayID[MONITOR_LOCKDOWN_4_OVERLAY]))
-	ClsColor(0, 0, 0)
-	Cls()
-	SetBuffer(BackBuffer())
+	mon_I\MonitorOverlayID[MONITOR_LOCKDOWN_4_OVERLAY] = CreateTextureUsingCacheSystem(1, 1, 1)
 	
 	For i = MONITOR_079_OVERLAY_1 To MONITOR_079_OVERLAY_7
 		mon_I\MonitorOverlayID[i] = LoadTexture_Strict("GFX\Overlays\scp_079_overlay(" + (i - 4) + ").png", 1, DeleteAllTextures, False)
@@ -1220,7 +1216,7 @@ Function LoadMaterials%(File$)
 			If opt\BumpEnabled
 				StrTemp = IniGetString(File, Loc, "bump")
 				If StrTemp <> ""
-					mat\Bump = LoadTexture_Strict(StrTemp, 1 + 256, DeleteMapTextures, False)
+					mat\Bump = LoadTexture_Strict(StrTemp, 1, DeleteMapTextures, False)
 					ApplyBumpMap(mat\Bump)
 				EndIf
 			EndIf
@@ -2862,7 +2858,7 @@ Function LoadEntities%()
 	
 	t\ImageID[5] = ResizeImageEx(LoadImage_Strict("GFX\Overlays\scp_294_overlay.png"), MenuScale, MenuScale)
 	
-	t\ImageID[6] = ScaleImageEx(LoadAnimImage_Strict("GFX\HUD\NVG_batteries.png", 64, 64, 0, 3), MenuScale, MenuScale, 3)
+	t\ImageID[6] = ScaleImageEx(LoadAnimImage_Strict("GFX\HUD\NVG_batteries.png", 64, 64, 0, 3), MenuScale, MenuScale)
 	MaskImage(t\ImageID[6], 255, 0, 255)
 	
 	t\ImageID[7] = CreateImage(opt\GraphicWidth, opt\GraphicHeight)
@@ -2871,10 +2867,6 @@ Function LoadEntities%()
 	
 	AmbientLightRoomTex = CreateTextureUsingCacheSystem(1, 1, 1 + 256)
 	TextureBlend(AmbientLightRoomTex, 5 - (3 * opt\NewAtmosphere))
-	SetBuffer(TextureBuffer(AmbientLightRoomTex))
-	ClsColor(0, 0, 0)
-	Cls()
-	SetBuffer(BackBuffer())
 	
 	CreateBlurImage()
 	
@@ -2925,10 +2917,10 @@ Function LoadEntities%()
 	EntityOrder(t\OverlayID[4], -1003)
 	MoveEntity(t\OverlayID[4], 0.0, 0.0, 1.0)
 	
-	t\OverlayTextureID[2] = CreateTextureUsingCacheSystem(SMALLEST_POWER_TWO_HALF, SMALLEST_POWER_TWO_HALF, 1 + 2 + 256) ; ~ DARK
+	t\OverlayTextureID[2] = CreateTextureUsingCacheSystem(SMALLEST_POWER_TWO_HALF, SMALLEST_POWER_TWO_HALF, 1 + 2) ; ~ DARK
 	SetBuffer(TextureBuffer(t\OverlayTextureID[2]))
+	ClsColor(0, 0, 0)
 	Cls()
-	SetBuffer(BackBuffer())
 	t\OverlayID[5] = CreateSprite(ArkBlurCam)
 	ScaleSprite(t\OverlayID[5], 1.001, OverlayScale)
 	EntityTexture(t\OverlayID[5], t\OverlayTextureID[2])
@@ -2937,7 +2929,7 @@ Function LoadEntities%()
 	MoveEntity(t\OverlayID[5], 0.0, 0.0, 1.0)
 	EntityAlpha(t\OverlayID[5], 0.0)
 	
-	Tex = CreateTextureUsingCacheSystem(SMALLEST_POWER_TWO_HALF, SMALLEST_POWER_TWO_HALF, 1 + 2 + 256, 1, DeleteMapTextures) ; ~ LIGHT
+	Tex = CreateTextureUsingCacheSystem(SMALLEST_POWER_TWO_HALF, SMALLEST_POWER_TWO_HALF, 1 + 2, 1, DeleteMapTextures) ; ~ LIGHT
 	SetBuffer(TextureBuffer(Tex))
 	ClsColor(255, 255, 255)
 	Cls()
@@ -3815,10 +3807,6 @@ Function NullGame%(PlayButtonSFX% = True)
 	Next
 	
 	FreeBlur()
-	If FresizeTexture <> 0 Then FreeTexture(FresizeTexture) : FresizeTexture = 0
-	If FresizeTexture2 <> 0 Then FreeTexture(FresizeTexture2) : FresizeTexture2 = 0
-	If FresizeImage <> 0 Then FreeEntity(FresizeImage) : FresizeImage = 0
-	If FresizeCam <> 0 Then FreeEntity(FresizeCam) : FresizeCam = 0
 	
 	RenderTween = 0.0
 	ShouldDisableHUD = False

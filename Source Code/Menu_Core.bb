@@ -2064,7 +2064,8 @@ Function RenderLoading%(Percent%, Assets$ = "")
 		
 		RenderGamma()
 		
-		Flip(True)
+		Delay(20)
+		Flip()
 		
 		FirstLoop = False
 		If Percent <> 100 Then Exit

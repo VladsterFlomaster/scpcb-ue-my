@@ -6520,7 +6520,7 @@ Function UpdateEvent_Room3_HCZ_1048%(e.Events)
 					itt\ImgPath = ItemHUDTexturePath + DrawingName
 					itt\TexPath = itt\ImgPath
 					
-					Local Tex% = GetRescaledTexture(False, itt\TexPath, 1, DeleteMapTextures, 145, 204)
+					Local Tex% = LoadTexture_Strict(itt\TexPath, 1, DeleteMapTextures, True, 0.3)
 					
 					EntityTexture(itt\OBJ, Tex)
 					DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
@@ -6528,7 +6528,7 @@ Function UpdateEvent_Room3_HCZ_1048%(e.Events)
 				EndIf
 			Next
 			
-			Local Brush% = GetRescaledTexture(True, ItemHUDTexturePath + DrawingName, 1, DeleteMapTextures, 145, 204)
+			Local Brush% = LoadBrush_Strict(ItemHUDTexturePath + DrawingName)
 			Local SurfCount% = CountSurfaces(e\room\NPC[0]\OBJ)
 			Local i%, SF%, b%, BT%, TexName$
 			

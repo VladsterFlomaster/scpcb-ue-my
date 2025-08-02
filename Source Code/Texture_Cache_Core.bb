@@ -35,7 +35,7 @@ Function LoadTextureCheckingIfInCache%(TexName$, TexFlags% = 1, DeleteType% = De
 	If FileType(lang\LanguagePath + CurrPath) = 1 Then CurrPath = lang\LanguagePath + CurrPath
 	tic\Tex = LoadTexture(CurrPath, TexFlags)
 	If tic\Tex = 0
-		tic\Tex = CreateTexture(1, 1, 1 + 256)
+		tic\Tex = CreateTexture(1, 1, 1)
 		TextureBlend(tic\Tex, 3)
 		SetBuffer(TextureBuffer(tic\Tex))
 		ClsColor(255, 0, 255)
@@ -71,7 +71,7 @@ Function LoadAnimTextureCheckingIfInCache%(TexName$, TexFlags% = 1, Width%, Heig
 	If FileType(lang\LanguagePath + CurrPath) = 1 Then CurrPath = lang\LanguagePath + CurrPath
 	tic\Tex = LoadAnimTexture(CurrPath, TexFlags, Width, Height, FirstFrame, Count)
 	If tic\Tex = 0
-		tic\Tex = CreateTexture(1, 1, 1 + 256)
+		tic\Tex = CreateTexture(1, 1, 1)
 		TextureBlend(tic\Tex, 3)
 		SetBuffer(TextureBuffer(tic\Tex))
 		ClsColor(255, 0, 255)
@@ -146,7 +146,7 @@ End Function
 Global MissingTexture%
 
 Function LoadMissingTexture%()
-	MissingTexture = CreateTexture(1, 1, 1 + 256)
+	MissingTexture = CreateTexture(1, 1, 1)
 	TextureBlend(MissingTexture, 3)
 	SetBuffer(TextureBuffer(MissingTexture))
 	ClsColor(0, 0, 0)
