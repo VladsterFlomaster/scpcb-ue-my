@@ -4503,21 +4503,17 @@ Function RenderSecurityCams%()
 					EndIf
 					
 					If sc\State >= sc\RenderInterval
-						Local BufferBack% = BackBuffer()
-						
 						If sc_I\CoffinCam = Null Lor Rand(5) = 5 Lor sc\CoffinEffect <> 3
 							ShowEntity(sc\Cam)
-							Cls()
-							SetBuffer(BufferBack)
 							RenderWorld(RenderTween)
 							HideEntity(sc\Cam)
 						Else
 							ShowEntity(sc_I\CoffinCam\room\OBJ)
 							EntityAlpha(GetChild(sc_I\CoffinCam\room\OBJ, 2), 1.0)
 							ShowEntity(sc_I\CoffinCam\Cam)
-							Cls()
-							SetBuffer(BufferBack)
+							
 							RenderWorld(RenderTween)
+							
 							HideEntity(sc_I\CoffinCam\Cam)
 							HideEntity(sc_I\CoffinCam\room\OBJ)
 						EndIf
