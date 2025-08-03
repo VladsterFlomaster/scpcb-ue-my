@@ -2011,9 +2011,13 @@ Function UpdateEvent_Cont1_914%(e.Events)
 							opt\InvertMouseX = (Not opt\InvertMouseX)
 							opt\InvertMouseY = (Not opt\InvertMouseY)
 							;[End Block]
-						Case FINE, VERYFINE
+						Case FINE
 							;[Block]
 							chs\SuperMan = True
+							;[End Block]
+						Case VERYFINE
+							;[Block]
+							If I_427\Timer < 70.0 * 360.0 Then I_427\Timer = 70.0 * 360.0
 							;[End Block]
 					End Select
 					me\BlurTimer = 1000.0
