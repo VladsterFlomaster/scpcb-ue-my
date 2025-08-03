@@ -9812,9 +9812,10 @@ Function UpdateEvent_Checkpoint%(e.Events)
 	EndIf
 	
 	If e\room\RoomDoors[0]\Open <> e\EventState
-		If e\Sound = 0 Then e\Sound = LoadSound_Strict("SFX\Door\DoorCheckpoint.ogg")
-		e\SoundCHN = PlaySoundEx(e\Sound, Camera, e\room\RoomDoors[0]\OBJ)
-		e\SoundCHN2 = PlaySoundEx(e\Sound, Camera, e\room\RoomDoors[1]\OBJ)
+		Local Sound% = LoadTempSound("SFX\Door\DoorCheckpoint.ogg")
+		
+		e\SoundCHN = PlaySoundEx(Sound, Camera, e\room\RoomDoors[0]\OBJ)
+		e\SoundCHN2 = PlaySoundEx(Sound, Camera, e\room\RoomDoors[1]\OBJ)
 	EndIf
 	e\EventState = e\room\RoomDoors[0]\Open
 	
