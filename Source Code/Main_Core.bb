@@ -9433,7 +9433,10 @@ Function UpdateExplosion%()
 				For e.Events = Each Events
 					If e\room = PlayerRoom
 						TFormPoint(4417.0, -32.0, -8116.0, e\room\OBJ, 0)
-						SetEmitter(Null, TFormedX(), TFormedY(), TFormedZ(), 33)
+						Local x# = TFormedX(), y# = TFormedY(), z# = TFormedZ()
+						
+						SetEmitter(Null, x, y, z, 33)
+						SetEmitter(Null, x, y, z, 34)
 						Exit
 					EndIf
 				Next
