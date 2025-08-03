@@ -3773,7 +3773,7 @@ Function RenderNVG%()
 			For np.NPCs = Each NPCs
 				If np\HideFromNVG Then Continue
 				Dist = DistanceSquared(EntityX(me\Collider, True), np\NVGX, EntityY(me\Collider, True), np\NVGY, EntityZ(me\Collider, True), np\NVGZ)
-				If Dist < 256.0 ; ~ Don't draw text if the NPC is too far away
+				If Dist < 400.0 ; ~ Don't draw text if the NPC is too far away
 					If (Not wi\IsNVGBlinking)
 						CameraProject(Camera, np\NVGX, np\NVGY + 0.5, np\NVGZ)
 						
@@ -5132,7 +5132,7 @@ Function UpdateGUI%()
 								If SelectedItem\State > 0.0 Then PlaySound_Strict(LoadTempSound("SFX\Interact\NVGOff.ogg"))
 							Else
 								CreateMsg(GetLocalString("msg", "nvg.on"))
-								fog\FarDist = 15.0
+								fog\FarDist = 16.0
 								Select SelectedItem\ItemTemplate\ID
 									Case it_nvg
 										;[Block]

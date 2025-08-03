@@ -1487,7 +1487,7 @@ Function LoadGame%(File$)
 	CloseFile(f)
 	
 	If wi\NightVision > 0
-		fog\FarDist = 15.0
+		fog\FarDist = 16.0
 	ElseIf wi\SCRAMBLE > 0
 		fog\FarDist = 9.0
 	Else
@@ -2485,7 +2485,7 @@ Function LoadGameQuick%(File$)
 	If wi\HazmatSuit = 0 Then HideEntity(t\OverlayID[2])
 	
 	If wi\NightVision > 0
-		fog\FarDist = 15.0
+		fog\FarDist = 16.0
 	ElseIf wi\SCRAMBLE > 0
 		fog\FarDist = 9.0
 	Else
