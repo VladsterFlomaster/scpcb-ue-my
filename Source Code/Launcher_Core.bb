@@ -449,11 +449,9 @@ Function UpdateLanguageSelector%()
 			lan\FileSize = JsonGetInt(JsonGetValue(LanguageIt, "size")) ; ~ Size of localization
 			lan\Compatible = JsonGetString(JsonGetValue(LanguageIt, "compatible")) ; ~ Compatible version
 			If FileType(BasePath + "flags/" + lan\Flag) <> 1 Then DownloadFile(ServerURI + "flags/" + lan\Flag, BasePath + "flags/" + lan\Flag) ; ~ Flags of languages
-			
-			Local NotCountryContains% = (Not S2IMapContains(CountryFlags, lan\Flag))
-			
-			If NotCountryContains Then S2IMapSet(CountryFlags, lan\Flag, LoadImage(BasePath + "flags\" + lan\Flag))
-			If NotCountryContains Then Return(True)
+
+			If (Not S2IMapContains(CountryFlags, lan\Flag)) Then S2IMapSet(CountryFlags, lan\Flag, LoadImage(BasePath + "flags\" + lan\Flag))
+			If (Not S2IMapGet(CountryFlags, lan\Flag)) Then Return(True)
 		Next
 	Else
 		If File <> 0 Then JsonFreeDocument(File) : File = 0
@@ -528,7 +526,7 @@ Function UpdateLanguageSelector%()
 		DrawBlock(LanguageBG, 0, 0)
 		Rect(LauncherWidth - 161, LauncherHeight - 285, 155, 110)
 		
-		If LinesAmount > 13
+		If LinesAmount >= 13
 			y = LauncherHeight - 280 - (20 * ScrollMenuHeight * ScrollBarY)
 			SetBuffer(ImageBuffer(LanguageIMG))
 			DrawImage(LanguageBG, -20, -195)
