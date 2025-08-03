@@ -7182,144 +7182,144 @@ Function UpdateEvent_Gate_A%(e.Events)
 					EndIf
 				EndIf
 				If e\EventState3 = 0.0
-						If IsEqual(EntityY(me\Collider, True), EntityY(e\room\Objects[3], True), 1.0)
-							If DistanceSquared(EntityX(me\Collider), EntityX(e\room\Objects[3], True), EntityZ(me\Collider), EntityZ(e\room\Objects[3], True)) < 144.0
-								n_I\Curr106\State = 0.0
-								n_I\Curr106\State2 = Rnd(22000.0, 27000.0)
-								If (Not EntityHidden(n_I\Curr106\OBJ)) Then HideEntity(n_I\Curr106\OBJ)
+					If IsEqual(EntityY(me\Collider, True), EntityY(e\room\Objects[3], True), 1.0)
+						If DistanceSquared(EntityX(me\Collider), EntityX(e\room\Objects[3], True), EntityZ(me\Collider), EntityZ(e\room\Objects[3], True)) < 144.0
+							n_I\Curr106\State = 0.0
+							n_I\Curr106\State2 = Rnd(22000.0, 27000.0)
+							If (Not EntityHidden(n_I\Curr106\OBJ)) Then HideEntity(n_I\Curr106\OBJ)
+							
+							; ~ MTF spawns at the tunnel entrance
+							For i = 5 To 8
+								PositionEntity(e\room\NPC[i]\Collider, EntityX(e\room\Objects[6], True) + (i - 6) * 0.3, EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True) + (i - 6) * 0.3, True)
+								ResetEntity(e\room\NPC[i]\Collider)
 								
-								; ~ MTF spawns at the tunnel entrance
-								For i = 5 To 8
-									PositionEntity(e\room\NPC[i]\Collider, EntityX(e\room\Objects[6], True) + (i - 6) * 0.3, EntityY(e\room\Objects[6], True), EntityZ(e\room\Objects[6], True) + (i - 6) * 0.3, True)
-									ResetEntity(e\room\NPC[i]\Collider)
-									
-									e\room\NPC[i]\EnemyX = EntityX(me\Collider)
-									e\room\NPC[i]\EnemyY = EntityY(me\Collider)
-									e\room\NPC[i]\EnemyZ = EntityZ(me\Collider)
-									e\room\NPC[i]\PathTimer = 0.0
-									e\room\NPC[i]\State = MTF_FOLLOW_PATH
-								Next
-								e\room\NPC[5]\Sound = LoadSound_Strict("SFX\Character\MTF\ThereHeIs0.ogg")
-								PlaySoundEx(e\room\NPC[5]\Sound, Camera, e\room\NPC[5]\Collider, 25.0, 1.0, True)
-								
-								e\room\RoomDoors[0]\Open = True
-								
-								For i = 2 To 4
-									e\room\NPC[i]\State = 0.0
-								Next
-								
-								e\EventState3 = 1.0
-							EndIf
-						EndIf
-					ElseIf e\EventState3 = 1.0
-						For i = 5 To 8
-							If EntityDistanceSquared(e\room\NPC[i]\Collider, me\Collider) > 16.0
+								e\room\NPC[i]\EnemyX = EntityX(me\Collider)
+								e\room\NPC[i]\EnemyY = EntityY(me\Collider)
+								e\room\NPC[i]\EnemyZ = EntityZ(me\Collider)
+								e\room\NPC[i]\PathTimer = 0.0
 								e\room\NPC[i]\State = MTF_FOLLOW_PATH
-							Else
-								e\room\NPC[i]\State = MTF_SHOOTING_AT_PLAYER
-							EndIf
-						Next
-						
-						If IsEqual(EntityY(me\Collider, True), EntityY(e\room\Objects[3], True), 1.0)
-							If DistanceSquared(EntityX(me\Collider), EntityX(e\room\Objects[3], True), EntityZ(me\Collider), EntityZ(e\room\Objects[3], True)) < 49.0
-								For i = 5 To 8
-									e\room\NPC[i]\State = MTF_LOOKING_AT_SOME_TARGET
-								Next
-								
-								e\room\Objects[9] = LoadAnimMesh_Strict("GFX\NPCs\CI.b3d")
-								
-								Local Scale# = 0.55 / MeshWidth(e\room\Objects[9])
-								
-								ScaleEntity(e\room\Objects[9], Scale, Scale, Scale)
-								PositionEntity(e\room\Objects[9], EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True), EntityZ(e\room\Objects[3], True))
-								
-								e\room\Objects[10] = CopyEntity(e\room\Objects[9])
-								PositionEntity(e\room\Objects[10], e\room\x - 3968.0 * RoomScale, EntityY(e\room\Objects[3], True), e\room\z - 1920.0 * RoomScale)
-								
-								e\room\Objects[11] = CopyEntity(e\room\Objects[9])
-								PositionEntity(e\room\Objects[11], e\room\x - 4160.0 * RoomScale, EntityY(e\room\Objects[3], True), e\room\z - 1920.0 * RoomScale)
-								EntityParent(e\room\Objects[11], e\room\Objects[10])
-								
-								e\room\Objects[12] = CopyEntity(e\room\Objects[9])
-								PositionEntity(e\room\Objects[12], e\room\x - 4064.0 * RoomScale, EntityY(e\room\Objects[3], True), e\room\z - 2112.0 * RoomScale)
-								EntityParent(e\room\Objects[12], e\room\Objects[10])
-								
-								e\SoundCHN = PlaySoundEx(LoadTempSound("SFX\Ending\GateA\Bell0.ogg"), Camera, e\room\Objects[9])
-								
-								p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
-								p\Speed = 0.15 : p\Alpha = 0.5
-								p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
-								p\Speed = 0.25 : p\Alpha = 0.5
-								PointEntity(p\Pvt, me\Collider)
-								
-								me\CameraShake = 1.0
-								me\LightFlash = 1.0
-								
-								e\EventState3 = 2.0
-							EndIf
-						EndIf
-					Else
-						e\EventState3 = e\EventState3 + fps\Factor[0]
-						PointEntity(e\room\Objects[9], me\Collider)
-						RotateEntity(e\room\Objects[9], 0.0, EntityYaw(e\room\Objects[9]), 0.0)
-						
-						me\Stamina = -5.0
-						
-						me\BlurTimer = Sin(e\EventState3 * 0.7) * 1000.0
-						
-						If (Not me\Terminated)
-							CameraZoom(Camera, 1.0 + Sin(e\EventState3 * 0.8) * 0.2)
+							Next
+							e\room\NPC[5]\Sound = LoadSound_Strict("SFX\Character\MTF\ThereHeIs0.ogg")
+							PlaySoundEx(e\room\NPC[5]\Sound, Camera, e\room\NPC[5]\Collider, 25.0, 1.0, True)
 							
-							Dist = EntityDistanceSquared(me\Collider, e\room\Objects[3])
-							If Dist < 42.25
-								SqrValue = Sqr(Dist) * 80.0
-								PositionEntity(me\Collider, CurveValue(EntityX(e\room\Objects[3], True), EntityX(me\Collider), Dist), EntityY(me\Collider), CurveValue(EntityZ(e\room\Objects[0], True), EntityZ(me\Collider), Dist))
-							EndIf
-						EndIf
-						PositionEntity(me\Collider, EntityX(me\Collider), EntityY(me\Collider), Min(e\room\z + 450.0 * RoomScale, EntityZ(me\Collider)))
-						If e\EventState3 > 50.0 And e\EventState3 < 230.0
-							SinValue = Sin(e\EventState3 - 50.0)
-							me\CameraShake = SinValue * 3.0
-							TurnEntity(e\room\Objects[4], 0.0, (SinValue * (-0.85)) * fps\Factor[0], 0.0, True)
-							TurnEntity(e\room\Objects[5], 0.0, (SinValue * 0.85) * fps\Factor[0], 0.0, True)
-						EndIf
-						
-						If e\EventState3 >= 230.0
-							If e\EventState3 - fps\Factor[0] < 230.0
-								e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\CI.ogg"), True)
-								ResetSelectedStuff()
-								me\SelectedEnding = Ending_A1
-							EndIf
+							e\room\RoomDoors[0]\Open = True
 							
-							If e\EventState3 >= 480.0
-								AnimateEx(e\room\Objects[9], AnimTime(e\room\Objects[9]), 176.0, 210.0, 0.2)
-								MoveEntity(e\room\Objects[9], 0.0, 0.0, 0.01 * fps\Factor[0])
-							EndIf
+							For i = 2 To 4
+								e\room\NPC[i]\State = 0.0
+							Next
 							
-							If (Not ChannelPlaying(e\SoundCHN))
-								ClearCheats()
-								
-								PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\Bell1.ogg"))
-								
-								For n.NPCs = Each NPCs
-									RemoveNPC(n)
-								Next
-								
-								p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
-								p\Speed = 0.15 : p\Alpha = 0.5
-								p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
-								p\Speed = 0.25 : p\Alpha = 0.5
-								
-								me\CameraShake = CurveValue(2.0, me\CameraShake, 10.0)
-								me\LightFlash = CurveValue(2.0, me\LightFlash, 8.0)
-								me\Terminated = True
-								msg\DeathMsg = ""
-								
-								RemoveEvent(e)
-								Return
-							EndIf
+							e\EventState3 = 1.0
 						EndIf
 					EndIf
+				ElseIf e\EventState3 = 1.0
+					For i = 5 To 8
+						If EntityDistanceSquared(e\room\NPC[i]\Collider, me\Collider) > 16.0
+							e\room\NPC[i]\State = MTF_FOLLOW_PATH
+						Else
+							e\room\NPC[i]\State = MTF_SHOOTING_AT_PLAYER
+						EndIf
+					Next
+					
+					If IsEqual(EntityY(me\Collider, True), EntityY(e\room\Objects[3], True), 1.0)
+						If DistanceSquared(EntityX(me\Collider), EntityX(e\room\Objects[3], True), EntityZ(me\Collider), EntityZ(e\room\Objects[3], True)) < 49.0
+							For i = 5 To 8
+								e\room\NPC[i]\State = MTF_LOOKING_AT_SOME_TARGET
+							Next
+							
+							e\room\Objects[9] = LoadAnimMesh_Strict("GFX\NPCs\CI.b3d")
+							
+							Local Scale# = 0.55 / MeshWidth(e\room\Objects[9])
+							
+							ScaleEntity(e\room\Objects[9], Scale, Scale, Scale)
+							PositionEntity(e\room\Objects[9], EntityX(e\room\Objects[3], True), EntityY(e\room\Objects[3], True), EntityZ(e\room\Objects[3], True))
+							
+							e\room\Objects[10] = CopyEntity(e\room\Objects[9])
+							PositionEntity(e\room\Objects[10], e\room\x - 3968.0 * RoomScale, EntityY(e\room\Objects[3], True), e\room\z - 1920.0 * RoomScale)
+							
+							e\room\Objects[11] = CopyEntity(e\room\Objects[9])
+							PositionEntity(e\room\Objects[11], e\room\x - 4160.0 * RoomScale, EntityY(e\room\Objects[3], True), e\room\z - 1920.0 * RoomScale)
+							EntityParent(e\room\Objects[11], e\room\Objects[10])
+							
+							e\room\Objects[12] = CopyEntity(e\room\Objects[9])
+							PositionEntity(e\room\Objects[12], e\room\x - 4064.0 * RoomScale, EntityY(e\room\Objects[3], True), e\room\z - 2112.0 * RoomScale)
+							EntityParent(e\room\Objects[12], e\room\Objects[10])
+							
+							e\SoundCHN = PlaySoundEx(LoadTempSound("SFX\Ending\GateA\Bell0.ogg"), Camera, e\room\Objects[9])
+							
+							p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
+							p\Speed = 0.15 : p\Alpha = 0.5
+							p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
+							p\Speed = 0.25 : p\Alpha = 0.5
+							PointEntity(p\Pvt, me\Collider)
+							
+							me\CameraShake = 1.0
+							me\LightFlash = 1.0
+							
+							e\EventState3 = 2.0
+						EndIf
+					EndIf
+				Else
+					e\EventState3 = e\EventState3 + fps\Factor[0]
+					PointEntity(e\room\Objects[9], me\Collider)
+					RotateEntity(e\room\Objects[9], 0.0, EntityYaw(e\room\Objects[9]), 0.0)
+					
+					me\Stamina = -5.0
+					
+					me\BlurTimer = Sin(e\EventState3 * 0.7) * 1000.0
+					
+					If (Not me\Terminated)
+						CameraZoom(Camera, 1.0 + Sin(e\EventState3 * 0.8) * 0.2)
+						
+						Dist = EntityDistanceSquared(me\Collider, e\room\Objects[3])
+						If Dist < 42.25
+							SqrValue = Sqr(Dist) * 80.0
+							PositionEntity(me\Collider, CurveValue(EntityX(e\room\Objects[3], True), EntityX(me\Collider), Dist), EntityY(me\Collider), CurveValue(EntityZ(e\room\Objects[0], True), EntityZ(me\Collider), Dist))
+						EndIf
+					EndIf
+					PositionEntity(me\Collider, EntityX(me\Collider), EntityY(me\Collider), Min(e\room\z + 450.0 * RoomScale, EntityZ(me\Collider)))
+					If e\EventState3 > 50.0 And e\EventState3 < 230.0
+						SinValue = Sin(e\EventState3 - 50.0)
+						me\CameraShake = SinValue * 3.0
+						TurnEntity(e\room\Objects[4], 0.0, (SinValue * (-0.85)) * fps\Factor[0], 0.0, True)
+						TurnEntity(e\room\Objects[5], 0.0, (SinValue * 0.85) * fps\Factor[0], 0.0, True)
+					EndIf
+					
+					If e\EventState3 >= 230.0
+						If e\EventState3 - fps\Factor[0] < 230.0
+							e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\CI.ogg"), True)
+							ResetSelectedStuff()
+							me\SelectedEnding = Ending_A1
+						EndIf
+						
+						If e\EventState3 >= 480.0
+							AnimateEx(e\room\Objects[9], AnimTime(e\room\Objects[9]), 176.0, 210.0, 0.2)
+							MoveEntity(e\room\Objects[9], 0.0, 0.0, 0.01 * fps\Factor[0])
+						EndIf
+						
+						If (Not ChannelPlaying(e\SoundCHN))
+							ClearCheats()
+							
+							PlaySound_Strict(LoadTempSound("SFX\Ending\GateA\Bell1.ogg"))
+							
+							For n.NPCs = Each NPCs
+								RemoveNPC(n)
+							Next
+							
+							p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
+							p\Speed = 0.15 : p\Alpha = 0.5
+							p.Particles = CreateParticle(PARTICLE_SUN, EntityX(e\room\Objects[3], True), EntityY(Camera, True), EntityZ(e\room\Objects[3], True), 8.0, 0.0, 50.0)
+							p\Speed = 0.25 : p\Alpha = 0.5
+							
+							me\CameraShake = CurveValue(2.0, me\CameraShake, 10.0)
+							me\LightFlash = CurveValue(2.0, me\LightFlash, 8.0)
+							me\Terminated = True
+							msg\DeathMsg = ""
+							
+							RemoveEvent(e)
+							Return
+						EndIf
+					EndIf
+				EndIf
 			EndIf
 		EndIf
 	Else
