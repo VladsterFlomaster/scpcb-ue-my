@@ -1809,11 +1809,7 @@ Function UpdateEvent_Cont1_205%(e.Events)
 			End Select
 		EndIf
 	ElseIf e\room\Objects[2] <> 0
-		For i = 2 To 4
-			If e\room\Objects[i] <> 0
-				If (Not EntityHidden(e\room\Objects[i])) Then HideEntity(e\room\Objects[i])
-			EndIf
-		Next
+		; ~ Skip
 	Else
 		e\EventState = 0.0
 		e\EventStr = ""
@@ -7111,7 +7107,7 @@ Function UpdateEvent_Gate_A%(e.Events)
 							EndIf
 						EndIf
 					ElseIf n_I\Curr106\State = 1.0
-						 n_I\Curr106\Contained = True
+						n_I\Curr106\Contained = True
 					EndIf
 				Else
 					If e\EventState2 = 0.0
