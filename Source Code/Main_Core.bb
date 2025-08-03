@@ -2350,15 +2350,16 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 				Next
 				SaveAchievementsFile()
 				CreateConsoleMsg(GetLocalString("console", "ga.all"))
-			EndIf
-			
-			If S2IMapContains(AchievementsIndex, StrTemp)
-				GiveAchievement(StrTemp)
-				
-				Local AchvName% = JsonGetValue(JsonGetValue(JsonGetValue(LocalAchievementsArray, "translations"), StrTemp), "name")
-				
-				If JsonIsNull(AchvName) Then AchvName = JsonGetValue(JsonGetValue(JsonGetValue(AchievementsArray, "translations"), StrTemp), "name")
-				CreateConsoleMsg(Format(GetLocalString("console", "ga.success"), JsonGetString(AchvName)))
+			ElseIf S2IMapContains(AchievementsIndex, StrTemp)
+				If StrTemp <> "console" And StrTemp <> "keter" And StrTemp <> "apollyon"
+					GiveAchievement(StrTemp)
+					Local AchvName% = JsonGetValue(JsonGetValue(JsonGetValue(LocalAchievementsArray, "translations"), StrTemp), "name")
+					
+					If JsonIsNull(AchvName) Then AchvName = JsonGetValue(JsonGetValue(JsonGetValue(AchievementsArray, "translations"), StrTemp), "name")
+					CreateConsoleMsg(Format(GetLocalString("console", "ga.success"), JsonGetString(AchvName)))
+				Else
+					CreateConsoleMsg(Format(GetLocalString("console", "ga.cheat"), StrTemp), 255, 0, 0)
+				EndIf
 			ElseIf StrTemp <> "all"
 				CreateConsoleMsg(Format(GetLocalString("console", "ga.failed"), StrTemp), 255, 0, 0)
 			EndIf
