@@ -7154,7 +7154,9 @@ Function UpdateEvent_Gate_A%(e.Events)
 								e\EventState2 = 3.0
 							Else
 								For i = 5 To 8
-									e\room\NPC[i]\State = MTF_SHOOTING_AT_PLAYER
+									If NPCSeesPlayer(e\room\NPC[i], 6.0 - me\CrouchState + me\SndVolume) = 1
+										e\room\NPC[i]\State = MTF_SHOOTING_AT_PLAYER
+									EndIf
 								Next
 							EndIf
 						ElseIf e\EventState2 = 3.0
