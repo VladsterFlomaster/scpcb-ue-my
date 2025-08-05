@@ -239,7 +239,6 @@ Function UpdateEvent_Cont1_173%(e.Events)
 				SetNPCFrame(e\room\NPC[0], 74.0)
 			EndIf
 			
-			SetEmitter(e\room, e\room\x, e\room\y, e\room\z, 32)
 			If e\room\NPC[1] <> Null
 				PositionEntity(e\room\NPC[1]\Collider, e\room\x, e\room\y + 0.3, e\room\z - 1.0 + 2048.0 * RoomScale, True)
 				ResetEntity(e\room\NPC[1]\Collider)
@@ -10431,4 +10430,4 @@ Function UpdateEvent_Trick_Item%(e.Events)
 End Function
 
 ;~IDEal Editor Parameters:
-;~C#Blitz3D TSS
+;~C#Blitz3D_TSS
