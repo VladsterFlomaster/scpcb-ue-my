@@ -2336,6 +2336,7 @@ Function LoadGameQuick%(File$)
 				If e\EventState =< 30.0
 					PositionEntity(e\room\Objects[0], e\room\x, e\room\y + 440.0 * RoomScale, e\room\z, True)
 					RotateEntity(e\room\Objects[0], 0.0, 0.0, 0.0, True)
+					EntityType(e\room\Objects[0], 0)
 				EndIf
 				;[End Block]
 		End Select

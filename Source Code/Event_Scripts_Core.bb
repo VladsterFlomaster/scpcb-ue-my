@@ -4929,7 +4929,10 @@ Function UpdateEvent_Room2_6_HCZ_173%(e.Events)
 	If e\EventState > 0.0 And e\EventState < 200.0
 		e\EventState = e\EventState + fps\Factor[0]
 		
-		If e\EventState > 30.0 And e\EventState - fps\Factor[0] <= 30.0 Then PlaySound_Strict(LoadTempSound("SFX\Ambient\General\Ambient2.ogg"))
+		If e\EventState > 30.0 And e\EventState - fps\Factor[0] <= 30.0
+			PlaySound_Strict(LoadTempSound("SFX\Ambient\General\Ambient2.ogg"))
+			EntityType(e\room\Objects[0], HIT_MAP)
+		EndIf
 		If e\EventState - fps\Factor[0] <= 100.0 And e\EventState > 100.0
 			PlaySound_Strict(LoadTempSound("SFX\Ambient\General\Ambient5.ogg"))
 			TeleportEntity(n_I\Curr173\Collider, EntityX(e\room\OBJ), e\room\y + 0.3, EntityZ(e\room\OBJ), n_I\Curr173\CollRadius + 0.12, True)
@@ -9671,22 +9674,46 @@ End Function
 
 Function UpdateEvent_173_Spawn%(e.Events)
 	If e\room\Dist < 6.0
-		If n_I\Curr173\Idle > 1 Lor PlayerRoom = e\room
+		If n_I\Curr173\Idle > 1
 			RemoveEvent(e)
-		ElseIf n_I\Curr173\Idle = 0
-			If EntityDistanceSquared(me\Collider, n_I\Curr173\Collider) > 16.0 And (Not PlayerSees173(n_I\Curr173))
+		Else
+			If EntityDistanceSquared(me\Collider, n_I\Curr173\Collider) > 16.0 And (Not PlayerSees173(n_I\Curr173)) And PlayerRoom <> e\room
+				Local x# = 0.0, y# = 0.0, z# = 0.0
+				Local Pvt%
+				
 				Select e\room\RoomTemplate\RoomID
 					Case r_room2_4_lcz, r_room2_4_hcz
 						;[Block]
-						TFormPoint(640.0, 100.0, -896.0, e\room\OBJ, 0)
+						TFormPoint(640.0, 120.0, -896.0, e\room\OBJ, 0)
+						x = TFormedX() : y = TFormedY() : z = TFormedZ()
 						;[End Block]
 					Case r_room2_6_lcz
 						;[Block]
-						TFormPoint(-832.0, 100.0, 0.0, e\room\OBJ, 0)
+						TFormPoint(-812.0, 120.0, 0.0, e\room\OBJ, 0)
+						x = TFormedX() : y = TFormedY() : z = TFormedZ()
+						
+						Pvt = CreatePivot()
+						PositionEntity(Pvt, x, y, z, True)
+						PlaySoundEx(LoadTempSound("SFX\Room\Room2Nuke\Vent" + Rand(0, 2) + ".ogg"), Camera, Pvt, 12.0, 1.5)
+						FreeEntity(Pvt) : Pvt = 0
+						
+						PositionEntity(e\room\Objects[0], x, e\room\y + 4.0 * RoomScale, z, True)
+						RotateEntity(e\room\Objects[0], 0.0, Rnd(360.0), 0.0, True)
+						EntityType(e\room\Objects[0], HIT_MAP)
 						;[End Block]
 					Case r_room2c_gw_lcz
 						;[Block]
-						TFormPoint(-410.0, 100.0, 410.0, e\room\OBJ, 0)
+						TFormPoint(-656.0, 120.0, 448.0, e\room\OBJ, 0)
+						x = TFormedX() : y = TFormedY() : z = TFormedZ()
+						
+						Pvt = CreatePivot()
+						PositionEntity(Pvt, x, y, z, True)
+						PlaySoundEx(LoadTempSound("SFX\Room\Room2Nuke\Vent" + Rand(0, 2) + ".ogg"), Camera, Pvt, 12.0, 1.5)
+						FreeEntity(Pvt) : Pvt = 0
+						
+						PositionEntity(e\room\Objects[0], x, e\room\y + 4.0 * RoomScale, z, True)
+						RotateEntity(e\room\Objects[0], 0.0, Rnd(360.0), 0.0, True)
+						EntityType(e\room\Objects[0], HIT_MAP)
 						;[End Block]
 					Case r_room3_2_ez, r_room3_3_ez
 						;[Block]
@@ -9704,6 +9731,7 @@ Function UpdateEvent_173_Spawn%(e.Events)
 								TFormPoint(-920.0, -512.0, 480.0, e\room\OBJ, 0)
 								;[End Block]
 						End Select
+						x = TFormedX() : y = TFormedY() : z = TFormedZ()
 						;[End Block]
 					Case r_room2_7_ez
 						;[Block]
@@ -9721,9 +9749,10 @@ Function UpdateEvent_173_Spawn%(e.Events)
 								TFormPoint(256.0, -512.0, -911.0, e\room\OBJ, 0)
 								;[End Block]
 						End Select
+						x = TFormedX() : y = TFormedY() : z = TFormedZ()
 						;[End Block]
 				End Select
-				TeleportEntity(n_I\Curr173\Collider, TFormedX(), TFormedY(), TFormedZ(), n_I\Curr173\CollRadius + 0.12, True)
+				TeleportEntity(n_I\Curr173\Collider, x, y, z, n_I\Curr173\CollRadius + 0.12, True)
 				n_I\Curr173\CurrentRoom = e\room
 				RemoveEvent(e)
 			EndIf

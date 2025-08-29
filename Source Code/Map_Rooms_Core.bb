@@ -691,6 +691,19 @@ Function FillRoom%(r.Rooms)
 			
 			d\LinkedDoor = d2
 			d2\LinkedDoor = d
+			
+			For r2.Rooms = Each Rooms
+				If r2 <> r
+					If r2\RoomTemplate\RoomID = r_room2_6_lcz
+						r\Objects[0] = CopyEntity(r2\Objects[0]) ; ~ Don't load the mesh again
+						Exit
+					EndIf
+				EndIf
+			Next
+			If r\Objects[0] = 0 Then r\Objects[0] = LoadMesh_Strict("GFX\Map\Props\ventilation_grate.b3d")
+			ScaleEntity(r\Objects[0], RoomScale, RoomScale, RoomScale)
+			PositionEntity(r\Objects[0], r\x - 816.0 * RoomScale, r\y + 376.0 * RoomScale, r\z)
+			EntityParent(r\Objects[0], r\OBJ)
 			;[End Block]
 		Case r_room2_7_lcz
 			;[Block]
@@ -1667,6 +1680,19 @@ Function FillRoom%(r.Rooms)
 			r\RoomDoors[0]\LinkedDoor = r\RoomDoors[1]
 			r\RoomDoors[1]\LinkedDoor = r\RoomDoors[0]
 			
+			For r2.Rooms = Each Rooms
+				If r2 <> r
+					If r2\RoomTemplate\RoomID = r_room2c_gw_lcz
+						r\Objects[0] = CopyEntity(r2\Objects[0]) ; ~ Don't load the mesh again
+						Exit
+					EndIf
+				EndIf
+			Next
+			If r\Objects[0] = 0 Then r\Objects[0] = LoadMesh_Strict("GFX\Map\Props\ventilation_grate.b3d")
+			ScaleEntity(r\Objects[0], RoomScale, RoomScale, RoomScale)
+			PositionEntity(r\Objects[0], r\x - 656.0 * RoomScale, r\y + 376.0 * RoomScale, r\z + 448.0 * RoomScale)
+			EntityParent(r\Objects[0], r\OBJ)
+			
 			; ~ Security camera inside
 			sc.SecurityCams = CreateSecurityCam(r, r\x - 688.0 * RoomScale, r\y + 384.0 * RoomScale, r\z + 688.0 * RoomScale, 40.0, True, r\x + 670.0 * RoomScale, r\y + 280.0 * RoomScale, r\z - 96.0 * RoomScale, 0.0, 90.0, 0.0)
 			sc\Angle = 225.0 : sc\Turn = 45.0
@@ -2440,7 +2466,6 @@ Function FillRoom%(r.Rooms)
 			If r\Objects[0] = 0 Then r\Objects[0] = LoadMesh_Strict("GFX\Map\Props\ventilation_grate.b3d")
 			ScaleEntity(r\Objects[0], RoomScale, RoomScale, RoomScale)
 			PositionEntity(r\Objects[0], r\x, r\y + 440.0 * RoomScale, r\z)
-			EntityType(r\Objects[0], HIT_MAP)
 			EntityParent(r\Objects[0], r\OBJ)
 			;[End Block]
 		Case r_room2_7_hcz
