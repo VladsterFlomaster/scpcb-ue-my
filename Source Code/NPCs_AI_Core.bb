@@ -2781,29 +2781,6 @@ Function UpdateNPCType457%(n.NPCs)
 		EndIf
 		
 		n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_049_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True) ; ~ Breath channel
-		If n\Idle = 0.1
-			If PlayerInReachableRoom()
-				For i = 0 To MaxRoomAdjacents - 1
-					If PlayerRoom\Adjacent[i] <> Null
-						For j = 0 To MaxRoomAdjacents - 1
-							If PlayerRoom\Adjacent[i]\Adjacent[j] <> Null
-								If PlayerRoom\Adjacent[i]\Adjacent[j] <> PlayerRoom
-									If PlayerRoom\Adjacent[i]\Adjacent[j]\RoomCenter <> 0
-										TeleportEntity(n\Collider, EntityX(PlayerRoom\Adjacent[i]\Adjacent[j]\RoomCenter, True), PlayerRoom\Adjacent[i]\Adjacent[j]\y + 0.5, EntityZ(PlayerRoom\Adjacent[i]\Adjacent[j]\RoomCenter, True), n\CollRadius, True)
-									Else
-										TeleportEntity(n\Collider, PlayerRoom\Adjacent[i]\Adjacent[j]\x, PlayerRoom\Adjacent[i]\Adjacent[j]\y + 0.5, PlayerRoom\Adjacent[i]\Adjacent[j]\z, n\CollRadius, True)
-									EndIf
-									n\CurrentRoom = PlayerRoom\Adjacent[i]\Adjacent[j]
-									Exit
-								EndIf
-							EndIf
-						Next
-						Exit
-					EndIf
-				Next
-				n\Idle = 0.0
-			EndIf
-		EndIf
 		
 		Select n\State
 			Case 0.0 ; ~ Script
@@ -2858,7 +2835,7 @@ Function UpdateNPCType457%(n.NPCs)
 						EndIf
 						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 15.0 - (1.5 * SelectedDifficulty\OtherFactors))
 					Else ; ~ Finding a path to the player
-						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.0
+						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.5
 						If n\PathStatus = PATH_STATUS_FOUND ; ~ Path to player found
 							While n\Path[n\PathLocation] = Null
 								If n\PathLocation > MaxPathLocations - 1
