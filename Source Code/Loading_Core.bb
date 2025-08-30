@@ -3514,6 +3514,12 @@ Function InitOtherStuff%()
 	as\Timer = 70.0 * 70.0
 	If SelectedDifficulty\SaveType <> SAVE_ANYWHERE Then opt\AutoSaveEnabled = False
 	
+	Local HideX# = -400 * MenuScale
+	
+	SprintHUDX = HideX
+	ProtectHUDX# = HideX
+	CapHUDX# = HideX
+	
 	If SelectedCustomMap = Null
 		TempStr = Format(GetLocalString("menu", "new.seed2"), RandomSeed)
 	Else
