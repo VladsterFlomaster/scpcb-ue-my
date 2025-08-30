@@ -6926,6 +6926,14 @@ Function UpdateNPCTypeMTF%(n.NPCs)
 				;[End Block]
 			Case MTF_ZOMBIES_SPOTTED
 				;[Block]
+				If n\Target = Null
+					n\EnemyX = 0.0 : n\EnemyY = 0.0 : n\EnemyZ = 0.0
+					n\State2 = 0.0
+					n\State3 = 0.0
+					n\State = MTF_WANDERING_AROUND
+					Return
+				EndIf
+				
 				n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
 				If n\State2 > 0.0 And (Not n\Target\IsDead)
 					Dist = EntityDistanceSquared(n\Collider, n\Target\Collider)
