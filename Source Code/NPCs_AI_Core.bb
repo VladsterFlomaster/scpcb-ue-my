@@ -5022,6 +5022,7 @@ Function UpdateNPCTypeD_Clerk%(n.NPCs)
 				;[End Block]
 			Case 2.0 ; ~ Running
 				;[Block]
+				n\Speed = 0.03
 				n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 5.0)
 				AnimateNPC(n, 301.0, 319.0, n\CurrSpeed * 18.0)
 				

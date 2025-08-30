@@ -9350,8 +9350,8 @@ Function UpdateEvent_Tesla%(e.Events)
 					x1 = 0.0
 					z1 = i * 800.0 + (Not i) * (-800.0)
 				EndIf
-				e\room\NPC[0] = CreateNPC(NPCTypeClerk, EntityX(e\room\OBJ, True) + x1 * RoomScale, 0.4, EntityZ(e\room\OBJ, True) + z1 * RoomScale)
-				e\room\NPC[0]\State = 2.0 : e\room\NPC[0]\HP = 100
+				e\room\NPC[0] = CreateNPC(NPCTypeClerk, EntityX(e\room\OBJ, True) + x1 * RoomScale, e\room\y + 0.3, EntityZ(e\room\OBJ, True) + z1 * RoomScale)
+				e\room\NPC[0]\State = 2.0
 				PointEntity(e\room\NPC[0]\Collider, e\room\OBJ)
 				e\EventState = 0.0
 			EndIf
