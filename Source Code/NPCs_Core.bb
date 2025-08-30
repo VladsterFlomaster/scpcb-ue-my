@@ -3,10 +3,10 @@ Include "Source Code\NPCs_AI_Core.bb"
 ; ~ NPC ID Constants
 ;[Block]
 Const NPCType008_1% = 0, NPCType008_1_Surgeon% = 1, NPCType035_Tentacle% = 2, NPCType049% = 3, NPCType049_2% = 4, NPCType066% = 5, NPCType096% = 6
-Const NPCType106% = 7, NPCType173% = 8, NPCType372% = 9, NPCType513_1% = 10, NPCType860_2% = 11, NPCType939% = 12
-Const NPCType966% = 13, NPCType999% = 14, NPCType1048% = 15, NPCType1048_A% = 16, NPCType1499_1% = 17
+Const NPCType106% = 7, NPCType173% = 8, NPCType372% = 9, NPCType457% = 10, NPCType513_1% = 11, NPCType860_2% = 12, NPCType939% = 13
+Const NPCType966% = 14, NPCType999% = 15, NPCType1048% = 16, NPCType1048_A% = 17, NPCType1499_1% = 18
 
-Const NPCTypeApache% = 18, NPCTypeClerk% = 19, NPCTypeCockroach% = 20, NPCTypeD% = 21, NPCTypeGuard% = 22, NPCTypeMTF% = 23
+Const NPCTypeApache% = 19, NPCTypeClerk% = 20, NPCTypeCockroach% = 21, NPCTypeD% = 22, NPCTypeGuard% = 23, NPCTypeMTF% = 24
 ;[End Block]
 
 Const MaxPathLocations% = 21
@@ -282,6 +282,19 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			Temp = 0.25 / MeshWidth(n\OBJ)
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
 			HideEntity(n\OBJ)
+			;[End Block]
+		Case NPCType457
+			;[Block]
+			n\NVGName = "SCP-457"
+			n\Speed = 0.025
+			
+			n\Collider = CreatePivot()
+			EntityRadius(n\Collider, n\CollRadius)
+			EntityType(n\Collider, HIT_PLAYER)
+			
+			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_049_MODEL])
+			Temp = 1.2
+			ScaleEntity(n\OBJ, Temp, Temp, Temp)
 			;[End Block]
 		Case NPCType513_1
 			;[Block]
@@ -745,6 +758,10 @@ Function UpdateNPCs%()
 			Case NPCType372
 				;[Block]
 				UpdateNPCType372(n)
+				;[End Block]
+			Case NPCType457
+				;[Block]
+				UpdateNPCType457(n)
 				;[End Block]
 			Case NPCType513_1
 				;[Block]
@@ -1469,6 +1486,14 @@ Function ConsoleSpawnNPC%(Name$, NPCState$ = "")
 			n.NPCs = CreateNPC(NPCType372, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider))
 			ConsoleMsg = Format(GetLocalString("console", "spawn"), "SCP-372")
 			;[End Block]
+		Case "457", "scp457", "scp-457", "burningman"
+			;[Block]
+			n.NPCs = CreateNPC(NPCType457, EntityX(me\Collider), EntityY(me\Collider) + 0.2, EntityZ(me\Collider))
+			n\State = 1.0
+			;n_I\Curr457 = n
+			;GiveAchievement("457")
+			ConsoleMsg = Format(GetLocalString("console", "spawn"), "SCP-457")
+			;[End Block]
 		Case "513-1", "5131", "scp513-1", "scp-513-1", "bll", "scp-5131", "scp5131"
 			;[Block]
 			n.NPCs = CreateNPC(NPCType513_1, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider))
@@ -1627,7 +1652,7 @@ End Function
 
 Function NPCSpeedChange%(n.NPCs)
 	Select n\NPCType
-		Case NPCType173, NPCType106, NPCType096, NPCType049, NPCType939
+		Case NPCType173, NPCType106, NPCType096, NPCType049, NPCType939, NPCType457
 			Select SelectedDifficulty\OtherFactors
 				Case NORMAL
 					;[Block]

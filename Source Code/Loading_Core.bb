@@ -3532,7 +3532,7 @@ Function NullGame%(PlayButtonSFX% = True)
 	CatchErrors("NullGame()")
 	
 	Local ach.AchievementMsg, c.ConsoleMsg, e.Events, itt.ItemTemplates, it.Items, de.Decals, shdw.Shadows, p.Particles, d.Doors, lvr.Levers, sc.SecurityCams
-	Local du.Dummy1499_1, n.NPCs, s.Screens, w.WayPoints, pr.Props, l.Lights, rt.RoomTemplates, r.Rooms, m.Materials, snd.Sound, fr.Forest, mt.MTGrid
+	Local du.Dummy1499_1, n.NPCs, s.Screens, w.WayPoints, pr.Props, l.Lights, rt.RoomTemplates, r.Rooms, m.Materials, snd.Sound, fr.Forest
 	Local ch.Chunk, chp.ChunkPart, sv.Save, cm.CustomMaps, se.SoundEmitters, tmp.Template, emit.Emitter
 	
 	Local i%
@@ -3753,10 +3753,6 @@ Function NullGame%(PlayButtonSFX% = True)
 	For fr.Forest = Each Forest
 		If fr <> Null Then DestroyForest(fr)
 		Delete(fr)
-	Next
-	For mt.MTGrid = Each MTGrid
-		If mt <> Null Then DestroyMT(mt, False)
-		Delete(mt)
 	Next
 	For i = 0 To MaxChunkData - 1
 		CHUNKDATA[i] = 0
