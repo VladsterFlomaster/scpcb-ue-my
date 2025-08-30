@@ -2522,7 +2522,7 @@ Function FillRoom%(r.Rooms)
 			d.Doors = CreateDoor(r, r\x - 256.0 * RoomScale, r\y, r\z - 656.0 * RoomScale, 90.0, True, ELEVATOR_DOOR)
 			r\RoomDoors.Doors[2] = d
 			
-			d.Doors = CreateDoor(r, r\x, r\y, r\z, 0.0, False, BIG_DOOR, KEY_MISC, CODE_MAINTENANCE_TUNNELS)
+			d.Doors = CreateDoor(r, r\x, r\y, r\z, 0.0, True, BIG_DOOR, KEY_MISC, CODE_MAINTENANCE_TUNNELS)
 			PositionEntity(d\Buttons[0], r\x + 230.0 * RoomScale, EntityY(d\Buttons[1], True), r\z - 384.0 * RoomScale, True)
 			RotateEntity(d\Buttons[0], 0.0, -90.0, 0.0, True)
 			PositionEntity(d\Buttons[1], r\x - 230.0 * RoomScale, EntityY(d\Buttons[1], True), r\z + 384.0 * RoomScale, True)
