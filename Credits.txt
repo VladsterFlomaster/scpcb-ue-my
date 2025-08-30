@@ -381,6 +381,8 @@
 		Ukrainian translation:
 			
 			xstallm
+			Antoha
+			Vladster_flomaster
 			
 *Blitz3D Engine Creators
 
