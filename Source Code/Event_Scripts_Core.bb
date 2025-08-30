@@ -4597,6 +4597,14 @@ Function UpdateEvent_Cont1_895%(e.Events)
 	If PlayerRoom = e\room
 		Local i%, fDir#
 		
+		If e\room\NPC[0] = Null
+			TFormPoint(321.0, -1482.8, 2416.0, e\room\OBJ, 0)
+			e\room\NPC[0] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
+			e\room\NPC[0]\IsDead = True : e\room\NPC[0]\State3 = -1.0
+			ChangeNPCTextureID(e\room\NPC[0], NPC_CLASS_D_VICTIM_895_TEXTURE)
+			SetNPCFrame(e\room\NPC[0], 40.0)
+			RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 90.0, 0.0, True)
+		EndIf
 		me\Zone = 1
 		CoffinDistance = EntityDistance(me\Collider, e\room\Objects[0])
 		If CoffinDistance < 2.0
@@ -4617,16 +4625,16 @@ Function UpdateEvent_Cont1_895%(e.Events)
 				e\EventState2 = 1.0
 			EndIf
 		ElseIf CoffinDistance > 6.0 And e\EventState2 = 1.0
-			If e\room\NPC[0] = Null
+			If e\room\NPC[1] = Null
 				FreeSound_Strict(e\Sound) : e\Sound = 0
 				StopChannel(e\SoundCHN) : e\SoundCHN = 0
 				
-				e\room\NPC[0] = CreateNPC(NPCTypeGuard, e\room\x, e\room\y, e\room\z)
-				e\room\NPC[0]\State = 8.0 : e\room\NPC[0]\PrevState = 1 : e\room\NPC[0]\GravityMult = 0.25
-				LoadNPCSound(e\room\NPC[0], "SFX\Room\895Chamber\GuardScream" + Rand(0, 2) + ".ogg")
-				e\room\NPC[0]\SoundCHN = PlaySoundEx(e\room\NPC[0]\Sound, Camera, e\room\NPC[0]\Collider, 100.0, 1.0, True)
-				RotateEntity(e\room\NPC[0]\Collider, 0.0, e\room\Angle + 90.0, 0.0)
-				SetNPCFrame(e\room\NPC[0], 270.0)
+				e\room\NPC[1] = CreateNPC(NPCTypeGuard, e\room\x, e\room\y, e\room\z)
+				e\room\NPC[1]\State = 8.0 : e\room\NPC[1]\PrevState = 1 : e\room\NPC[1]\GravityMult = 0.25
+				LoadNPCSound(e\room\NPC[1], "SFX\Room\895Chamber\GuardScream" + Rand(0, 2) + ".ogg")
+				e\room\NPC[1]\SoundCHN = PlaySoundEx(e\room\NPC[1]\Sound, Camera, e\room\NPC[1]\Collider, 100.0, 1.0, True)
+				RotateEntity(e\room\NPC[1]\Collider, 0.0, e\room\Angle + 90.0, 0.0)
+				SetNPCFrame(e\room\NPC[1], 270.0)
 				
 				e\room\RoomDoors[0]\Open = True
 				e\room\RoomDoors[1]\Open = True
