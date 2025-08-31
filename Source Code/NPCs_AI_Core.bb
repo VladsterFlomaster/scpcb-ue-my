@@ -2841,8 +2841,8 @@ Function UpdateNPCType457%(n.NPCs)
 						
 						RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider, True), 0.0, True)
 						
-						If Dist > 0.2375
-							n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
+						If Dist > 0.2
+							n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 25.0)
 							MoveEntity(n\Collider, 0.0, 0.0, n\CurrSpeed * fps\Factor[0])
 							
 							If n\Frame > 427.9
@@ -2865,7 +2865,7 @@ Function UpdateNPCType457%(n.NPCs)
 								EndIf
 							Wend
 							If n\Path[n\PathLocation] <> Null
-								n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 20.0)
+								n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 25.0)
 								PointEntity(n\Collider, n\Path[n\PathLocation]\OBJ)
 								RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider, True), 0.0, True)
 								MoveEntity(n\Collider, 0.0, 0.0, n\CurrSpeed * fps\Factor[0])
