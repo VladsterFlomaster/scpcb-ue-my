@@ -2734,16 +2734,12 @@ Function UpdateNPCType457%(n.NPCs)
 		
 		UpdateNPCBlinking(n)
 		
-		If Dist >= 0.36
-			RemoveHazmatTimer = Min(RemoveHazmatTimer + fps\Factor[0], 500.0)
-		ElseIf (Not chs\NoTarget)
+		If Dist < 0.36 And (Not chs\NoTarget)
 			If n\State > 1 And n\State <> 3
 				If EntityVisible(me\Collider, n\Collider)
-					If wi\HazmatSuit > 0
+					If wi\HazmatSuit = 2 Lor wi\HazmatSuit = 4
 						RemoveHazmatTimer = RemoveHazmatTimer - (fps\Factor[0] * 1.5)
-						If RemoveHazmatTimer < 350.0 And RemoveHazmatTimer + fps\Factor[0] * 1.5 >= 350.0 And (Not ChannelPlaying(n\SoundCHN2))
-							n\SoundCHN2 = PlaySoundEx(LoadTempSound("SFX\SCP\049\TakeOffHazmat.ogg"), Camera, n\Collider, 10.0, 1.0, True)
-						ElseIf RemoveHazmatTimer =< 0.0
+						If RemoveHazmatTimer =< 0.0
 							For i = 0 To 2
 								If RemoveHazmatTimer < -(i * (250.0 * (wi\HazmatSuit = 4))) And RemoveHazmatTimer + fps\Factor[0] * 1.5 >= -(i * (250.0 * (wi\HazmatSuit = 4)))
 									me\CameraShake = 2.0
@@ -2778,6 +2774,33 @@ Function UpdateNPCType457%(n.NPCs)
 					EndIf
 				EndIf
 			EndIf
+		ElseIf Dist < 2.25 And n\State3 = 0.0
+			If wi\HazmatSuit <> 2 And wi\HazmatSuit <> 4
+				me\Injuries = me\Injuries - (fps\Factor[0] * 0.001)
+			ElseIf RemoveHazmatTimer > 0.0
+				RemoveHazmatTimer = RemoveHazmatTimer - (fps\Factor[0] * 0.8)
+			Else
+				For i = 0 To 2
+					If RemoveHazmatTimer < -(i * (250.0 * (wi\HazmatSuit = 4))) And RemoveHazmatTimer + fps\Factor[0] * 1.5 >= -(i * (250.0 * (wi\HazmatSuit = 4)))
+						me\CameraShake = 2.0
+						If i = 2
+							For i = 0 To MaxItemAmount - 1
+								If Inventory(i) <> Null
+									If Inventory(i)\ItemTemplate\ID >= it_hazmatsuit And Inventory(i)\ItemTemplate\ID =< it_hazmatsuit148
+										CreateMsg(GetLocalString("msg", "suit.destroyed"))
+										wi\HazmatSuit = 0
+										ChangePlayerBodyTexture(PLAYER_BODY_NORMAL_TEX)
+										RemoveItem(Inventory(i))
+										Exit
+									EndIf
+								EndIf
+							Next
+						EndIf
+					EndIf
+				Next
+			EndIf
+		Else
+			RemoveHazmatTimer = Min(RemoveHazmatTimer + fps\Factor[0], 500.0)
 		EndIf
 		
 		n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_049_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True) ; ~ Breath channel
