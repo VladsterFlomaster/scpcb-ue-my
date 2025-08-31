@@ -2826,7 +2826,7 @@ Function UpdateNPCType457%(n.NPCs)
 					PlayerSeeable = NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume)
 					If n\State2 > 0.0
 						If PlayerSeeable = 1
-							n\State2 = 70.0 * 2.5
+							n\State2 = 70.0 * 2.0
 							PointEntity(n\Collider, me\Collider)
 						EndIf
 						; ~ Playing a sound after detecting the player
@@ -2854,7 +2854,7 @@ Function UpdateNPCType457%(n.NPCs)
 						EndIf
 						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 15.0 - (1.5 * SelectedDifficulty\OtherFactors))
 					Else ; ~ Finding a path to the player
-						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.5
+						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.0
 						If n\PathStatus = PATH_STATUS_FOUND ; ~ Path to player found
 							While n\Path[n\PathLocation] = Null
 								If n\PathLocation > MaxPathLocations - 1
