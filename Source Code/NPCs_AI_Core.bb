@@ -2774,7 +2774,7 @@ Function UpdateNPCType457%(n.NPCs)
 					EndIf
 				EndIf
 			EndIf
-		ElseIf Dist < 2.25 And n\State3 = 0.0
+		ElseIf Dist < 2.25
 			If wi\HazmatSuit <> 2 And wi\HazmatSuit <> 4
 				me\Injuries = me\Injuries - (fps\Factor[0] * 0.001)
 			ElseIf RemoveHazmatTimer > 0.0
@@ -2803,7 +2803,7 @@ Function UpdateNPCType457%(n.NPCs)
 			RemoveHazmatTimer = Min(RemoveHazmatTimer + fps\Factor[0], 500.0)
 		EndIf
 		
-		n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_049_BREATH], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True) ; ~ Breath channel
+		n\SoundCHN = LoopSoundEx(NPCSound[SOUND_NPC_457_FIRE], n\SoundCHN, Camera, n\Collider, 10.0, 1.0, True) ; ~ Fire channel
 		
 		Select n\State
 			Case 0.0 ; ~ Script
@@ -2831,8 +2831,8 @@ Function UpdateNPCType457%(n.NPCs)
 						EndIf
 						; ~ Playing a sound after detecting the player
 						If n\PrevState <= 1 And (Not ChannelPlaying(n\SoundCHN2))
-							LoadNPCSound(n, "SFX\SCP\049\Spotted" + Rand(0, 6) + ".ogg", 1)
-							n\SoundCHN2 = PlaySoundEx(n\Sound2, Camera, n\OBJ, 10.0, 1.0, True)
+							LoadNPCSound(n, "SFX\SCP\457\Sighting.ogg", 1)
+							n\SoundCHN2 = PlaySoundEx(n\Sound2, Camera, n\OBJ, 10.0, 1.0)
 							n\PrevState = 2
 						EndIf
 						n\PathStatus = PATH_STATUS_NO_SEARCH
@@ -2852,7 +2852,7 @@ Function UpdateNPCType457%(n.NPCs)
 								AnimateNPC(n, Clamp(AnimTime(n\OBJ), 346.0, 358.0), 393.0, n\CurrSpeed * 38.0)
 							EndIf
 						EndIf
-						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 15.0 - (1.5 * SelectedDifficulty\OtherFactors))
+						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 10.0 - SelectedDifficulty\OtherFactors)
 					Else ; ~ Finding a path to the player
 						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.0
 						If n\PathStatus = PATH_STATUS_FOUND ; ~ Path to player found
@@ -2873,21 +2873,10 @@ Function UpdateNPCType457%(n.NPCs)
 								AnimateNPC(n, Clamp(AnimTime(n\OBJ), 346.0, 358.0), 393.0, n\CurrSpeed * 38.0)
 								n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 10.0 - SelectedDifficulty\OtherFactors)
 								
-								; ~ Playing a sound if he hears the player
-								If n\PrevState = 0 And (Not ChannelPlaying(n\SoundCHN2))
-									If Rand(30) = 1
-										LoadNPCSound(n, "SFX\SCP\049\Searching6.ogg", 1)
-									Else
-										LoadNPCSound(n, "SFX\SCP\049\Searching" + Rand(0, 5) + ".ogg", 1)
-									EndIf
-									n\SoundCHN2 = PlaySoundEx(n\Sound2, Camera, n\Collider, 10.0, 1.0, True)
-									n\PrevState = 1
-								EndIf
-								
 								UseDoorNPC(n)
 								
 								; ~ Resetting the "PrevState" value randomly, to make SCP-049 talking randomly 
-								If Rand(600) = 1 And (Not ChannelPlaying(n\SoundCHN2)) Then n\PrevState = 0
+								If Rand(600) = 1 And n\State2 = 0.0 Then n\PrevState = 0
 								
 								If n\PrevState > 1 Then n\PrevState = 1
 							EndIf

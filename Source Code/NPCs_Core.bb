@@ -295,6 +295,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_049_MODEL])
 			Temp = 1.2
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
+			If NPCSound[SOUND_NPC_457_FIRE] = 0 Then NPCSound[SOUND_NPC_457_FIRE] = LoadSound_Strict("SFX\SCP\457\FireLoop.ogg")
 			;[End Block]
 		Case NPCType513_1
 			;[Block]
