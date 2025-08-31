@@ -3517,7 +3517,6 @@ Function InitOtherStuff%()
 	
 	Local HideX# = -400 * MenuScale
 	
-	SprintHUDX = HideX
 	ProtectHUDX# = HideX
 	CapHUDX# = HideX
 	

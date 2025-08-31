@@ -6820,18 +6820,13 @@ Function UpdateUseItem%(item.Items)
 	EndIf
 End Function
 
-Global SprintHUDX#, ProtectHUDX#, CapHUDX#
+Global ProtectHUDX#, CapHUDX#
 
 Function UpdateHUD%()
 	Local x# = (80 + ((me\Sanity < -200.0) * Rand(-2, 2))) * MenuScale
 	Local HideX# = -400.0 * MenuScale
 	Local Smooth# = 25.0 * MenuScale
 	
-	If me\Stamina = me\StaminaMax
-		SprintHUDX = CurveValue(HideX, SprintHUDX, Smooth)
-	Else
-		SprintHUDX = CurveValue(x, SprintHUDX, Smooth)
-	EndIf
 	If (I_714\Using > 0 And Remove714Timer < 500.0) Lor (wi\HazmatSuit > 0 And RemoveHazmatTimer < 500.0)
 		ProtectHUDX = CurveValue(x, ProtectHUDX, Smooth)
 	Else
@@ -6860,32 +6855,30 @@ Function RenderHUD%()
 	Local IconSpace% = 50 * MenuScale
 	Local ySpace% = 40 * MenuScale
 	
-	If SprintHUDX > -399 * MenuScale
-		Color(255, 255, 255)
-		y = y - ySpace
-		If me\Stamina <= 25.0
-			RenderBar(t\ImageID[3], SprintHUDX, y, Width, Height, me\Stamina, 100.0, 50, 0, 0)
-		Else
-			RenderBar(t\ImageID[2], SprintHUDX, y, Width, Height, me\Stamina, 100.0, 50, 50, 50)
-		EndIf
-		If (PlayerRoom\RoomTemplate\RoomID = r_dimension_106 And PD_event\EventState2 <> PD_FakeTunnelRoom) Lor me\Injuries >= 1.5 Lor me\StaminaEffect > 1.0 Lor me\StaminaMax < 100.0 Lor I_1025\State[0] > 0.0 Lor I_966\HasInsomnia > 0.0 Lor me\EyeIrritation > 70.0
-			Color(200, 0, 0)
-			Rect(SprintHUDX - IconColoredRectSpaceX, y - IconColoredRectSpaceY, IconColoredRectSize, IconColoredRectSize)
-		ElseIf chs\InfiniteStamina Lor me\StaminaEffect < 1.0 Lor wi\GasMask >= 3 Lor I_1499\Using = 2 Lor wi\HazmatSuit >= 3 Lor (I_1025\State[6] > 15.0 And I_1025\State[6] < 75.0)
-			Color(0, 200, 0)
-			Rect(SprintHUDX - IconColoredRectSpaceX, y - IconColoredRectSpaceY, IconColoredRectSize, IconColoredRectSize)
-		EndIf
-		Color(255, 255, 255)
-		Rect(SprintHUDX - IconRectSpace, y, IconRectSize, IconRectSize, False)
-		If me\Crouch
-			WalkIconID = 2
-		ElseIf (KeyDown(key\SPRINT) And (Not InvOpen) And OtherOpen = Null) And me\CurrSpeed > 0.0 And (Not chs\NoClip) And me\Stamina > 0.0
-			WalkIconID = 1
-		Else
-			WalkIconID = 0
-		EndIf
-		DrawBlock(t\IconID[WalkIconID], SprintHUDX - IconSpace, y + 1)
+	Color(255, 255, 255)
+	y = y - ySpace
+	If me\Stamina <= 25.0
+		RenderBar(t\ImageID[3], x, y, Width, Height, me\Stamina, 100.0, 50, 0, 0)
+	Else
+		RenderBar(t\ImageID[2], x, y, Width, Height, me\Stamina, 100.0, 50, 50, 50)
 	EndIf
+	If (PlayerRoom\RoomTemplate\RoomID = r_dimension_106 And PD_event\EventState2 <> PD_FakeTunnelRoom) Lor me\Injuries >= 1.5 Lor me\StaminaEffect > 1.0 Lor me\StaminaMax < 100.0 Lor I_1025\State[0] > 0.0 Lor I_966\HasInsomnia > 0.0 Lor me\EyeIrritation > 70.0
+		Color(200, 0, 0)
+		Rect(x - IconColoredRectSpaceX, y - IconColoredRectSpaceY, IconColoredRectSize, IconColoredRectSize)
+	ElseIf chs\InfiniteStamina Lor me\StaminaEffect < 1.0 Lor wi\GasMask >= 3 Lor I_1499\Using = 2 Lor wi\HazmatSuit >= 3 Lor (I_1025\State[6] > 15.0 And I_1025\State[6] < 75.0)
+		Color(0, 200, 0)
+		Rect(x - IconColoredRectSpaceX, y - IconColoredRectSpaceY, IconColoredRectSize, IconColoredRectSize)
+	EndIf
+	Color(255, 255, 255)
+	Rect(x - IconRectSpace, y, IconRectSize, IconRectSize, False)
+	If me\Crouch
+		WalkIconID = 2
+	ElseIf (KeyDown(key\SPRINT) And (Not InvOpen) And OtherOpen = Null) And me\CurrSpeed > 0.0 And (Not chs\NoClip) And me\Stamina > 0.0
+		WalkIconID = 1
+	Else
+		WalkIconID = 0
+	EndIf
+	DrawBlock(t\IconID[WalkIconID], x - IconSpace, y + 1)
 	
 	Color(255, 255, 255)
 	y = y - ySpace
