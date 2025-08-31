@@ -2735,7 +2735,7 @@ Function UpdateNPCType457%(n.NPCs)
 		UpdateNPCBlinking(n)
 		
 		If Dist < 0.36 And (Not chs\NoTarget)
-			If n\State > 1 And n\State <> 3
+			If n\State <> 3
 				If EntityVisible(me\Collider, n\Collider)
 					If wi\HazmatSuit = 2 Lor wi\HazmatSuit = 4
 						RemoveHazmatTimer = RemoveHazmatTimer - (fps\Factor[0] * 1.5)
