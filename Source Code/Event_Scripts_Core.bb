@@ -8486,7 +8486,7 @@ Function UpdateEvent_Dimension_1499%(e.Events)
 								Exit
 							EndIf
 						Next
-						Scale = IniGetFloat(NPCsFile, "SCP-1499-1", "Scale") / 4.0 * Rnd(0.8, 1.0)
+						Scale = 0.02 * Rnd(0.8, 1.0)
 						ScaleEntity(du\OBJ, Scale, Scale, Scale)
 						EntityFX(du\OBJ, 1)
 						du\Anim = Rand(False, True)
@@ -8505,7 +8505,7 @@ Function UpdateEvent_Dimension_1499%(e.Events)
 								Exit
 							EndIf
 						Next
-						Scale = IniGetFloat(NPCsFile, "SCP-1499-1", "Scale") / 4.0 * Rnd(0.8, 1.0)
+						Scale = 0.02 * Rnd(0.8, 1.0)
 						ScaleEntity(du\OBJ, Scale, Scale, Scale)
 						EntityFX(du\OBJ, 1)
 						du\Anim = Rand(False, True)
