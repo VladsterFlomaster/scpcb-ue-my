@@ -459,67 +459,67 @@ End Function
 Function SaveOptionsINI%(SaveGlobal% = False)
 	; ~ [GRAPHICS]
 	;[Block]
-	IniWriteString(OptionFile, "Graphics", "Enable Bump Mapping", opt\BumpEnabled)
+	IniWriteInt(OptionFile, "Graphics", "Enable Bump Mapping", opt\BumpEnabled)
 	
-	IniWriteString(OptionFile, "Graphics", "VSync", opt\VSync)
+	IniWriteInt(OptionFile, "Graphics", "VSync", opt\VSync)
 	
-	IniWriteString(OptionFile, "Graphics", "Anti-Aliasing", opt\AntiAliasing)
+	IniWriteInt(OptionFile, "Graphics", "Anti-Aliasing", opt\AntiAliasing)
 	
-	IniWriteString(OptionFile, "Graphics", "Advanced Room Lighting", opt\AdvancedRoomLights)
+	IniWriteInt(OptionFile, "Graphics", "Advanced Room Lighting", opt\AdvancedRoomLights)
 	
-	IniWriteString(OptionFile, "Graphics", "Blob Shadows", opt\BlobShadows)
+	IniWriteInt(OptionFile, "Graphics", "Blob Shadows", opt\BlobShadows)
 	
-	IniWriteString(OptionFile, "Graphics", "New Atmosphere", opt\NewAtmosphere)
+	IniWriteInt(OptionFile, "Graphics", "New Atmosphere", opt\NewAtmosphere)
 	
-	IniWriteString(OptionFile, "Graphics", "Screen Gamma", opt\ScreenGamma)
+	IniWriteFloat(OptionFile, "Graphics", "Screen Gamma", opt\ScreenGamma)
 	
-	IniWriteString(OptionFile, "Graphics", "Particle Amount", opt\ParticleAmount)
+	IniWriteInt(OptionFile, "Graphics", "Particle Amount", opt\ParticleAmount)
 	
-	IniWriteString(OptionFile, "Graphics", "Texture Details", opt\TextureDetails)
+	IniWriteInt(OptionFile, "Graphics", "Texture Details", opt\TextureDetails)
 	
-	IniWriteString(OptionFile, "Graphics", "FOV", Int(opt\FOV))
+	IniWriteFloat(OptionFile, "Graphics", "FOV", Int(opt\FOV))
 	
-	IniWriteString(OptionFile, "Graphics", "Anisotropic Filtering", opt\Anisotropic)
+	IniWriteInt(OptionFile, "Graphics", "Anisotropic Filtering", opt\Anisotropic)
 	
-	IniWriteString(OptionFile, "Graphics", "Security Cam Render Interval", opt\SecurityCamRenderInterval)
+	IniWriteFloat(OptionFile, "Graphics", "Security Cam Render Interval", opt\SecurityCamRenderInterval)
 	
-	IniWriteString(OptionFile, "Graphics", "Lighting Quality", opt\LightingQuality)
+	IniWriteInt(OptionFile, "Graphics", "Lighting Quality", opt\LightingQuality)
 	;[End Block]
 	
 	; ~ [AUDIO]
 	;[Block]
-	IniWriteString(OptionFile, "Audio", "Master Volume", opt\PrevMasterVolume)
+	IniWriteFloat(OptionFile, "Audio", "Master Volume", opt\PrevMasterVolume)
 	
-	IniWriteString(OptionFile, "Audio", "Music Volume", opt\MusicVolume)
+	IniWriteFloat(OptionFile, "Audio", "Music Volume", opt\MusicVolume)
 	
-	IniWriteString(OptionFile, "Audio", "Sound Volume", opt\SFXVolume)
+	IniWriteFloat(OptionFile, "Audio", "Sound Volume", opt\SFXVolume)
 	
-	IniWriteString(OptionFile, "Audio", "Voice Volume", opt\VoiceVolume)
+	IniWriteFloat(OptionFile, "Audio", "Voice Volume", opt\VoiceVolume)
 	
-	IniWriteString(OptionFile, "Audio", "SFX Release", opt\EnableSFXRelease)
+	IniWriteInt(OptionFile, "Audio", "SFX Release", opt\EnableSFXRelease)
 	
-	IniWriteString(OptionFile, "Audio", "User Track Setting", opt\UserTrackMode)
+	IniWriteInt(OptionFile, "Audio", "User Track Setting", opt\UserTrackMode)
 	
-	IniWriteString(OptionFile, "Audio", "Enable Subtitles", opt\EnableSubtitles)
+	IniWriteInt(OptionFile, "Audio", "Enable Subtitles", opt\EnableSubtitles)
 	
-	IniWriteString(OptionFile, "Audio", "Override Subtitle Color", opt\OverrideSubColor)
+	IniWriteInt(OptionFile, "Audio", "Override Subtitle Color", opt\OverrideSubColor)
 	
-	IniWriteString(OptionFile, "Audio", "Subtitles Color R", opt\SubColorR)
+	IniWriteFloat(OptionFile, "Audio", "Subtitles Color R", opt\SubColorR)
 	
-	IniWriteString(OptionFile, "Audio", "Subtitles Color G", opt\SubColorG)
+	IniWriteFloat(OptionFile, "Audio", "Subtitles Color G", opt\SubColorG)
 	
-	IniWriteString(OptionFile, "Audio", "Subtitles Color B", opt\SubColorB)
+	IniWriteFloat(OptionFile, "Audio", "Subtitles Color B", opt\SubColorB)
 	;[End Block]
 	
 	; ~ [CONTROLS]
 	;[Block]
-	IniWriteString(OptionFile, "Controls", "Mouse Sensitivity", opt\MouseSensitivity)
+	IniWriteFloat(OptionFile, "Controls", "Mouse Sensitivity", opt\MouseSensitivity)
 	
-	IniWriteString(OptionFile, "Controls", "Invert Mouse By X-Axis", opt\InvertMouseX)
+	IniWriteInt(OptionFile, "Controls", "Invert Mouse By X-Axis", opt\InvertMouseX)
 	
-	IniWriteString(OptionFile, "Controls", "Invert Mouse By Y-Axis", opt\InvertMouseY)
+	IniWriteInt(OptionFile, "Controls", "Invert Mouse By Y-Axis", opt\InvertMouseY)
 	
-	IniWriteString(OptionFile, "Controls", "Mouse Smoothing", opt\MouseSmoothing)
+	IniWriteFloat(OptionFile, "Controls", "Mouse Smoothing", opt\MouseSmoothing)
 	
 	IniWriteString(OptionFile, "Controls", "Up Key", key\MOVEMENT_UP)
 	
@@ -546,29 +546,29 @@ Function SaveOptionsINI%(SaveGlobal% = False)
 	
 	; ~ [ADVANCED]
 	;[Block]
-	IniWriteString(OptionFile, "Advanced", "Enable HUD", opt\HUDEnabled)
+	IniWriteInt(OptionFile, "Advanced", "Enable HUD", opt\HUDEnabled)
 	
-	IniWriteString(OptionFile, "Advanced", "First Person Body", opt\FirstPersonBodyEnabled)
+	IniWriteInt(OptionFile, "Advanced", "First Person Body", opt\FirstPersonBodyEnabled)
 	
-	IniWriteString(OptionFile, "Advanced", "Enable Console", opt\CanOpenConsole)
+	IniWriteInt(OptionFile, "Advanced", "Enable Console", opt\CanOpenConsole)
 	
-	IniWriteString(OptionFile, "Advanced", "Console Auto Opening", opt\ConsoleOpening)
+	IniWriteInt(OptionFile, "Advanced", "Console Auto Opening", opt\ConsoleOpening)
 	
-	IniWriteString(OptionFile, "Advanced", "Enable Achievement Popup", opt\AchvMsgEnabled)
+	IniWriteInt(OptionFile, "Advanced", "Enable Achievement Popup", opt\AchvMsgEnabled)
 	
-	IniWriteString(OptionFile, "Advanced", "Enable Auto Save", opt\AutoSaveEnabled)
+	IniWriteInt(OptionFile, "Advanced", "Enable Auto Save", opt\AutoSaveEnabled)
 	
-	IniWriteString(OptionFile, "Advanced", "Show FPS", opt\ShowFPS)
+	IniWriteInt(OptionFile, "Advanced", "Show FPS", opt\ShowFPS)
 	
 	IniWriteString(OptionFile, "Advanced", "Frame Limit", opt\FrameLimit)
 	
-	IniWriteString(OptionFile, "Advanced", "Smooth Bars", opt\SmoothBars)
+	IniWriteInt(OptionFile, "Advanced", "Smooth Bars", opt\SmoothBars)
 	
-	IniWriteString(OptionFile, "Advanced", "Vignette Enabled", opt\VignetteEnabled)
+	IniWriteInt(OptionFile, "Advanced", "Vignette Enabled", opt\VignetteEnabled)
 	
-	IniWriteString(OptionFile, "Advanced", "Play Startup Videos", opt\PlayStartup)
+	IniWriteInt(OptionFile, "Advanced", "Play Startup Videos", opt\PlayStartup)
 	
-	IniWriteString(OptionFile, "Advanced", "Launcher Enabled", opt\LauncherEnabled)
+	IniWriteInt(OptionFile, "Advanced", "Launcher Enabled", opt\LauncherEnabled)
 	;[End Block]
 	
 	; ~ [GLOBAL]
