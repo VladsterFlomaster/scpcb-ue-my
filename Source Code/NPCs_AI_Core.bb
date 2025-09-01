@@ -2823,7 +2823,7 @@ Function UpdateNPCType457%(n.NPCs)
 				;[Block]
 				If Dist < PowTwo(HideDistance * 2.0) And n\Idle = 0 And PlayerInReachableRoom(True)
 					n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
-					PlayerSeeable = NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume)
+					PlayerSeeable = NPCSeesPlayer(n, 10.0 - me\CrouchState + me\SndVolume)
 					If n\State2 > 0.0
 						If PlayerSeeable = 1
 							n\State2 = 70.0 * 2.0
