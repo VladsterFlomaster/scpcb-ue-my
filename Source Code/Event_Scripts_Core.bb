@@ -2731,6 +2731,7 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					;[End Block]
 				Case 2.0
 					;[Block]
+					CreateMsg(GetLocalString("msg", "970.item.missing"))
 					i = Rand(0, MaxItemAmount - 1)
 					If Inventory(i) <> Null
 						RemoveWearableItems(Inventory(i))
@@ -2740,6 +2741,7 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 				Case 5.0
 					;[Block]
 					me\Injuries = me\Injuries + 0.3
+					CreateMsg(GetLocalString("msg", "970.sharp"))
 					;[End Block]
 				Case 10.0
 					;[Block]
