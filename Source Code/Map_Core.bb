@@ -2406,7 +2406,7 @@ Function CreateButton%(ButtonID% = BUTTON_DEFAULT, x#, y#, z#, Pitch# = 0.0, Yaw
 	Return(OBJ)
 End Function
 
-Function UpdateButton%(OBJ%)
+Function UpdateButton%(d.Doors, OBJ%)
 	Local Dist# = EntityDistanceSquared(me\Collider, OBJ)
 	
 	If Dist < 0.64
@@ -2417,6 +2417,11 @@ Function UpdateButton%(OBJ%)
 		
 		If EntityPick(Pvt, 0.8) = OBJ
 			d_I\ClosestButton = OBJ
+			If d <> Null
+				If d\KeyCard = KEY_MISC And d\Code = 0 And (Not d\HasOneSide) Then d_I\AnimButton = OBJ
+			Else
+				d_I\AnimButton = OBJ
+			EndIf
 			FreeEntity(Pvt) : Pvt = 0
 			Return(True)
 		EndIf
@@ -2717,11 +2722,10 @@ Function UpdateDoors%()
 			If ((d\OpenState >= 180.0 Lor d\OpenState <= 0.0) And FindButton) And GrabbedEntity = 0
 				For i = 0 To 1
 					If d\Buttons[i] <> 0
-						If IsEqual(EntityX(me\Collider), EntityX(d\Buttons[i], True), 1.0) And IsEqual(EntityZ(me\Collider, True), EntityZ(d\Buttons[i], True), 1.0) And UpdateButton(d\Buttons[i])
+						If IsEqual(EntityX(me\Collider), EntityX(d\Buttons[i], True), 1.0) And IsEqual(EntityZ(me\Collider, True), EntityZ(d\Buttons[i], True), 1.0) And UpdateButton(d, d\Buttons[i])
 							d_I\ClosestDoor = d
 							; ~ Determine and save animate door and button
 							If d\DoorType = OFFICE_DOOR Lor d\DoorType = FENCE_DOOR Then d_I\AnimDoor = d
-							If d\KeyCard = KEY_MISC And d\Code = 0 And (Not d\HasOneSide) Then d_I\AnimButton = d_I\ClosestButton
 							Exit
 						EndIf
 					EndIf

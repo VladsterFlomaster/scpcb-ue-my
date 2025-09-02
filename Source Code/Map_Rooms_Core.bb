@@ -1927,7 +1927,7 @@ Function FillRoom%(r.Rooms)
 			RotateEntity(r\Objects[17], 0.0, 0.0, 0.0)
 			EntityParent(r\Objects[17], r\OBJ)
 			
-			r\Objects[18] = CreateButton(BUTTON_DEFAULT, r\x + 3950.0 * RoomScale, r\y - 5446.0 * RoomScale, r\z - 1495.0 * RoomScale, 0.0, 180.0, 0.0, r\OBJ)
+			r\Objects[18] = CreateButton(BUTTON_DEFAULT, r\x + 3950.0 * RoomScale, r\y - 5446.0 * RoomScale, r\z - 1495.0 * RoomScale, 0.0, 180.0, 0.0, r\OBJ, True)
 			
 			emit.Emitter = SetEmitter(r, r\x + 5245.0 * RoomScale, r\y - 5584.0 * RoomScale, r\z - 575.0 * RoomScale, 6)
 			emit\State = 1

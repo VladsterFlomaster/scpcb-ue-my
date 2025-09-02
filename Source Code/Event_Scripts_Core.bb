@@ -3801,8 +3801,8 @@ Function UpdateEvent_Room3_Storage%(e.Events)
 				
 				PlayerFallingPickDistance = 0.0
 				
-				UpdateButton(e\room\Objects[18])
-				If d_I\ClosestButton = e\room\Objects[18] And mo\MouseHit1
+				If UpdateButton(Null, e\room\Objects[18]) And mo\MouseHit1
+					SetAnimTime(e\room\Objects[18], 1.0)
 					CreateMsg(GetLocalString("msg", "elev.broken"))
 					PlaySound_Strict(ButtonSFX[1])
 					mo\MouseHit1 = False
@@ -4460,8 +4460,8 @@ Function UpdateEvent_Cont1_106%(e.Events)
 					EndIf
 					
 					If SoundTransmission
-						UpdateButton(e\room\Objects[0])
-						If d_I\ClosestButton = e\room\Objects[0] And mo\MouseHit1
+						If UpdateButton(Null, e\room\Objects[0]) And mo\MouseHit1
+							SetAnimTime(e\room\Objects[0], 1.0)
 							If ChannelPlaying(e\SoundCHN) Then StopChannel(e\SoundCHN) : e\SoundCHN = 0
 							snd_I\FemurBreakerSFX = LoadSound_Strict("SFX\Room\106Chamber\FemurBreaker.ogg")
 							e\SoundCHN = PlaySound_Strict(snd_I\FemurBreakerSFX, True)
@@ -5349,8 +5349,8 @@ Function UpdateEvent_Room2_Shaft%(e.Events)
 	EndIf
 	
 	If PlayerRoom = e\room
-		UpdateButton(e\room\Objects[1])
-		If d_I\ClosestButton = e\room\Objects[1] And mo\MouseHit1
+		If UpdateButton(Null, e\room\Objects[1]) And mo\MouseHit1
+			SetAnimTime(e\room\Objects[1], 1.0)
 			CreateMsg(GetLocalString("msg", "elev.broken"))
 			PlaySound_Strict(ButtonSFX[1])
 			mo\MouseHit1 = False
@@ -5590,7 +5590,7 @@ Function UpdateEvent_Cont2_049%(e.Events)
 					EndIf
 				EndIf
 				
-				UpdateButton(e\room\Objects[5])
+				UpdateButton(Null, e\room\Objects[5])
 				
 				If e\EventState4 > 0.0
 					e\EventState4 = e\EventState4 + fps\Factor[0]
@@ -5601,6 +5601,7 @@ Function UpdateEvent_Cont2_049%(e.Events)
 						e\EventState4 = 0.0
 					EndIf
 				ElseIf d_I\ClosestButton = e\room\Objects[5] And mo\MouseHit1 And x2
+					SetAnimTime(e\room\Objects[5], 1.0)
 					PlaySound_Strict(ButtonSFX[0])
 					mo\MouseHit1 = False
 					If e\EventState4 = 0.0
