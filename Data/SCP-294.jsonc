@@ -482,7 +482,7 @@
 		"drink_sound": "SFX\\SCP\\294\\Spit.ogg"
 	},
 	{
-		"name": ["Cola With Orange", "Coke", "Coca Cola", "Coca-Cola", "Pepsi-Cola", "Pepsi Cola", "Diet Pepsi" "Soda", "Root Beer", "Dr. Pepper", "Doctor Pepper Cherry", "Cherry Vanilla Dr. Pepper", "Cherry Chocolate Diet Dr. Pepper", "Diet Dr. Pepper"],
+		"name": ["Cola With Orange", "Coke", "Coca Cola", "Coca-Cola", "Pepsi-Cola", "Pepsi Cola", "Diet Pepsi", "Soda", "Root Beer", "Dr. Pepper", "Doctor Pepper Cherry", "Cherry Vanilla Dr. Pepper", "Cherry Chocolate Diet Dr. Pepper", "Diet Dr. Pepper"],
 		"color": [58, 29, 20],
 		"alpha": 0.8,
 		"dispense_sound": "SFX\\SCP\\294\\Dispense1.ogg",
