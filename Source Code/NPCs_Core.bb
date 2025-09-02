@@ -1308,7 +1308,7 @@ Function Shoot%(x#, y#, z#, Parent% = 0, HitProb# = 1.0, Particles% = True, Inst
 				;[End Block]
 		End Select
 		If msg\Timer < 70.0 * 5.0 Then CreateMsg(ShotMessageUpdate)
-		If me\Injuries >= 6.0 Then Kill(True)
+		If me\Injuries >= 5.0 Then Kill(True)
 		
 		If MsgRand > 10 And MsgRand < 16 Then emit.Emitter = SetEmitter(Null, EntityX(me\Collider), EntityY(me\Collider), EntityZ(me\Collider), 15)
 		
