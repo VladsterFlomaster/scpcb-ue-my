@@ -2765,9 +2765,7 @@ Function UpdateNPCType457%(n.NPCs)
 						
 						If (Not chs\GodMode)
 							PlaySound_Strict(LoadTempSound("SFX\SCP\294\Burn.ogg"))
-							LoadNPCSound(n, "SFX\SCP\049\Kidnap" + Rand(0, 1) + ".ogg", 1)
-							n\SoundCHN2 = PlaySound_Strict(n\Sound2, True)
-							msg\DeathMsg = GetLocalString("death", "049")
+							msg\DeathMsg = Format(GetLocalString("death", "457"), SubjectName)
 							Kill() : me\KillAnim = 0
 							n\State = 3.0
 						EndIf
