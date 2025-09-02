@@ -3645,12 +3645,6 @@ Function NullGame%(PlayButtonSFX% = True)
 	Delete(msg) : msg = Null
 	Delete(as) : as = Null
 	
-	FreeEntity(me\Collider) : me\Collider = 0
-	FreeEntity(me\Head) : me\Head = 0
-	Delete(me) : me = Null
-	FreeEntity(pm\OBJ) : pm\OBJ = 0
-	FreeEntity(pm\Pivot) : pm\Pivot = 0
-	Delete(pm) : pm = Null
 	FreeEntity(wi\SCRAMBLESpriteScreen) : wi\SCRAMBLESpriteScreen = 0
 	Delete(wi) : wi = Null
 	Delete(fog) : fog = Null
@@ -3781,6 +3775,13 @@ Function NullGame%(PlayButtonSFX% = True)
 	For rt.RoomTemplates = Each RoomTemplates
 		RemoveRoomTemplate(rt)
 	Next
+	
+	FreeEntity(me\Collider) : me\Collider = 0
+	FreeEntity(me\Head) : me\Head = 0
+	Delete(me) : me = Null
+	FreeEntity(pm\OBJ) : pm\OBJ = 0
+	FreeEntity(pm\Pivot) : pm\Pivot = 0
+	Delete(pm) : pm = Null
 	
 	RemoveHazmatTimer = 0.0
 	Remove714Timer = 0.0
