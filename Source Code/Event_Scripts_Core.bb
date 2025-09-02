@@ -3222,7 +3222,7 @@ Function UpdateEvent_Cont2_1123%(e.Events)
 				FreeEntity(e\room\NPC[0]\OBJ) : e\room\NPC[0]\OBJ = 0
 				e\room\NPC[0]\OBJ = LoadAnimMesh_Strict("GFX\NPCs\nazi_officer.b3d")
 				
-				Local Scale# = IniGetFloat(NPCsFile, "Class D", "Scale") / MeshWidth(e\room\NPC[0]\OBJ)
+				Local Scale# = 0.51 / MeshWidth(e\room\NPC[0]\OBJ)
 				
 				ScaleEntity(e\room\NPC[0]\OBJ, Scale, Scale, Scale)
 				
