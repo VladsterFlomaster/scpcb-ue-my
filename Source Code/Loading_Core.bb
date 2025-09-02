@@ -565,7 +565,7 @@ Function LoadParticles%()
 	SetTemplateParticleLifeTime(ParticleEffect[32], 6, 10)
 	SetTemplateTexture(ParticleEffect[32], PARTICLE_SNOW_SHINE)
 	SetTemplateAlphaVel(ParticleEffect[32], True)
-	SetTemplateSize(ParticleEffect[32], 0.04, 0.04, 0.5, 1.0)
+	SetTemplateSize(ParticleEffect[32], 0.05, 0.05, 0.5, 1.0)
 	
 	; ~ Explosion
 	ParticleEffect[33] = CreateTemplate()
