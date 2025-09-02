@@ -4411,17 +4411,9 @@ Function FillRoom%(r.Rooms)
 			
 			r\Textures[1] = LoadTexture_Strict("GFX\NPCs\pd_plane_eye.png", 1 + 2, DeleteAllTextures, False)
 			
-			r\Objects[17] = CreateSprite()
-			r\ScriptedObject[17] = True
-			Tex = LoadTexture_Strict("GFX\NPCs\scp_106_eyes.png", 1, DeleteMapTextures, False)
-			EntityTexture(r\Objects[17], Tex)
-			DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
-			PositionEntity(r\Objects[17], EntityX(r\Objects[8], True), r\y + 1376.0 * RoomScale, EntityZ(r\Objects[8], True) - 2848.0 * RoomScale)
-			RotateEntity(r\Objects[17], 0.0, 180.0, 0.0)
-			ScaleSprite(r\Objects[17], 0.03, 0.03)
-			EntityBlend(r\Objects[17], 3)
-			EntityFX(r\Objects[17], 1 + 8)
-			SpriteViewMode(r\Objects[17], 2)
+			r\Objects[17] = CreatePivot()
+			PositionEntity(r\Objects[17], EntityX(r\Objects[8], True) + 5.0 * RoomScale, r\y + 825.0 * RoomScale, EntityZ(r\Objects[8], True) - 2775.0 * RoomScale)
+			EntityParent(r\Objects[17], r\OBJ)
 			
 			r\Objects[18] = LoadMesh_Strict("GFX\Map\Props\throne_wall.b3d")
 			r\ScriptedObject[18] = True
@@ -4439,7 +4431,7 @@ Function FillRoom%(r.Rooms)
 			EntityBlend(r\Objects[19], 2)
 			EntityFX(r\Objects[19], 1 + 8)
 			SpriteViewMode(r\Objects[19], 2)
-			PositionEntity(r\Objects[19], EntityX(r\Objects[8], True) - 1000.0, 16.0, 0.0, True)
+			PositionEntity(r\Objects[19], EntityX(r\Objects[8], True) - 1000.0, r\y + 16.0, r\z, True)
 			
 			r\Objects[20] = LoadMesh_Strict("GFX\Map\dimension_106_terrain.b3d")
 			r\ScriptedObject[20] = True
@@ -4450,7 +4442,7 @@ Function FillRoom%(r.Rooms)
 			EntityType(r\Objects[20], HIT_MAP)
 			PositionEntity(r\Objects[20], r\x, r\y + 16.0 + 2944.0 * RoomScale, r\z + 32.0, True)
 			
-			For i = 17 To 20
+			For i = 18 To 20
 				HideEntity(r\Objects[i])
 			Next
 			

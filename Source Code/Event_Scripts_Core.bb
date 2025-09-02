@@ -7615,7 +7615,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 		PlayerFallingPickDistance = 0.0
 		PrevIsBlackOut = IsBlackOut : IsBlackOut = False
 		; ~ SCP-106 attacks if close enough to player
-		If EntityDistanceSquared(me\Collider, n_I\Curr106\Collider) < 0.09 And n_I\Curr106\State <> 3.0
+		If EntityDistanceSquared(me\Collider, n_I\Curr106\Collider) < 0.09 And n_I\Curr106\State < 3.0
 			n_I\Curr106\Idle = 0
 			n_I\Curr106\State = 3.0
 			n_I\Curr106\State2 = 100000.0
@@ -7664,7 +7664,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				
 				If n_I\Curr106\State < 3.0 ; ~ SCP-106 circles around the starting room
 					Angle = (e\EventState / 10.0 Mod 360.0)
-					PositionEntity(n_I\Curr106\Collider, e\room\x, e\room\y + 0.55 + Sin(e\EventState / 14.0 + i * 20.0) * 0.4, e\room\z)
+					PositionEntity(n_I\Curr106\Collider, e\room\x, e\room\y + 0.55 + Sin(SinValue * 20.0) * 0.4, e\room\z)
 					RotateEntity(n_I\Curr106\Collider, 0.0, Angle, 0.0)
 					MoveEntity(n_I\Curr106\Collider, 0.0, 0.0, 6.0 - Sin(e\EventState / 10.0))
 					AnimateNPC(n_I\Curr106, 55.0, 104.0, 0.5)
@@ -7702,12 +7702,12 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				SinValue = Sin(e\EventState * 1.6) * 4.0
 				CosValue = Cos(e\EventState * 0.8) * 5.0
 				
-				PositionEntity(e\room\Objects[9], EntityX(e\room\Objects[8], True) + 3384.0 * RoomScale, 0.0, EntityZ(e\room\Objects[8], True))
+				PositionEntity(e\room\Objects[9], EntityX(e\room\Objects[8], True) + 3384.0 * RoomScale, e\room\y, EntityZ(e\room\Objects[8], True))
 				
 				TranslateEntity(e\room\Objects[9], CosValue, 0.0, SinValue, True)
 				RotateEntity(e\room\Objects[9], 0.0, e\EventState * 2.0, 0.0)
 				
-				PositionEntity(e\room\Objects[10], EntityX(e\room\Objects[8], True), 0.0, EntityZ(e\room\Objects[8], True) + 3384.0 * RoomScale)
+				PositionEntity(e\room\Objects[10], EntityX(e\room\Objects[8], True), e\room\y, EntityZ(e\room\Objects[8], True) + 3384.0 * RoomScale)
 				
 				TranslateEntity(e\room\Objects[10], SinValue, 0.0, CosValue, True)
 				RotateEntity(e\room\Objects[10], 0.0, e\EventState * 2.0, 0.0)
@@ -7759,6 +7759,10 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				If EntityDistanceSquared(me\Collider, e\room\Objects[17]) < PowTwo(2000.0 * RoomScale)
 					LoadEventSound(e, "SFX\Room\PocketDimension\Screech.ogg")
 					LoadEventSound(e, "SFX\Room\PocketDimension\Kneel.ogg", 1)
+					SetNPCFrame(n_I\Curr106, 605.0)
+					n_I\Curr106\ModelScale = 0.2136
+					ScaleEntity(n_I\Curr106\OBJ, n_I\Curr106\ModelScale, n_I\Curr106\ModelScale, n_I\Curr106\ModelScale)
+					n_I\Curr106\State = 5.0
 					e\EventState2 = PD_ThroneRoom
 				EndIf
 				;[End Block]
@@ -7773,9 +7777,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 					e\EventState2 = PD_FourWayRoom
 				EndIf
 				
-				For i = 17 To 18
-					If EntityHidden(e\room\Objects[i]) Then ShowEntity(e\room\Objects[i])
-				Next
+				If EntityHidden(e\room\Objects[18]) Then ShowEntity(e\room\Objects[18])
 				
 				me\Injuries = me\Injuries + (fps\Factor[0] / 4000.0)
 				
@@ -7793,11 +7795,18 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				RotateEntity(me\Collider, EntityPitch(me\Collider), CurveAngle(EntityYaw(Pvt), EntityYaw(me\Collider), Dist), 0.0)
 				FreeEntity(Pvt) : Pvt = 0
 				
+				n_I\Curr106\Idle = 0 : n_I\Curr106\GravityMult = 0.0 : n_I\Curr106\DropSpeed = 0.0
+				PositionEntity(n_I\Curr106\Collider, EntityX(e\room\Objects[17], True), EntityY(e\room\Objects[17], True) / (1.0 + Sin(SinValue) * 0.2), EntityZ(e\room\Objects[17], True), True)
+				RotateEntity(n_I\Curr106\Collider, 0.0, e\room\Angle, 0.0)
+				
 				; ~ Teleport the player to the trenches
 				If me\Crouch
 					me\BlinkTimer = -10.0 : me\Crouch = False
 					PositionEntity(me\Collider, EntityX(e\room\Objects[8], True) - 1344.0 * RoomScale, e\room\y + 16.0 + 2944.0 * RoomScale, EntityZ(e\room\Objects[8], True) - 1184.0 * RoomScale)
 					ResetEntity(me\Collider)
+					
+					n_I\Curr106\ModelScale = 0.1136
+					ScaleEntity(n_I\Curr106\OBJ, n_I\Curr106\ModelScale, n_I\Curr106\ModelScale, n_I\Curr106\ModelScale)
 					
 					LoadEventSound(e, "SFX\Room\PocketDimension\Explosion.ogg")
 					LoadEventSound(e, "SFX\Room\PocketDimension\TrenchPlane.ogg", 1)
@@ -7823,7 +7832,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				If EntityX(e\room\Objects[19], True) < EntityX(e\room\Objects[8], True) - 4000.0 * RoomScale
 					e\SoundCHN2 = PlaySound_Strict(e\Sound2)
 					
-					PositionEntity(e\room\Objects[19], EntityX(me\Collider, True) + 4000.0 * RoomScale, 28.0, EntityZ(me\Collider, True))
+					PositionEntity(e\room\Objects[19], EntityX(me\Collider, True) + 4000.0 * RoomScale, e\room\y + 28.0, EntityZ(me\Collider, True))
 				EndIf
 				
 				MoveEntity(me\Collider, 0.0, Min((28.0 - EntityY(me\Collider)), 0.0) * fps\Factor[0], 0.0)
@@ -7875,11 +7884,7 @@ Function UpdateEvent_Dimension_106%(e.Events)
 				ElseIf Dist < 64.0 And I_714\Using <> 2 And wi\GasMask <> 4 And wi\HazmatSuit <> 4
 					e\SoundCHN = LoopSoundEx(e\Sound, e\SoundCHN, Camera, e\room\Objects[19], 8.0)
 					EntityTexture(e\room\Objects[19], e\room\Textures[1])
-					If I_714\Using = 1
-						me\Injuries = me\Injuries + ((8.0 - SqrValue) * (fps\Factor[0] * 0.0002))
-					Else
-						me\Injuries = me\Injuries + ((8.0 - SqrValue) * (fps\Factor[0] * 0.0004))
-					EndIf
+					me\Injuries = me\Injuries + ((8.0 - SqrValue) * (fps\Factor[0] * (0.0004 / (1.0 + (I_714\Using = 1)))))
 					
 					If Dist < 49.0
 						Pvt = CreatePivot()

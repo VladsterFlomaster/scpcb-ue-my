@@ -2389,6 +2389,24 @@ Function UpdateNPCType106%(n.NPCs)
 					EndIf
 				EndIf
 				;[End Block]
+			Case 5.0
+				;[Block]
+				If n\Frame < 668.0
+					AnimateNPC(n, 605.0, 667.0, 0.4)
+					If me\BlinkTimer > -16.0 And me\BlinkTimer < -6.0 Then SetNPCFrame(n, 668.0)
+				Else
+					If n\LastSeen = 0.0
+						AnimateNPC(n, 668.0, 693.0, 0.42, False)
+						If n\Frame > 692.9 Then n\LastSeen = 1.0
+					Else
+						AnimateNPC(n, 693.0, 668.0, -0.42, False)
+						If n\Frame < 668.2
+							SetNPCFrame(n, 605.0)
+							n\LastSeen = 0.0
+						EndIf
+					EndIf
+				EndIf
+				;[End Block]
 		End Select
 		
 		If n\State > 1.0

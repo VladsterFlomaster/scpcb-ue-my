@@ -211,8 +211,8 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			EntityType(n\Collider, HIT_PLAYER)
 			
 			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_106_MODEL])
-			Temp = 0.25 / 2.2
-			ScaleEntity(n\OBJ, Temp, Temp, Temp)
+			n\ModelScale = 0.1136
+			ScaleEntity(n\OBJ, n\ModelScale, n\ModelScale, n\ModelScale)
 			
 			n\OBJ2 = CreateSprite()
 			ScaleSprite(n\OBJ2, 0.03, 0.03)
