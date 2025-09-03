@@ -191,15 +191,12 @@ Type Options
 	Field AntiAliasing%
 	Field BumpEnabled%
 	Field AdvancedRoomLights%
-	Field BlobShadows%
-	Field NewAtmosphere%
 	Field VSync%
 	Field ScreenGamma#, PrevScreenGamma#
 	Field TextureDetails%, TextureDetailsLevel#
 	Field FOV#, CurrFOV#
 	Field Anisotropic%, AnisotropicLevel%
 	Field SecurityCamRenderInterval%, SecurityCamRenderIntervalLevel#
-	Field LightingQuality%
 	; ~ [AUDIO]
 	Field MasterVolume#, PrevMasterVolume#
 	Field MusicVolume#, CurrMusicVolume#
@@ -256,10 +253,6 @@ Function LoadOptionsINI%()
 	opt\AntiAliasing = IniGetInt(OptionFile, "Graphics", "Anti-Aliasing", True)
 	
 	opt\AdvancedRoomLights = IniGetInt(OptionFile, "Graphics", "Advanced Room Lighting", True)
-	
-	opt\BlobShadows = IniGetInt(OptionFile, "Graphics", "Blob Shadows", True)
-	
-	opt\NewAtmosphere = IniGetInt(OptionFile, "Graphics", "New Atmosphere", True)
 	
 	opt\ScreenGamma = IniGetFloat(OptionFile, "Graphics", "Screen Gamma", 1.0)
 	opt\PrevScreenGamma = 1.0
@@ -343,8 +336,6 @@ Function LoadOptionsINI%()
 			opt\SecurityCamRenderIntervalLevel = 0.0
 			;[End Block]
 	End Select
-	
-	opt\LightingQuality = IniGetInt(OptionFile, "Graphics", "Lighting Quality", 2)
 	;[End Block]
 	
 	; ~ [AUDIO]
@@ -467,9 +458,6 @@ Function SaveOptionsINI%(SaveGlobal% = False)
 	
 	IniWriteInt(OptionFile, "Graphics", "Advanced Room Lighting", opt\AdvancedRoomLights)
 	
-	IniWriteInt(OptionFile, "Graphics", "Blob Shadows", opt\BlobShadows)
-	
-	IniWriteInt(OptionFile, "Graphics", "New Atmosphere", opt\NewAtmosphere)
 	
 	IniWriteFloat(OptionFile, "Graphics", "Screen Gamma", opt\ScreenGamma)
 	
@@ -482,8 +470,6 @@ Function SaveOptionsINI%(SaveGlobal% = False)
 	IniWriteInt(OptionFile, "Graphics", "Anisotropic Filtering", opt\Anisotropic)
 	
 	IniWriteFloat(OptionFile, "Graphics", "Security Cam Render Interval", opt\SecurityCamRenderInterval)
-	
-	IniWriteInt(OptionFile, "Graphics", "Lighting Quality", opt\LightingQuality)
 	;[End Block]
 	
 	; ~ [AUDIO]
@@ -592,10 +578,6 @@ Function ResetOptionsINI%()
 	
 	opt\AdvancedRoomLights = True
 	
-	opt\BlobShadows = True
-	
-	opt\NewAtmosphere = True
-	
 	opt\ScreenGamma = 1.0
 	opt\PrevScreenGamma = 1.0
 	
@@ -612,8 +594,6 @@ Function ResetOptionsINI%()
 	
 	opt\SecurityCamRenderInterval = 2
 	opt\SecurityCamRenderIntervalLevel = 12.0
-	
-	opt\LightingQuality = 2
 	; ~ [AUDIO]
 	
 	opt\PrevMasterVolume = 0.5

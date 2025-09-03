@@ -351,6 +351,21 @@ Function IsInFacility%(y#)
 	Return(NullFloor)
 End Function
 
+Function RoundTwo(v%)
+	v = v - 1
+	v = v Or (v Shr 1)
+	v = v Or (v Shr 2)
+	v = v Or (v Shr 4)
+	v = v Or (v Shr 8)
+	v = v Or (v Shr 16)
+	v = v + 1
+	Return(v)
+End Function
+
+Function GetFade#(val#, near#, far#)
+	Return(Min(1.0 - (val - near) / (far - near), 1.0))
+End Function
+
 ; ~ This must be called after the room angle has been finalized!
 ;Function SetupTriggerBoxes%(r.Rooms)
 ;	Local t.TriggerBox

@@ -51,7 +51,6 @@ Type NPCs
 	Field Contained% = False
 	Field CurrentRoom.Rooms
 	Field TargetUpdateTimer#
-	Field Shadow.Shadows
 	Field IceTimer#
 	Field TeslaHit% = False
 End Type
@@ -584,11 +583,11 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			;[End Block]
 	End Select
 	PositionEntity(n\Collider, x, y, z, True)
-	PositionEntity(n\OBJ, x, y, z, True)
-	
-	If n\NPCType <> NPCType372 And n\NPCType <> NPCType513_1 And n\NPCType <> NPCType966 And n\NPCType <> NPCTypeApache And n\NPCType <> NPCTypeCockroach Then n\Shadow = CreateShadow(n\OBJ, n\CollRadius * 1.8, n\CollRadius * 1.8)
-	
 	ResetEntity(n\Collider)
+	
+	PositionEntity(n\OBJ, x, y, z, True)
+	SetDeferredEntity(n\OBJ, True)
+	If n\OBJ2 <> 0 Then SetDeferredEntity(n\OBJ2, True)
 	
 	n\ID = 0
 	n\ID = FindFreeNPCID()
@@ -630,9 +629,6 @@ Function CreateNPCAsset%(n.NPCs)
 			
 			PositionEntity(n\OBJ2, PrevX, PrevY, PrevZ)
 			RotateEntity(n\OBJ2, 0.0, PrevYaw + 180.0, 0.0)
-			
-			RemoveShadow(n\Shadow)
-			n\Shadow = CreateShadow(n\OBJ2, MeshWidth(n\OBJ2) * Temp, MeshDepth(n\OBJ2) * Temp)
 			;[End Block]
 		Case NPCTypeD
 			;[Block]
@@ -671,6 +667,7 @@ Function CreateNPCAsset%(n.NPCs)
 			SetNPCFrame(n, PrevFrame)
 			;[End Block]
 	End Select
+	If n\OBJ2 <> 0 Then SetDeferredEntity(n\OBJ2, True)
 	
 	n\HasAsset = True
 End Function
@@ -696,7 +693,6 @@ Function RemoveNPC%(n.NPCs)
 	If n\Sound <> 0 Then FreeSound_Strict(n\Sound) : n\Sound = 0
 	If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2) : n\Sound2 = 0
 	
-	If n\Shadow <> Null Then RemoveShadow(n\Shadow)
 	EntityParent(n\OBJ, 0)
 	If n\OBJ2 <> 0 Then FreeEntity(n\OBJ2) : n\OBJ2 = 0
 	If n\OBJ3 <> 0 Then FreeEntity(n\OBJ3) : n\OBJ3 = 0
@@ -877,7 +873,6 @@ Function UpdateNPCs%()
 					If ChannelPlaying(n\SoundCHN2) Then StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
 					If n\Sound2 <> 0 Then FreeSound_Strict(n\Sound2) : n\Sound2 = 0
 				EndIf
-				If n\Shadow <> Null Then n\Shadow\Remove = True
 			EndIf
 			If n\NPCType = NPCTypeGuard
 				If n\OBJ3 <> 0
@@ -1655,15 +1650,15 @@ Function NPCSpeedChange%(n.NPCs)
 	Select n\NPCType
 		Case NPCType173, NPCType106, NPCType096, NPCType049, NPCType939, NPCType457
 			Select SelectedDifficulty\OtherFactors
-				Case NORMAL
+				Case DIFFICULTY_NORMAL
 					;[Block]
 					n\Speed = n\Speed * 1.1
 					;[End Block]
-				Case HARD
+				Case DIFFICULTY_HARD
 					;[Block]
 					n\Speed = n\Speed * 1.2
 					;[End Block]
-				Case EXTREME
+				Case DIFFICULTY_EXTREME
 					;[Block]
 					n\Speed = n\Speed * 1.3
 					;[End Block]

@@ -168,6 +168,7 @@ Include "Source Code\Devil_Particles_Core.bb"
 RenderLoading(40, GetLocalString("loading", "core.grap"))
 
 Include "Source Code\Graphics_Core.bb"
+Include "Source Code\Deferred_Core.bb"
 
 RenderLoading(45, GetLocalString("loading", "core.map"))
 
@@ -379,7 +380,6 @@ Function UpdateGame%()
 			If (Not IsPlayerOutsideFacility()) Then HideDistance = 17.0
 			UpdateDeaf()
 			UpdateDecals()
-			UpdateShadows()
 			UpdateSaveState()
 			UpdateMouseLook()
 			UpdateMoving()
@@ -465,19 +465,19 @@ Function UpdateGame%()
 				If me\BlinkTimer <= -20.0
 					; ~ Randomizes the frequency of blinking. Scales with difficulty
 					Select SelectedDifficulty\OtherFactors
-						Case EASY
+						Case DIFFICULTY_EASY
 							;[Block]
 							me\BLINKFREQ = Rnd(770.0, 910.0) ; ~ 11 - 13 seconds
 							;[End Block]
-						Case NORMAL
+						Case DIFFICULTY_NORMAL
 							;[Block]
 							me\BLINKFREQ = Rnd(630.0, 770.0) ; ~ 9 - 11 seconds
 							;[End Block]
-						Case HARD
+						Case DIFFICULTY_HARD
 							;[Block]
 							me\BLINKFREQ = Rnd(490.0, 630.0) ; ~ 7 - 9 seconds
 							;[End Block]
-						Case EXTREME
+						Case DIFFICULTY_EXTREME
 							;[Block]
 							me\BLINKFREQ = Rnd(350.0, 490.0) ; ~ 5 - 7 seconds
 							;[End Block]
@@ -505,7 +505,7 @@ Function UpdateGame%()
 			
 			If I_294\Using Then DarkAlpha = 1.0
 			
-			If wi\NightVision = 0 And wi\SCRAMBLE = 0 Then DarkAlpha = Max((1.0 - SecondaryLightOn) * 0.9, DarkAlpha)
+			;If wi\NightVision = 0 And wi\SCRAMBLE = 0 Then DarkAlpha = Max((1.0 - SecondaryLightOn) * 0.9, DarkAlpha)
 			
 			If me\Terminated
 				ResetSelectedStuff()
@@ -2432,6 +2432,20 @@ Function ExecuteConsoleCommand%(ConsoleMessage$)
 			CreateConsoleMsg("")
 			CreateConsoleMsg(GetLocalString("console", "codes_8"))
 			;[End Block]
+		Case "noff"
+			;[Block]
+			StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+			
+			EffectFloat(DeferredShade, "NormalOffset", Float(StrTemp))
+			CreateConsoleMsg("Done")
+			;[End Block]
+		Case "sbias"
+			;[Block]
+			StrTemp = Lower(Right(ConsoleInput, Len(ConsoleInput) - Instr(ConsoleInput, " ")))
+			
+			SHADOW_BIAS = Float(StrTemp)
+			CreateConsoleMsg("Done")
+			;[End Block]
 		Default
 			;[Block]
 			CreateConsoleMsg(GetLocalString("console", "notfound"), 255, 0, 0)
@@ -3447,7 +3461,8 @@ Const FogColorLCZ$ = "005005005"
 Const FogColorHCZ$ = "007002002"
 Const FogColorEZ$ = "007007012"
 Const FogColorStorageTunnels$ = "002007000"
-Const FogColorOutside$ = "255255255"
+Const FogColorIntro$ = "030030030"
+Const FogColorOutside$ = "015015015"
 Const FogColorDimension_1499$ = "096097104"
 Const FogColorPD$ = "000000000"
 Const FogColorPDTrench$ = "038055047"
@@ -3461,6 +3476,7 @@ Const FogColorForestChase$ = "032044054"
 Const AmbientColorLCZ$ = "030030030"
 Const AmbientColorHCZ$ = "030023023"
 Const AmbientColorEZ$ = "023023030"
+Const AmbientOutside$ = "015015015"
 ;[End Block]
 
 Const ZoneColorChangeSpeed# = 50.0
@@ -3488,7 +3504,7 @@ End Function
 
 Function UpdateZoneColor%()
 	Local e.Events
-	Local IsOutSide% = (IsPlayerOutsideFacility() Lor PlayerRoom\RoomTemplate\RoomID = r_cont1_173_intro)
+	Local IsOutSide% = IsPlayerOutsideFacility()
 	Local DistFog# = fog\FarDist - (2.0 * (SecondaryLightOn =< 0.3) * (wi\NightVision = 0)) * LightVolume
 	
 	fog\CurrName = ""
@@ -3501,8 +3517,13 @@ Function UpdateZoneColor%()
 	; ~ Handle room-specific settings
 	If PlayerRoom\RoomTemplate\RoomID = r_room3_storage And InFacility = LowerFloor
 		SetZoneColor(FogColorStorageTunnels)
+	ElseIf PlayerRoom\RoomTemplate\RoomID = r_cont1_173_intro
+		SetZoneColor(FogColorIntro)
+		LightVolume = 1.0
+		CameraFogRange(Camera, 5.0, 60.0)
+		CameraRange(Camera, 0.01, 72.0)
 	ElseIf IsOutSide
-		SetZoneColor(FogColorOutside)
+		SetZoneColor(FogColorOutside, AmbientOutside)
 		fog\FarDist = 60.0
 		LightVolume = 1.0
 		CameraFogRange(Camera, 5.0, fog\FarDist)
@@ -3606,20 +3627,6 @@ Function UpdateZoneColor%()
 				;[End Block]
 		End Select
 	EndIf
-	
-	; ~ Save the current backbuffer
-	Local OldBuffer% = BackBuffer()
-	
-	; ~ Change draw target to AmbientLightRoomTex
-	SetBuffer(TextureBuffer(AmbientLightRoomTex))
-	; ~ Clear color to provided values (CurrR / 3.0, CurrG / 3.0, CurrB / 3.0)
-	ClsColor(CurrR / 3.0, CurrG / 3.0, CurrB / 3.0)
-	Cls()
-	; ~ Reset clear color to black (default)
-	ClsColor(0, 0, 0)
-	; ~ Restore the previous buffer
-	SetBuffer(OldBuffer)
-	
 	AmbientLight(CurrR, CurrG, CurrB)
 End Function
 
@@ -5740,8 +5747,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(ItemHUDTexturePath + "page_1025(" + (Int(item\State) + 1) + ").png"), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
-				AdaptScreenGamma()
 			EndIf
 			;[End Block]
 		Case it_fine1025
@@ -5777,8 +5782,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(ItemHUDTexturePath + "page_fine_1025(" + (Int(item\State) + 1) + ").png"), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
-				AdaptScreenGamma()
 			EndIf
 			;[End Block]
 		Case it_book
@@ -6011,7 +6014,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img)
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img)
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
 				CreateHintMsg(GetLocalString("msg", "radio"), 6.0, True)
 			EndIf
 			
@@ -6330,7 +6332,6 @@ Function UpdateUseItem%(item.Items)
 					FreeImage(item\ItemTemplate\Img) : item\ItemTemplate\Img = 0
 					item\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\radio_off.png"
 					item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
-					MaskImage(item\ItemTemplate\Img, 255, 0, 255)
 					
 					For i = 0 To 6
 						If ChannelPlaying(RadioCHN[i]) Then StopChannel(RadioCHN[i]) : RadioCHN[i] = 0
@@ -6350,7 +6351,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
 			EndIf
 			If Temp
 				item\State = Max(0.0, item\State - fps\Factor[0] * (0.0025 + (0.0025 * (item\ItemTemplate\ID = it_nav))))
@@ -6368,7 +6368,6 @@ Function UpdateUseItem%(item.Items)
 						FreeImage(item\ItemTemplate\Img) : item\ItemTemplate\Img = 0
 						item\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\navigator_off.png"
 						item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
-						MaskImage(item\ItemTemplate\Img, 255, 0, 255)
 						item\State3 = 1.0
 					EndIf
 					CreateHintMsg(GetLocalString("msg", "bat.combine"), 1.0, True)
@@ -6488,8 +6487,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
-				AdaptScreenGamma()
 			EndIf
 			
 			If item\State = 0.0
@@ -6498,28 +6495,12 @@ Function UpdateUseItem%(item.Items)
 				item\State = 1.0
 			EndIf
 			;[End Block]
-		Case it_badge
+		Case it_badge, it_badge2
 			;[Block]
 			If item\ItemTemplate\Img = 0
 				item\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				AdaptScreenGamma()
-			EndIf
-			
-			If item\State = 0.0
-				PlaySound_Strict(LoadTempSound("SFX\SCP\1162_ARC\NostalgiaCancer" + Rand(5, 9) + ".ogg"))
-				item\State = 1.0
-			EndIf
-			;[End Block]
-		Case it_badge2
-			;[Block]
-			If item\ItemTemplate\Img = 0
-				item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
-				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
-				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
-				AdaptScreenGamma()
 			EndIf
 			
 			If item\State = 0.0
@@ -6534,7 +6515,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ResizeImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				AdaptScreenGamma()
 			EndIf
 			
 			If item\State = 0.0
@@ -6640,29 +6620,35 @@ Function UpdateUseItem%(item.Items)
 				Select item\ItemTemplate\Name
 					Case "Burnt Note" 
 						;[Block]
-						SetBuffer(ImageBuffer(item\ItemTemplate\Img))
+						SetBuffer(TextureBuffer(ResizeTexture))
+						DrawImage(item\ItemTemplate\Img, 0, 0)
 						Color(0, 0, 0)
 						SetFontEx(fo\FontID[Font_Default])
 						TextEx(277 * MenuScale, 469 * MenuScale, CODE_DR_MAYNARD, True, True)
 						SetBuffer(BackBuffer())
+						CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img), ImageHeight(item\ItemTemplate\Img), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img)), BufferHeight(ImageBuffer(item\ItemTemplate\Img)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img))
 						;[End Block]
 					Case "Unknown Note"
 						;[Block]
-						SetBuffer(ImageBuffer(item\ItemTemplate\Img))
+						SetBuffer(TextureBuffer(ResizeTexture))
+						DrawImage(item\ItemTemplate\Img, 0, 0)
 						Color(85, 85, 140)
 						SetFontEx(fo\FontID[Font_Journal])
 						TextEx(300 * MenuScale, 275 * MenuScale, CODE_CMR, True, True)
 						SetFontEx(fo\FontID[Font_Default])
 						SetBuffer(BackBuffer())
+						CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img), ImageHeight(item\ItemTemplate\Img), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img)), BufferHeight(ImageBuffer(item\ItemTemplate\Img)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img))
 						;[End Block]
 					Case "Document SCP-372"
 						;[Block]
-						SetBuffer(ImageBuffer(item\ItemTemplate\Img))
+						SetBuffer(TextureBuffer(ResizeTexture))
+						DrawImage(item\ItemTemplate\Img, 0, 0)
 						Color(37, 45, 137)
 						SetFontEx(fo\FontID[Font_Journal])
 						TextEx(383 * MenuScale, 734 * MenuScale, CODE_MAINTENANCE_TUNNELS, True, True)
 						SetFontEx(fo\FontID[Font_Default])
 						SetBuffer(BackBuffer())
+						CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img), ImageHeight(item\ItemTemplate\Img), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img)), BufferHeight(ImageBuffer(item\ItemTemplate\Img)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img))
 						;[End Block]
 				End Select
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
@@ -6684,7 +6670,6 @@ Function UpdateUseItem%(item.Items)
 				item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
 				item\ItemTemplate\ImgHeight = ImageHeight(item\ItemTemplate\Img) / 2
-				MaskImage(item\ItemTemplate\Img, 255, 0, 255)
 				CreateHintMsg(GetLocalString("msg", "e.reader"))
 			EndIf
 			
@@ -6723,29 +6708,35 @@ Function UpdateUseItem%(item.Items)
 						Select StripPath(CurrEReaderPage\ImgPath)
 							Case "note_Maynard.png"
 								;[Block]
-								SetBuffer(ImageBuffer(item\ItemTemplate\Img2))
+								SetBuffer(TextureBuffer(ResizeTexture))
+								DrawImage(item\ItemTemplate\Img2, 0, 0)
 								Color(0, 0, 0)
 								SetFontEx(fo\FontID[Font_Default])
 								TextEx(277 * Scale, 469 * Scale, CODE_DR_MAYNARD, True, True)
 								SetBuffer(BackBuffer())
+								CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img2), ImageHeight(item\ItemTemplate\Img2), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img2)), BufferHeight(ImageBuffer(item\ItemTemplate\Img2)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img2))
 								;[End Block]
 							Case "note_unknown.png"
 								;[Block]
-								SetBuffer(ImageBuffer(item\ItemTemplate\Img2))
+								SetBuffer(TextureBuffer(ResizeTexture))
+								DrawImage(item\ItemTemplate\Img2, 0, 0)
 								Color(85, 85, 140)
 								SetFontEx(fo\FontID[Font_Journal])
 								TextEx(300 * Scale, 275 * Scale, CODE_CMR, True, True)
 								SetFontEx(fo\FontID[Font_Default])
 								SetBuffer(BackBuffer())
+								CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img2), ImageHeight(item\ItemTemplate\Img2), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img2)), BufferHeight(ImageBuffer(item\ItemTemplate\Img2)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img2))
 								;[End Block]
 							Case "doc_372.png"
 								;[Block]
-								SetBuffer(ImageBuffer(item\ItemTemplate\Img2))
+								SetBuffer(TextureBuffer(ResizeTexture))
+								DrawImage(item\ItemTemplate\Img2, 0, 0)
 								Color(37, 45, 137)
 								SetFontEx(fo\FontID[Font_Journal])
 								TextEx(383 * Scale, 734 * Scale, CODE_MAINTENANCE_TUNNELS, True, True)
 								SetFontEx(fo\FontID[Font_Default])
 								SetBuffer(BackBuffer())
+								CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img2), ImageHeight(item\ItemTemplate\Img2), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img2)), BufferHeight(ImageBuffer(item\ItemTemplate\Img2)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img2))
 								;[End Block]
 						End Select
 						item\ItemTemplate\Img2Width = ImageWidth(item\ItemTemplate\Img2) / 2
@@ -6766,7 +6757,6 @@ Function UpdateUseItem%(item.Items)
 					FreeImage(item\ItemTemplate\Img) : item\ItemTemplate\Img = 0
 					item\ItemTemplate\ImgPath = "GFX\Items\HUD Textures\e_reader_off.png"
 					item\ItemTemplate\Img = ScaleImageEx(LoadImage_Strict(item\ItemTemplate\ImgPath), MenuScale, MenuScale)
-					MaskImage(item\ItemTemplate\Img, 255, 0, 255)
 					item\State3 = 1.0
 				EndIf
 				CreateHintMsg(GetLocalString("msg", "bat.combine"), 1.0, True)
@@ -7877,7 +7867,7 @@ Global MenuOpen%
 Function UpdateMenu%()
 	CatchErrors("UpdateMenu()")
 	
-	Local r.Rooms, sc.SecurityCams, amsg.AchievementMsg, shdw.Shadows, it.Items, n.NPCs
+	Local r.Rooms, sc.SecurityCams, amsg.AchievementMsg, it.Items, n.NPCs
 	Local z%, i%
 	
 	If MenuOpen
@@ -7954,38 +7944,6 @@ Function UpdateMenu%()
 						y = y + (30 * MenuScale)
 						
 						opt\AdvancedRoomLights = UpdateMenuTick(x, y, opt\AdvancedRoomLights)
-						
-						y = y + (30 * MenuScale)
-						
-						Local PrevBlobShadows% = opt\BlobShadows
-						
-						opt\BlobShadows = UpdateMenuTick(x, y, opt\BlobShadows)
-						
-						If PrevBlobShadows <> opt\BlobShadows
-							If (Not opt\BlobShadows)
-								For shdw.Shadows = Each Shadows
-									RemoveShadow(shdw)
-								Next
-							Else
-								For it.Items = Each Items
-									it\Shadow = CreateShadow(it\Collider, MeshWidth(it\OBJ) * it\ItemTemplate\Scale, MeshDepth(it\OBJ) * it\ItemTemplate\Scale)
-								Next
-								For n.NPCs = Each NPCs
-									If n\NPCType <> NPCType372 And n\NPCType <> NPCType513_1 And n\NPCType <> NPCType966 And n\NPCType <> NPCTypeApache And (Not n\IsDead) Then n\Shadow = CreateShadow(n\OBJ, n\CollRadius * 2.0, n\CollRadius * 2.0)
-									If n\NPCType = NPCTypeGuard
-										If n\OBJ2 <> 0
-											RemoveShadow(n\Shadow)
-											n\Shadow = CreateShadow(n\OBJ2, MeshWidth(n\OBJ2) * Temp, MeshDepth(n\OBJ2) * Temp)
-										EndIf
-									EndIf
-								Next
-								CreateShadow(me\Collider, 0.4, 0.4)
-							EndIf
-						EndIf
-						
-						y = y + (30 * MenuScale)
-						
-						opt\NewAtmosphere = UpdateMenuTick(x, y, opt\NewAtmosphere, True)
 						
 						y = y + (40 * MenuScale)
 						
@@ -8660,23 +8618,6 @@ Function RenderMenu%()
 						Color(255, 255, 255)
 						TextEx(x, y + (5 * MenuScale), GetLocalString("options", "lights"))
 						If MouseOn(x + (270 * MenuScale), y, MouseOnCoord, MouseOnCoord) And OnSliderID = 0 Then RenderOptionsTooltip(tX, tY, tW, tH, Tooltip_RoomLights)
-						
-						y = y + (30 * MenuScale)
-						
-						TextEx(x, y + (5 * MenuScale), GetLocalString("options", "shadows"))
-						If MouseOn(x + (270 * MenuScale), y, MouseOnCoord, MouseOnCoord) And OnSliderID = 0 Then RenderOptionsTooltip(tX, tY, tW, tH, Tooltip_BlobShadows)
-						
-						y = y + (30 * MenuScale)
-						
-						Color(100, 100, 100)
-						TextEx(x, y + (5 * MenuScale), GetLocalString("options", "atmo"))
-						If MouseOn(x + (270 * MenuScale), y, MouseOnCoord, MouseOnCoord) And OnSliderID = 0 Then RenderOptionsTooltip(tX, tY, tW, tH, Tooltip_Atmosphere)
-						If opt\NewAtmosphere
-							TempStr = GetLocalString("options", "atmo.new")
-						Else
-							TempStr = GetLocalString("options", "atmo.old")
-						EndIf
-						TextEx(x + (305 * MenuScale), y + (5 * MenuScale), TempStr)
 						
 						y = y + (40 * MenuScale)
 						

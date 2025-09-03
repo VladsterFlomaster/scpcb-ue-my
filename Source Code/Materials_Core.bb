@@ -1,19 +1,23 @@
 Type Materials
+	Field Normal%
+	Field Roughness%
+	Field Emission%
 	Field Name$
-	Field Bump%
 	Field IsDiffuseAlpha%
 	Field UseMask%
 	Field StepSound%
 End Type
 
-Function ApplyBumpMap%(Texture%)
-	TextureBlend(Texture, 6)
-	TextureBumpEnvMat(Texture, 0, 0, -0.014)
-	TextureBumpEnvMat(Texture, 0, 1, -0.014)
-	TextureBumpEnvMat(Texture, 1, 0, 0.014)
-	TextureBumpEnvMat(Texture, 1, 1, 0.014)
-	TextureBumpEnvOffset(Texture, 0.5)
-	TextureBumpEnvScale(Texture, 1.0)
+Function GetMaterial.Materials(Texture%)
+	Local mat.Materials
+	Local Temp1s$
+	
+	Temp1s = StripPath(TextureName(Texture))
+	
+	For mat.Materials = Each Materials
+		If mat\Name = Temp1s Then Return(mat)
+	Next
+	Return(Null)
 End Function
 
 Const MaterialsFile$ = "Data\materials.ini"

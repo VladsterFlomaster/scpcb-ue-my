@@ -2095,7 +2095,6 @@ Function UpdateNPCType106%(n.NPCs)
 			Case 0.0 ; ~ Reset the timer
 				;[Block]
 				PositionEntity(n\Collider, 0.0, -500.0, 0.0)
-				If n\Shadow <> Null Then PositionEntity(n\Shadow\OBJ, 0.0, -500.0, 0.0)
 				ResetEntity(n\Collider)
 				HideEntity(n\OBJ2)
 				n\PathLocation = 0

@@ -271,6 +271,7 @@ Function SetEmitter.Emitter(room.Rooms, x#, y#, z#, ParticleID%)
 	EntityBlend(emit\Ent, emit\tmp\EmitterBlend)
 	EntityFX(emit\Ent, 1 + 2 + 32)
 	If emit\tmp\Tex <> 0 Then EntityTexture(emit\Ent, emit\tmp\Tex)
+	SetDeferredParticle(emit\Ent)
 	
 	emit\EmitterID = 0
 	emit\EmitterID = FindFreeEmitterID()

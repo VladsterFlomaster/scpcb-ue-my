@@ -41,9 +41,9 @@ Function LoadTextureCheckingIfInCache%(TexName$, TexFlags% = 1, DeleteType% = De
 		ClsColor(255, 0, 255)
 		Cls()
 		SetBuffer(BackBuffer())
-	Else
-		If Scale <> 1.0 Then tic\Tex = RescaleTexture(tic\Tex, Scale, Scale, TexFlags)
-		If opt\DisplayMode = 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
+;	Else
+;		If Scale <> 1.0 Then tic\Tex = RescaleTexture(tic\Tex, Scale, Scale, TexFlags)
+;		If opt\DisplayMode = 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
 	EndIf
 	Return(tic\Tex)
 End Function
@@ -77,8 +77,8 @@ Function LoadAnimTextureCheckingIfInCache%(TexName$, TexFlags% = 1, Width%, Heig
 		ClsColor(255, 0, 255)
 		Cls()
 		SetBuffer(BackBuffer())
-	Else
-		If opt\DisplayMode = 0 And tic\Tex <> 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
+;	Else
+;		If opt\DisplayMode = 0 And tic\Tex <> 0 And TextureBuffer(tic\Tex) <> 0 Then BufferDirty(TextureBuffer(tic\Tex))
 	EndIf
 	Return(tic\Tex)
 End Function
@@ -91,9 +91,6 @@ Function DeleteTextureEntriesFromCache%(DeleteType%)
 			If tic\Tex <> 0 Then FreeTexture(tic\Tex) : tic\Tex = 0
 			Delete(tic)
 		EndIf
-	Next
-	For mat.Materials = Each Materials
-		mat\Bump = 0
 	Next
 End Function
 
@@ -166,7 +163,7 @@ Function CheckForTexture%(Tex%, TexFlags% = 1)
 	
 	Local Texture% = LoadTextureCheckingIfInCache(Name, TexFlags)
 	
-	If Texture <> 0 Then TextureBlend(Texture, 1 + (4 * opt\NewAtmosphere + (Not opt\NewAtmosphere)) * (((TexFlags Shr 1) Mod 2) = 0))
+	If Texture <> 0 Then TextureBlend(Texture, 1 + 4 * (((TexFlags Shr 1) Mod 2) = 0))
 	Return(Texture)
 End Function
 

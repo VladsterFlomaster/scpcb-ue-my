@@ -21,7 +21,7 @@ Function InitSubtitlesAssets%()
 	subassets\BoxTop = opt\GraphicHeight * 0.82
 	subassets\BoxCamera = CreateCamera()
 	subassets\BoxSprite = CreateSprite(subassets\BoxCamera)
-	subassets\BoxTexture = CreateTexture(1, 1, 1 + 256)
+	subassets\BoxTexture = CreateTexture(1, 1)
 	
 	PositionEntity(subassets\BoxCamera, 0.0, 0.0, 20000.0)
 	CameraClsMode(subassets\BoxCamera, 0, 0)

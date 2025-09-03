@@ -60,6 +60,7 @@ Function CreateProp.Props(room.Rooms, Name$, x#, y#, z#, Pitch#, Yaw#, Roll#, Sc
 	EntityType(p\OBJ, HasCollision) ; ~ NOTICE: Const HIT_MAP% = 1
 	EntityFX(p\OBJ, FX)
 	EntityPickMode(p\OBJ, 2)
+	SetDeferredEntity(p\OBJ, True)
 	
 	If IsWatches
 		p\SecondsArrow = FindChild(p\OBJ, "bigarrow")
@@ -129,21 +130,26 @@ Type Lights
 	Field R%, G%, B%
 	Field Intensity#
 	Field Flickers% = False
+	Field lType%
+	Field Fade#
+	Field FOV#
 	Field room.Rooms
 End Type
 
 Function AddLight.Lights(room.Rooms, x#, y#, z#, Type_%, Range#, R%, G%, B%, HasSprite% = True)
-	Local l.Lights, l2.Lights
+	Local l.Lights
 	
 	l.Lights = New Lights
 	l\room = room
 	
-	l\OBJ = CreateLight(Type_)
-	LightRange(l\OBJ, Range)
-	LightColor(l\OBJ, R, G, B)
+	l\FOV = 90.0
+	
+	l\OBJ = CreatePivot()
 	PositionEntity(l\OBJ, x, y, z, True)
 	If room <> Null Then EntityParent(l\OBJ, room\OBJ)
 	HideEntity(l\OBJ)
+	
+	l\lType = Type_
 	
 	If HasSprite
 		l\Sprite = CreateSprite()
@@ -155,6 +161,7 @@ Function AddLight.Lights(room.Rooms, x#, y#, z#, Type_%, Range#, R%, G%, B%, Has
 		EntityColor(l\Sprite, R, G, B)
 		EntityParent(l\Sprite, l\OBJ)
 		HideEntity(l\Sprite)
+		SetDeferredParticle(l\Sprite)
 		
 		l\AdvancedSprite = CreateSprite()
 		PositionEntity(l\AdvancedSprite, x, y, z)
@@ -168,9 +175,14 @@ Function AddLight.Lights(room.Rooms, x#, y#, z#, Type_%, Range#, R%, G%, B%, Has
 		SpriteViewMode(l\AdvancedSprite, 1)
 		EntityParent(l\AdvancedSprite, l\OBJ)
 		HideEntity(l\AdvancedSprite)
+		SetDeferredParticle(l\AdvancedSprite)
 	EndIf
 	
 	l\Intensity = (R + G + B) / 255.0 / 3.0
+	l\R = R
+	l\G = G
+	l\B = B
+	l\Range = Range
 	If room <> Null
 		If Rand(50) = 1
 			Local RID% = room\RoomTemplate\RoomID
@@ -189,18 +201,17 @@ Global LightRenderDistance#
 Function UpdateLightVolume%()
 	Local l.Lights
 	
-	If SecondaryLightOn > 0.3
-		opttimer\LightsTimer = opttimer\LightsTimer + fps\Factor[0]
-		If opttimer\LightsTimer >= 8.0
+	If SecondaryLightOn > 0.01
+		If opttimer\LightsTimer < 8.0
+			opttimer\LightsTimer = opttimer\LightsTimer + fps\Factor[0]
+		Else
 			Local HideDist# = PowTwo(HideDistance)
 			
 			For l.Lights = Each Lights
-				If l\room <> Null
-					If l\room\Dist < 8.0 Lor l\room = PlayerRoom
-						Local Dist# = EntityDistanceSquared(Camera, l\OBJ)
-						
-						If Dist < HideDist Then TempLightVolume = Max((TempLightVolume + PowTwo(l\Intensity) * ((HideDistance - Sqr(Dist)) / HideDistance)) / 4.5, 1.0)
-					EndIf
+				If l\room <> Null And IsLightVisible(l)
+					Local Dist# = EntityDistanceSquared(Camera, l\OBJ)
+					
+					If Dist < HideDist + PowTwo(l\Range) Then TempLightVolume = Max((TempLightVolume + PowTwo(l\Intensity) * ((HideDistance - Sqr(Dist)) / HideDistance)) / 4.5, 1.0)
 				EndIf
 			Next
 			opttimer\LightsTimer = 0.0
@@ -212,95 +223,115 @@ Function UpdateLightVolume%()
 	EndIf
 End Function
 
+Function IsLightVisible(l.Lights)
+	If l\room = PlayerRoom Then Return(True)
+	
+	Local i%
+	
+	For i = 0 To MaxRoomAdjacents - 1
+		If PlayerRoom\Adjacent[i] = l\room And IsRoomVisible(PlayerRoom\Adjacent[i]) Then Return(True)
+	Next
+	Return(False)
+End Function
+
 Function UpdateLights%(Cam%)
 	Local l.Lights, i%, Random#, Alpha#
 	Local TotalAmbientColor# = (fog\AmbientR + fog\AmbientG + fog\AmbientB) / 255.0 / 3.0
 	
 	For l.Lights = Each Lights
-		If SecondaryLightOn > 0.3
-			If l\room <> Null And (l\room\Dist < 8.0 Lor l\room = PlayerRoom)
-				Local LightOBJHidden%
+		If SecondaryLightOn > 0.01 And l\room <> Null And IsLightVisible(l)
+			Local LightOBJHidden%
+			
+			If l\Sprite <> 0
+				Local Dist#, MaxDist#
 				
-				If l\Sprite <> 0
-					If Cam = Camera ; ~ The lights are rendered by player's cam
-						EntityOrder(l\AdvancedSprite, -1)
-						If opttimer\LightsTimer = 0.0
-							Local Dist# = EntityDistanceSquared(Cam, l\OBJ)
-							Local LightSpriteHidden% = EntityHidden(l\Sprite)
-							Local LightAdvancedSpriteHidden% = EntityHidden(l\AdvancedSprite)
+				If Cam = Camera ; ~ The lights are rendered by player's cam
+					EntityOrder(l\AdvancedSprite, -1)
+					
+					Dist = EntityDistanceSquared(Cam, l\OBJ)
+					MaxDist = (LightRenderDistance + PowTwo(l\Range)) * LightVolume
+					l\Fade = GetFade(Dist, MaxDist / 2, MaxDist)
+					
+					If opttimer\LightsTimer = 0.0
+						Local LightSpriteHidden% = EntityHidden(l\Sprite)
+						Local LightAdvancedSpriteHidden% = EntityHidden(l\AdvancedSprite)
+						
+						LightOBJHidden = EntityHidden(l\OBJ)
+						
+						If Dist < MaxDist
+							EntityAutoFade(l\Sprite, 0.1 * LightVolume, fog\FarDist * LightVolume)
 							
-							LightOBJHidden = EntityHidden(l\OBJ)
-							If Dist < LightRenderDistance * LightVolume
-								EntityAutoFade(l\Sprite, 0.1 * LightVolume, fog\FarDist * LightVolume)
-								
-								Local LightVisible%
-								Local LightInView% = EntityInView(l\OBJ, Cam)
-								Local ShouldFlickering% = (l\Flickers And Rand(50) = 1)
-								
-								If LightInView Lor ShouldFlickering Then LightVisible = EntityVisible(Cam, l\OBJ)
-								If LightOBJHidden Then ShowEntity(l\OBJ)
-								If ShouldFlickering And LightVisible
-									If (Not LightOBJHidden) Then HideEntity(l\OBJ)
-									PlaySoundEx(snd_I\LightSFX[Rand(0, 2)], Cam, l\OBJ, 4.0)
-									If LightInView
-										If (Not LightSpriteHidden) Then HideEntity(l\Sprite)
-										If (Not LightAdvancedSpriteHidden) Then HideEntity(l\AdvancedSprite)
-									EndIf
-									Random = Rnd(0.35, 0.8)
-									SecondaryLightOn = Clamp(SecondaryLightOn - Random, 0.301, 1.0)
-									TempLightVolume = Clamp(TempLightVolume - Random, 0.5, 1.0)
-									SetEmitter(Null, EntityX(l\OBJ, True), EntityY(l\OBJ, True), EntityZ(l\OBJ, True), 20)
-								EndIf
-								If LightInView And LightVisible
-									If LightSpriteHidden Then ShowEntity(l\Sprite)
-									If opt\AdvancedRoomLights
-										Alpha = 1.0 - Clamp((Sqr(Dist) + 0.5) / 7.5, 0.0, 1.0)
-										If Alpha > 0.0
-											If LightAdvancedSpriteHidden Then ShowEntity(l\AdvancedSprite)
-											EntityAlpha(l\AdvancedSprite, Max(TotalAmbientColor * (l\Intensity / 2.0), 1.0) * Alpha)
-											
-											Random = Rnd(0.36, 0.4)
-											ScaleSprite(l\AdvancedSprite, Random, Random)
-										ElseIf (Not LightAdvancedSpriteHidden)
-											; ~ Instead of rendering the sprite invisible, just hiding it if the player is far away from it
-											HideEntity(l\AdvancedSprite)
-										EndIf
-									ElseIf (Not LightAdvancedSpriteHidden)
-										; ~ The additional sprites option is disabled, hide the sprites
-										HideEntity(l\AdvancedSprite)
-									EndIf
-								Else
-									; ~ Hide the sprites because they aren't visible
+							Local ShouldFlickering% = (l\Flickers And Rand(50) = 1)
+							
+							Local LightVisible%
+							Local LightInView% = EntityInView(l\OBJ, Cam)
+							
+							If LightInView Lor ShouldFlickering Then LightVisible = EntityVisible(Cam, l\OBJ)
+							
+							If LightOBJHidden Then ShowEntity(l\OBJ)
+							
+							If ShouldFlickering And LightVisible
+								If (Not LightOBJHidden) Then HideEntity(l\OBJ)
+								PlaySoundEx(snd_I\LightSFX[Rand(0, 2)], Cam, l\OBJ, 4.0)
+								If LightInView
 									If (Not LightSpriteHidden) Then HideEntity(l\Sprite)
 									If (Not LightAdvancedSpriteHidden) Then HideEntity(l\AdvancedSprite)
 								EndIf
-							ElseIf (Not LightOBJHidden)
-								; ~ Hide the light emitter because it is too far
-								HideEntity(l\OBJ)
+								Random = Rnd(0.35, 0.8)
+								SecondaryLightOn = Clamp(SecondaryLightOn - Random, 0.301, 1.0)
+								TempLightVolume = Clamp(TempLightVolume - Random, 0.5, 1.0)
+								SetEmitter(Null, EntityX(l\OBJ, True), EntityY(l\OBJ, True), EntityZ(l\OBJ, True), 20)
 							EndIf
+							
+							If LightInView And LightVisible
+								If LightSpriteHidden Then ShowEntity(l\Sprite)
+								If opt\AdvancedRoomLights
+									Alpha = 1.0 - Clamp((Sqr(Dist) + 0.5) / 7.5, 0.0, 1.0)
+									If Alpha > 0.0
+										If LightAdvancedSpriteHidden Then ShowEntity(l\AdvancedSprite)
+										EntityAlpha(l\AdvancedSprite, Max(TotalAmbientColor * (l\Intensity / 2.0), 1.0) * Alpha)
+										
+										Random = Rnd(0.36, 0.4)
+										ScaleSprite(l\AdvancedSprite, Random, Random)
+									ElseIf (Not LightAdvancedSpriteHidden) ; ~ Instead of rendering the sprite invisible, just hiding it if the player is far away from it
+										HideEntity(l\AdvancedSprite)
+									EndIf
+								ElseIf (Not LightAdvancedSpriteHidden) ; ~ The additional sprites option is disabled, hide the sprites
+									HideEntity(l\AdvancedSprite)
+								EndIf
+							Else
+								; ~ Hide the sprites because they aren't visible
+								If (Not LightSpriteHidden) Then HideEntity(l\Sprite)
+								If (Not LightAdvancedSpriteHidden) Then HideEntity(l\AdvancedSprite)
+							EndIf
+						ElseIf (Not LightOBJHidden) ; ~ Hide the light emitter because it is too far
+							HideEntity(l\OBJ)
 						EndIf
-					Else
-						; ~ This will make the lightsprites not glitch through the wall when they are rendered by the cameras
-						EntityOrder(l\AdvancedSprite, 0)
 					EndIf
 				Else
-					If Cam = Camera ; ~ The lights are rendered by player's cam
-						If opttimer\LightsTimer = 0.0
-							LightOBJHidden = EntityHidden(l\OBJ)
-							
-							If EntityDistanceSquared(Cam, l\OBJ) < LightRenderDistance * LightVolume
-								If LightOBJHidden Then ShowEntity(l\OBJ)
-								If l\Flickers And Rand(50) = 1 And EntityVisible(Cam, l\OBJ)
-									If (Not LightOBJHidden) Then HideEntity(l\OBJ)
-									PlaySoundEx(snd_I\LightSFX[Rand(0, 2)], Cam, l\OBJ, 4.0)
-									Random = Rnd(0.35, 0.8)
-									SecondaryLightOn = Clamp(SecondaryLightOn - Random, 0.301, 1.0)
-									TempLightVolume = Clamp(TempLightVolume - Random, 0.5, 1.0)
-								EndIf
-							ElseIf (Not LightOBJHidden)
-								; ~ Hide the light emitter because it is too far
-								HideEntity(l\OBJ)
+					; ~ This will make the lightsprites not glitch through the wall when they are rendered by the cameras
+					EntityOrder(l\AdvancedSprite, 0)
+				EndIf
+			Else
+				If Cam = Camera ; ~ The lights are rendered by player's cam
+					Dist = EntityDistanceSquared(Cam, l\OBJ)
+					MaxDist = (LightRenderDistance + PowTwo(l\Range)) * LightVolume
+					l\Fade = GetFade(Dist, MaxDist / 2, MaxDist)
+					
+					If opttimer\LightsTimer = 0.0
+						LightOBJHidden = EntityHidden(l\OBJ)
+						
+						If Dist < MaxDist
+							If LightOBJHidden Then ShowEntity(l\OBJ)
+							If l\Flickers And Rand(50) = 1 And EntityVisible(Cam, l\OBJ)
+								If (Not LightOBJHidden) Then HideEntity(l\OBJ)
+								PlaySoundEx(snd_I\LightSFX[Rand(0, 2)], Cam, l\OBJ, 4.0)
+								Random = Rnd(0.35, 0.8)
+								SecondaryLightOn = Clamp(SecondaryLightOn - Random, 0.301, 1.0)
+								TempLightVolume = Clamp(TempLightVolume - Random, 0.5, 1.0)
 							EndIf
+						ElseIf (Not LightOBJHidden) ; ~ Hide the light emitter because it is too far
+							HideEntity(l\OBJ)
 						EndIf
 					EndIf
 				EndIf
@@ -394,11 +425,13 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	Local CollisionMeshes% = CreatePivot()
 	;Local HasTriggerBox% = False
 	Local IsRMesh$ = ReadString(f)
+	Local RMeshVersion% = 1
 	
 	If IsRMesh = "RoomMesh"
-		; ~ Continue
-	;ElseIf IsRMesh = "RoomMesh.HasTriggerBox"
-	;	HasTriggerBox = True
+		RMeshVersion = 1
+	ElseIf IsRMesh = "RoomMesh1.1"
+		RMeshVersion = 2
+		DebugLog "RMESH2!"
 	Else
 		RuntimeErrorEx(Format(Format(GetLocalString("runerr", "notrmesh"), File, "{0}"), IsRMesh, "{1}"))
 	EndIf
@@ -410,7 +443,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	
 	Local ChildMesh%
 	Local Surf%, Tex%[2], Brush%
-	Local IsAlpha%
+	Local IsAlpha%, AlphaCollision% = False
 	Local u#, v#
 	
 	Local Count% = ReadInt(f)
@@ -426,6 +459,9 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 		Tex[0] = 0 : Tex[1] = 0
 		
 		IsAlpha = 0
+		AlphaCollision% = False
+		
+		; Enable texture manage for rooms textures
 		
 		For j = 0 To 1
 			Temp1i = ReadByte(f)
@@ -433,106 +469,45 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 				Temp1s = ReadString(f)
 				If FileType(FilePath + Temp1s) = 1 ; ~ Check if texture is existing in original path
 					If Temp1i < 3
-						If Instr(Lower(Temp1s), "_lm") <> 0
-							Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s, 1 + 256, DeleteMapTextures, GetLightingSize(opt\LightingQuality))
-						Else
-							Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s)
-						EndIf
+						Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s, 1)
 					Else
 						Tex[j] = LoadTextureCheckingIfInCache(FilePath + Temp1s, 3)
 					EndIf
 				ElseIf FileType(MapTexturesFolder + Temp1s) = 1 ; ~ If not, check the MapTexturesFolder
 					If Temp1i < 3
-						If Instr(Lower(Temp1s), "_lm") <> 0
-							Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s, 1 + 256, DeleteMapTextures, GetLightingSize(opt\LightingQuality))
-						Else
-							Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s)
-						EndIf
+						Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s, 1)
 					Else
 						Tex[j] = LoadTextureCheckingIfInCache(MapTexturesFolder + Temp1s, 3)
 					EndIf
 				EndIf
 				If Tex[j] <> 0
-					If Temp1i = 1 Then TextureBlend(Tex[j], 2 + (3 * opt\NewAtmosphere))
+					If Temp1i = 1 Then TextureBlend(Tex[j], 5)
 					If Instr(Lower(Temp1s), "_lm") <> 0 Then TextureBlend(Tex[j], 3)
 					IsAlpha = 2
 					If Temp1i = 3 Then IsAlpha = 1
 					TextureCoords(Tex[j], 1 - j)
 				EndIf
+				
+				AlphaCollision = (Lower(StripPath(Temp1s)) = "glass.png")
 			EndIf
 		Next
 		
-		If IsAlpha = 1
-			If Tex[1] <> 0
-				TextureBlend(Tex[1], 2)
-				BrushTexture(Brush, Tex[1], 0, 0)
-			Else
-				BrushTexture(Brush, MissingTexture, 0, 0)
-			EndIf
+		If Tex[1] <> 0
+			BrushTexture(Brush, Tex[1], 0, 0)
 		Else
-			Local BumpTex% = 0
-			
-			If Tex[0] <> 0 And Tex[1] <> 0
-				If opt\BumpEnabled
-					Local Temp$ = StripPath(TextureName(Tex[1]))
-					
-					For mat.Materials = Each Materials
-						If mat\Name = Temp
-							BumpTex = mat\Bump
-							Exit
-						EndIf
-					Next
-				Else
-					BumpTex = 0
-				EndIf
-				BrushTexture(Brush, AmbientLightRoomTex, 0, 0)
-				If BumpTex = 0
-					For j = 0 To 1
-						BrushTexture(Brush, Tex[j], 0, j + 1)
-					Next
-				Else
-					BrushTexture(Brush, BumpTex, 0, 1)
-					For j = 0 To 1
-						BrushTexture(Brush, Tex[j], 0, j + 2)
-					Next
-				EndIf
-			Else
-				If opt\BumpEnabled
-					If Tex[1] <> 0
-						Temp = StripPath(TextureName(Tex[1]))
-						For mat.Materials = Each Materials
-							If mat\Name = Temp
-								BumpTex = mat\Bump
-								Exit
-							EndIf
-						Next
-					EndIf
-				Else
-					BumpTex = 0
-				EndIf
-				BrushTexture(Brush, AmbientLightRoomTex, 0, 0)
-				If BumpTex = 0
-					For j = 0 To 1
-						If Tex[j] <> 0
-							BrushTexture(Brush, Tex[j], 0, j + 1)
-						Else
-							BrushTexture(Brush, MissingTexture, 0, j + 1)
-						EndIf
-					Next
-				Else
-					BrushTexture(Brush, BumpTex, 0, 1)
-					For j = 0 To 1
-						If Tex[j] <> 0
-							BrushTexture(Brush, Tex[j], 0, j + 2)
-						Else
-							BrushTexture(Brush, MissingTexture, 0, j + 2)
-						EndIf
-					Next
-				EndIf
-			EndIf
+			BrushTexture(Brush, MissingTexture, 0, 0)
 		EndIf
 		
-		If IsAlpha > 0 Then PaintSurface(Surf, Brush)
+		If IsAlpha = 1
+			SetDeferredBrush(Brush, DEFERRED_DIFFALPHA)
+		Else
+			SetDeferredBrush(Brush)
+			BrushShininess(Brush, 128)
+		EndIf
+		
+		If IsAlpha > 0 Then
+			PaintSurface(Surf, Brush)
+		EndIf
 		
 		FreeBrush(Brush) : Brush = 0
 		
@@ -554,6 +529,15 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 			Temp2i = ReadByte(f)
 			Temp3i = ReadByte(f)
 			VertexColor(Surf, Vertex, Temp1i, Temp2i, Temp3i, 1.0)
+			
+			; ~ Normals
+			If RMeshVersion = 2
+				Local NX# = ReadFloat(f)
+				Local NY# = ReadFloat(f)
+				Local NZ# = ReadFloat(f)
+				
+				VertexNormal(Surf, Vertex, NX, NZ, NY)
+			EndIf
 		Next
 		
 		Count2 = ReadInt(f) ; ~ Polys
@@ -565,7 +549,9 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 		If IsAlpha = 1
 			AddMesh(ChildMesh, Alpha)
 			EntityAlpha(ChildMesh, 0.0)
-		Else
+		EndIf
+		
+		If IsAlpha <> 1 Lor AlphaCollision
 			AddMesh(ChildMesh, Opaque)
 			EntityParent(ChildMesh, CollisionMeshes)
 			EntityAlpha(ChildMesh, 0.0)
@@ -689,7 +675,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tl\x = ReadFloat(f) * RoomScale
 					tl\y = ReadFloat(f) * RoomScale
 					tl\z = ReadFloat(f) * RoomScale
-					tl\lType = 2
+					tl\lType = DEFERRED_LIGHT_POINT
 					tl\Range = ReadFloat(f) / 2000.0
 					
 					lColor = ReadString(f)
@@ -697,6 +683,31 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tl\R = Int(Piece(lColor, 1, " ")) * Intensity
 					tl\G = Int(Piece(lColor, 2, " ")) * Intensity
 					tl\B = Int(Piece(lColor, 3, " ")) * Intensity
+					
+					tl\HasSprite = True
+					;[End Block]
+				Case "spotlight"
+					;[Block]
+					tl.TempLights = New TempLights
+					tl\RoomTemplate = rt
+					
+					tl\x = ReadFloat(f) * RoomScale
+					tl\y = ReadFloat(f) * RoomScale
+					tl\z = ReadFloat(f) * RoomScale
+					tl\lType = DEFERRED_LIGHT_SPOT
+					tl\Range = ReadFloat(f) / 2000.0
+					
+					lColor = ReadString(f)
+					Intensity = Min(ReadFloat(f) * 0.8, 1.0)
+					tl\R = Int(Piece(lColor, 1, " ")) * Intensity
+					tl\G = Int(Piece(lColor, 2, " ")) * Intensity
+					tl\B = Int(Piece(lColor, 3, " ")) * Intensity
+					
+					tl\Pitch = ReadFloat(f)
+					tl\Yaw = ReadFloat(f)
+					ReadFloat(f)
+					
+					tl\OuterConeAngle = ReadFloat(f)
 					
 					tl\HasSprite = True
 					;[End Block]
@@ -708,7 +719,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tl\x = ReadFloat(f) * RoomScale
 					tl\y = ReadFloat(f) * RoomScale
 					tl\z = ReadFloat(f) * RoomScale
-					tl\lType = 2
+					tl\lType = DEFERRED_LIGHT_POINT
 					
 					lColor = ReadString(f)
 					Intensity = Min(ReadFloat(f) * 0.8, 1.0)
@@ -718,30 +729,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tl\B = Int(Piece(lColor, 3, " ")) * Intensity
 					
 					tl\HasSprite = False
-					;[End Block]
-				Case "spotlight"
-					;[Block]
-					tl.TempLights = New TempLights
-					tl\RoomTemplate = rt
-					
-					tl\x = ReadFloat(f) * RoomScale
-					tl\y = ReadFloat(f) * RoomScale
-					tl\z = ReadFloat(f) * RoomScale
-					tl\lType = 3
-					tl\Range = ReadFloat(f) / 2000.0
-					
-					lColor = ReadString(f)
-					Intensity = Min(ReadFloat(f) * 0.8, 1.0)
-					tl\R = Int(Piece(lColor, 1, " ")) * Intensity
-					tl\G = Int(Piece(lColor, 2, " ")) * Intensity
-					tl\B = Int(Piece(lColor, 3, " ")) * Intensity
-					
-					Angles = ReadString(f)
-					tl\Pitch = Piece(Angles, 1, " ")
-					tl\Yaw = Piece(Angles, 2, " ")
-					
-					tl\InnerConeAngle = ReadInt(f)
-					tl\OuterConeAngle = ReadInt(f)
+					Delete tl
 					;[End Block]
 				Case "soundemitter"
 					;[Block]
@@ -801,7 +789,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	AddMesh(Alpha, Opaque)
 	FreeEntity(Alpha) : Alpha = 0
 	
-	EntityFX(Opaque, 3)
+	EntityFX(Opaque, 2)
 	
 	EntityAlpha(HiddenMesh, 0.0)
 	EntityType(HiddenMesh, HasCollision) ; ~ NOTICE: Const HIT_MAP% = 1
@@ -815,6 +803,8 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	CreatePivot(OBJ) ; ~ Skip "pointentites" object
 	CreatePivot(OBJ) ; ~ Skip "solidentites" object
 	EntityParent(CollisionMeshes, OBJ)
+	
+	SetShadowsCasting(Opaque, True)
 	
 	CloseFile(f)
 	
@@ -1066,20 +1056,20 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 	Local GroundTexture% = LoadTexture_Strict("GFX\Map\Textures\forestfloor.png")
 	Local PathTexture% = LoadTexture_Strict("GFX\Map\Textures\forestpath.png")
 	
-	hMap[ROOM1] = LoadImage_Strict("GFX\Map\Forest\forest1h.png")
-	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2] = LoadImage_Strict("GFX\Map\Forest\forest2h.png")
-	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2C] = LoadImage_Strict("GFX\Map\Forest\forest2Ch.png")
-	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM3] = LoadImage_Strict("GFX\Map\Forest\forest3h.png")
-	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM4] = LoadImage_Strict("GFX\Map\Forest\forest4h.png")
-	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
 	For i = ROOM1 To ROOM4
 		fr\TileMesh[i] = LoadTerrain(hMap[i], 0.03, GroundTexture, PathTexture, Mask[i])
@@ -1179,8 +1169,8 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 				If Tile_Type > 0
 					; ~ Place trees and other details
 					; ~ Only placed on spots where the value of the heightmap is above 100
-					SetBuffer(ImageBuffer(hMap[Tile_Type - 1]))
-					Width = ImageWidth(hMap[Tile_Type - 1])
+					SetBuffer(TextureBuffer(hMap[Tile_Type - 1]))
+					Width = TextureWidth(hMap[Tile_Type - 1])
 					Tempf4 = (Tempf3 / Float(Width))
 					For lX = 3 To Width - 2
 						For lY = 3 To Width - 2
@@ -1261,7 +1251,7 @@ Function PlaceForest%(fr.Forest, x#, y#, z#, r.Rooms)
 		Next
 	Next
 	For i = ROOM1 To ROOM4
-		FreeImage(hMap[i]) : hMap[i] = 0
+		DeleteSingleTextureEntryFromCache(hMap[i]) : hMap[i] = 0
 	Next
 	
 	; ~ Place the wall
@@ -1308,20 +1298,20 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 	Local GroundTexture% = LoadTexture_Strict("GFX\Map\Textures\forestfloor.png")
 	Local PathTexture% = LoadTexture_Strict("GFX\Map\Textures\forestpath.png")
 	
-	hMap[ROOM1] = LoadImage_Strict("GFX\Map\Forest\forest1h.png")
-	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM1] = LoadTexture_Strict("GFX\Map\Forest\forest1h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2] = LoadImage_Strict("GFX\Map\Forest\forest2h.png")
-	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM2] = LoadTexture_Strict("GFX\Map\Forest\forest2h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM2C] = LoadImage_Strict("GFX\Map\Forest\forest2Ch.png")
-	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM2C] = LoadTexture_Strict("GFX\Map\Forest\forest2Ch_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM3] = LoadImage_Strict("GFX\Map\Forest\forest3h.png")
-	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM3] = LoadTexture_Strict("GFX\Map\Forest\forest3h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
-	hMap[ROOM4] = LoadImage_Strict("GFX\Map\Forest\forest4h.png")
-	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 256, DeleteMapTextures, False)
+	hMap[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h.png", 1 + 32768, DeleteMapTextures, False)
+	Mask[ROOM4] = LoadTexture_Strict("GFX\Map\Forest\forest4h_mask.png", 1 + 2 + 32768, DeleteMapTextures, False)
 	
 	For i = ROOM1 To ROOM4
 		fr\TileMesh[i] = LoadTerrain(hMap[i], 0.03, GroundTexture, PathTexture, Mask[i])
@@ -1360,8 +1350,8 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 				If Tile_Type > 0
 					; ~ Place trees and other details
 					; ~ Only placed on spots where the value of the heightmap is above 100
-					SetBuffer(ImageBuffer(hMap[Tile_Type - 1]))
-					Width = ImageWidth(hMap[Tile_Type - 1])
+					SetBuffer(TextureBuffer(hMap[Tile_Type - 1]))
+					Width = TextureWidth(hMap[Tile_Type - 1])
 					Tempf4 = (Tempf3 / Float(Width))
 					For lX = 3 To Width - 2
 						For lY = 3 To Width - 2
@@ -1462,7 +1452,7 @@ Function PlaceMapCreatorForest%(fr.Forest, x#, y#, z#, r.Rooms)
 		Next
 	Next
 	For i = ROOM1 To ROOM4
-		FreeImage(hMap[i]) : hMap[i] = 0
+		DeleteSingleTextureEntryFromCache(hMap[i]) : hMap[i] = 0
 	Next
 	
 	CatchErrors("Uncaught: PlaceMapCreatorForest(" + x + ", " + y + ", " + z + ")")
@@ -2402,6 +2392,7 @@ Function CreateButton%(ButtonID% = BUTTON_DEFAULT, x#, y#, z#, Pitch# = 0.0, Yaw
 	EntityPickMode(OBJ, 2)
 	If Locked Then EntityTexture(OBJ, d_I\ButtonTextureID[BUTTON_RED_TEXTURE])
 	If Parent <> 0 Then EntityParent(OBJ, Parent)
+	SetDeferredEntity(OBJ)
 	
 	Return(OBJ)
 End Function
@@ -2600,6 +2591,7 @@ Function CreateDoor.Doors(room.Rooms, x#, y#, z#, Angle#, Open% = False, DoorTyp
 		ScaleEntity(d\FrameOBJ, FrameScaleX, FrameScaleY, FrameScaleZ)
 		If Temp Then EntityType(d\FrameOBJ, HIT_MAP)
 		EntityPickMode(d\FrameOBJ, 2)
+		SetDeferredEntity(d\FrameOBJ, True)
 	Else
 		d\FrameOBJ = CreatePivot()
 	EndIf
@@ -2612,6 +2604,7 @@ Function CreateDoor.Doors(room.Rooms, x#, y#, z#, Angle#, Open% = False, DoorTyp
 	EntityType(d\OBJ, HIT_MAP)
 	EntityPickMode(d\OBJ, 2)
 	EntityParent(d\OBJ, Parent)
+	SetDeferredEntity(d\OBJ, True)
 	
 	d\HasOneSide = (DoorType = OFFICE_DOOR Lor DoorType = WOODEN_DOOR Lor DoorType = FENCE_DOOR)
 	
@@ -2623,6 +2616,7 @@ Function CreateDoor.Doors(room.Rooms, x#, y#, z#, Angle#, Open% = False, DoorTyp
 		EntityType(d\OBJ2, HIT_MAP)
 		EntityPickMode(d\OBJ2, 2)
 		EntityParent(d\OBJ2, Parent)
+		SetDeferredEntity(d\OBJ2, True)
 	EndIf
 	
 	For i = 0 To 1
@@ -2912,9 +2906,12 @@ Function UpdateDoors%()
 						TextureID = BUTTON_GREEN_TEXTURE
 					EndIf
 					For i = 0 To 1
-						If d\Buttons[i] <> 0 Then EntityTexture(d\Buttons[i], d_I\ButtonTextureID[TextureID])
+						If d\Buttons[i] <> 0 Then 
+							EntityTexture(d\Buttons[i], d_I\ButtonTextureID[TextureID])
+							UpdateEntityMaterial(d\Buttons[i])
+						EndIf
 					Next
-					d\ButtonsUpdateTimer = fps\Factor[0] * 4.0
+					d\ButtonsUpdateTimer = 35.0
 				Else
 					d\ButtonsUpdateTimer = d\ButtonsUpdateTimer - fps\Factor[0]
 				EndIf
@@ -3737,104 +3734,6 @@ Function RemoveDoor%(d.Doors)
 	Delete(d)
 End Function
 
-Type Shadows
-	Field OBJ%, Surf%
-	Field ParentOBJ%
-	Field UpdateTimer#
-	Field Alpha#
-	Field Remove% = False
-End Type
-
-Function CreateShadow.Shadows(OBJ%, ScaleX# = 0.0, ScaleZ# = 0.0)
-	If (Not opt\BlobShadows) Then Return(Null)
-	
-	Local shdw.Shadows
-	
-	shdw.Shadows = New Shadows
-	
-	shdw\OBJ = CreateMesh()
-	shdw\Surf = CreateSurface(shdw\OBJ)
-	shdw\ParentOBJ = OBJ
-	
-	Local v0% = AddVertex(shdw\Surf, -1.0, 1.0, 0.0, 0.0, 0.0)
-	Local v1% = AddVertex(shdw\Surf, 1.0, 1.0, 0.0, 1.0, 0.0)
-	Local v2% = AddVertex(shdw\Surf, 1.0, -1.0, 0.0, 1.0, 1.0)
-	Local v3% = AddVertex(shdw\Surf, -1.0, -1.0, 0.0, 0.0, 1.0)
-	
-	AddTriangle(shdw\Surf, v0, v1, v2)
-	AddTriangle(shdw\Surf, v0, v2, v3)
-	
-	PositionEntity(shdw\OBJ, EntityX(OBJ, True), EntityY(OBJ, True), EntityZ(OBJ, True), True)
-	ScaleEntity(shdw\OBJ, ScaleX, ScaleZ, 1.0, True)
-	RotateEntity(shdw\OBJ, 90.0, 0.0, 0.0, True)
-	EntityTexture(shdw\OBJ, de_I\DecalTextureID[DECAL_SHADOW])
-	
-	UpdateNormals(shdw\OBJ)
-	HideEntity(shdw\OBJ)
-	
-	Return(shdw)
-End Function
-
-Function UpdateShadows%()
-	If (Not opt\BlobShadows) Then Return
-	
-	Local shdw.Shadows
-	Local Dist#, UpdateDist# = PowTwo(Min(HideDistance, fog\FarDist))
-	
-	For shdw.Shadows = Each Shadows
-		Dist = EntityDistanceSquared(me\Collider, shdw\ParentOBJ)
-		If Dist < UpdateDist
-			Local x# = EntityX(shdw\ParentOBJ, True), y# = EntityY(shdw\ParentOBJ, True), z# = EntityZ(shdw\ParentOBJ, True)
-			
-			shdw\UpdateTimer = shdw\UpdateTimer - fps\Factor[0]
-			
-			If shdw\Remove
-				; ~ Simplify the code and remove the shadow when NPC is dead
-				PositionEntity(shdw\OBJ, x, EntityY(shdw\OBJ, True), z, True)
-				If EntityHidden(shdw\OBJ) Then ShowEntity(shdw\OBJ)
-				
-				shdw\Alpha = shdw\Alpha - (fps\Factor[0] * 0.005)
-				EntityAlpha(shdw\OBJ, shdw\Alpha)
-				If shdw\Alpha <= 0.0 Then RemoveShadow(shdw)
-				Continue
-			EndIf
-			
-			If EntityHidden(shdw\ParentOBJ) Lor (forest_event <> Null And forest_event\room = PlayerRoom And forest_event\EventState = 1.0) Lor SecondaryLightOn =< 0.3 Lor (PD_event\room = PlayerRoom And PD_event\EventState2 <> PD_FakeTunnelRoom)
-				If (Not EntityHidden(shdw\OBJ)) Then HideEntity(shdw\OBJ)
-				Continue
-			EndIf
-			
-			If shdw\UpdateTimer <= 0.0
-				EntityPickMode(me\Collider, 0)
-				If LinePick(x, y + 0.15, z, 0.0, -10.0, 0.0) <> 0
-					PositionEntity(shdw\OBJ, x, PickedY() + 0.002, z, True)
-					RotateEntity(shdw\OBJ, EntityPitch(shdw\ParentOBJ, True), EntityYaw(shdw\ParentOBJ, True), EntityRoll(shdw\ParentOBJ, True), True)
-					AlignToVector(shdw\OBJ, -PickedNX(), -PickedNY(), -PickedNZ(), 3)
-					MoveEntity(shdw\OBJ, 0.0, 0.0, -0.002)
-				EndIf
-				EntityPickMode(me\Collider, 1)
-				shdw\UpdateTimer = 8.0
-			EndIf
-			PositionEntity(shdw\OBJ, x, EntityY(shdw\OBJ, True), z, True)
-			
-			shdw\Alpha = Clamp(1.0 - (EntityDistanceSquared(me\Collider, shdw\OBJ) / fog\FarDist * 0.3), 0.0, 1.0)
-			If shdw\Alpha > 0.0
-				EntityAlpha(shdw\OBJ, shdw\Alpha)
-				If EntityHidden(shdw\OBJ) Then ShowEntity(shdw\OBJ)
-			Else
-				If (Not EntityHidden(shdw\OBJ)) Then HideEntity(shdw\OBJ)
-			EndIf
-		EndIf
-	Next
-End Function
-
-Function RemoveShadow%(shdw.Shadows)
-	shdw\ParentOBJ = 0
-	FreeEntity(shdw\OBJ) : shdw\OBJ = 0
-	shdw\Surf = 0 
-	Delete(shdw)
-End Function
-
 Type Decals
 	Field OBJ%, ID%
 	Field Size#, SizeChange#, MaxSize#
@@ -3869,6 +3768,7 @@ Function CreateDecal.Decals(ID%, x#, y#, z#, Pitch#, Yaw#, Roll#, Size# = 1.0, A
 	EntityBlend(de\OBJ, BlendMode)
 	If R <> 0 Lor G <> 0 Lor B <> 0 Then EntityColor(de\OBJ, R, G, B)
 	HideEntity(de\OBJ)
+	SetDeferredEntity(de\OBJ, False, DEFERRED_DIFF)
 	
 	Return(de)
 End Function
@@ -3994,11 +3894,13 @@ Function CreateSecurityCam.SecurityCams(room.Rooms, x1#, y1#, z1#, Pitch1#, Scre
 	PositionEntity(sc\BaseOBJ, x1, y1, z1)
 	If room <> Null Then EntityParent(sc\BaseOBJ, room\OBJ)
 	HideEntity(sc\BaseOBJ)
+	SetDeferredEntity(sc\BaseOBJ)
 	
 	sc\CameraOBJ = CopyEntity(sc_I\CamModelID[CAM_HEAD_MODEL])
 	ScaleEntity(sc\CameraOBJ, 0.01, 0.01, 0.01)
 	RotateEntity(sc\CameraOBJ, Pitch1, 0.0, 0.0)
 	HideEntity(sc\CameraOBJ)
+	SetDeferredEntity(sc\CameraOBJ)
 	
 	sc\Screen = Screen
 	If Screen
@@ -4020,17 +3922,20 @@ Function CreateSecurityCam.SecurityCams(room.Rooms, x1#, y1#, z1#, Pitch1#, Scre
 		EntityTexture(sc\ScrOBJ, sc_I\ScreenTex)
 		If room <> Null Then EntityParent(sc\ScrOBJ, room\OBJ)
 		HideEntity(sc\ScrOBJ)
+		SetDeferredEntity(sc\ScrOBJ, False, DEFERRED_DIFFNOLIT)
 		
 		sc\ScrOverlay = CreateSprite(sc\ScrOBJ)
 		ScaleSprite(sc\ScrOverlay, MonWidth, MonHeight)
 		EntityTexture(sc\ScrOverlay, mon_I\MonitorOverlayID[MONITOR_DEFAULT_OVERLAY])
 		SpriteViewMode(sc\ScrOverlay, 2)
-		EntityFX(sc\ScrOverlay, 1)
+		EntityFX(sc\ScrOverlay, 1 + 16)
 		EntityBlend(sc\ScrOverlay, 3)
 		HideEntity(sc\ScrOverlay)
+		SetDeferredEntity(sc\ScrOverlay, False, DEFERRED_DIFFNOLIT)
 		
 		sc\MonitorOBJ = CopyEntity(mon_I\MonitorModelID[MONITOR_DEFAULT_MODEL], sc\ScrOBJ)
 		ScaleEntity(sc\MonitorOBJ, Scale, Scale, Scale)
+		SetDeferredEntity(sc\MonitorOBJ)
 		
 		sc\Cam = CreateCamera()
 		CameraViewport(sc\Cam, 0, 0, 512, 512)
@@ -4244,6 +4149,8 @@ End Function
 Function RenderSecurityCams%()
 	CatchErrors("RenderSecurityCams()")
 	
+	SetBuffer(TextureBuffer(sc_I\ScreenTex)) ; ~ Set render target to screen tex
+	
 	Local sc.SecurityCams
 	
 	For sc.SecurityCams = Each SecurityCams
@@ -4258,23 +4165,17 @@ Function RenderSecurityCams%()
 					EndIf
 					
 					If sc\State >= sc\RenderInterval
-						Local BufferBack% = BackBuffer()
-						
 						If sc_I\CoffinCam = Null Lor Rand(5) = 5 Lor sc\CoffinEffect <> 3
 							ShowEntity(sc\Cam)
-							Cls()
-							SetBuffer(BufferBack)
 							RenderWorld(RenderTween)
-							CopyRect(0, 0, 512, 512, 0, 0, BufferBack, TextureBuffer(sc_I\ScreenTex))
 							HideEntity(sc\Cam)
 						Else
 							ShowEntity(sc_I\CoffinCam\room\OBJ)
 							EntityAlpha(GetChild(sc_I\CoffinCam\room\OBJ, 2), 1.0)
 							ShowEntity(sc_I\CoffinCam\Cam)
-							Cls()
-							SetBuffer(BufferBack)
+							
 							RenderWorld(RenderTween)
-							CopyRect(0, 0, 512, 512, 0, 0, BufferBack, TextureBuffer(sc_I\ScreenTex))
+							
 							HideEntity(sc_I\CoffinCam\Cam)
 							HideEntity(sc_I\CoffinCam\room\OBJ)
 						EndIf
@@ -4292,8 +4193,10 @@ Function RenderSecurityCams%()
 			CatchErrors("Uncaught: RenderSecurityCameras(Screen doesn't exist anymore!)")
 		EndIf
 	Next
-	Cls()
+	
+	SetBuffer(BackBuffer())
 End Function
+
 
 Function RemoveSecurityCam%(sc.SecurityCams)
 	If sc\Pvt <> 0 Then FreeEntity(sc\Pvt) : sc\Pvt = 0
@@ -4463,6 +4366,7 @@ Function CreateScreen.Screens(room.Rooms, x#, y#, z#, Pitch#, Yaw#, Roll#, Scale
 	Next
 	If s\Texture = 0 Then s\Texture = GetRescaledTexture(False, s\ImgPath, 1, DeleteAllTextures, 256, 192)
 	EntityTexture(s\OBJ, s\Texture)
+	SetDeferredEntity(s\OBJ)
 	
 	Return(s)
 End Function
@@ -4943,6 +4847,10 @@ Function ShowRoomsColl%(room.Rooms)
 		EntityAlpha(GetChild(room\OBJ, 2), 1.0)
 		room\HiddenAlpha = False
 	EndIf
+End Function
+
+Function IsRoomVisible(r.Rooms)
+	Return(Not (EntityHidden(r\OBJ) Lor r\HiddenAlpha))
 End Function
 
 Function UpdateRooms%()
@@ -6030,8 +5938,8 @@ Function LoadTerrain%(HeightMap%, yScale# = 0.7, Tex1%, Tex2%, Mask%)
 	If Mask = 0 Then RuntimeErrorEx(Format(GetLocalString("runerr", "mask"), Mask))
 	
 	; ~ Store HeightMap dimensions
-	Local HeightMapWidth% = ImageWidth(HeightMap) - 1
-	Local HeightMapHeight% = ImageHeight(HeightMap) - 1
+	Local HeightMapWidth% = TextureWidth(HeightMap) - 1
+	Local HeightMapHeight% = TextureHeight(HeightMap) - 1
 	Local PosX%, PosY%, VertexIndex%
 	
 	; ~ Scale the textures to the right size
@@ -6070,7 +5978,7 @@ Function LoadTerrain%(HeightMap%, yScale# = 0.7, Tex1%, Tex2%, Mask%)
 	PositionMesh(Mesh, (-HeightMapWidth) / 2.0, 0.0, (-HeightMapHeight) / 2.0)
 	PositionMesh(Mesh2, (-HeightMapWidth) / 2.0, 0.01, (-HeightMapHeight) / 2.0)
 	
-	Local HeightMapBuffer% = ImageBuffer(HeightMap)
+	Local HeightMapBuffer% = TextureBuffer(HeightMap)
 	Local MaskBuffer% = TextureBuffer(Mask)
 	Local MaskWidth% = TextureWidth(Mask)
 	Local MaskHeight% = TextureHeight(Mask)
