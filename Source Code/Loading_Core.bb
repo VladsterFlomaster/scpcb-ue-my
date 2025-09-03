@@ -3677,6 +3677,9 @@ Function NullGame%(PlayButtonSFX% = True)
 	For e.Events = Each Events
 		RemoveEvent(e)
 	Next
+	skull_event = Null
+	PD_event = Null
+	forest_event = Null
 	
 	IsUsingRadio = False
 	InvOpen = False
@@ -3693,6 +3696,7 @@ Function NullGame%(PlayButtonSFX% = True)
 	For it.Items = Each Items
 		RemoveItem(it)
 	Next
+	skull_event_leaflet = Null
 	Dim Inventory.Items(0)
 	For itt.ItemTemplates = Each ItemTemplates
 		RemoveItemTemplate(itt)

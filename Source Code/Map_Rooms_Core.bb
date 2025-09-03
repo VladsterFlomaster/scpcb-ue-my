@@ -1623,9 +1623,6 @@ Function FillRoom%(r.Rooms)
 			RotateEntity(it\Collider, 0.0, 90.0, 0.0)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("Leaflet", it_paper, r\x - 756.0 * RoomScale, r\y + 5016.0 * RoomScale, r\z + 521.0 * RoomScale)
-			EntityParent(it\Collider, r\OBJ)
-			
 			emit.Emitter = SetEmitter(r, r\x + 911.0 * RoomScale, r\y + 382.0 * RoomScale, r\z + 416.0 * RoomScale, 25)
 			emit\State = 2
 			

@@ -2726,7 +2726,7 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					;[Block]
 					If KEY2_SPAWNRATE = 5
 						TFormPoint(-354.0,  220.0, 516.0, e\room\OBJ, 0)
-						it.Items = CreateItem("White Key", it_key_white, TFormedX(), TFormedY(), TFormedZ())
+						CreateItem("White Key", it_key_white, TFormedX(), TFormedY(), TFormedZ())
 					EndIf
 					;[End Block]
 				Case 2.0
@@ -2768,7 +2768,7 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 				Case 18.0
 					;[Block]
 					TFormPoint(-344.0, 176.0, 272.0, e\room\OBJ, 0)
-					it.Items = CreateItem("Strange Note", it_paper, TFormedX(), TFormedY(), TFormedZ())
+					CreateItem("Strange Note", it_paper, TFormedX(), TFormedY(), TFormedZ())
 					;[End Block]
 				Case 25.0
 					;[Block]
@@ -3176,6 +3176,8 @@ Function UpdateEvent_Cont2_500_1499%(e.Events)
 	EndIf
 End Function
 
+Global skull_event_leaflet.Items = Null
+
 Function UpdateEvent_Cont2_1123%(e.Events)
 	If PlayerRoom = e\room
 		; ~ The event is started when the player picks up SCP-1123 (in Items.bb/UpdateItems())
@@ -3236,6 +3238,9 @@ Function UpdateEvent_Cont2_1123%(e.Events)
 				Next
 				ChangePlayerBodyTexture(PLAYER_BODY_PRISONER_TEX)
 				
+				TFormPoint(-756.0, 5016.0, 521.0, e\room\OBJ, 0)
+				skull_event_leaflet = CreateItem("Leaflet", it_paper, TFormedX(), TFormedY(), TFormedZ())
+				
 				me\CameraShake = 1.0
 				me\BlurTimer = 1200.0
 				me\Injuries = 1.0
@@ -3245,6 +3250,11 @@ Function UpdateEvent_Cont2_1123%(e.Events)
 			Case 2.0
 				;[Block]
 				e\EventState2 = e\EventState2 + fps\Factor[0]
+				
+				If ClosestItem = skull_event_leaflet And mo\MouseHit1
+					PickItem(skull_event_leaflet)
+					SelectedItem = skull_event_leaflet
+				EndIf
 				
 				PointEntity(e\room\NPC[0]\Collider, me\Collider)
 				me\BlurTimer = Max(me\BlurTimer, 100.0)
@@ -3271,12 +3281,15 @@ Function UpdateEvent_Cont2_1123%(e.Events)
 						
 						ChangePlayerBodyTexture(PLAYER_BODY_NORMAL_TEX)
 						
+						RemoveItem(skull_event_leaflet) : skull_event_leaflet = Null
+						
 						e\EventState = 3.0
 					EndIf
 				EndIf
 				;[End Block]
 			Case 3.0
 				;[Block]
+				If Rand(150) = 1 Then OpenCloseDoor(e\room\RoomDoors[1])
 				If e\room\RoomDoors[0]\Open
 					TFormPoint(-706.0, 5006.0, -845.0, e\room\OBJ, 0)
 					PositionEntity(e\room\NPC[0]\Collider, TFormedX(), TFormedY(), TFormedZ())
@@ -3418,6 +3431,7 @@ Function UpdateEvent_Cont2_1123%(e.Events)
 					FreeEntity(e\room\Objects[i]) : e\room\Objects[i] = 0
 				Next
 				RemoveEvent(e)
+				skull_event = Null
 				;[End Block]
 		End Select
 	EndIf
@@ -4669,9 +4683,9 @@ Function UpdateEvent_Cont1_895%(e.Events)
 						de.Decals = CreateDecal(DECAL_BLOOD_2, e\room\x, e\room\y - 1531.0 * RoomScale, e\room\z, 90.0, Rnd(360.0), 0.0, 0.4)
 						EntityParent(de\OBJ, e\room\OBJ)
 						
-						it.Items = CreateItem("Unknown Note", it_paper, e\room\x, e\room\y - 1516.0 * RoomScale, e\room\z)
+						CreateItem("Unknown Note", it_paper, e\room\x, e\room\y - 1516.0 * RoomScale, e\room\z)
 						
-						it.Items = CreateItem("Bloody Level 3 Key Card", it_key3, e\room\x, e\room\y - 1504.0 * RoomScale, e\room\z)
+						CreateItem("Bloody Level 3 Key Card", it_key3, e\room\x, e\room\y - 1504.0 * RoomScale, e\room\z)
 						
 						LoadNPCSound(e\room\NPC[1], "SFX\Room\895Chamber\GuardRadio.ogg")
 					ElseIf e\room\NPC[1]\Frame > 285.9
@@ -5256,7 +5270,7 @@ Function UpdateEvent_Room2_Servers_HCZ%(e.Events)
 				
 				ShowEntity(e\room\Objects[0])
 				
-				it.Items = CreateItem("Bloody Level 3 Key Card", it_key3, EntityX(e\room\NPC[0]\Collider), EntityY(e\room\NPC[0]\Collider) + 0.1, EntityZ(e\room\NPC[0]\Collider))
+				CreateItem("Bloody Level 3 Key Card", it_key3, EntityX(e\room\NPC[0]\Collider), EntityY(e\room\NPC[0]\Collider) + 0.1, EntityZ(e\room\NPC[0]\Collider))
 				
 				RemoveNPC(e\room\NPC[0]) : e\room\NPC[0] = Null
 				
@@ -5567,10 +5581,10 @@ Function UpdateEvent_Cont2_049%(e.Events)
 				e\SoundCHN = PlaySound_Strict(LoadTempSound("SFX\Room\Blackout.ogg"))
 				If EntityDistanceSquared(e\room\Objects[1], me\Collider) < EntityDistanceSquared(e\room\Objects[3], me\Collider)
 					TFormPoint(2720.0, -3516.0, 1824.0, e\room\OBJ, 0)
-					it.Items = CreateItem("Research Sector-02 Scheme", it_paper, TFormedX(), TFormedY(), TFormedZ())
+					CreateItem("Research Sector-02 Scheme", it_paper, TFormedX(), TFormedY(), TFormedZ())
 				Else
 					TFormPoint(-2720.0, -3516.0, -1824.0, e\room\OBJ, 0)
-					it.Items = CreateItem("Research Sector-02 Scheme", it_paper, TFormedX(), TFormedY(), TFormedZ())
+					CreateItem("Research Sector-02 Scheme", it_paper, TFormedX(), TFormedY(), TFormedZ())
 				EndIf
 				
 				e\EventState = 1.0
@@ -5770,7 +5784,7 @@ Function UpdateEvent_Cont2_409%(e.Events)
 				
 				If I_005\ChanceToSpawn = 2
 					TFormPoint(-5000.0, -4409.0, 1520.0, e\room\OBJ, 0)
-					it.Items = CreateItem("Crystallized SCP-005", it_crystal005, TFormedX(), TFormedY(), TFormedZ())
+					CreateItem("Crystallized SCP-005", it_crystal005, TFormedX(), TFormedY(), TFormedZ())
 				EndIf
 				
 				TFormPoint(-4105.0, -4336.0, 2207.0, e\room\OBJ, 0)
@@ -6062,7 +6076,7 @@ Function UpdateEvent_Cont3_966%(e.Events)
 					EntityParent(de\OBJ, e\room\OBJ)
 					
 					TFormPoint(-68.0, 40.0, -396.0, e\room\OBJ, 0)
-					it.Items = CreateItem("Asav Harn's Badge", it_badge, TFormedX(), TFormedY(), TFormedZ())
+					CreateItem("Asav Harn's Badge", it_badge, TFormedX(), TFormedY(), TFormedZ())
 					
 					e\EventState = 1.0
 				EndIf
@@ -7136,7 +7150,7 @@ Function UpdateEvent_Toilets_789_J%(e.Events)
 			;[Block]
 			If e\room\RoomTemplate\RoomID = r_room2_6_ez
 				TFormPoint(502.0, 128.0, 83.0, e\room\OBJ, 0)
-				it.Items = CreateItem("Document SCP-789-J", it_paper, TFormedX(), TFormedY(), TFormedZ())
+				CreateItem("Document SCP-789-J", it_paper, TFormedX(), TFormedY(), TFormedZ())
 			EndIf
 			
 			e\EventState = 1.0
