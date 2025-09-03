@@ -3505,10 +3505,9 @@ End Function
 Function UpdateZoneColor%()
 	Local e.Events
 	Local IsOutSide% = IsPlayerOutsideFacility()
-	Local DistFog# = fog\FarDist - (2.0 * (SecondaryLightOn =< 0.3) * (wi\NightVision = 0)) * LightVolume
+	Local DistFog# = fog\FarDist - (2.0 * (SecondaryLightOn =< 0.01) * (wi\NightVision = 0)) * LightVolume
 	
-	fog\CurrName = ""
-	fog\CurrAmbientName = ""
+	SetZoneColor("", "")
 	
 	CameraFogMode(Camera, 1)
 	CameraFogRange(Camera, 0.1 * LightVolume, DistFog)
@@ -3524,24 +3523,22 @@ Function UpdateZoneColor%()
 		CameraRange(Camera, 0.01, 72.0)
 	ElseIf IsOutSide
 		SetZoneColor(FogColorOutside, AmbientOutside)
-		fog\FarDist = 60.0
 		LightVolume = 1.0
-		CameraFogRange(Camera, 5.0, fog\FarDist)
-		CameraRange(Camera, 0.01, 72.0) ; ~ fog\FarDist * 1.2
+		CameraFogRange(Camera, 5.0, 60.0)
+		CameraRange(Camera, 0.01, 72.0)
 	ElseIf PlayerRoom\RoomTemplate\RoomID = r_dimension_1499
 		SetZoneColor(FogColorDimension_1499)
-		fog\FarDist = 80.0
 		LightVolume = 1.0
-		CameraFogRange(Camera, 40.0, fog\FarDist)
-		CameraRange(Camera, 0.01, 96.0) ; ~ fog\FarDist * 1.2
-	ElseIf PlayerRoom\RoomTemplate\RoomID = r_dimension_106
+		CameraFogRange(Camera, 40.0, 80.0)
+		CameraRange(Camera, 0.01, 96.0)
+	ElseIf PD_event <> Null And PD_event\room = PlayerRoom
 		LightVolume = 1.0
 		If PD_event\EventState2 = PD_TrenchesRoom Lor PD_event\EventState2 = PD_TowerRoom
 			SetZoneColor(FogColorPDTrench)
 			If PD_event\EventState2 = PD_TrenchesRoom
 				fog\FarDist = 30.0
 				CameraFogRange(Camera, 5.0, fog\FarDist)
-				CameraRange(Camera, 0.01, 35.0) ; ~ fog\FarDist * 1.2
+				CameraRange(Camera, 0.01, 35.0)
 			EndIf
 		ElseIf PD_event\EventState2 = PD_FakeTunnelRoom
 			SetZoneColor(FogColorHCZ, AmbientColorHCZ)
@@ -3550,20 +3547,18 @@ Function UpdateZoneColor%()
 		EndIf
 	ElseIf forest_event <> Null And forest_event\room = PlayerRoom
 		If forest_event\EventState = 1.0
-			If forest_event\EventState4 = 0.0
+			If forest_event\room\NPC[0] <> Null
 				SetZoneColor(FogColorForest)
-				fog\FarDist = 8.0
 				LightVolume = 1.0
 			Else
 				SetZoneColor(FogColorForestRed)
-				fog\FarDist = 5.0
 				LightVolume = 0.8
 			EndIf
 			If forest_event\room\NPC[0] <> Null
 				If forest_event\room\NPC[0]\State >= 2.0 Then SetZoneColor(FogColorForestChase)
 			EndIf
-			CameraFogRange(Camera, 0.1, 6.0) ; ~ fog\FarDist
-			CameraRange(Camera, 0.01, 7.2) ; ~ fog\FarDist * 1.2
+			CameraFogRange(Camera, 0.1, 6.0)
+			CameraRange(Camera, 0.01, 7.2)
 		EndIf
 	EndIf
 	

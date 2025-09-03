@@ -443,7 +443,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 	
 	Local ChildMesh%
 	Local Surf%, Tex%[2], Brush%
-	Local IsAlpha%, AlphaCollision% = False
+	Local IsAlpha%
 	Local u#, v#
 	
 	Local Count% = ReadInt(f)
@@ -459,7 +459,6 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 		Tex[0] = 0 : Tex[1] = 0
 		
 		IsAlpha = 0
-		AlphaCollision% = False
 		
 		; Enable texture manage for rooms textures
 		
@@ -487,8 +486,6 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					If Temp1i = 3 Then IsAlpha = 1
 					TextureCoords(Tex[j], 1 - j)
 				EndIf
-				
-				AlphaCollision = (Lower(StripPath(Temp1s)) = "glass.png")
 			EndIf
 		Next
 		
@@ -549,9 +546,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 		If IsAlpha = 1
 			AddMesh(ChildMesh, Alpha)
 			EntityAlpha(ChildMesh, 0.0)
-		EndIf
-		
-		If IsAlpha <> 1 Lor AlphaCollision
+		Else
 			AddMesh(ChildMesh, Opaque)
 			EntityParent(ChildMesh, CollisionMeshes)
 			EntityAlpha(ChildMesh, 0.0)
