@@ -4,13 +4,13 @@ Global SMALLEST_POWER_TWO#
 Global SMALLEST_POWER_TWO_HALF#
 
 Function InitFastResize%()
-	WhiteTexture = CreateTexture(1, 1, 1)
+	WhiteTexture = CreateTexture(1, 1)
 	SetBuffer(TextureBuffer(WhiteTexture))
 	ClsColor(255,255,255)
 	Cls()
 	SetBuffer(BackBuffer())
 	
-	ResizeTexture = CreateTexture(Max(SMALLEST_POWER_TWO, 2048), Max(SMALLEST_POWER_TWO, 2048), 1 + 2 + 256 + 16384)
+	ResizeTexture = CreateTexture(Max(SMALLEST_POWER_TWO, 2048.0), Max(SMALLEST_POWER_TWO, 2048.0), 1 + 2 + 256 + 16384)
 	
 	ClsColor(0, 0, 0)
 	
@@ -135,7 +135,7 @@ Function RenderWorldEx%(Tween#)
 	If (Not wi\IsNVGBlinking)
 		Local TexBuffer%
 		
-		For i = 0 To 10
+		For i = 0 To MaxOverlayIDAmount - 1
 			Local Overlay% = t\OverlayID[i]
 			
 			If Overlay <> 0 And (Not EntityHidden(Overlay))

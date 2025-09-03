@@ -131,7 +131,7 @@ Function InitDeferred%()
 	PokeFloat(AdjustMatrix, 52, 0.5)
 	PokeFloat(AdjustMatrix, 60, 1.0)
 	EffectMatrix(DeferredShade, "ShadowsAdjust", BankPointer(AdjustMatrix))
-	FreeBank(AdjustMatrix)
+	FreeBank(AdjustMatrix) : AdjustMatrix = 0
 	
 	DeferredSphere = CreateLightVolume(DEFERRED_LIGHT_POINT)
 	DeferredCone = CreateLightVolume(DEFERRED_LIGHT_SPOT)
@@ -640,7 +640,6 @@ End Function
 ; ====================================
 
 Function LoadEffectEx%(File$, Defines$ = "")
-	Return
 	Local f% = ReadFile(File)
 	
 	If f = 0 Then Return
