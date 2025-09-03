@@ -140,8 +140,8 @@ Const it_e_reader% = 79
 Const it_e_reader20% = 80
 Const it_e_readerulti% = 81
 
-Const it_bat% = 82
-Const it_coarsebat% = 83
+Const it_coarsebat% = 82
+Const it_bat% = 83
 Const it_finebat% = 84
 Const it_veryfinebat% = 85
 Const it_killbat% = 86
