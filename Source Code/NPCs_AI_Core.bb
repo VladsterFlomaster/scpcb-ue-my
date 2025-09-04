@@ -4141,7 +4141,7 @@ Function UpdateNPCType999%(n.NPCs)
 						GiveAchievement("999")
 						PointEntity(n\Collider, me\Collider)
 						RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider, True), 0.0, True)
-						n\LastSeen = 70.0 * 1.5
+						n\LastSeen = 70.0 * 2.5
 						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 25.0)
 					EndIf
 				Else
