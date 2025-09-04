@@ -1236,8 +1236,8 @@ Function LoadMaterials%(File$)
 			StrTemp = IniGetString(File, Loc, "roughness")
 			If StrTemp <> "" Then mat\Roughness = LoadTexture_Strict(StrTemp, 1, DeleteAllTextures)
 			
-			StrTemp = IniGetString(File, Loc, "emission")
-			If StrTemp <> "" Then mat\Emission = LoadTexture_Strict(StrTemp, 1, DeleteAllTextures)
+			StrTemp = IniGetString(File, Loc, "emissive")
+			If StrTemp <> "" Then mat\Emissive = LoadTexture_Strict(StrTemp, 1, DeleteAllTextures)
 			
 			mat\StepSound = IniGetInt(File, Loc, "stepsound")
 			mat\IsDiffuseAlpha = IniGetInt(File, Loc, "transparent")

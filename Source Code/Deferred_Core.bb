@@ -250,13 +250,13 @@ Function SetDeferredBrush%(Brush%, State% = -1)
 				Else
 					If mat\Normal <> 0 Then State = State Or DEFERRED_DIFFNORMAL
 					If mat\Roughness <> 0 Then State = State Or DEFERRED_DIFFROUGH
-					If mat\Emission <> 0 Then State = State Or DEFERRED_DIFFEMISSION
+					If mat\Emissive <> 0 Then State = State Or DEFERRED_DIFFEMISSION
 					BrushTexture(Brush, MissingTexture, 0, 1)
 					BrushTexture(Brush, MissingTexture, 0, 2)
 					BrushTexture(Brush, MissingTexture, 0, 3)
 					If mat\Normal <> 0 Then BrushTexture(Brush, mat\Normal, 0, 1)
 					If mat\Roughness <> 0 Then BrushTexture(Brush, mat\Roughness, 0, 2)
-					If mat\Emission <> 0 Then BrushTexture(Brush, mat\Emission, 0, 3)
+					If mat\Emissive <> 0 Then BrushTexture(Brush, mat\Emissive, 0, 3)
 				EndIf
 			EndIf
 			FreeTexture(t1) : t1 = 0

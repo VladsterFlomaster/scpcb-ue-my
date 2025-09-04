@@ -1,7 +1,7 @@
 Type Materials
 	Field Normal%
 	Field Roughness%
-	Field Emission%
+	Field Emissive%
 	Field Name$
 	Field IsDiffuseAlpha%
 	Field UseMask%
