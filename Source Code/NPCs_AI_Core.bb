@@ -2891,7 +2891,7 @@ Function UpdateNPCType457%(n.NPCs)
 								
 								UseDoorNPC(n)
 								
-								; ~ Resetting the "PrevState" value randomly, to make SCP-049 talking randomly 
+								; ~ Resetting the "PrevState" value randomly, to make SCP-457 talking randomly 
 								If Rand(600) = 1 And n\State2 = 0.0 Then n\PrevState = 0
 								
 								If n\PrevState > 1 Then n\PrevState = 1
@@ -2904,7 +2904,7 @@ Function UpdateNPCType457%(n.NPCs)
 								n\PathTimer = 0.0
 								n\State3 = 0.0
 								
-								; ~ Attempt to find a room (the PlayerRoom or one of it's adjacent rooms) for SCP-049 to go to but select the one closest to him
+								; ~ Attempt to find a room (the PlayerRoom or one of it's adjacent rooms) for SCP-457 to go to but select the one closest to him
 								If n\PathStatus <> PATH_STATUS_FOUND
 									Local ClosestDist# = EntityDistanceSquared(PlayerRoom\OBJ, n\Collider)
 									Local ClosestRoom.Rooms = PlayerRoom
@@ -2962,7 +2962,7 @@ Function UpdateNPCType457%(n.NPCs)
 										n\PathStatus = FindPath(n, EntityX(ClosestRoom\OBJ), 0.5, EntityZ(ClosestRoom\OBJ))
 									EndIf
 									
-									; ~ Making SCP-049 skip waypoints for doors he can't interact with, but only if the actual path is behind him
+									; ~ Making SCP-457 skip waypoints for doors he can't interact with, but only if the actual path is behind him
 									If n\PathStatus = PATH_STATUS_FOUND
 										If n\Path[1] <> Null
 											If n\Path[1]\door <> Null
@@ -3006,7 +3006,7 @@ Function UpdateNPCType457%(n.NPCs)
 					If ChannelPlaying(n\SoundCHN2) Then StopChannel(n\SoundCHN2) : n\SoundCHN2 = 0
 				EndIf
 				;[End Block]
-			Case 3.0 ; ~ The player was killed by SCP-049
+			Case 3.0 ; ~ The player was killed by SCP-457
 				;[Block]
 				AnimateNPC(n, 537.0, 660.0, 0.7, False)
 				
