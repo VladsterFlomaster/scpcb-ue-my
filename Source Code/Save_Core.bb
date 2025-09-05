@@ -2284,7 +2284,7 @@ Function LoadGameQuick%(File$)
 				;[Block]
 				If e\EventState4 < 70.0 * 13.1
 					For i = 2 To 3
-						RotateEntity(e\room\Objects[i], 90.0, 180.0 * (i = 3), 0.0, True)
+						RotateEntity(e\room\Objects[i], 90.0, e\room\Angle + 180.0 * (i = 3), 0.0, True)
 					Next
 				EndIf
 				;[End Block]
