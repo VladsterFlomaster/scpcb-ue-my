@@ -7,6 +7,9 @@
 - Ending A2 can now be obtained via SCP-268.
 - Ending A1 can be obtained regardless of whether or not SCP-106 is contained as long as the player has all the achievements(barring ending achievements).
 - SCP-914 has a new Very Fine effect on the player.
+- Smoke debuffs the player's stamina if they stay in it too long.
+- Removed NPCs.ini file.
+- Player HUD is now animated when wearing SCP-268 or being protected from SCP-049.
 
 [Items]
 - Added documents: Risk classification, disruption classification, warning labels #1, #2, and #3, SCP-914 Test logs, containment zones, and updated the security clearance levels.
@@ -25,6 +28,7 @@
 - Snow at Gate B glistens.
 
 [NPCs]
+- Added SCP-457.
 - Added SCP-999.
 - Increased SCP-106's spawnrate once the player has entered Entrance Zone.
 - SCP-008-1 and SCP-049-2's spawntimer scales with «AggressiveNPCs».
