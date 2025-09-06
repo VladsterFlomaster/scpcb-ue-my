@@ -3893,6 +3893,9 @@ Function FillRoom%(r.Rooms)
 			it.Items = CreateItem("Syringe", it_syringe, r\x - 996.0 * RoomScale, r\y + 170.0 * RoomScale, r\z + 132.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
+			it.Items = CreateItem("SCP-2022", it_scp2022, r\x - 659.0 * RoomScale, r\y + 112.0 * RoomScale, r\z - 305.0 * RoomScale)
+			EntityParent(it\Collider, r\OBJ)
+			
 			it.Items = CreateItem("Pizza Slice", it_pizza, r\x - 805.0 * RoomScale, r\y + 170.0 * RoomScale, r\z + 260.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
