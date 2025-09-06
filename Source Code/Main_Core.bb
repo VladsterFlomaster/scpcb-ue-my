@@ -6554,6 +6554,7 @@ Function UpdateUseItem%(item.Items)
 			;[Block]
 			If CanUseItem(True)
 				If item\ItemTemplate\ID = it_scp2022pill
+					GiveAchievement("2022")
 					If I_2022\Used < 2.0
 						I_2022\HealTimer = I_2022\HealTimer + 20.0
 						me\Bloodloss = 0.0
