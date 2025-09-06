@@ -45,6 +45,15 @@
 		"death_timer": 0.0
 	},
 	{
+		"name": ["Chlorine", "Liquid Chlorine"],
+		"color": [224, 224, 224],
+		"alpha": 0.9,
+		"dispense_sound": "SFX\\SCP\\294\\Dispense2.ogg",
+		"drink_sound": "SFX\\SCP\\294\\Spit.ogg",
+		"blur": 15.0,
+		"damage": 1.0
+	},
+	{
 		"name": ["Spoilers", "Spoiling"],
 		"color": [100, 100, 255],
 		"alpha": 1.0,
