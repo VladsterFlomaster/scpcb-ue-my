@@ -4,14 +4,14 @@ Function PlaySoundEx%(SoundHandle%, Cam%, Entity%, Range# = 10.0, Volume# = 1.0,
 	If Volume > 0.0
 		Range = Max(Range, 1.0)
 		
-		Local Dist# = EntityDistance(Cam, Entity) / Range
+		Local Dist# = 1.0 - (EntityDistance(Cam, Entity) / Range)
 		
-		If (1.0 - Dist > 0.0) And (1.0 - Dist < 1.0)
+		If Dist > 0.0 And Dist < 1.0
 			Local PanValue# = Sin(-DeltaYaw(Cam, Entity))
 			
 			SoundCHN = PlaySound_Strict(SoundHandle, IsVoice)
 			
-			ChannelVolumeEx(SoundCHN, Volume * (1.0 - Dist) * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
+			ChannelVolumeEx(SoundCHN, Volume * Dist * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)
 			ChannelPan(SoundCHN, PanValue)
 		EndIf
 	EndIf
@@ -51,12 +51,12 @@ Function UpdateSoundOrigin%(SoundCHN%, Cam%, Entity%, Range# = 10.0, Volume# = 1
 	If Volume > 0.0
 		Range = Max(Range, 1.0)
 		
-		Local Dist# = EntityDistance(Cam, Entity) / Range
+		Local Dist# = 1.0 - (EntityDistance(Cam, Entity) / Range)
 		
-		If (1.0 - Dist > 0.0) And (1.0 - Dist < 1.0)
+		If Dist > 0.0 And Dist < 1.0
 			Local PanValue# = Sin(-DeltaYaw(Cam, Entity))
 			
-			ChannelVolumeEx(SoundCHN, Volume * (1.0 - Dist) * ((Not SFXVolume) + (SFXVolume * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)))
+			ChannelVolumeEx(SoundCHN, Volume * Dist * ((Not SFXVolume) + (SFXVolume * ((opt\VoiceVolume * IsVoice) + (opt\SFXVolume * (Not (IsVoice)))) * opt\MasterVolume)))
 			ChannelPan(SoundCHN, PanValue)
 		Else
 			ChannelVolume(SoundCHN, 0.0)
