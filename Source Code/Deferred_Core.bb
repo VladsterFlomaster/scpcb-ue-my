@@ -587,11 +587,11 @@ Function FindDynamicLight.DynamicLight(OBJ%)
 	Next
 End Function
 
-Function CreateLight(ty%, p% = 0)
+Function CreateLight(lType%, Parent% = 0)
 	Local dl.DynamicLight = New DynamicLight
 	
-	dl\OBJ = CreatePivot(p)
-	dl\lType = ty
+	dl\OBJ = CreatePivot(Parent)
+	dl\lType = lType
 	dl\Fade = 1.0
 	dl\R = 255
 	dl\G = 255
