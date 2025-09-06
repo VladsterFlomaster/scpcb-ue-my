@@ -521,7 +521,7 @@ Function CreateItem.Items(Name$, ID%, x#, y#, z#, R% = 0, G% = 0, B% = 0, Alpha#
 			EntityParent(i\OBJ2, i\Collider)
 			;[End Block]
 	End Select
-	SetDeferredEntity(i\OBJ, True)
+	SetDeferredEntity(i\OBJ)
 	
 	i\InvSlots = InvSlots
 	

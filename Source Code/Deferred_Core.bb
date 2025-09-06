@@ -171,12 +171,6 @@ Function InitDeferred%()
 	SetShadowsDistance(4.0)
 	DirectionalLightUpdate = 0
 	
-	For i = 0 To DEFERRED_INPUTS - 1
-		EffectTexture(DeferredInput[i], "MRTAlbedoTexture", MRTAlbedo)
-		EffectTexture(DeferredInput[i], "MRTNormalTexture", MRTNormal)
-		EffectTexture(DeferredInput[i], "MRTDepthTexture", MRTDepth)
-	Next
-	
 	BloomTex = CreateTexture(Width / 4, Height / 4, 1 + 256 + 16384)
 	BloomBlur = CreateTexture(Width / 4, Height / 4, 1 + 256 + 16384)
 	
@@ -309,7 +303,7 @@ Function ProcessAllLights%(Cam%, Tween#)
 	ShowEntity(DeferredQuad)
 	
 	For l.Lights = Each Lights
-		If (Not EntityHidden(l\OBJ)) Then ProcessLight(Cam, EntityX(l\OBJ, True), EntityY(l\OBJ, True), EntityZ(l\OBJ, True), EntityPitch(l\OBJ), EntityYaw(l\OBJ), l\Range * 10.0, l\R, l\G, l\B, l\Fade * SecondaryLightOn, l\lType, l\FOV, True, Tween)
+		If (Not EntityHidden(l\OBJ)) Then ProcessLight(Cam, EntityX(l\OBJ, True), EntityY(l\OBJ, True), EntityZ(l\OBJ, True), EntityPitch(l\OBJ, True), EntityYaw(l\OBJ, True), l\Range * 10.0, l\R, l\G, l\B, l\Fade * SecondaryLightOn, l\lType, l\FOV, True, Tween)
 	Next
 	
 	For dl.DynamicLight = Each DynamicLight

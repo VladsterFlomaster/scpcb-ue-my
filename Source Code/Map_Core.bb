@@ -680,6 +680,7 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tl\B = Int(Piece(lColor, 3, " ")) * Intensity
 					
 					tl\HasSprite = True
+					If RMeshVersion = 2 Then tl\HasSprite = ReadByte(f)
 					;[End Block]
 				Case "spotlight"
 					;[Block]
@@ -698,13 +699,14 @@ Function LoadRMesh%(File$, rt.RoomTemplates, HasCollision% = True)
 					tl\G = Int(Piece(lColor, 2, " ")) * Intensity
 					tl\B = Int(Piece(lColor, 3, " ")) * Intensity
 					
+					tl\HasSprite = True
+					If RMeshVersion = 2 Then tl\HasSprite = ReadByte(f)
+					
 					tl\Pitch = ReadFloat(f)
 					tl\Yaw = ReadFloat(f)
 					ReadFloat(f)
 					
 					tl\OuterConeAngle = ReadFloat(f)
-					
-					tl\HasSprite = True
 					;[End Block]
 				Case "light_fix"
 					;[Block]
