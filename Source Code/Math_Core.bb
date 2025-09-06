@@ -30,7 +30,7 @@ Function IsEqual%(a#, b#, Value#)
 End Function
 
 Function CurveValue#(Value#, Old#, Smooth#)
-	If Smooth = 0.0 Lor fps\Factor[0] = 0.0 Then Return(Old)
+	If fps\Factor[0] = 0.0 Then Return(Old)
 	
 	Local Val# = Old + (Value - Old) * (1.0 / Smooth * fps\Factor[0])
 	
@@ -49,7 +49,7 @@ Function WrapAngle#(Angle#)
 End Function
 
 Function CurveAngle#(Value#, Old#, Smooth#)
-	If Smooth = 0.0 Lor fps\Factor[0] = 0.0 Then Return(Old)
+	If fps\Factor[0] = 0.0 Then Return(Old)
 	
 	Return(WrapAngle(Old + AngleDist(Value, Old) * (1.0 / Smooth * fps\Factor[0])))
 End Function
