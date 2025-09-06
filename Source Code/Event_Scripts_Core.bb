@@ -2730,9 +2730,9 @@ Function UpdateEvent_Room2_Storage%(e.Events)
 					;[End Block]
 				Case 2.0
 					;[Block]
-					CreateMsg(GetLocalString("msg", "970.item.missing"))
 					i = Rand(0, MaxItemAmount - 1)
 					If Inventory(i) <> Null
+						CreateMsg(GetLocalString("msg", "970.item.missing"))
 						RemoveWearableItems(Inventory(i))
 						RemoveItem(Inventory(i))
 					EndIf
