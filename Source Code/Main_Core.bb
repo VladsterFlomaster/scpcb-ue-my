@@ -8305,16 +8305,14 @@ Function UpdateMenu%()
 			Local QuitButton% = 85
 			
 			If SelectedDifficulty\SaveType = SAVE_ON_QUIT Lor SelectedDifficulty\SaveType = SAVE_ANYWHERE
-				If CanSave = 3
-					QuitButton = 160
-					If UpdateMenuButton(x, y + (85 * MenuScale), 430 * MenuScale, 60 * MenuScale, GetLocalString("menu", "savequit"), Font_Default_Big)
-						me\DropSpeed = 0.0
-						SaveGame(CurrSave\Name)
-						NullGame()
-						CurrSave = Null
-						ResetInput()
-						Return
-					EndIf
+				QuitButton = 160
+				If UpdateMenuButton(x, y + (85 * MenuScale), 430 * MenuScale, 60 * MenuScale, GetLocalString("menu", "savequit"), Font_Default_Big, False, CanSave < 3)
+					me\DropSpeed = 0.0
+					SaveGame(CurrSave\Name)
+					NullGame()
+					CurrSave = Null
+					ResetInput()
+					Return
 				EndIf
 			EndIf
 			
