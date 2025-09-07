@@ -934,7 +934,7 @@ Function FillRoom%(r.Rooms)
 			
 			r\RoomLevers.Levers[0] = CreateLever(r, r\x - 49.0 * RoomScale, r\y + 689.0 * RoomScale, r\z + 913.0 * RoomScale, 0.0, True)
 			
-			it.Items = CreateItem("Note from Nobody #3", it_paper, r\x + 841.0 * RoomScale, r\y + 640.0 * RoomScale, r\z - 25.0 * RoomScale)
+			it.Items = CreateItem("Note from Nobody #3", it_paper, r\x + 881.0 * RoomScale, r\y + 640.0 * RoomScale, r\z - 18.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
 			Scale = RoomScale * 1.8
@@ -1061,7 +1061,7 @@ Function FillRoom%(r.Rooms)
 			PositionEntity(r\Objects[17], r\x - 48.0 * RoomScale, r\y + 540.0 * RoomScale, r\z + 656.0 * RoomScale)
 			EntityParent(r\Objects[17], r\OBJ)
 			
-			r\Objects[20] = CreateRedLight(r\x + 958.5 * RoomScale, r\y + 762.5 * RoomScale, r\z + 669.0 * RoomScale)
+			r\Objects[20] = CreateRedLight(r\x + 996.5 * RoomScale, r\y + 756.5 * RoomScale, r\z + 608.5 * RoomScale)
 			r\ScriptedObject[20] = True
 			EntityParent(r\Objects[20], r\OBJ)
 			HideEntity(r\Objects[20])
