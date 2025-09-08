@@ -3721,30 +3721,18 @@ Function UpdateEvent_Room3_Storage%(e.Events)
 			
 			If e\room\NPC[3] = Null
 				TFormPoint(3372.0, -5578.8, 6294.0, e\room\OBJ, 0)
-				x2 = TFormedX() : y2 = TFormedY() : z2 = TFormedZ()
-				e\room\NPC[4] = CreateNPC(NPCTypeD, x2, y2, z2)
+				e\room\NPC[4] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
 				e\room\NPC[4]\State3 = -1.0 : e\room\NPC[4]\IsDead = True
 				ChangeNPCTextureID(e\room\NPC[4], NPC_CLASS_D_VICTIM_939_1_TEXTURE)
 				SetNPCFrame(e\room\NPC[4], 40.0)
 				RotateEntity(e\room\NPC[4]\Collider, 0.0, e\room\Angle + 90.0, 0.0, True)
-				SetEmitter(e\room, x2, y2, z2, 30)
-				For i = 0 To 2
-					n.NPCs = CreateNPC(NPCTypeCockroach, x2 + Rnd(-0.2, 0.2), (e\room\y - 5632.0 * RoomScale) + 0.05, z2 + Rnd(-0.2, 0.2))
-					RotateEntity(n\Collider, EntityPitch(n\Collider), Rnd(360.0), EntityRoll(n\Collider))
-				Next
 				
 				TFormPoint(1083.0, -5578.0, 989.0, e\room\OBJ, 0)
-				x2 = TFormedX() : y2 = TFormedY() : z2 = TFormedZ()
-				e\room\NPC[5] = CreateNPC(NPCTypeD, x2, y2, z2)
+				e\room\NPC[5] = CreateNPC(NPCTypeD, TFormedX(), TFormedY(), TFormedZ())
 				e\room\NPC[5]\State3 = -1.0 : e\room\NPC[5]\IsDead = True
 				ChangeNPCTextureID(e\room\NPC[5], NPC_CLASS_D_VICTIM_939_2_TEXTURE)
 				SetNPCFrame(e\room\NPC[5], 19.0)
 				RotateEntity(e\room\NPC[5]\Collider, 0.0, e\room\Angle, 0.0, True)
-				SetEmitter(e\room, x2, y2, z2, 30)
-				For i = 0 To 2
-					n.NPCs = CreateNPC(NPCTypeCockroach, x2 + Rnd(-0.2, 0.2), (e\room\y - 5632.0 * RoomScale) + 0.05, z2 + Rnd(-0.2, 0.2))
-					RotateEntity(n\Collider, EntityPitch(n\Collider), Rnd(360.0), EntityRoll(n\Collider))
-				Next
 				
 				For i = 0 To 3
 					e\room\NPC[i] = CreateNPC(NPCType939, 0.0, 0.0, 0.0)
