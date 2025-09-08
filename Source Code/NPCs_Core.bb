@@ -311,6 +311,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			n\OBJ2 = CopyEntity(n\OBJ)
 			EntityAlpha(n\OBJ2, 0.6)
 			HideEntity(n\OBJ2)
+			n\MaxGravity = 0.0
 			
 			Temp = 1.8 / MeshWidth(n\OBJ)
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
