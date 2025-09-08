@@ -2156,7 +2156,7 @@ Function UpdateNPCType106%(n.NPCs)
 							PointEntity(n\OBJ, me\Collider)
 							RotateEntity(n\Collider, 0.0, CurveAngle(EntityYaw(n\OBJ), EntityYaw(n\Collider), 100.0), 0.0, True)
 						EndIf
-						AnimateNPC(n, 111.0, 259.0, 0.15 + (0.075 * SelectedDifficulty\AggressiveNPCs), False)
+						AnimateNPC(n, 111.0, 259.0, 0.15 + (0.1 * SelectedDifficulty\AggressiveNPCs), False)
 					Else
 						GiveAchievement("106")
 						n\State = 3.0
