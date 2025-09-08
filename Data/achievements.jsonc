@@ -301,11 +301,11 @@
 		},
 		"513": {
 			"name": "If You Ring It, He Will Come",
-			"description": "Ring the Old Cowbell."
+			"description": "Ring the Old Bell or its refined variation."
 		},
 		"714": {
 			"name": "Mental Exhaustion",
-			"description": "Found and equipped the Jaded Ring."
+			"description": "Found the Jaded Ring and equipped it or its variation."
 		},
 		"860": {
 			"name": "Two-faced Grove",
@@ -337,11 +337,11 @@
 		},
 		"1025": {
 			"name": "\"Potential Bioweapon\"",
-			"description": "Read the Encyclopedia of Common Diseases."
+			"description": "Read the Encyclopedia of Common (Uncommon) Diseases."
 		},
 		"1048": {
 			"name": "The Architect",
-			"description": "Found the Builder Bear."
+			"description": "Found the Builder Bear or its crude replica."
 		},
 		"1123": {
 			"name": "The Final Solution",
