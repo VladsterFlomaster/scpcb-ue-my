@@ -34,10 +34,8 @@ Function UpdateNPCType008_1_Surgeon%(n.NPCs)
 				n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
 				If n\State2 > 0.0
 					If n\Target = Null
-						If NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume) = 1
-							n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
-							PointEntity(n\Collider, me\Collider)
-						EndIf
+						If NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume) = 1 Then n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
+						If EntityVisible(n\Collider, me\Collider) Then PointEntity(n\Collider, me\Collider)
 						Dist = EntityDistanceSquared(n\Collider, me\Collider)
 					Else
 						If NPCSeesNPC(n\Target, n) = 1
@@ -307,10 +305,8 @@ Function UpdateNPCType008_1%(n.NPCs)
 				n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
 				If n\State2 > 0.0
 					If n\Target = Null
-						If NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume) = 1
-							n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
-							PointEntity(n\Collider, me\Collider)
-						EndIf
+						If NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume) = 1 Then n\State2 = 70.0 * 2.0 ; ~ Give up after 2 seconds
+						If EntityVisible(n\Collider, me\Collider) Then PointEntity(n\Collider, me\Collider)
 						Dist = EntityDistanceSquared(n\Collider, me\Collider)
 					Else
 						If NPCSeesNPC(n\Target, n) = 1
@@ -892,10 +888,8 @@ Function UpdateNPCType049%(n.NPCs)
 					n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
 					PlayerSeeable = NPCSeesPlayer(n, 8.0 - me\CrouchState + me\SndVolume)
 					If n\State2 > 0.0
-						If PlayerSeeable = 1
-							n\State2 = 70.0 * 2.0
-							PointEntity(n\Collider, me\Collider)
-						EndIf
+						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.0
+						If EntityVisible(n\Collider, me\Collider) Then PointEntity(n\Collider, me\Collider)
 						; ~ Playing a sound after detecting the player
 						If n\PrevState <= 1 And (Not ChannelPlaying(n\SoundCHN2))
 							LoadNPCSound(n, "SFX\SCP\049\Spotted" + Rand(0, 6) + ".ogg", 1)
@@ -2841,10 +2835,8 @@ Function UpdateNPCType457%(n.NPCs)
 					n\State2 = Max(n\State2 - fps\Factor[0], 0.0)
 					PlayerSeeable = NPCSeesPlayer(n, 10.0 - me\CrouchState + me\SndVolume)
 					If n\State2 > 0.0
-						If PlayerSeeable = 1
-							n\State2 = 70.0 * 2.0
-							PointEntity(n\Collider, me\Collider)
-						EndIf
+						If PlayerSeeable = 1 Then n\State2 = 70.0 * 2.0
+						If EntityVisible(n\Collider, me\Collider) Then PointEntity(n\Collider, me\Collider)
 						; ~ Playing a sound after detecting the player
 						If n\PrevState <= 1 And (Not ChannelPlaying(n\SoundCHN2))
 							LoadNPCSound(n, "SFX\SCP\457\Sighting.ogg", 1)
