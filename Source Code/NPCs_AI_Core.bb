@@ -3692,8 +3692,8 @@ Function UpdateNPCType939%(n.NPCs)
 	
 	RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider), 0.0, True)
 	
-	PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - 0.41, EntityZ(n\Collider)) ; ~ TODO: n\CollRadius instead of 0.41
-	RotateEntity(n\OBJ, EntityPitch(n\Collider) - 90.0, EntityYaw(n\Collider), EntityRoll(n\Collider), True)
+	PositionEntity(n\OBJ, EntityX(n\Collider), EntityY(n\Collider) - n\CollRadius, EntityZ(n\Collider))
+	RotateEntity(n\OBJ, EntityPitch(n\Collider), EntityYaw(n\Collider), EntityRoll(n\Collider), True)
 End Function
 
 Function UpdateNPCType966%(n.NPCs)
