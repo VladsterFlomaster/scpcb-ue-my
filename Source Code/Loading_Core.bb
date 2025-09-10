@@ -2667,7 +2667,7 @@ Function LoadEntities%()
 	MeshCullBox(pm\OBJ, -i, -j, -k, i * 2.0, j * 2.0, k * 2.0)
 	EntityType(pm\OBJ, 0)
 	HideEntity(pm\OBJ)
-	;SetDeferredEntity(pm\OBJ, True) ; ~ TODO: Add head model first
+	SetDeferredEntity(pm\OBJ, True)
 	
 	Local StartFrame#, EndFrame#
 	
