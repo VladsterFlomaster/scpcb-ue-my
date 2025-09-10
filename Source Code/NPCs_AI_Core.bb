@@ -3596,7 +3596,7 @@ Function UpdateNPCType939%(n.NPCs)
 			If Visible
 				n\EnemyX = EntityX(me\Collider)
 				n\EnemyZ = EntityZ(me\Collider)
-				n\LastSeen = 70.0
+				n\LastSeen = 70.0 * 1.5
 			EndIf
 			
 			If n\LastSeen > 0 And (Not (chs\NoTarget Lor I_268\InvisibilityOn))
