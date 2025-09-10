@@ -9410,7 +9410,7 @@ Function UpdateMTF%()
 			
 			If entrance <> Null
 				If me\Zone = 2
-					n_I\Curr106\State3 = 1.0
+					n_I\Curr106\State3 = 0.5
 					
 					PlayAnnouncement("SFX\Character\MTF\AnnouncEnter.ogg")
 					
