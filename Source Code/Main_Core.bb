@@ -4961,8 +4961,8 @@ Function UpdateGUI%()
 End Function
 
 Function UpdateUseItem%(item.Items)
-	Local Scale#, StrTemp$, Temp%, i%, j%
-	Local it.Items, r.Rooms, e.Events, n.NPCs
+	Local Scale#, StrTemp$, Temp%, i%, j%, Tex%
+	Local it.Items, r.Rooms, e.Events, n.NPCs, itt.ItemTemplates
 	
 	Select item\ItemTemplate\ID
 		Case it_gasmask, it_finegasmask, it_veryfinegasmask, it_gasmask148
@@ -6645,6 +6645,20 @@ Function UpdateUseItem%(item.Items)
 						SetFontEx(fo\FontID[Font_Default])
 						SetBuffer(BackBuffer())
 						CopyRectStretch(0, 0, ImageWidth(item\ItemTemplate\Img), ImageHeight(item\ItemTemplate\Img), 0, 0, BufferWidth(ImageBuffer(item\ItemTemplate\Img)), BufferHeight(ImageBuffer(item\ItemTemplate\Img)), TextureBuffer(ResizeTexture), ImageBuffer(item\ItemTemplate\Img))
+						;[End Block]
+					Case "SCP-085"
+						;[Block]
+						For itt.ItemTemplates = Each ItemTemplates
+							If itt\Name = item\Name
+								itt\ImgPath = ItemHUDTexturePath + "note_085(" + Int(item\State) + ").png"
+								itt\TexPath = itt\ImgPath
+								Tex = GetRescaledTexture(False, itt\TexPath, 1, DeleteMapTextures, 145, 204)
+								EntityTexture(item\OBJ, Tex)
+								DeleteSingleTextureEntryFromCache(Tex) : Tex = 0
+								item\State = Min(item\State + 1.0, 3.0)
+								Exit
+							EndIf
+						Next
 						;[End Block]
 				End Select
 				item\ItemTemplate\ImgWidth = ImageWidth(item\ItemTemplate\Img) / 2
