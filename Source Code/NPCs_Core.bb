@@ -291,7 +291,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			EntityRadius(n\Collider, n\CollRadius)
 			EntityType(n\Collider, HIT_PLAYER)
 			
-			Local emit.Emitter = SetEmitter(Null, EntityX(n\Collider), EntityY(n\Collider), EntityZ(n\Collider), 31)
+			Local emit.Emitter = SetEmitter(Null, EntityX(n\Collider), EntityY(n\Collider), EntityZ(n\Collider), 36)
 			EntityParent(emit\Owner, n\Collider)
 			
 			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_CLASS_D_MODEL])
