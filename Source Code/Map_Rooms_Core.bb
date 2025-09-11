@@ -3887,9 +3887,6 @@ Function FillRoom%(r.Rooms)
 			RotateEntity(it\Collider, 0.0, 90.0, 0.0)
 			EntityParent(it\Collider, r\OBJ)
 			
-			it.Items = CreateItem("SCP-085", it_paper, r\x - 498.0 * RoomScale, r\y + 183.0 * RoomScale, r\z + 430.0 * RoomScale)
-			EntityParent(it\Collider, r\OBJ)
-			
 			it.Items = CreateItem("Syringe", it_syringe, r\x - 996.0 * RoomScale, r\y + 170.0 * RoomScale, r\z + 132.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
 			
@@ -4169,6 +4166,9 @@ Function FillRoom%(r.Rooms)
 			EntityPickMode(r\Objects[0], 2)
 			EntityType(r\Objects[0], HIT_MAP)
 			EntityAlpha(r\Objects[0], 0.0)
+			
+			it.Items = CreateItem("SCP-085", it_paper, r\x + 309.0 * RoomScale, r\y + 183.0 * RoomScale, r\z + 835.0 * RoomScale)
+			EntityParent(it\Collider, r\OBJ)
 			
 			it.Items = CreateItem("ReVision Eyedrops", it_eyedrops, r\x - 957.0 * RoomScale, r\y + 220.0 * RoomScale, r\z + 659.0 * RoomScale)
 			EntityParent(it\Collider, r\OBJ)
