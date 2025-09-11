@@ -2821,13 +2821,9 @@ Function UpdateNPCType457%(n.NPCs)
 				;[End Block]
 			Case 1.0 ; ~ Looking around before getting active
 				;[Block]
-				If n\Frame >= 538.0
-					AnimateNPC(n, 659.0, 538.0, -0.45, False)
-					If n\Frame > 537.9 Then SetNPCFrame(n, 37.0)
-				Else
-					AnimateNPC(n, 37.0, 269.0, 0.7, False)
-					If n\Frame > 268.9 Then n\State = 2.0
-				EndIf
+				n\CurrSpeed = CurveValue(0.0, n\CurrSpeed, 5.0)
+				AnimateNPC(n, 210.0, 235.0, 0.1)
+				If n\Frame > 234.9 Then n\State = 2.0
 				;[End Block]
 			Case 2.0 ; ~ Being active
 				;[Block]
@@ -2849,15 +2845,13 @@ Function UpdateNPCType457%(n.NPCs)
 						
 						RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider, True), 0.0, True)
 						
-						If Dist > 0.2
+						If Dist > 0.25
 							n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 25.0)
 							MoveEntity(n\Collider, 0.0, 0.0, n\CurrSpeed * fps\Factor[0])
 							
-							If n\Frame > 427.9
-								AnimateNPC(n, Min(AnimTime(n\OBJ), 464.0), 498.0, n\CurrSpeed * 38.0, False)
-								If n\Frame > 497.9 Then SetNPCFrame(n, 358.0)
-							Else
-								AnimateNPC(n, Clamp(AnimTime(n\OBJ), 346.0, 358.0), 393.0, n\CurrSpeed * 38.0)
+							AnimateNPC(n, 301.0, 319.0, n\CurrSpeed * 18.0)
+							If n\CurrSpeed > 0.005
+								If (PrevFrame < 309.0 And n\Frame >= 309.0) Lor (PrevFrame <= 319.0 And n\Frame <= 301.0) Then PlaySoundEx(StepSFX(GetStepSound(n\Collider), 1, Rand(0, 2)), Camera, n\Collider, 8.0, Rnd(0.3, 0.5))
 							EndIf
 						EndIf
 						n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 10.0 - SelectedDifficulty\OtherFactors)
@@ -2876,12 +2870,15 @@ Function UpdateNPCType457%(n.NPCs)
 								EndIf
 							Wend
 							If n\Path[n\PathLocation] <> Null
-								n\CurrSpeed = CurveValue(n\Speed, n\CurrSpeed, 25.0)
+								n\CurrSpeed = CurveValue(n\Speed * 0.7, n\CurrSpeed, 25.0)
 								PointEntity(n\Collider, n\Path[n\PathLocation]\OBJ)
 								RotateEntity(n\Collider, 0.0, EntityYaw(n\Collider, True), 0.0, True)
 								MoveEntity(n\Collider, 0.0, 0.0, n\CurrSpeed * fps\Factor[0])
 								
-								AnimateNPC(n, Clamp(AnimTime(n\OBJ), 346.0, 358.0), 393.0, n\CurrSpeed * 38.0)
+								AnimateNPC(n, 236.0, 260.0, n\CurrSpeed * 18.0)
+								If n\CurrSpeed > 0.005
+									If (PrevFrame < 244.0 And n\Frame >= 244.0) Lor (PrevFrame < 254.0 And n\Frame >= 254.0) Then PlaySoundEx(StepSFX(GetStepSound(n\Collider), 0, Rand(0, 2)), Camera, n\Collider, 8.0, Rnd(0.3, 0.5))
+								EndIf
 								n\Angle = CurveAngle(EntityYaw(n\Collider, True), n\Angle, 10.0 - SelectedDifficulty\OtherFactors)
 								
 								UseDoorNPC(n)
@@ -2987,12 +2984,8 @@ Function UpdateNPCType457%(n.NPCs)
 									n\State3 = n\State3 + 1.0
 								Wend
 							EndIf
-							AnimateNPC(n, 269.0, 345.0, 0.2)
+							AnimateNPC(n, 210.0, 235.0, 0.1)
 						EndIf
-					EndIf
-					
-					If n\CurrSpeed > 0.005
-						If (PrevFrame < 361.0 And n\Frame >= 361.0) Lor (PrevFrame < 377.0 And n\Frame >= 377.0) Lor (PrevFrame < 431.0 And n\Frame >= 431.0) Lor (PrevFrame < 447.0 And n\Frame >= 447.0) Then PlaySoundEx(snd_I\Step2SFX[Rand(7, 9)], Camera, n\Collider, 8.0, Rnd(0.8, 1.0))
 					EndIf
 					
 					UpdateSoundOrigin(n\SoundCHN2, Camera, n\OBJ, 10.0, 1.0, True)
@@ -3003,17 +2996,17 @@ Function UpdateNPCType457%(n.NPCs)
 				;[End Block]
 			Case 3.0 ; ~ The player was killed by SCP-457
 				;[Block]
-				AnimateNPC(n, 537.0, 660.0, 0.7, False)
+				AnimateNPC(n, 357.0, 381.0, 0.15)
 				
 				PositionEntity(n\Collider, CurveValue(EntityX(me\Collider), EntityX(n\Collider), 20.0), EntityY(n\Collider), CurveValue(EntityZ(me\Collider), EntityZ(n\Collider), 20.0))
-				n\Angle = CurveAngle(EntityYaw(me\Collider) - 180.0, n\Angle, 10.0)
+				n\Angle = CurveAngle(EntityYaw(me\Collider), n\Angle, 10.0)
 				;[End Block]
 		End Select
 		n\LastSeen = Max(n\LastSeen - fps\Factor[0], 0.0)
 	EndIf
 	
 	PositionEntity(n\OBJ, EntityX(n\Collider, True), EntityY(n\Collider, True) - n\CollRadius, EntityZ(n\Collider, True), True)
-	RotateEntity(n\OBJ, 0.0, n\Angle, 0.0, True)
+	RotateEntity(n\OBJ, 0.0, n\Angle - 180.0, 0.0, True)
 End Function
 
 Function UpdateNPCType513_1%(n.NPCs)
