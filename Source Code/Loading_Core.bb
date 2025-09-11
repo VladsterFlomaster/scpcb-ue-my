@@ -1153,7 +1153,7 @@ Function RemoveNPCInstances%()
 	Delete(n_I) : n_I = Null
 End Function
 
-Const MaxMTModelIDAmount% = 7
+Const MaxMTModelIDAmount% = 1
 Const MaxLightSpriteIDAmount% = 3
 
 Type MiscInstance
@@ -1177,17 +1177,9 @@ Function LoadMisc%()
 	
 	misc_I.MiscInstance = New MiscInstance
 	
-	misc_I\MTModelID[0] = LoadRMesh("GFX\Map\mt1.rmesh", Null)
-	misc_I\MTModelID[1] = LoadRMesh("GFX\Map\mt2.rmesh", Null)
-	misc_I\MTModelID[2] = LoadRMesh("GFX\Map\mt2C.rmesh", Null)
-	misc_I\MTModelID[3] = LoadRMesh("GFX\Map\mt3.rmesh", Null)
-	misc_I\MTModelID[4] = LoadRMesh("GFX\Map\mt4.rmesh", Null)
-	misc_I\MTModelID[5] = LoadRMesh("GFX\Map\mt2_elevator.rmesh", Null)
-	misc_I\MTModelID[6] = LoadRMesh("GFX\Map\mt1_generator.rmesh", Null)
+	misc_I\MTModelID[0] = LoadRMesh("GFX\Map\mt1_generator.rmesh", Null)
 	
-	For i = 0 To MaxMTModelIDAmount - 1
-		HideEntity(misc_I\MTModelID[i])
-	Next
+	HideEntity(misc_I\MTModelID[0])
 	
 	misc_I\CupLiquid = LoadMesh_Strict("GFX\Items\cup_liquid.b3d")
 	HideEntity(misc_I\CupLiquid)
@@ -1204,9 +1196,8 @@ End Function
 Function RemoveMiscInstances%()
 	Local i%
 	
-	For i = 0 To MaxMTModelIDAmount - 1
-		FreeEntity(misc_I\MTModelID[i]) : misc_I\MTModelID[i] = 0
-	Next
+	FreeEntity(misc_I\MTModelID[0]) : misc_I\MTModelID[0] = 0
+	
 	FreeEntity(misc_I\CupLiquid) : misc_I\CupLiquid = 0
 	FreeEntity(misc_I\SaveScreen) : misc_I\SaveScreen = 0
 	For i = LIGHT_SPRITE_DEFAULT To LIGHT_SPRITE_RED
