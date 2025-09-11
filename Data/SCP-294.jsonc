@@ -45,15 +45,6 @@
 		"death_timer": 0.0
 	},
 	{
-		"name": ["Chlorine", "Liquid Chlorine"],
-		"color": [224, 224, 224],
-		"alpha": 0.9,
-		"dispense_sound": "SFX\\SCP\\294\\Dispense2.ogg",
-		"drink_sound": "SFX\\SCP\\294\\Spit.ogg",
-		"blur": 15.0,
-		"damage": 1.0
-	},
-	{
 		"name": ["Spoilers", "Spoiling"],
 		"color": [100, 100, 255],
 		"alpha": 1.0,
@@ -296,13 +287,14 @@
 		"death_timer": 0.0
 	},
 	{
-		"name": ["Bleach"],
+		"name": ["Bleach", "Chlorine", "Liquid Chlorine"],
 		"color": [255, 255, 255],
-		"alpha": 0.5,
+		"alpha": 0.6,
 		"dispense_sound": "SFX\\SCP\\294\\Dispense1.ogg",
 		"drink_sound": "SFX\\SCP\\294\\Burn.ogg",
 		"drink_message": "\"The liquid burns in your mouth and throat.\"",
 		"blur": 300.0
+		"damage": 1.0
 	},
 	{
 		"name": ["Blood of D-9341", "Blood of Benjamin Oliver", "Blood of Oliver Benjamin", "My blood"],
