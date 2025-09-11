@@ -3820,7 +3820,17 @@ Function UpdateNPCType939%(n.NPCs)
 				AnimateNPC(n, 570.0 + AnimShift, 669.0 + AnimShift, 0.3, False)
 				If n\Frame > 668.9 + AnimShift Then n\State = 2.0
 			Else
-				; TODO
+				If n\LastDist = 0.0
+					AnimateNPC(n, 1493.0, 1466.0, -0.3, False)
+					CreateHintMsg(n\Frame)
+					If n\Frame < 1466.1 Then n\LastDist = 1.0
+				Else
+					AnimateNPC(n, 1466.0, 1493.0, 0.3, False)
+					If n\Frame > 1492.9
+						n\LastDist = 0.0
+						n\State = 1.0
+					EndIf
+				EndIf
 			EndIf
 			;[End Block]
 	End Select

@@ -5439,11 +5439,12 @@ Function UpdateUseItem%(item.Items)
 							If n\State <> 6.0
 								LoadNPCSound(n, "SFX\SCP\939\" + (n\ID Mod 3) + "Attack" + Rand(0, 2) + ".ogg")
 								n\SoundCHN = PlaySoundEx(n\Sound, Camera, n\Collider, 10.0, 1.0, True)
-								n\LastDist = Rand(2)
 								If n\State3 = 0.0
+									n\LastDist = Rand(2)
 									SetNPCFrame(n, 570.0 + (100.0 * (n\LastDist = 2.0)))
 								Else
-									; ~ TODO
+									n\LastDist = 0.0
+									SetNPCFrame(n, 1493.0)
 								EndIf
 								n\State = 6.0
 							EndIf
