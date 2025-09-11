@@ -285,7 +285,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 		Case NPCType457
 			;[Block]
 			n\NVGName = "SCP-457"
-			n\Speed = 0.025
+			n\Speed = 0.026
 			
 			n\Collider = CreatePivot()
 			EntityRadius(n\Collider, n\CollRadius)
@@ -294,9 +294,10 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 			Local emit.Emitter = SetEmitter(Null, EntityX(n\Collider), EntityY(n\Collider), EntityZ(n\Collider), 31)
 			EntityParent(emit\Owner, n\Collider)
 			
-			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_049_MODEL])
-			Temp = 1.2
+			n\OBJ = CopyEntity(n_I\NPCModelID[NPC_CLASS_D_MODEL])
+			Temp = 0.51 / MeshWidth(n\OBJ)
 			ScaleEntity(n\OBJ, Temp, Temp, Temp)
+			ChangeNPCTextureID(n, NPC_457_TEXTURE)
 			If NPCSound[SOUND_NPC_457_FIRE] = 0 Then NPCSound[SOUND_NPC_457_FIRE] = LoadSound_Strict("SFX\SCP\457\FireLoop.ogg")
 			;[End Block]
 		Case NPCType513_1
