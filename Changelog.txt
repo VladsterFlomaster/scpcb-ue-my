@@ -26,21 +26,31 @@
 - Moved «cont3_513» to LCZ.
 - Improved Explosion effect at Gate B.
 - Snow at Gate B glistens.
+- Added SCP-2022 to Dr. Gears office.
 
 [NPCs]
 - Added SCP-457.
 - Added SCP-999.
-- Increased SCP-106's spawnrate once the player has entered Entrance Zone.
+- Increased SCP-106's spawnrate once the player has entered Entrance Zone. 1.5x increase.
 - SCP-008-1 and SCP-049-2's spawntimer scales with «AggressiveNPCs».
 - More voicelines from SCP-079.
 - SCP-035 does not activate when playing is wearing SCP-268.
 - Increased spawnrate of SCP-106 in «DisableDecals» = 2 type rooms.
 - Fixed all MTF shooting at player simultaniously.
 
+- Changed speed of enemies:
+ - SCP-049 chase speed: 1.6 -> 1.75
+ - SCP-106 chase speed: 1.3 -> 1.4
+ - SCP-008-1 chase speed: 1.4 -> 1.5
+ - SCP-008-1 roam speed: 0.98 -> 0.9
+ - SCP-049-2 roam speed: 1.0 -> 0.7
+
 [Bug Fixes]
 - Fixed First Aid Kits halting all momentum when clicked without actually being selected in the inventory.
 - Fixed inventory speed reduction in pocket dimension not being consistently halved.
 - Fixed flying Class-D model in SCP-106's containment box.
+- Fixed SCP-513-1 clipping through floor.
+- Fixed SCP-1025 not changing item states.
 
 {1.5.6}
 
