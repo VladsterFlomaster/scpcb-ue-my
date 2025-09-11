@@ -412,27 +412,25 @@ Function GetStepSound%(Entity%)
 		Local Brush% = GetSurfaceBrush(GetSurface(Picker, CountSurfaces(Picker)))
 		
 		If Brush <> 0
-			Local i%
+			Local Texture% = GetBrushTexture(Brush, 0)
 			
-			For i = 3 To 1 Step -1
-				Local Texture% = GetBrushTexture(Brush, i)
+			If Texture <> 0
+				Local TexName$ = StripPath(TextureName(Texture))
+				Local mat.Materials
 				
-				If Texture <> 0
-					Local TexName$ = StripPath(TextureName(Texture))
-					Local mat.Materials
-					
-					FreeTexture(Texture) : Texture = 0
-					If TexName <> "" 
-						For mat.Materials = Each Materials
-							If mat\Name = TexName
-								FreeBrush(Brush) : Brush = 0
-								Return(mat\StepSound)
-								Exit
-							EndIf
-						Next
-					EndIf
+				CreateHintMsg(TexName)
+				FreeTexture(Texture) : Texture = 0
+				If TexName <> "" 
+					For mat.Materials = Each Materials
+						If mat\Name = TexName
+							FreeBrush(Brush) : Brush = 0
+							Return(mat\StepSound)
+							Exit
+						EndIf
+					Next
 				EndIf
-			Next
+			EndIf
+				
 			; ~ If we reach this point then no step sound found, free the brush
 			FreeBrush(Brush) : Brush = 0
 		EndIf
