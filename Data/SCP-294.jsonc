@@ -293,17 +293,8 @@
 		"dispense_sound": "SFX\\SCP\\294\\Dispense1.ogg",
 		"drink_sound": "SFX\\SCP\\294\\Burn.ogg",
 		"drink_message": "\"The liquid burns in your mouth and throat.\"",
-		"blur": 300.0
+		"blur": 300.0,
 		"damage": 1.0
-	},
-	{
-		"name": ["Blood of D-9341", "Blood of Benjamin Oliver", "Blood of Oliver Benjamin", "My blood"],
-		"color": [145, 32, 50],
-		"alpha": 1.0,
-		"dispense_sound": "SFX\\SCP\\294\\Dispense2.ogg",
-		"drink_sound": "SFX\\SCP\\294\\Ew0.ogg",
-		"drink_message": "\"The drink tastes like red wine.\"",
-		"bloodloss": 40.0
 	},
 	{
 		"name": ["Acid Liquid"],
@@ -573,7 +564,7 @@
 		"drink_sound": "SFX\\SCP\\294\\Cough.ogg"
 	},
 	{
-		"name": ["D-9341", "9341", "Me", "Myself", "Im", "I Am", "Self", "Benjamin Oliver", "Oliver Benjamin", "My Stomach", "My Intestines"],
+		"name": ["D-9341", "9341", "Blood of D-9341", "Blood of Benjamin Oliver", "Blood of Oliver Benjamin", "Me", "Myself", "I Am", "Self", "Benjamin Oliver", "Oliver Benjamin", "My Stomach", "My Intestines", "My Blood"],
 		"color": [200, 0, 0],
 		"alpha": 1.0,
 		"dispense_sound": "SFX\\Character\\D9341\\Damage1.ogg",
