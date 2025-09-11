@@ -286,7 +286,7 @@ Function CreateNPC.NPCs(NPCType%, x#, y#, z#)
 		Case NPCType457
 			;[Block]
 			n\NVGName = "SCP-457"
-			n\Speed = 0.026
+			n\Speed = 0.025
 			
 			n\Collider = CreatePivot()
 			EntityRadius(n\Collider, n\CollRadius)
