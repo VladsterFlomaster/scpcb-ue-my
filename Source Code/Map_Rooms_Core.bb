@@ -5085,6 +5085,9 @@ Function FillRoom%(r.Rooms)
 			l.Lights = AddLight(r, r\x + tl\x, r\y + tl\y, r\z + tl\z, tl\LType, tl\Range, tl\R, tl\G, tl\B, tl\HasSprite, tl\SpriteScale, tl\CastShadows, tl\OuterConeAngle)
 			l\Scattering = tl\Scattering
 			l\Length = tl\Length
+			If r\RoomTemplate\RoomID = r_room2_js And tl\LType = DEFERRED_LIGHT_SPOT
+				If Abs(tl\x + 384.0 * RoomScale) < 0.01 * RoomScale And Abs(tl\y - 699.0 * RoomScale) < 0.01 * RoomScale And Abs(tl\z) < 0.01 * RoomScale Then l\Flickers = True
+			EndIf
 			RotateEntity(l\OBJ, tl\Pitch, tl\Yaw, 0.0)
 		EndIf
 	Next
